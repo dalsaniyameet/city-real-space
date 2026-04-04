@@ -18,15 +18,18 @@ app.use((req, res, next) => {
   next();
 });
 
+const FRONTEND = path.join(__dirname, '../');
+
 // Serve frontend static files
-app.use(express.static(path.join(__dirname, '../')));
-// Serve admin panel
-app.use('/admin', express.static(path.join(__dirname, '../admin')));
+app.use(express.static(FRONTEND));
 // Serve uploaded images
-app.use('/images', express.static(path.join(__dirname, '../images')));
+app.use('/images', express.static(path.join(FRONTEND, 'images')));
 // Fallback — serve index.html for all non-API routes
 app.get(/^(?!\/api).*/, (req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'));
+  const file = path.join(FRONTEND, req.path === '/' ? 'index.html' : req.path);
+  res.sendFile(file, (err) => {
+    if (err) res.sendFile(path.join(FRONTEND, 'index.html'));
+  });
 });
 
 // Routes
