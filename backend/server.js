@@ -18,17 +18,18 @@ app.use((req, res, next) => {
   next();
 });
 
-const FRONTEND = path.join(__dirname, '../');
+const FRONTEND = path.resolve(__dirname, '../');
 
 // Serve frontend static files
 app.use(express.static(FRONTEND));
 // Serve uploaded images
 app.use('/images', express.static(path.join(FRONTEND, 'images')));
-// Fallback — serve index.html for all non-API routes
+// Fallback — serve requested .html file or index.html
 app.get(/^(?!\/api).*/, (req, res) => {
-  const file = path.join(FRONTEND, req.path === '/' ? 'index.html' : req.path);
-  res.sendFile(file, (err) => {
-    if (err) res.sendFile(path.join(FRONTEND, 'index.html'));
+  const reqPath = req.path === '/' ? '/index.html' : req.path;
+  const file = path.resolve(FRONTEND, reqPath.replace(/^\//, ''));
+  res.sendFile(file, { root: '/' }, (err) => {
+    if (err) res.sendFile('index.html', { root: FRONTEND });
   });
 });
 
