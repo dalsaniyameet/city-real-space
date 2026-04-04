@@ -1,5 +1,5 @@
 // ===== AUTH STATE ===== v2
-const API = 'http://localhost:5000/api';
+const API = 'https://city-real-space-production.up.railway.app/api';
 
 async function checkAuthState() {
   const user  = JSON.parse(localStorage.getItem('user') || 'null');
@@ -271,7 +271,7 @@ loadAllProperties();
   const grid = document.getElementById('homePostsGrid');
   if (!grid) return;
   try {
-    const res = await fetch('http://localhost:5000/api/blogs?limit=4');
+    const res = await fetch('https://city-real-space-production.up.railway.app/api/blogs?limit=4');
     const data = await res.json();
     if (data.success && data.blogs.length) {
       grid.innerHTML = data.blogs.map((b, i) => {
@@ -526,7 +526,7 @@ if (mainSearchBtn) {
     const loc   = document.getElementById('offerPropLoc').querySelector('span').textContent;
     if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
     try {
-      await fetch('http://localhost:5000/api/inquiry', {
+      await fetch('https://city-real-space-production.up.railway.app/api/inquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, phone, propertyName: title, propertyType: title, lookingFor: 'Get Offer', city: loc, message: 'Get Offer request for: ' + title + ' (' + loc + ')' })
@@ -579,7 +579,7 @@ async function toggleFav(btn) {
     const match = onclick.match(/property-detail\.html\?id=([^'"]+)/);
     if (match) {
       try {
-        await fetch('http://localhost:5000/api/properties/' + match[1] + '/save', {
+        await fetch('https://city-real-space-production.up.railway.app/api/properties/' + match[1] + '/save', {
           method: 'POST',
           headers: { 'Authorization': 'Bearer ' + token }
         });

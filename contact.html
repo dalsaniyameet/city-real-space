@@ -328,7 +328,7 @@
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
     btn.disabled = true;
     try {
-      const res = await fetch('http://localhost:5000/api/contact', {
+      const res = await fetch('https://city-real-space-production.up.railway.app/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, phone, email, subject, message })

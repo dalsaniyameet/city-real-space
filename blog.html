@@ -307,7 +307,7 @@
     document.querySelectorAll('.cat-item').forEach(c => c.classList.toggle('active-cat', c.dataset.cat === activeCat));
     document.getElementById('blogGrid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#aaa"><i class="fa-solid fa-spinner fa-spin" style="font-size:2rem"></i></div>';
     try {
-      const url = 'http://localhost:5000/api/blogs' + (activeCat ? '?category=' + encodeURIComponent(activeCat) : '');
+      const url = 'https://city-real-space-production.up.railway.app/api/blogs' + (activeCat ? '?category=' + encodeURIComponent(activeCat) : '');
       const res = await fetch(url);
       const data = await res.json();
       if (data.success) { renderBlogs(data.blogs); return; }
@@ -326,7 +326,7 @@
     const el = document.getElementById('sidebarRecentPosts');
     if (!el) return;
     try {
-      const res = await fetch('http://localhost:5000/api/blogs?limit=3');
+      const res = await fetch('https://city-real-space-production.up.railway.app/api/blogs?limit=3');
       const data = await res.json();
       if (data.success && data.blogs.length) {
         el.innerHTML = data.blogs.map(b => {
