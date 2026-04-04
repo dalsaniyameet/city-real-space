@@ -232,7 +232,7 @@ router.post('/verify-register', async (req, res) => {
     user.resetOTPExpire = undefined;
     await user.save();
 
-    notifyWhatsApp(user); // City Real Space ko WA message
+    try { notifyWhatsApp(user); } catch(e) {}
 
     res.json({
       success: true,
@@ -270,13 +270,13 @@ router.post('/login', async (req, res) => {
       return res.json({ success: true, needsOTP: true, email: user.email });
     }
 
-    // Normal user — seedha login, no OTP
-    try { notifyWhatsApp(user, 'login'); } catch(e) {}
-    res.json({
-      success: true,
-      token: genToken(user._id),
-      user: { id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role, phone: user.phone, city: user.city }
-    });
+    // Normal user — OTP bhejo
+    const otp = genOTP();
+    user.resetOTP = otp;
+    user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
+    await user.save();
+    await sendOTPEmail(email, otp, user.firstName, 'login');
+    res.json({ success: true, needsOTP: true, email });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -293,7 +293,7 @@ router.post('/verify-login', async (req, res) => {
     user.resetOTPExpire = undefined;
     await user.save();
 
-    notifyWhatsApp(user, 'login'); // Owner ko login alert
+    try { notifyWhatsApp(user, 'login'); } catch(e) {}
 
     res.json({
       success: true,
