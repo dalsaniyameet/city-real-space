@@ -250,7 +250,7 @@ function togglePass(id, btn) {
   inp.type = isText ? 'password' : 'text';
   btn.querySelector('i').className = isText ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
 }
-const API = 'https://city-real-space-production.up.railway.app/api';
+const API = 'http://localhost:5000/api';
 let fpEmailVal = '', fpOTPVal = '';
 
 function showForgot(e) {

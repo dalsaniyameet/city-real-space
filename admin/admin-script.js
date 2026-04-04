@@ -1,4 +1,4 @@
-const API = 'https://city-real-space-production.up.railway.app/api';
+const API = 'http://localhost:5000/api';
 
 // ===== AUTH GUARD =====
 const adminToken = localStorage.getItem('adminToken');
@@ -143,7 +143,7 @@ async function uploadToCloudinary(file) {
   });
   const data = await res.json();
   if (!data.url) throw new Error('Upload failed');
-  return 'https://city-real-space-production.up.railway.app' + data.url;
+  return 'http://localhost:5000' + data.url;
 }
 
 async function handleBlogImage(input) {
@@ -766,7 +766,7 @@ async function deleteUser(id) {
 // ===== CONTACTS =====
 async function loadContacts() {
   try {
-    const res  = await fetch('https://city-real-space-production.up.railway.app/api/contact', {
+    const res  = await fetch('http://localhost:5000/api/contact', {
       headers: { 'Authorization': 'Bearer ' + adminToken }
     });
     const data = await res.json();
@@ -800,7 +800,7 @@ async function loadContacts() {
 }
 
 async function updateContactStatus(id, status) {
-  const res = await fetch('https://city-real-space-production.up.railway.app/api/contact/' + id + '/status', {
+  const res = await fetch('http://localhost:5000/api/contact/' + id + '/status', {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken },
     body: JSON.stringify({ status })
@@ -812,7 +812,7 @@ async function updateContactStatus(id, status) {
 
 async function deleteContact(id) {
   if (!confirm('Delete this message?')) return;
-  const res = await fetch('https://city-real-space-production.up.railway.app/api/contact/' + id, {
+  const res = await fetch('http://localhost:5000/api/contact/' + id, {
     method: 'DELETE',
     headers: { 'Authorization': 'Bearer ' + adminToken }
   });

@@ -1139,7 +1139,7 @@ async function saveProfile() {
   btn.disabled = true;
   const token = localStorage.getItem('token');
   try {
-    const res = await fetch('https://city-real-space-production.up.railway.app/api/auth/profile', {
+    const res = await fetch('http://localhost:5000/api/auth/profile', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
       body: JSON.stringify({ firstName, lastName, phone, city })
