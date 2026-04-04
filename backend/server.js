@@ -24,6 +24,10 @@ app.use(express.static(path.join(__dirname, '../')));
 app.use('/admin', express.static(path.join(__dirname, '../admin')));
 // Serve uploaded images
 app.use('/images', express.static(path.join(__dirname, '../images')));
+// Fallback — serve index.html for all non-API routes
+app.get(/^(?!\/api).*/, (req, res) => {
+  res.sendFile(path.join(__dirname, '../index.html'));
+});
 
 // Routes
 app.use('/api/auth',       require('./routes/auth'));
