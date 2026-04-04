@@ -18,12 +18,16 @@ app.use((req, res, next) => {
   next();
 });
 
+const FRONTEND = process.env.NODE_ENV === 'production'
+  ? path.join(__dirname, '../')
+  : path.join(__dirname, '../');
+
 // Serve frontend static files
-app.use(express.static(path.join(__dirname, '../')));
+app.use(express.static(FRONTEND));
 // Serve admin panel
-app.use('/admin', express.static(path.join(__dirname, '../admin')));
+app.use('/admin', express.static(path.join(FRONTEND, 'admin')));
 // Serve uploaded images
-app.use('/images', express.static(path.join(__dirname, '../images')));
+app.use('/images', express.static(path.join(FRONTEND, 'images')));
 
 // Routes
 app.use('/api/auth',       require('./routes/auth'));
