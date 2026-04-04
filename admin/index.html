@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel – City Real Space</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <img src="../images/logo.jpeg" alt="CRS" style="height:28px;width:28px;object-fit:contain;filter:brightness(0) invert(1);flex-shrink:0;border-radius:6px;"/>
+    <div style="min-width:0;">
+      <span class="sb-logo-text" style="font-size:0.82rem;">City <span class="yellow">Real</span> Space</span>
+      <span class="sb-logo-sub">Admin Panel</span>
+    </div>
+  </div>
+  <nav class="sb-nav">
+    <a href="#" class="sb-link active" data-page="dashboard"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+    <a href="#" class="sb-link" data-page="properties"><i class="fa-solid fa-building"></i> Properties</a>
+    <a href="#" class="sb-link" data-page="submissions"><i class="fa-solid fa-inbox"></i> User Submissions <span class="sb-badge" id="subBadge">0</span></a>
+    <a href="#" class="sb-link" data-page="blogs"><i class="fa-solid fa-newspaper"></i> Blog Posts</a>
+    <a href="#" class="sb-link" data-page="inquiries"><i class="fa-solid fa-message"></i> Inquiries <span class="sb-badge" id="inqBadge">0</span></a>
+    <a href="#" class="sb-link" data-page="contacts"><i class="fa-solid fa-envelope"></i> Contacts <span class="sb-badge" id="contactBadge">0</span></a>
+    <a href="#" class="sb-link" data-page="users"><i class="fa-solid fa-users"></i> Users</a>
+    <a href="#" class="sb-link" data-page="requirements"><i class="fa-solid fa-bell"></i> Requirements <span class="sb-badge" id="reqBadge">0</span></a>
+  </nav>
+  <div class="sb-bottom">
+    <a href="../index.html" target="_blank" class="sb-link"><i class="fa-solid fa-globe"></i> View Website</a>
+    <a href="#" class="sb-link sb-logout" id="adminLogout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
+</aside>
+
+<!-- Sidebar Overlay -->
+<div id="sidebarOverlay" onclick="document.getElementById('sidebar').classList.remove('open');this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:99;backdrop-filter:blur(2px);"></div>
+
+<!-- MAIN -->
+<div class="main-wrap">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <button class="hamburger-admin" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
+    <div class="topbar-title" id="topbarTitle">Dashboard</div>
+    <div class="topbar-right" style="display:flex;align-items:center;gap:12px;">
+      <!-- Notification Bell -->
+      <div style="position:relative;">
+        <button id="notifBtn" onclick="toggleNotifPanel()" style="width:38px;height:38px;border-radius:50%;border:none;background:rgba(99,102,241,0.12);color:#a5b4fc;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;position:relative;animation:bellRing 3s ease-in-out infinite;">
+          <i class="fa-solid fa-bell"></i>
+          <span id="notifDot" style="position:absolute;top:4px;right:4px;min-width:16px;height:16px;background:#ef4444;border-radius:50px;display:none;border:2px solid #0a0f1e;font-size:0.6rem;font-weight:800;color:#fff;align-items:center;justify-content:center;padding:0 3px;animation:badge-pulse 2s infinite;">0</span>
+        </button>
+        <!-- Notification Panel -->
+        <div id="notifPanel" style="display:none;position:absolute;top:48px;right:0;width:320px;background:#111827;border:1px solid rgba(255,255,255,0.08);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.5);z-index:999;overflow:hidden;">
+          <div style="padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:0.88rem;font-weight:700;color:#f1f5f9;">Notifications</span>
+            <button onclick="sendTestWA()" style="background:linear-gradient(135deg,#25D366,#128C7E);border:none;color:#fff;padding:5px 12px;border-radius:8px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:5px;"><i class="fa-brands fa-whatsapp"></i> Test WA</button>
+          </div>
+          <div id="notifList" style="max-height:320px;overflow-y:auto;">
+            <div style="text-align:center;padding:32px 20px;color:#475569;">
+              <i class="fa-solid fa-bell-slash" style="font-size:1.8rem;margin-bottom:8px;display:block;opacity:0.4;"></i>
+              <p style="font-size:0.8rem;">No notifications yet</p>
+            </div>
+          </div>
+          <div style="padding:10px 18px;border-top:1px solid rgba(255,255,255,0.07);">
+            <button onclick="clearNotifs()" style="width:100%;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;padding:7px;border-radius:8px;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:Poppins,sans-serif;">Clear All</button>
+          </div>
+        </div>
+      </div>
+      <div class="admin-info">
+        <div class="admin-av"><i class="fa-solid fa-user-shield"></i></div>
+        <span id="adminName">Admin</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGES -->
+  <div class="page-content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-head">
+        <h2>Dashboard Overview</h2>
+        <p>Welcome back! Here's what's happening today.</p>
+      </div>
+      <div class="stats-grid" id="statsGrid">
+        <div class="stat-card"><div class="sc-icon blue"><i class="fa-solid fa-building"></i></div><div class="sc-info"><span id="st-total">0</span><p>Total Properties</p></div></div>
+        <div class="stat-card"><div class="sc-icon orange"><i class="fa-solid fa-clock"></i></div><div class="sc-info"><span id="st-pending">0</span><p>Pending Approval</p></div></div>
+        <div class="stat-card"><div class="sc-icon green"><i class="fa-solid fa-circle-check"></i></div><div class="sc-info"><span id="st-approved">0</span><p>Approved Properties</p></div></div>
+        <div class="stat-card"><div class="sc-icon red"><i class="fa-solid fa-message"></i></div><div class="sc-info"><span id="st-inq">0</span><p>New Inquiries</p></div></div>
+        <div class="stat-card"><div class="sc-icon purple"><i class="fa-solid fa-users"></i></div><div class="sc-info"><span id="st-users">0</span><p>Registered Users</p></div></div>
+        <div class="stat-card"><div class="sc-icon yellow"><i class="fa-solid fa-newspaper"></i></div><div class="sc-info"><span id="st-blogs">0</span><p>Blog Posts</p></div></div>
+        <div class="stat-card"><div class="sc-icon orange"><i class="fa-solid fa-bell"></i></div><div class="sc-info"><span id="st-reqs">0</span><p>User Requirements</p></div></div>
+      </div>
+      <div class="dash-quick">
+        <h3>Quick Actions</h3>
+        <div class="quick-btns">
+          <button class="qbtn" onclick="goPage('properties'); setTimeout(()=>document.getElementById('addPropBtn').click(),200)"><i class="fa-solid fa-plus"></i> Add Property</button>
+          <button class="qbtn" onclick="goPage('blogs'); setTimeout(()=>document.getElementById('addBlogBtn').click(),200)"><i class="fa-solid fa-pen"></i> Write Blog</button>
+          <button class="qbtn" onclick="goPage('inquiries')"><i class="fa-solid fa-message"></i> View Inquiries</button>
+          <button class="qbtn" onclick="goPage('properties')"><i class="fa-solid fa-clock"></i> Pending Approvals</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PROPERTIES ===== -->
+    <div class="page" id="page-properties">
+      <div class="page-head">
+        <div>
+          <h2>Properties</h2>
+          <p>Manage all property listings. Approve to show on website.</p>
+        </div>
+        <button class="btn-add" id="addPropBtn"><i class="fa-solid fa-plus"></i> Add Property</button>
+      </div>
+      <div class="filter-bar">
+        <button class="fbtn active" data-filter="all">All</button>
+        <button class="fbtn" data-filter="pending">Pending</button>
+        <button class="fbtn" data-filter="approved">Approved</button>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+        <table class="admin-table" id="propTable">
+          <thead><tr><th>Property</th><th>Type</th><th>Location</th><th>Price</th><th>Listing</th><th>Status</th><th>Approval</th><th>Actions</th></tr></thead>
+          <tbody id="propTbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== USER SUBMISSIONS ===== -->
+    <div class="page" id="page-submissions">
+      <div class="page-head">
+        <div>
+          <h2>User Submissions</h2>
+          <p>Properties posted by registered users. Approve to show on website.</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+        <table class="admin-table">
+          <thead><tr><th>Property</th><th>Posted By</th><th>Contact</th><th>Location</th><th>Price</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="subTbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BLOGS ===== -->
+    <div class="page" id="page-blogs">
+      <div class="page-head">
+        <div>
+          <h2>Blog Posts</h2>
+          <p>Create and manage blog articles shown on the website.</p>
+        </div>
+        <button class="btn-add" id="addBlogBtn"><i class="fa-solid fa-plus"></i> Write Blog</button>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+        <table class="admin-table" id="blogTable">
+          <thead><tr><th>Title</th><th>Category</th><th>Author</th><th>SEO Score</th><th>Published</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="blogTbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== INQUIRIES ===== -->
+    <div class="page" id="page-inquiries">
+      <div class="page-head">
+        <h2>Inquiries</h2>
+        <p>All property inquiries submitted by visitors.</p>
+      </div>
+      <div class="filter-bar" style="margin-bottom:16px">
+        <button class="fbtn active" data-inqfilter="all" onclick="loadInquiries('all')">All</button>
+        <button class="fbtn" data-inqfilter="Get Offer" onclick="loadInquiries('Get Offer')">Get Offer</button>
+        <button class="fbtn" data-inqfilter="Buy" onclick="loadInquiries('Buy')">Buy</button>
+        <button class="fbtn" data-inqfilter="Rent" onclick="loadInquiries('Rent')">Rent / Lease</button>
+        <button class="fbtn" data-inqfilter="Sell" onclick="loadInquiries('Sell')">Sell</button>
+        <button class="fbtn" data-inqfilter="Post Requirement" onclick="goPage('requirements')" style="background:#fff3e0;border-color:#ffb74d;color:#e65100">🔔 Requirements</button>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+        <table class="admin-table" id="inqTable">
+          <thead><tr><th>Ref ID</th><th>Name</th><th>Phone</th><th>Interested In</th><th>Looking For</th><th>City</th><th>Budget</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="inqTbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CONTACTS ===== -->
+    <div class="page" id="page-contacts">
+      <div class="page-head">
+        <h2>Contact Messages</h2>
+        <p>All messages submitted via the Contact Us form.</p>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+        <table class="admin-table" id="contactTable">
+          <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Subject</th><th>Message</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="contactTbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== REQUIREMENTS ===== -->
+    <div class="page" id="page-requirements">
+      <div class="page-head">
+        <h2>User Requirements</h2>
+        <p>Properties users couldn't find — they posted their requirement.</p>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+        <table class="admin-table">
+          <thead><tr><th>Name</th><th>Phone</th><th>Property Type</th><th>Budget</th><th>City</th><th>Message</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="reqTbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== USERS ===== -->
+    <div class="page" id="page-users">
+      <div class="page-head">
+        <h2>Registered Users</h2>
+        <p>All users who have registered on the website.</p>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+        <table class="admin-table" id="userTable">
+          <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>City</th><th>Joined</th><th>Actions</th></tr></thead>
+          <tbody id="userTbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== ADD/EDIT PROPERTY MODAL ===== -->
+<div class="modal-overlay" id="propModal">
+  <div class="modal-box large" style="max-width:900px;overflow:hidden;padding:0;">
+    <div class="modal-head" style="padding:20px 24px;border-radius:18px 18px 0 0;">
+      <h3 id="propModalTitle">Add Property</h3>
+      <button class="modal-close" onclick="closeModal('propModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="prop-modal-inner">
+    <div class="prop-modal-form-col" style="max-height:80vh;overflow-y:auto;">
+    <form id="propForm" class="modal-form">
+      <input type="hidden" id="propId"/>
+      <div class="form-row-2">
+        <div class="form-grp"><label>Title *</label><input type="text" id="pTitle" placeholder="Property Title" required/></div>
+        <div class="form-grp"><label>Price Label *</label><input type="text" id="pPriceLabel" placeholder="e.g. ₹1.2 Cr" required/></div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-grp"><label>Price (number) *</label><input type="number" id="pPrice" placeholder="e.g. 12000000" required/></div>
+        <div class="form-grp"><label>Type *</label>
+          <select id="pType" required>
+            <option value="">Select Type</option>
+            <option value="apartment">Apartment / Flat</option>
+            <option value="villa">Villa</option>
+            <option value="bungalow">Bungalow</option>
+            <option value="rowhouse">Row House</option>
+            <option value="plot">Plot / Land</option>
+            <option value="office">Office Space</option>
+            <option value="shop">Shop / Showroom</option>
+            <option value="warehouse">Warehouse / Godown</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-grp"><label>Category *</label>
+          <select id="pCategory" required>
+            <option value="residential">Residential</option>
+            <option value="commercial">Commercial</option>
+          </select>
+        </div>
+        <div class="form-grp"><label>Status *</label>
+          <select id="pStatus" required>
+            <option value="for-sale">For Sale</option>
+            <option value="for-rent">For Rent</option>
+            <option value="new-launch">New Launch</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-grp"><label>City *</label>
+          <select id="pCitySelect" required>
+            <option value="">-- Select City --</option>
+            <option value="Ahmedabad">Ahmedabad</option>
+            <option value="Gandhinagar">Gandhinagar</option>
+            <option value="Surat">Surat</option>
+            <option value="Vadodara">Vadodara</option>
+            <option value="Rajkot">Rajkot</option>
+          </select>
+        </div>
+        <div class="form-grp"><label>Area / Locality *</label>
+          <select id="pAreaSelect" required>
+            <option value="">-- Select City First --</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-grp"><label>Sub Area / Street</label>
+          <select id="pSubAreaSelect">
+            <option value="">-- Select Locality First --</option>
+          </select>
+        </div>
+        <div class="form-grp"><label>Sub Area (Manual)</label>
+          <input type="text" id="pSubArea" placeholder="Type sub area / street (optional)"/>
+        </div>
+      </div>
+      <!-- Residential: Beds/Baths/Balcony -->
+      <div class="form-row-3" id="adminBedsRow">
+        <div class="form-grp"><label>Beds</label><input type="number" id="pBeds" placeholder="0" min="0"/></div>
+        <div class="form-grp"><label>Baths</label><input type="number" id="pBaths" placeholder="0" min="0"/></div>
+        <div class="form-grp"><label>Balconies</label><input type="number" id="pBalconies" placeholder="0" min="0"/></div>
+      </div>
+      <!-- Plot specific -->
+      <div id="adminPlotRow" style="display:none">
+        <div class="form-row-2">
+          <div class="form-grp"><label>Plot Width (ft)</label><input type="number" id="pPlotWidth" placeholder="e.g. 30" min="0"/></div>
+          <div class="form-grp"><label>Plot Length (ft)</label><input type="number" id="pPlotLength" placeholder="e.g. 60" min="0"/></div>
+        </div>
+        <div class="form-grp"><label>Facing Direction</label>
+          <select id="pFacing">
+            <option value="">Select</option>
+            <option>East</option><option>West</option><option>North</option><option>South</option>
+            <option>North-East</option><option>North-West</option><option>South-East</option><option>South-West</option>
+          </select>
+        </div>
+      </div>
+      <!-- Commercial: Cabins/Washrooms -->
+      <div id="adminCommercialRow" style="display:none">
+        <div class="form-row-2">
+          <div class="form-grp"><label>Cabins / Seats</label><input type="number" id="pCabins" placeholder="e.g. 4" min="0"/></div>
+          <div class="form-grp"><label>Washrooms</label><input type="number" id="pWashrooms" placeholder="e.g. 2" min="0"/></div>
+        </div>
+      </div>
+      <!-- Area row -->
+      <div class="form-row-3" id="adminAreaRow">
+        <div class="form-grp"><label id="pSuperAreaLabel">Super Built-up Area (sq.ft)</label><input type="number" id="pSqft" placeholder="0" min="0"/></div>
+        <div class="form-grp" id="pCarpetGrp"><label>Carpet Area (sq.ft)</label><input type="number" id="pCarpetArea" placeholder="0" min="0"/></div>
+        <div class="form-grp" id="pBuiltGrp"><label>Built-up Area (sq.ft)</label><input type="number" id="pBuiltArea" placeholder="0" min="0"/></div>
+      </div>
+      <!-- Floor row -->
+      <div class="form-row-3" id="adminFloorRow">
+        <div class="form-grp"><label>Floor No.</label>
+          <select id="pFloor">
+            <option value="">Select Floor</option>
+            <option>Ground</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option>
+            <option>9</option><option>10</option><option>11</option><option>12</option>
+            <option>13+</option>
+          </select>
+        </div>
+        <div class="form-grp"><label>Total Floors</label>
+          <select id="pTotalFloors">
+            <option value="">Select</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option>
+            <option>9</option><option>10</option><option>11</option><option>12</option>
+            <option>13+</option>
+          </select>
+        </div>
+      </div>
+      <!-- Furnished (residential + commercial only) -->
+      <div class="form-row-2" id="adminFurnishedRow">
+        <div class="form-grp"><label>Furnished Status</label>
+          <select id="pFurnished">
+            <option value="">Select</option>
+            <option value="Furnished">Fully Furnished</option>
+            <option value="Semi-Furnished">Semi Furnished</option>
+            <option value="Unfurnished">Unfurnished</option>
+            <option value="Bare Shell">Bare Shell</option>
+          </select>
+        </div>
+        <div class="form-grp"><label>Possession Status</label>
+          <select id="pPossession">
+            <option value="Ready to Move">Ready to Move</option>
+            <option value="Under Construction">Under Construction</option>
+            <option value="New Launch">New Launch</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-grp">
+          <label id="pProjectLabel">Project / Society Name</label>
+          <select id="pProjectSelect" onchange="handleProjectSelect()">
+            <option value="">-- Select or Type Below --</option>
+          </select>
+          <input type="text" id="pProject" placeholder="Type project / society name" style="margin-top:6px"/>
+        </div>
+        <div class="form-grp"><label>Token Amount (optional)</label><input type="text" id="pToken" placeholder="e.g. ₹1 Lakh"/></div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-grp"><label>Agent Name</label><input type="text" id="pAgentName" placeholder="Agent Name"/></div>
+        <div class="form-grp"><label>Agent Phone</label><input type="text" id="pAgentPhone" placeholder="+91 XXXXX XXXXX"/></div>
+      </div>
+      <div class="form-grp">
+        <label>Property Images</label>
+        <div class="img-upload-area" id="pUploadArea" onclick="document.getElementById('pImageFile').click()" style="border:2px dashed #e0e0e0;border-radius:10px;padding:24px;text-align:center;cursor:pointer;background:#fafafa;transition:all 0.2s">
+          <i class="fa-solid fa-cloud-arrow-up" style="font-size:2rem;color:#ccc;margin-bottom:8px;display:block"></i>
+          <p style="color:#888;font-size:0.82rem;margin:0"><strong style="color:#E53935">Click to upload</strong> property images</p>
+          <p style="color:#aaa;font-size:0.75rem;margin:4px 0 0">JPG, PNG accepted</p>
+        </div>
+        <input type="file" id="pImageFile" accept="image/*" multiple style="display:none" onchange="handleAdminImages(this)"/>
+        <div id="pImagePreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px"></div>
+        <input type="hidden" id="pImage"/>
+      </div>
+      <div class="form-grp"><label>Description</label><textarea id="pDesc" rows="3" placeholder="Property description..."></textarea></div>
+      <div class="form-grp check-grp">
+        <label class="check-label"><input type="checkbox" id="pFeatured"/> Mark as Featured (Trending)</label>
+        <label class="check-label"><input type="checkbox" id="pApproved" checked/> Approve immediately</label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" onclick="closeModal('propModal')">Cancel</button>
+        <button type="submit" class="btn-save" id="propSaveBtn">Save Property</button>
+      </div>
+    </form>
+    </div><!-- end form col -->
+    <!-- SCORE PANEL -->
+    <div class="admin-score-panel">
+      <div class="asc-header"><i class="fas fa-chart-line"></i> Listing Score</div>
+      <div class="asc-ring" id="ascRing">
+        <svg viewBox="0 0 136 136">
+          <defs>
+            <linearGradient id="ascGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%"   id="ascGradA" stop-color="#f87171"/>
+              <stop offset="100%" id="ascGradB" stop-color="#ef4444"/>
+            </linearGradient>
+          </defs>
+          <circle class="asc-track" cx="68" cy="68" r="56"/>
+          <circle class="asc-spin"  cx="68" cy="68" r="56"/>
+          <circle class="asc-glow"  id="ascGlow"   cx="68" cy="68" r="56" stroke="url(#ascGrad)" stroke-dasharray="351.86" stroke-dashoffset="351.86"/>
+          <circle class="asc-fill"  id="ascCircle" cx="68" cy="68" r="56" stroke="url(#ascGrad)" stroke-dasharray="351.86" stroke-dashoffset="351.86"/>
+        </svg>
+        <div class="asc-num"><span id="ascNum">0</span><small>/ 100</small></div>
+      </div>
+      <!-- Status badge: shows Low / Medium / High Listing -->
+      <div class="asc-status-badge low" id="ascStatusBadge"><i class="fas fa-arrow-down"></i> Low Listing</div>
+      <div class="asc-divider"></div>
+      <ul class="asc-list">
+        <li id="asc-title" ><span class="asi"><i class="fas fa-check"></i></span> Property Title  <span class="apts">+15</span></li>
+        <li id="asc-type"  ><span class="asi"><i class="fas fa-check"></i></span> Property Type   <span class="apts">+10</span></li>
+        <li id="asc-city"  ><span class="asi"><i class="fas fa-check"></i></span> City &amp; Area <span class="apts">+15</span></li>
+        <li id="asc-price" ><span class="asi"><i class="fas fa-check"></i></span> Price           <span class="apts">+15</span></li>
+        <li id="asc-area"  ><span class="asi"><i class="fas fa-check"></i></span> Area (sq.ft)    <span class="apts">+10</span></li>
+        <li id="asc-desc"  ><span class="asi"><i class="fas fa-check"></i></span> Description     <span class="apts">+20</span></li>
+        <li id="asc-images"><span class="asi"><i class="fas fa-check"></i></span> Photos          <span class="apts">+15</span></li>
+      </ul>
+      <div class="asc-divider"></div>
+      <button class="asc-publish-btn locked" id="ascPublishBtn" type="button" onclick="ascPublishClick()"><i class="fas fa-lock"></i> Fill required fields</button>
+    </div>
+    </div><!-- end prop-modal-inner -->
+  </div>
+</div>
+
+<!-- ===== ADD/EDIT BLOG MODAL ===== -->
+<div class="modal-overlay" id="blogModal">
+  <div class="modal-box" style="max-width:1100px;width:98vw;max-height:95vh;overflow:hidden;padding:0;border-radius:18px;display:flex;flex-direction:column;">
+    <div class="modal-head" style="padding:16px 24px;flex-shrink:0;">
+      <h3 id="blogModalTitle">Write Blog Post</h3>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button type="button" id="blogPreviewToggle" style="background:#f0f4ff;border:1.5px solid #c7d7ff;color:#1565c0;padding:6px 14px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-eye"></i> Preview</button>
+        <button class="modal-close" onclick="closeModal('blogModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div style="display:flex;flex:1;overflow:hidden;">
+      <!-- PREVIEW PANE -->
+      <div id="blogPreviewPane" style="display:none;flex:1;overflow-y:auto;background:#f8f9fa;"></div>
+      <!-- LEFT: EDITOR -->
+      <div style="flex:1;overflow-y:auto;padding:20px 24px;min-width:0;" id="blogEditorCol">
+        <form id="blogForm">
+          <input type="hidden" id="blogId"/>
+          <!-- Title -->
+          <div class="form-grp" style="margin-bottom:14px">
+            <label>Post Title *</label>
+            <input type="text" id="bTitle" placeholder="Enter blog title..." required style="font-size:1.1rem;font-weight:700;padding:12px 14px;"/>
+          </div>
+          <!-- Slug -->
+          <div class="form-grp" style="margin-bottom:14px">
+            <label>URL Slug <span style="color:#aaa;font-weight:400">(auto-generated)</span></label>
+            <div style="display:flex;align-items:center;gap:8px;border:1.5px solid #e8e8e8;border-radius:9px;padding:8px 12px;background:#f8f9fa;">
+              <span style="color:#aaa;font-size:0.8rem;">blog/</span>
+              <input type="text" id="bSlug" placeholder="post-url-slug" style="flex:1;border:none;outline:none;font-size:0.85rem;background:transparent;color:#333;"/>
+            </div>
+          </div>
+          <!-- Row: Category + Author -->
+          <div class="form-row-2" style="margin-bottom:14px">
+            <div class="form-grp">
+              <label>Category</label>
+              <select id="bCategory">
+                <option>Market Insight</option>
+                <option>Tips</option>
+                <option>New Launch</option>
+                <option>Investment</option>
+                <option>Home Loan</option>
+                <option>Legal</option>
+              </select>
+            </div>
+            <div class="form-grp">
+              <label>Author</label>
+              <input type="text" id="bAuthor" value="CRS Team" placeholder="Author name"/>
+            </div>
+          </div>
+          <!-- Excerpt -->
+          <div class="form-grp" style="margin-bottom:14px">
+            <label>Excerpt <span style="color:#aaa;font-weight:400">(shown on blog listing)</span></label>
+            <textarea id="bExcerpt" rows="2" placeholder="Short summary of the post..."></textarea>
+          </div>
+          <!-- Featured Image -->
+          <div class="form-grp" style="margin-bottom:14px">
+            <label>Featured Image</label>
+            <div style="position:relative;width:100%;height:180px;border-radius:10px;overflow:hidden;border:2px dashed #e0e0e0;background:#f5f5f5;cursor:pointer;margin-bottom:8px;" onclick="document.getElementById('bImageFile').click()" id="bImgPreviewBox">
+              <img id="bImgPreview" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;"/>
+              <div id="bImgIcon" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+                <i class="fa-solid fa-cloud-arrow-up" style="color:#ccc;font-size:2.5rem;"></i>
+                <span style="font-size:0.8rem;color:#aaa;font-weight:600;">Click to upload image</span>
+                <span style="font-size:0.72rem;color:#ccc;">JPG, PNG accepted</span>
+              </div>
+            </div>
+            <input type="file" id="bImageFile" accept="image/*" style="display:none" onchange="handleBlogImage(this)"/>
+            <input type="text" id="bImage" placeholder="Or paste image URL here..." oninput="bImageUrlPreview(this.value)"/>
+          </div>
+          <!-- Rich Text Editor -->
+          <div class="form-grp" style="margin-bottom:14px">
+            <label>Content *</label>
+            <!-- Toolbar -->
+            <div id="blogToolbar" style="display:flex;flex-wrap:wrap;gap:4px;padding:8px 10px;background:#f8f9fa;border:1.5px solid #e8e8e8;border-bottom:none;border-radius:9px 9px 0 0;">
+              <button type="button" onclick="bFmt('bold')" title="Bold" style="width:30px;height:30px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;cursor:pointer;font-weight:700;font-size:0.85rem;">B</button>
+              <button type="button" onclick="bFmt('italic')" title="Italic" style="width:30px;height:30px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;cursor:pointer;font-style:italic;font-size:0.85rem;">I</button>
+              <button type="button" onclick="bFmt('underline')" title="Underline" style="width:30px;height:30px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;cursor:pointer;text-decoration:underline;font-size:0.85rem;">U</button>
+              <div style="width:1px;background:#e0e0e0;margin:2px 4px;"></div>
+              <button type="button" onclick="bFmtBlock('h2')" title="Heading 2" style="height:30px;padding:0 8px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;cursor:pointer;font-size:0.75rem;font-weight:700;">H2</button>
+              <button type="button" onclick="bFmtBlock('h3')" title="Heading 3" style="height:30px;padding:0 8px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;cursor:pointer;font-size:0.75rem;font-weight:700;">H3</button>
+              <button type="button" onclick="bFmtBlock('p')" title="Paragraph" style="height:30px;padding:0 8px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;cursor:pointer;font-size:0.75rem;">P</button>
+              <div style="width:1px;background:#e0e0e0;margin:2px 4px;"></div>
+              <button type="button" onclick="bFmt('insertUnorderedList')" title="Bullet List" style="width:30px;height:30px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;cursor:pointer;font-size:0.8rem;"><i class="fa-solid fa-list-ul"></i></button>
+              <button type="button" onclick="bFmt('insertOrderedList')" title="Numbered List" style="width:30px;height:30px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;cursor:pointer;font-size:0.8rem;"><i class="fa-solid fa-list-ol"></i></button>
+              <button type="button" onclick="bInsertLink()" title="Insert Link" style="width:30px;height:30px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;cursor:pointer;font-size:0.8rem;"><i class="fa-solid fa-link"></i></button>
+              <button type="button" onclick="bFmt('removeFormat')" title="Clear Format" style="width:30px;height:30px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;cursor:pointer;font-size:0.8rem;"><i class="fa-solid fa-eraser"></i></button>
+              <div style="width:1px;background:#e0e0e0;margin:2px 4px;"></div>
+              <button type="button" onclick="bFmt('justifyLeft')" style="width:30px;height:30px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;cursor:pointer;font-size:0.8rem;"><i class="fa-solid fa-align-left"></i></button>
+              <button type="button" onclick="bFmt('justifyCenter')" style="width:30px;height:30px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;cursor:pointer;font-size:0.8rem;"><i class="fa-solid fa-align-center"></i></button>
+              <button type="button" onclick="bFmt('justifyRight')" style="width:30px;height:30px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;cursor:pointer;font-size:0.8rem;"><i class="fa-solid fa-align-right"></i></button>
+            </div>
+            <div id="bContentEditor" contenteditable="true" style="min-height:220px;border:1.5px solid #e8e8e8;border-radius:0 0 9px 9px;padding:14px;font-size:0.88rem;line-height:1.8;color:#333;outline:none;font-family:Poppins,sans-serif;background:#fff;"></div>
+            <textarea id="bContent" style="display:none;"></textarea>
+          </div>
+          <!-- Post Settings (Meta) -->
+          <div style="background:#f8f9fa;border-radius:10px;padding:16px;border:1px solid #e8e8e8;margin-bottom:14px;">
+            <div style="font-size:0.82rem;font-weight:700;color:#0D1B2A;margin-bottom:12px;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-sliders" style="color:#E53935;"></i> Post Settings</div>
+            <div class="form-grp" style="margin-bottom:10px;">
+              <label>Page Title <span style="color:#aaa;font-weight:400">(60 chars max)</span></label>
+              <input type="text" id="bMetaTitle" placeholder="e.g. 3BHK Flats in Bopal Ahmedabad – Best Price 2025" maxlength="60"/>
+              <div style="font-size:0.7rem;color:#aaa;margin-top:3px;"><span id="bMetaTitleCount">0</span>/60</div>
+            </div>
+            <div class="form-grp">
+              <label>Page Description <span style="color:#aaa;font-weight:400">(160 chars max)</span></label>
+              <textarea id="bMetaDesc" rows="2" placeholder="e.g. Find verified 3BHK flats in Bopal, Ahmedabad. Best prices, RERA registered, free site visit. Contact City Real Space today." maxlength="160"></textarea>
+              <div style="font-size:0.7rem;color:#aaa;margin-top:3px;"><span id="bMetaDescCount">0</span>/160</div>
+            </div>
+          </div>
+          <!-- Publish options -->
+          <div class="form-grp check-grp" style="margin-bottom:14px;">
+            <label class="check-label"><input type="checkbox" id="bPublished" checked/> Publish immediately</label>
+            <label class="check-label"><input type="checkbox" id="bFeatured"/> Mark as Featured</label>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" onclick="closeModal('blogModal')">Cancel</button>
+            <button type="submit" class="btn-save" id="blogSaveBtn"><i class="fa-solid fa-floppy-disk"></i> Save Blog Post</button>
+          </div>
+        </form>
+      </div>
+      <!-- RIGHT: SCORE + PREVIEW -->
+      <div style="width:260px;flex-shrink:0;background:linear-gradient(160deg,#1a0a00 0%,#2d1200 40%,#1a0800 100%);border-radius:0 18px 18px 0;display:flex;flex-direction:column;overflow-y:auto;border-left:1px solid rgba(251,191,36,0.1);" id="blogScoreCol">
+        <!-- Score Ring -->
+        <div style="padding:20px 16px 0;text-align:center;">
+          <div style="font-size:0.68rem;color:rgba(251,191,36,0.5);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fa-solid fa-building" style="color:#fbbf24;"></i> Post Quality</div>
+          <div style="position:relative;width:120px;height:120px;margin:0 auto 10px;">
+            <svg width="120" height="120" style="transform:rotate(-90deg);">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(251,191,36,0.08)" stroke-width="10"/>
+              <circle id="bSeoCircle" cx="60" cy="60" r="50" fill="none" stroke="url(#bSeoGrad)" stroke-width="10" stroke-linecap="round" stroke-dasharray="314.16" stroke-dashoffset="314.16" style="transition:stroke-dashoffset 0.8s ease,stroke 0.5s;"/>
+              <defs><linearGradient id="bSeoGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" id="bSeoGradA" stop-color="#f87171"/><stop offset="100%" id="bSeoGradB" stop-color="#ef4444"/></linearGradient></defs>
+            </svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+              <span id="bSeoNum" style="font-size:2rem;font-weight:900;color:#fbbf24;line-height:1;">0</span>
+              <small style="font-size:0.55rem;color:rgba(251,191,36,0.4);letter-spacing:2px;">/100</small>
+            </div>
+          </div>
+          <div id="bSeoStatus" style="font-size:0.68rem;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;padding:4px 12px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;margin-bottom:12px;background:rgba(239,68,68,0.18);color:#fca5a5;border:1px solid rgba(239,68,68,0.35);"><i class="fa-solid fa-arrow-down"></i> Needs Work</div>
+        </div>
+        <!-- Checklist -->
+        <div style="padding:0 16px 12px;">
+          <div style="width:100%;height:1px;background:rgba(251,191,36,0.1);margin-bottom:10px;"></div>
+          <ul style="list-style:none;padding:0;margin:0;">
+            <li id="bsc-title" style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid rgba(251,191,36,0.06);font-size:0.68rem;color:rgba(255,255,255,0.25);transition:color 0.3s;"><span style="width:15px;height:15px;border-radius:50%;background:rgba(251,191,36,0.06);display:flex;align-items:center;justify-content:center;font-size:0.45rem;flex-shrink:0;transition:all 0.3s;"><i class="fa-solid fa-check"></i></span> Post title <span style="margin-left:auto;font-size:0.6rem;font-weight:700;color:#fbbf24;opacity:0.4;">+20</span></li>
+            <li id="bsc-excerpt" style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid rgba(251,191,36,0.06);font-size:0.68rem;color:rgba(255,255,255,0.25);transition:color 0.3s;"><span style="width:15px;height:15px;border-radius:50%;background:rgba(251,191,36,0.06);display:flex;align-items:center;justify-content:center;font-size:0.45rem;flex-shrink:0;transition:all 0.3s;"><i class="fa-solid fa-check"></i></span> Short summary <span style="margin-left:auto;font-size:0.6rem;font-weight:700;color:#fbbf24;opacity:0.4;">+15</span></li>
+            <li id="bsc-content" style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid rgba(251,191,36,0.06);font-size:0.68rem;color:rgba(255,255,255,0.25);transition:color 0.3s;"><span style="width:15px;height:15px;border-radius:50%;background:rgba(251,191,36,0.06);display:flex;align-items:center;justify-content:center;font-size:0.45rem;flex-shrink:0;transition:all 0.3s;"><i class="fa-solid fa-check"></i></span> 300+ words <span style="margin-left:auto;font-size:0.6rem;font-weight:700;color:#fbbf24;opacity:0.4;">+25</span></li>
+            <li id="bsc-image" style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid rgba(251,191,36,0.06);font-size:0.68rem;color:rgba(255,255,255,0.25);transition:color 0.3s;"><span style="width:15px;height:15px;border-radius:50%;background:rgba(251,191,36,0.06);display:flex;align-items:center;justify-content:center;font-size:0.45rem;flex-shrink:0;transition:all 0.3s;"><i class="fa-solid fa-check"></i></span> Cover image <span style="margin-left:auto;font-size:0.6rem;font-weight:700;color:#fbbf24;opacity:0.4;">+15</span></li>
+            <li id="bsc-meta" style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid rgba(251,191,36,0.06);font-size:0.68rem;color:rgba(255,255,255,0.25);transition:color 0.3s;"><span style="width:15px;height:15px;border-radius:50%;background:rgba(251,191,36,0.06);display:flex;align-items:center;justify-content:center;font-size:0.45rem;flex-shrink:0;transition:all 0.3s;"><i class="fa-solid fa-check"></i></span> Page description <span style="margin-left:auto;font-size:0.6rem;font-weight:700;color:#fbbf24;opacity:0.4;">+15</span></li>
+            <li id="bsc-slug" style="display:flex;align-items:center;gap:7px;padding:5px 0;font-size:0.68rem;color:rgba(255,255,255,0.25);transition:color 0.3s;"><span style="width:15px;height:15px;border-radius:50%;background:rgba(251,191,36,0.06);display:flex;align-items:center;justify-content:center;font-size:0.45rem;flex-shrink:0;transition:all 0.3s;"><i class="fa-solid fa-check"></i></span> URL slug <span style="margin-left:auto;font-size:0.6rem;font-weight:700;color:#fbbf24;opacity:0.4;">+10</span></li>
+          </ul>
+        </div>
+        <!-- Search Preview -->
+        <div style="padding:0 16px 16px;">
+          <div style="width:100%;height:1px;background:rgba(251,191,36,0.1);margin-bottom:10px;"></div>
+          <div style="font-size:0.65rem;color:rgba(251,191,36,0.45);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Google Preview</div>
+          <div style="background:#fff;border-radius:8px;padding:10px 12px;">
+            <div id="bPreviewTitle" style="font-size:0.78rem;font-weight:700;color:#1a0dab;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Post Title</div>
+            <div style="font-size:0.65rem;color:#006621;margin-bottom:3px;">cityrealspace.com/blog/<span id="bPreviewSlug">post-slug</span></div>
+            <div id="bPreviewDesc" style="font-size:0.68rem;color:#545454;line-height:1.4;">Page description will appear here...</div>
+          </div>
+        </div>
+        <!-- Publish button -->
+        <div style="padding:0 16px 20px;margin-top:auto;">
+          <button type="button" id="bSeoPublishBtn" onclick="document.getElementById('blogSaveBtn').click()" style="width:100%;padding:10px;border-radius:10px;border:none;font-size:0.75rem;font-weight:700;font-family:Poppins,sans-serif;cursor:pointer;background:rgba(251,191,36,0.06);color:rgba(251,191,36,0.3);border:1px solid rgba(251,191,36,0.12);display:flex;align-items:center;justify-content:center;gap:7px;transition:all 0.3s;"><i class="fa-solid fa-lock"></i> Fill required fields</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="admin-toast" id="adminToast"></div>
+
+<script src="admin-script.js"></script>
+<script src="../cursor.js"></script>
+</body>
+</html>

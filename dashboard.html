@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Dashboard – City Real Space</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    .dash-wrap { max-width: 1100px; margin: 90px auto 60px; padding: 0 20px; }
+    .dash-header { display: flex; align-items: center; gap: 20px; background: linear-gradient(135deg,#0D1B2A,#1a3a5c); border-radius: 20px; padding: 28px 32px; margin-bottom: 32px; }
+    .dash-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg,#FFC107,#ff8f00); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; color: #0D1B2A; flex-shrink: 0; }
+    .dash-user-info h2 { color: #fff; font-size: 1.4rem; font-weight: 800; margin-bottom: 4px; }
+    .dash-user-info p { color: rgba(255,255,255,0.6); font-size: 0.85rem; }
+    .dash-user-info span { background: rgba(255,193,7,0.2); color: #FFC107; font-size: 0.72rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-left: 8px; }
+    .dash-stats { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 16px; margin-bottom: 32px; }
+    .dash-stat { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1px solid #f0f0f0; display: flex; align-items: center; gap: 14px; }
+    .dash-stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .dash-stat-icon.red { background: #ffebee; color: #E53935; }
+    .dash-stat-icon.green { background: #e8f5e9; color: #2e7d32; }
+    .dash-stat-icon.blue { background: #e3f2fd; color: #1565c0; }
+    .dash-stat-info span { display: block; font-size: 1.6rem; font-weight: 800; color: #0D1B2A; line-height: 1; }
+    .dash-stat-info p { font-size: 0.78rem; color: #888; margin-top: 4px; }
+    .dash-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+    .dash-tab { padding: 9px 20px; border-radius: 8px; border: 1.5px solid #e8e8e8; background: #fff; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: Poppins,sans-serif; transition: all 0.2s; color: #555; }
+    .dash-tab.active { background: #E53935; border-color: #E53935; color: #fff; }
+    .dash-section { display: none; }
+    .dash-section.active { display: block; }
+    .dash-empty { text-align: center; padding: 60px 20px; color: #aaa; background: #fff; border-radius: 14px; border: 1px solid #e8e8e8; }
+    .dash-empty i { font-size: 2.5rem; margin-bottom: 12px; display: block; }
+    .dash-empty a { color: #E53935; font-weight: 700; }
+    .prop-list { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 20px; }
+    .prop-list-card { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border: 1px solid #e8e8e8; transition: all 0.3s; }
+    .prop-list-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,0.12); }
+    .plc-img { height: 160px; overflow: hidden; position: relative; }
+    .plc-img img { width: 100%; height: 100%; object-fit: cover; }
+    .plc-badge { position: absolute; top: 10px; left: 10px; background: #E53935; color: #fff; font-size: 0.68rem; font-weight: 700; padding: 3px 9px; border-radius: 50px; }
+    .plc-badge.pending { background: #ff8f00; }
+    .plc-body { padding: 14px; }
+    .plc-title { font-size: 0.9rem; font-weight: 700; color: #0D1B2A; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .plc-loc { font-size: 0.75rem; color: #888; margin-bottom: 8px; display: flex; align-items: center; gap: 4px; }
+    .plc-price { font-size: 1rem; font-weight: 800; color: #E53935; }
+    .plc-actions { display: flex; gap: 8px; margin-top: 10px; }
+    .plc-btn { flex: 1; padding: 7px; border-radius: 8px; border: 1.5px solid #e8e8e8; background: #fff; font-size: 0.75rem; font-weight: 600; cursor: pointer; font-family: Poppins,sans-serif; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
+    .plc-btn:hover { border-color: #E53935; color: #E53935; }
+    .plc-btn.del:hover { border-color: #c62828; color: #c62828; background: #ffebee; }
+  </style>
+</head>
+<body>
+<script>
+  // Auth check
+  const _u = JSON.parse(localStorage.getItem('user') || 'null');
+  const _t = localStorage.getItem('token');
+  if (!_u || !_t) { window.location.href = 'login.html'; }
+</script>
+<script src="splash.js"></script>
+<header class="header" id="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;"/>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Buy <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="properties.html">All</a>
+          <a href="rent.html">Rent</a>
+          <a href="resale.html">Resale</a>
+          <a href="land.html">Land</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Sell <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="post-property.html">List Property</a>
+          <a href="post-property.html">List Project</a>
+        </div>
+      </div>
+      <a href="new-launch.html">New Launch</a>
+      <a href="prelease.html">Prelease</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <div id="userMenu" style="position:relative">
+        <button class="btn-login" id="userMenuBtn"><i class="fa-solid fa-user"></i> <span id="userNameDisplay"></span> <i class="fa-solid fa-chevron-down" style="font-size:0.7rem"></i></button>
+        <div id="userDropdown" style="display:none;position:absolute;right:0;top:110%;background:#fff;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.15);min-width:180px;z-index:999;overflow:hidden;border:1px solid #f0f0f0">
+          <a href="dashboard.html" style="display:flex;align-items:center;gap:8px;padding:12px 16px;font-size:0.85rem;color:#333;font-weight:600;border-bottom:1px solid #f5f5f5;"><i class="fa-solid fa-gauge" style="color:#E53935"></i> My Dashboard</a>
+          <button onclick="handleLogout()" style="width:100%;padding:12px 16px;border:none;background:none;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.85rem;color:#E53935;font-weight:600;text-align:left;display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+      </div>
+      <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="dash-wrap">
+  <!-- Header -->
+  <div class="dash-header">
+    <div class="dash-avatar" id="dashAvatar">U</div>
+    <div class="dash-user-info">
+      <h2 id="dashName">User <span id="dashRole">Buyer</span></h2>
+      <p id="dashEmail"></p>
+      <p id="dashPhone" style="margin-top:4px;"></p>
+    </div>
+    <a href="post-property.html" style="margin-left:auto;background:#E53935;color:#fff;padding:11px 22px;border-radius:10px;font-size:0.85rem;font-weight:700;display:flex;align-items:center;gap:8px;white-space:nowrap;"><i class="fa-solid fa-plus"></i> Post Property</a>
+  </div>
+
+  <!-- Stats -->
+  <div class="dash-stats">
+    <div class="dash-stat">
+      <div class="dash-stat-icon red"><i class="fa-solid fa-building"></i></div>
+      <div class="dash-stat-info"><span id="statTotal">0</span><p>My Listings</p></div>
+    </div>
+    <div class="dash-stat">
+      <div class="dash-stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+      <div class="dash-stat-info"><span id="statApproved">0</span><p>Approved</p></div>
+    </div>
+    <div class="dash-stat">
+      <div class="dash-stat-icon blue"><i class="fa-solid fa-clock"></i></div>
+      <div class="dash-stat-info"><span id="statPending">0</span><p>Pending Review</p></div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="dash-tabs">
+    <button class="dash-tab active" data-tab="listings">My Listings</button>
+    <button class="dash-tab" data-tab="saved">Saved Properties</button>
+  </div>
+
+  <!-- My Listings -->
+  <div class="dash-section active" id="tab-listings">
+    <div id="listingsGrid" class="prop-list">
+      <div style="grid-column:1/-1;text-align:center;padding:40px;color:#aaa;"><i class="fa-solid fa-spinner fa-spin" style="font-size:1.5rem"></i></div>
+    </div>
+  </div>
+
+  <!-- Saved Properties -->
+  <div class="dash-section" id="tab-saved">
+    <div id="savedGrid" class="prop-list">
+      <div style="grid-column:1/-1;text-align:center;padding:40px;color:#aaa;"><i class="fa-solid fa-spinner fa-spin" style="font-size:1.5rem"></i></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <a href="index.html" class="logo footer-logo">
+          <img src="images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;filter:brightness(0) invert(1);"/>
+        </a>
+        <p class="footer-about">Ahmedabad's most trusted real estate platform.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="properties.html"><i class="fa-solid fa-chevron-right"></i> Properties</a></li>
+          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Post Property</a></li>
+          <li><a href="contact.html"><i class="fa-solid fa-chevron-right"></i> Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container"><p>© 2025 City Real Space. All Rights Reserved.</p></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/919377531247" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+<button class="back-top" id="backTop"><i class="fa-solid fa-chevron-up"></i></button>
+
+<script src="cursor.js"></script>
+<script src="bg-animation.js"></script>
+<script>
+const API = 'http://localhost:5000/api';
+const user = JSON.parse(localStorage.getItem('user') || '{}');
+const token = localStorage.getItem('token');
+
+function handleLogout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  window.location.href = 'index.html';
+}
+
+// Fill user info
+document.getElementById('dashAvatar').textContent = (user.firstName || 'U')[0].toUpperCase();
+document.getElementById('dashName').innerHTML = (user.firstName || '') + ' ' + (user.lastName || '') +
+  ' <span id="dashRole">' + (user.role || 'Buyer') + '</span>';
+document.getElementById('dashEmail').textContent = user.email || '';
+document.getElementById('dashPhone').textContent = user.phone || '';
+document.getElementById('userNameDisplay').textContent = user.firstName || '';
+
+// Dropdown
+document.getElementById('userMenuBtn').addEventListener('click', () => {
+  const d = document.getElementById('userDropdown');
+  d.style.display = d.style.display === 'none' ? 'block' : 'none';
+});
+document.addEventListener('click', e => {
+  if (!document.getElementById('userMenuBtn').contains(e.target))
+    document.getElementById('userDropdown').style.display = 'none';
+});
+
+// Tabs
+document.querySelectorAll('.dash-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.dash-section').forEach(s => s.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+    if (this.dataset.tab === 'saved') loadSaved();
+  });
+});
+
+// Load my listings
+async function loadListings() {
+  const grid = document.getElementById('listingsGrid');
+  try {
+    const res = await fetch(`${API}/properties/user-post`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await res.json();
+    if (data.success && data.properties && data.properties.length) {
+      document.getElementById('statTotal').textContent = data.properties.length;
+      document.getElementById('statApproved').textContent = data.properties.filter(p => p.isApproved).length;
+      document.getElementById('statPending').textContent = data.properties.filter(p => !p.isApproved).length;
+      grid.innerHTML = data.properties.map(p => propCard(p)).join('');
+      return;
+    }
+  } catch(e) {}
+  grid.innerHTML = `<div class="dash-empty" style="grid-column:1/-1">
+    <i class="fa-solid fa-building"></i>
+    <p>No listings yet.</p>
+    <p style="margin-top:8px;font-size:0.85rem;"><a href="post-property.html">+ Post your first property</a></p>
+  </div>`;
+}
+
+// Load saved properties
+async function loadSaved() {
+  const grid = document.getElementById('savedGrid');
+  try {
+    const res = await fetch(`${API}/auth/saved`, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await res.json();
+    if (data.success && data.properties && data.properties.length) {
+      grid.innerHTML = data.properties.map(p => propCard(p, true)).join('');
+      return;
+    }
+  } catch(e) {}
+  grid.innerHTML = `<div class="dash-empty" style="grid-column:1/-1">
+    <i class="fa-solid fa-heart"></i>
+    <p>No saved properties yet.</p>
+    <p style="margin-top:8px;font-size:0.85rem;"><a href="properties.html">Browse properties</a></p>
+  </div>`;
+}
+
+function propCard(p, isSaved) {
+  const img = p.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&q=80';
+  const statusMap = {'for-sale':'For Sale','for-rent':'For Rent','new-launch':'New Launch'};
+  const badge = statusMap[p.status] || p.status;
+  const approved = p.isApproved;
+  return `<div class="prop-list-card">
+    <div class="plc-img">
+      <img src="${img}" alt="${p.title}" loading="lazy"/>
+      <span class="plc-badge ${approved ? '' : 'pending'}">${approved ? badge : 'Pending Review'}</span>
+    </div>
+    <div class="plc-body">
+      <div class="plc-title">${p.title}</div>
+      <div class="plc-loc"><i class="fa-solid fa-location-dot" style="color:#E53935;font-size:0.7rem"></i>${(p.location?.area || '') + ', ' + (p.location?.city || '')}</div>
+      <div class="plc-price">${p.priceLabel || '₹' + p.price}</div>
+      <div class="plc-actions">
+        <button class="plc-btn" onclick="window.location.href='property-detail.html?id=${p._id}'"><i class="fa-solid fa-eye"></i> View</button>
+        ${!isSaved ? `<button class="plc-btn del" onclick="deleteProperty('${p._id}', this)"><i class="fa-solid fa-trash"></i> Delete</button>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
+async function deleteProperty(id, btn) {
+  if (!confirm('Delete this property?')) return;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+  try {
+    await fetch(`${API}/properties/${id}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+  } catch(e) {}
+  btn.closest('.prop-list-card').remove();
+  const total = parseInt(document.getElementById('statTotal').textContent) - 1;
+  document.getElementById('statTotal').textContent = Math.max(0, total);
+}
+
+// Scroll & nav
+window.addEventListener('scroll', () => {
+  document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+  document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
+});
+document.getElementById('backTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
+document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+  btn.addEventListener('click', e => { e.preventDefault(); btn.closest('.nav-dropdown').classList.toggle('open'); });
+});
+
+loadListings();
+</script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Careers – City Real Space</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    .page-hero { background: linear-gradient(135deg, #0D1B2A 0%, #1a3a5c 100%); padding: 120px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+    .page-hero::before { content: ''; position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80') center/cover; opacity: 0.08; }
+    .page-hero-overlay { position: absolute; inset: 0; background: rgba(13,27,42,0.7); }
+    .page-hero-content { position: relative; z-index: 2; }
+    .page-hero .sec-tag { display: inline-block; background: rgba(255,193,7,0.15); color: #FFC107; font-size: 0.78rem; font-weight: 700; padding: 4px 14px; border-radius: 50px; margin-bottom: 14px; letter-spacing: 1px; text-transform: uppercase; }
+    .page-hero h1 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; color: #fff; margin-bottom: 12px; }
+    .page-hero p { color: rgba(255,255,255,0.65); font-size: 1rem; max-width: 560px; margin: 0 auto; }
+    .breadcrumb { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; font-size: 0.82rem; color: rgba(255,255,255,0.5); }
+    .breadcrumb a { color: #FFC107; text-decoration: none; }
+    .breadcrumb i { font-size: 0.65rem; }
+
+    .perks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; margin-bottom: 60px; }
+    .perk-card { background: #fff; border-radius: 16px; padding: 28px 22px; text-align: center; border: 1px solid #e8e8e8; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s; }
+    .perk-card:hover { transform: translateY(-5px); border-color: #FFC107; }
+    .perk-icon { width: 56px; height: 56px; background: linear-gradient(135deg, rgba(255,193,7,0.15), rgba(255,193,7,0.05)); border: 2px solid rgba(255,193,7,0.3); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #FFC107; margin: 0 auto 14px; }
+    .perk-card h4 { font-size: 0.92rem; font-weight: 700; color: #0D1B2A; margin-bottom: 6px; }
+    .perk-card p { font-size: 0.8rem; color: #777; line-height: 1.6; }
+
+    .jobs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
+    .job-card { background: #fff; border-radius: 16px; padding: 26px; border: 1px solid #e8e8e8; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s; }
+    .job-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,0.12); border-color: #FFC107; }
+    .job-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .job-title { font-size: 1rem; font-weight: 700; color: #0D1B2A; margin-bottom: 4px; }
+    .job-dept { font-size: 0.75rem; color: #E53935; font-weight: 600; }
+    .job-badge { background: rgba(46,125,50,0.1); color: #2e7d32; font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 50px; white-space: nowrap; }
+    .job-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .job-tag { background: #f5f5f5; color: #666; font-size: 0.72rem; padding: 4px 10px; border-radius: 50px; display: flex; align-items: center; gap: 5px; }
+    .job-tag i { color: #FFC107; font-size: 0.65rem; }
+    .job-desc { font-size: 0.82rem; color: #777; line-height: 1.6; margin-bottom: 18px; }
+    .btn-apply { background: #E53935; color: #fff; border: none; padding: 10px 22px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.2s; display: inline-flex; align-items: center; gap: 7px; }
+    .btn-apply:hover { background: #c62828; transform: translateY(-1px); box-shadow: 0 5px 16px rgba(229,57,53,0.35); }
+
+    .apply-banner { background: linear-gradient(135deg, #0D1B2A, #1a3a5c); border-radius: 20px; padding: 48px 40px; text-align: center; margin-top: 60px; }
+    .apply-banner h3 { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .apply-banner p { color: rgba(255,255,255,0.65); font-size: 0.9rem; margin-bottom: 24px; }
+    .apply-banner a { background: #FFC107; color: #0D1B2A; padding: 13px 32px; border-radius: 10px; font-weight: 700; font-size: 0.92rem; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
+    .apply-banner a:hover { background: #ffca28; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,193,7,0.4); }
+  </style>
+</head>
+<body>
+<script src="splash.js"></script>
+<header class="header" id="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <img src="images/city_real_space_logo_clean-removebg-preview.png" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;"/>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Buy <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="properties.html">All</a>
+          <a href="rent.html">Rent</a>
+          <a href="resale.html">Resale</a>
+          <a href="land.html">Land</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Sell <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="post-property.html">List Property</a>
+          <a href="post-property.html">List Project</a>
+        </div>
+      </div>
+      <a href="new-launch.html">New Launch</a>
+      <a href="prelease.html">Prelease</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button class="fav-btn" title="Favorites"><i class="fa-regular fa-heart"></i><span class="fav-count">0</span></button>
+      <div id="userMenu" style="display:none;position:relative">
+        <button class="btn-login" id="userMenuBtn"><i class="fa-solid fa-user"></i> <span id="userNameDisplay"></span> <i class="fa-solid fa-chevron-down" style="font-size:0.7rem"></i></button>
+        <div id="userDropdown" style="display:none;position:absolute;right:0;top:110%;background:#fff;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.15);min-width:160px;z-index:999;overflow:hidden">
+          <button onclick="handleLogout()" style="width:100%;padding:12px 16px;border:none;background:none;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.85rem;color:#E53935;font-weight:600;text-align:left"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+      </div>
+      <a href="login.html" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> Login / Register</a>
+      <button class="btn-inquiry">Inquiry <i class="fa-solid fa-arrow-right"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <p class="sec-tag">Join Our Team</p>
+    <h1>Careers at <span style="color:#FFC107">City Real Space</span></h1>
+    <p>Be part of Gujarat's most trusted real estate platform. Grow your career with us.</p>
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <span>Careers</span>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <div>
+        <p class="sec-tag">Why Work With Us</p>
+        <h2>Perks & <span class="yellow">Benefits</span></h2>
+        <p class="sec-sub">We believe in taking care of our team as much as our clients.</p>
+      </div>
+    </div>
+    <div class="perks-grid">
+      <div class="perk-card"><div class="perk-icon"><i class="fa-solid fa-indian-rupee-sign"></i></div><h4>Competitive Salary</h4><p>Industry-best pay with performance bonuses and incentives.</p></div>
+      <div class="perk-card"><div class="perk-icon"><i class="fa-solid fa-chart-line"></i></div><h4>Fast Growth</h4><p>Clear career path with regular promotions and skill development.</p></div>
+      <div class="perk-card"><div class="perk-icon"><i class="fa-solid fa-laptop-house"></i></div><h4>Flexible Work</h4><p>Hybrid work options with flexible hours for work-life balance.</p></div>
+      <div class="perk-card"><div class="perk-icon"><i class="fa-solid fa-users"></i></div><h4>Great Culture</h4><p>Collaborative, inclusive and energetic work environment.</p></div>
+    </div>
+
+    <div class="section-head">
+      <div>
+        <p class="sec-tag">Open Positions</p>
+        <h2>Current <span class="yellow">Job Openings</span></h2>
+        <p class="sec-sub">Find the right role for you and apply today.</p>
+      </div>
+    </div>
+    <div class="jobs-grid">
+
+      <div class="job-card">
+        <div class="job-top">
+          <div><div class="job-title">Senior Property Advisor</div><div class="job-dept">Sales & Advisory</div></div>
+          <span class="job-badge">Full Time</span>
+        </div>
+        <div class="job-tags">
+          <span class="job-tag"><i class="fa-solid fa-location-dot"></i> Ahmedabad</span>
+          <span class="job-tag"><i class="fa-solid fa-briefcase"></i> 2–5 Years Exp</span>
+        </div>
+        <p class="job-desc">Guide clients through property buying/selling process. Build relationships and achieve monthly sales targets.</p>
+        <button class="btn-apply" onclick="applyJob(this)"><i class="fa-solid fa-paper-plane"></i> Apply Now</button>
+      </div>
+
+      <div class="job-card">
+        <div class="job-top">
+          <div><div class="job-title">Digital Marketing Executive</div><div class="job-dept">Marketing</div></div>
+          <span class="job-badge">Full Time</span>
+        </div>
+        <div class="job-tags">
+          <span class="job-tag"><i class="fa-solid fa-location-dot"></i> Ahmedabad</span>
+          <span class="job-tag"><i class="fa-solid fa-briefcase"></i> 1–3 Years Exp</span>
+        </div>
+        <p class="job-desc">Manage social media, SEO, Google Ads and content marketing for our real estate platform.</p>
+        <button class="btn-apply" onclick="applyJob(this)"><i class="fa-solid fa-paper-plane"></i> Apply Now</button>
+      </div>
+
+      <div class="job-card">
+        <div class="job-top">
+          <div><div class="job-title">Real Estate Agent</div><div class="job-dept">Field Sales</div></div>
+          <span class="job-badge">Full Time</span>
+        </div>
+        <div class="job-tags">
+          <span class="job-tag"><i class="fa-solid fa-location-dot"></i> Ahmedabad / Gandhinagar</span>
+          <span class="job-tag"><i class="fa-solid fa-briefcase"></i> Fresher OK</span>
+        </div>
+        <p class="job-desc">Conduct site visits, handle client inquiries and close property deals across residential and commercial segments.</p>
+        <button class="btn-apply" onclick="applyJob(this)"><i class="fa-solid fa-paper-plane"></i> Apply Now</button>
+      </div>
+
+      <div class="job-card">
+        <div class="job-top">
+          <div><div class="job-title">Frontend Developer</div><div class="job-dept">Technology</div></div>
+          <span class="job-badge">Full Time</span>
+        </div>
+        <div class="job-tags">
+          <span class="job-tag"><i class="fa-solid fa-location-dot"></i> Ahmedabad</span>
+          <span class="job-tag"><i class="fa-solid fa-briefcase"></i> 1–3 Years Exp</span>
+        </div>
+        <p class="job-desc">Build and maintain our web platform using HTML, CSS, JavaScript and React. Work on UI/UX improvements.</p>
+        <button class="btn-apply" onclick="applyJob(this)"><i class="fa-solid fa-paper-plane"></i> Apply Now</button>
+      </div>
+
+      <div class="job-card">
+        <div class="job-top">
+          <div><div class="job-title">Customer Relationship Manager</div><div class="job-dept">Client Services</div></div>
+          <span class="job-badge">Full Time</span>
+        </div>
+        <div class="job-tags">
+          <span class="job-tag"><i class="fa-solid fa-location-dot"></i> Ahmedabad</span>
+          <span class="job-tag"><i class="fa-solid fa-briefcase"></i> 1–4 Years Exp</span>
+        </div>
+        <p class="job-desc">Manage client relationships post-sale, handle queries and ensure high customer satisfaction scores.</p>
+        <button class="btn-apply" onclick="applyJob(this)"><i class="fa-solid fa-paper-plane"></i> Apply Now</button>
+      </div>
+
+      <div class="job-card">
+        <div class="job-top">
+          <div><div class="job-title">Content Writer</div><div class="job-dept">Marketing</div></div>
+          <span class="job-badge">Part Time</span>
+        </div>
+        <div class="job-tags">
+          <span class="job-tag"><i class="fa-solid fa-location-dot"></i> Remote</span>
+          <span class="job-tag"><i class="fa-solid fa-briefcase"></i> Fresher OK</span>
+        </div>
+        <p class="job-desc">Write engaging blog posts, property descriptions and marketing copy for our real estate platform.</p>
+        <button class="btn-apply" onclick="applyJob(this)"><i class="fa-solid fa-paper-plane"></i> Apply Now</button>
+      </div>
+
+    </div>
+
+    <div class="apply-banner">
+      <h3>Don't See Your Role? <span style="color:#FFC107">Send Us Your CV</span></h3>
+      <p>We're always looking for talented people. Drop your resume and we'll reach out when the right opportunity comes.</p>
+      <a href="mailto:careers@cityrealspace.com"><i class="fa-solid fa-envelope"></i> careers@cityrealspace.com</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <a href="index.html" class="logo footer-logo">
+          <img src="images/city_real_space_logo_clean-removebg-preview.png" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;filter:brightness(0) invert(1);"/>
+        </a>
+        <p class="footer-about">Ahmedabad's most trusted real estate platform. We connect buyers, sellers and investors with verified properties across Gujarat.</p>
+        <div class="social-links">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://wa.me/919377531247" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Our Services</h4>
+        <ul>
+          <li><a href="buy.html"><i class="fa-solid fa-chevron-right"></i> Buy Property</a></li>
+          <li><a href="resale.html"><i class="fa-solid fa-chevron-right"></i> Resale</a></li>
+          <li><a href="land.html"><i class="fa-solid fa-chevron-right"></i> Land</a></li>
+          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell – List Property</a></li>
+          <li><a href="new-launch.html"><i class="fa-solid fa-chevron-right"></i> New Launch</a></li>
+          <li><a href="prelease.html"><i class="fa-solid fa-chevron-right"></i> Prelease</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Property Valuation</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Home Loans</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="faq.html"><i class="fa-solid fa-chevron-right"></i> FAQ</a></li>
+          <li><a href="privacy.html"><i class="fa-solid fa-chevron-right"></i> Privacy Policy</a></li>
+          <li><a href="terms.html"><i class="fa-solid fa-chevron-right"></i> Terms &amp; Conditions</a></li>
+          <li><a href="careers.html"><i class="fa-solid fa-chevron-right"></i> Careers</a></li>
+          <li><a href="blog.html"><i class="fa-solid fa-chevron-right"></i> Blog</a></li>
+          <li><a href="about.html"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
+          <li><a href="contact.html"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <div class="contact-info">
+          <div class="ci"><i class="fa-solid fa-location-dot"></i><span>A-708, Prahlad Nagar Trade Centre, Satellite, Ahmedabad</span></div>
+          <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 93775 31247</span></div>
+          <div class="ci"><i class="fa-solid fa-envelope"></i><span>info@cityrealspace.com</span></div>
+        </div>
+        <div class="working-hours">
+          <h5><i class="fa-regular fa-clock"></i> Working Hours</h5>
+          <p>Mon – Sat: 9:00 AM – 7:00 PM</p>
+          <p>Sunday: 10:00 AM – 4:00 PM</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom"><div class="container"><p>© 2025 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p></div></div>
+</footer>
+
+<a href="https://wa.me/919377531247" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+<button class="back-top" id="backTop"><i class="fa-solid fa-chevron-up"></i></button>
+<script src="cursor.js"></script>
+<script src="bg-animation.js"></script>
+<script src="script.js"></script>
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+    document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
+  });
+  document.getElementById('backTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
+  document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+    btn.addEventListener('click', e => { e.preventDefault(); btn.closest('.nav-dropdown').classList.toggle('open'); });
+  });
+  function applyJob(btn) {
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Applied!';
+    btn.style.background = '#2e7d32';
+    btn.disabled = true;
+  }
+</script>
+</body>
+</html>

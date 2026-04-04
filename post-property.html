@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Post Your Property – City Real Space</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    .pp-outer { max-width: 1200px; margin: 100px auto 60px; padding: 0 20px; display: flex; gap: 28px; align-items: flex-start; }
+    .pp-wrap { flex: 1; min-width: 0; }
+    /* ---- Score Panel ---- */
+    .score-panel { width: 300px; flex-shrink: 0; position: sticky; top: 90px; }
+    .score-card { background: linear-gradient(135deg, #0D1B2A 0%, #1a2e45 100%); border-radius: 20px; padding: 28px 22px; box-shadow: 0 8px 32px rgba(13,27,42,0.25); color: #fff; }
+    .score-card h3 { font-size: 1rem; color: #fff; margin-bottom: 22px; font-weight: 700; display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px; }
+    .score-card h3 i { color: #ffd700; }
+    /* ---- Circular Ring ---- */
+    .score-ring-wrap { display: flex; flex-direction: column; align-items: center; margin-bottom: 22px; position: relative; }
+    .score-ring { position: relative; width: 150px; height: 150px; }
+    .score-ring svg { width: 150px; height: 150px; transform: rotate(-90deg); }
+    /* Track */
+    .score-ring circle.track { fill: none; stroke: rgba(255,255,255,0.08); stroke-width: 12; }
+    /* Glow blur layer */
+    .score-ring circle.glow  { fill: none; stroke-width: 14; stroke-linecap: round; opacity: 0.35; filter: blur(4px); transition: stroke-dashoffset 0.9s cubic-bezier(.4,0,.2,1), stroke 0.5s; }
+    /* Main fill */
+    .score-ring circle.fill  { fill: none; stroke-width: 12; stroke-linecap: round; transition: stroke-dashoffset 0.9s cubic-bezier(.4,0,.2,1), stroke 0.5s; }
+    /* Spinning dashed ring */
+    .score-ring circle.spin  { fill: none; stroke-width: 2; stroke-dasharray: 8 18; stroke: rgba(255,255,255,0.18); animation: spinRing 4s linear infinite; }
+    @keyframes spinRing { to { stroke-dashoffset: -200; } }
+    /* Center number */
+    .score-ring .score-num { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .score-ring .score-num span { font-size: 2.4rem; font-weight: 900; color: #fff; line-height: 1; text-shadow: 0 0 20px rgba(255,215,0,0.5); }
+    .score-ring .score-num small { font-size: 0.72rem; color: rgba(255,255,255,0.55); margin-top: 2px; }
+    /* Pulse ring on milestone */
+    .score-ring.pulse::after { content:''; position:absolute; inset:-8px; border-radius:50%; border:3px solid rgba(255,215,0,0.6); animation: pulseRing 0.8s ease-out forwards; }
+    @keyframes pulseRing { 0%{transform:scale(0.9);opacity:1} 100%{transform:scale(1.25);opacity:0} }
+    /* Label pill */
+    .score-label { margin-top: 12px; font-size: 0.82rem; font-weight: 700; padding: 5px 18px; border-radius: 20px; letter-spacing: 0.5px; }
+    .score-label.poor  { background: rgba(229,57,53,0.2);  color: #ff6b6b; border: 1px solid rgba(229,57,53,0.4); }
+    .score-label.fair  { background: rgba(255,152,0,0.2);  color: #ffb74d; border: 1px solid rgba(255,152,0,0.4); }
+    .score-label.good  { background: rgba(76,175,80,0.2);  color: #81c784; border: 1px solid rgba(76,175,80,0.4); }
+    .score-label.great { background: rgba(100,181,246,0.2);color: #64b5f6; border: 1px solid rgba(100,181,246,0.4); }
+    /* Checklist */
+    .score-checklist { list-style: none; padding: 0; margin: 0 0 16px; }
+    .score-checklist li { display: flex; align-items: center; gap: 9px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.07); font-size: 0.82rem; color: rgba(255,255,255,0.5); transition: color 0.3s; }
+    .score-checklist li:last-child { border-bottom: none; }
+    .score-checklist li .si { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; flex-shrink: 0; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.3); transition: all 0.3s; }
+    .score-checklist li.done { color: rgba(255,255,255,0.9); }
+    .score-checklist li.done .si { background: rgba(76,175,80,0.3); color: #81c784; }
+    .score-checklist li .pts { margin-left: auto; font-size: 0.72rem; font-weight: 700; color: #ffd700; white-space: nowrap; opacity: 0.7; }
+    .score-checklist li.done .pts { opacity: 1; }
+    /* Tip */
+    .score-tip { background: rgba(255,215,0,0.1); border-left: 3px solid #ffd700; border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; color: rgba(255,255,255,0.75); display: none; }
+    .score-tip.show { display: block; }
+    /* ---- Page header ---- */
+    .page-header { text-align: center; margin-bottom: 28px; }
+    .page-header h1 { font-size: 2.2rem; color: #0D1B2A; margin-bottom: 8px; }
+    .page-header p { color: #666; font-size: 1rem; }
+    .badge { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 7px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-bottom: 12px; }
+    .card { background: #fff; border-radius: 12px; padding: 28px; margin-bottom: 22px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .card h2 { font-size: 1.2rem; color: #0D1B2A; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid #f0f0f0; display: flex; align-items: center; gap: 10px; }
+    .card h2 i { color: #E53935; }
+    .form-group { margin-bottom: 18px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+    .form-group label { display: block; margin-bottom: 7px; font-weight: 600; color: #444; font-size: 0.9rem; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 11px 14px; border: 1.5px solid #e0e0e0; border-radius: 8px;
+      font-family: 'Poppins', sans-serif; font-size: 0.9rem; color: #333; background: #fafafa; outline: none; transition: all 0.3s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: #E53935; background: #fff; box-shadow: 0 0 0 3px rgba(229,57,53,0.1);
+    }
+    .radio-group { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+    .radio-option { display: flex; align-items: center; gap: 8px; padding: 9px 15px; border: 1.5px solid #e0e0e0; border-radius: 8px; cursor: pointer; transition: all 0.3s; background: #fafafa; }
+    .radio-option input[type="radio"] { margin: 0; cursor: pointer; }
+    .radio-option.selected { border-color: #E53935; background: #fff5f5; color: #E53935; font-weight: 600; }
+    .chip-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+    .chip { padding: 9px 16px; border: 1.5px solid #e0e0e0; border-radius: 25px; cursor: pointer; font-size: 0.9rem; font-weight: 500; background: #fafafa; color: #444; transition: all 0.3s; user-select: none; display: flex; align-items: center; gap: 6px; }
+    .chip:hover { border-color: #E53935; color: #E53935; }
+    .chip.selected { border-color: #E53935; background: #E53935; color: #fff; font-weight: 600; }
+    .chip i { font-size: 0.85rem; }
+    .upload-box { border: 2px dashed #ddd; border-radius: 10px; padding: 36px 20px; text-align: center; cursor: pointer; transition: all 0.3s; background: #fafafa; }
+    .upload-box:hover { border-color: #E53935; background: #fff5f5; }
+    .upload-box i { font-size: 2.8rem; color: #ccc; margin-bottom: 10px; display: block; }
+    .upload-box p { color: #666; margin: 4px 0; }
+    .upload-box strong { color: #E53935; }
+    .image-preview { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .preview-item { position: relative; width: 100px; height: 80px; border-radius: 8px; overflow: hidden; border: 1.5px solid #e0e0e0; }
+    .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+    .preview-item .delete-btn { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.7); border: none; color: #fff; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; }
+    .submit-btn { width: 100%; padding: 15px 20px; background: #E53935; color: #fff; border: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: 'Poppins', sans-serif; }
+    .submit-btn:hover { background: #c62828; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(229,57,53,0.3); }
+    .submit-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+    .success-message { display: none; text-align: center; padding: 60px 20px; }
+    .success-message i.big { font-size: 4rem; color: #4CAF50; margin-bottom: 18px; display: block; }
+    .success-message h2 { font-size: 1.8rem; color: #0D1B2A; margin-bottom: 8px; }
+    .success-message p { color: #666; margin-bottom: 24px; }
+    .success-message a { display: inline-block; padding: 12px 28px; background: #E53935; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600; }
+    .success-score-wrap { display: flex; flex-direction: column; align-items: center; margin: 24px auto; }
+    .success-score-ring { position: relative; width: 140px; height: 140px; margin-bottom: 12px; }
+    .success-score-ring svg { transform: rotate(-90deg); }
+    .success-score-ring .snum { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .success-score-ring .snum span { font-size: 2.2rem; font-weight: 800; color: #0D1B2A; line-height: 1; }
+    .success-score-ring .snum small { font-size: 0.75rem; color: #999; }
+    .confetti-row { font-size: 1.6rem; letter-spacing: 4px; margin-bottom: 6px; }
+    @keyframes countUp { from { opacity:0; transform:scale(0.5); } to { opacity:1; transform:scale(1); } }
+    .success-score-ring { animation: countUp 0.6s cubic-bezier(.4,0,.2,1) both; }
+    .field-error { border-color: #E53935 !important; box-shadow: 0 0 0 3px rgba(229,57,53,0.15) !important; }
+    .error-msg { color: #E53935; font-size: 0.78rem; margin-top: 4px; display: none; }
+    .error-msg.show { display: block; }
+    .chip-group.error { outline: 2px solid #E53935; border-radius: 8px; padding: 4px; }
+    .step-reveal { animation: fadeSlideIn 0.4s ease; }
+    @keyframes fadeSlideIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    .progress-bar-wrap { background:#f0f0f0; border-radius:20px; height:6px; margin-bottom:28px; overflow:hidden; }
+    .progress-bar-fill { height:100%; background:linear-gradient(90deg,#E53935,#ff7043); border-radius:20px; transition:width 0.5s ease; }
+    @media(max-width:1024px) { .pp-outer { flex-direction: column; } .score-panel { width: 100%; position: static; max-height: none; } }
+    @media(max-width:768px) {
+      .form-row, .form-row.three { grid-template-columns: 1fr; }
+      .page-header h1 { font-size: 1.6rem; }
+      .card { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR (same as index.html) ===== -->
+<header class="header" id="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;"/>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Buy <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="properties.html">All</a>
+          <a href="rent.html">Rent</a>
+          <a href="resale.html">Resale</a>
+          <a href="land.html">Land</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Sell <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="post-property.html">List Property</a>
+          <a href="post-property.html">List Project</a>
+        </div>
+      </div>
+      <a href="new-launch.html">New Launch</a>
+      <a href="prelease.html">Prelease</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a href="post-property.html" class="btn-post-prop" id="postPropBtn" style="display:none"><i class="fa-solid fa-plus"></i> Post Property</a>
+      <div id="userMenu" style="display:none;position:relative">
+        <button class="btn-login" id="userMenuBtn"><i class="fa-solid fa-user"></i> <span id="userNameDisplay"></span> <i class="fa-solid fa-chevron-down" style="font-size:0.7rem"></i></button>
+        <div id="userDropdown" style="display:none;position:absolute;right:0;top:110%;background:#fff;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.15);min-width:160px;z-index:999;overflow:hidden">
+          <button onclick="handleLogout()" style="width:100%;padding:12px 16px;border:none;background:none;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.85rem;color:#E53935;font-weight:600;text-align:left"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+      </div>
+      <a href="login.html" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> Login / Register</a>
+      <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="pp-outer">
+<div class="pp-wrap">
+
+  <div class="page-header">
+    <span class="badge"><i class="fas fa-tag"></i> FREE Listing</span>
+    <h1>Post Your Property</h1>
+    <p>Share your property details. We'll review and list it within 24 hours.</p>
+  </div>
+
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill" style="width:0%"></div></div>
+
+  <form id="mainForm">
+
+    <!-- Personal Details -->
+    <div class="card">
+      <h2><i class="fas fa-user"></i> Personal Details</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name *</label>
+          <input type="text" id="name" placeholder="Full Name" required/>
+        </div>
+        <div class="form-group">
+          <label>Phone Number *</label>
+          <input type="tel" id="phone" placeholder="+91 9876543210" required/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="yourname@email.com"/>
+      </div>
+      <div class="form-group">
+        <label>You are a *</label>
+        <div class="radio-group" id="roleGroup">
+          <label class="radio-option selected">
+            <input type="radio" name="role" value="Owner" checked/>
+            <span>Owner</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="role" value="Agent"/>
+            <span>Agent</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="role" value="Builder"/>
+            <span>Builder</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Property Details -->
+    <div class="card">
+      <h2><i class="fas fa-building"></i> Property Details</h2>
+      <div class="form-group">
+        <label>Listing Type *</label>
+        <div class="radio-group" id="typeGroup">
+          <label class="radio-option selected">
+            <input type="radio" name="listing" value="for-sale" checked/>
+            <span>For Sale</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="listing" value="for-rent"/>
+            <span>For Rent</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="listing" value="new-launch"/>
+            <span>New Launch</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Property Type *</label>
+          <select id="propType" required>
+            <option value="">Select Type</option>
+            <option value="apartment">Apartment / Flat</option>
+            <option value="villa">Villa</option>
+            <option value="bungalow">Bungalow</option>
+            <option value="plot">Plot / Land</option>
+            <option value="office">Office Space</option>
+            <option value="shop">Shop / Showroom</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Category *</label>
+          <select id="category" required>
+            <option value="">Select Category</option>
+            <option value="residential">Residential</option>
+            <option value="commercial">Commercial</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Property Title *</label>
+        <input type="text" id="title" placeholder="e.g., 3BHK Apartment in Bopal" required/>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="description" rows="4" placeholder="Describe your property, amenities, highlights..."></textarea>
+      </div>
+    </div>
+
+    <!-- Location -->
+    <div class="card">
+      <h2><i class="fas fa-map-marker-alt"></i> Location</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>City *</label>
+          <select id="city" required>
+            <option value="">Select City</option>
+            <option value="Ahmedabad">Ahmedabad</option>
+            <option value="Gandhinagar">Gandhinagar</option>
+            <option value="Surat">Surat</option>
+            <option value="Vadodara">Vadodara</option>
+            <option value="Rajkot">Rajkot</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Area / Locality *</label>
+          <select id="locality" required>
+            <option value="">-- Select City First --</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Sub Area / Street</label>
+          <select id="subArea">
+            <option value="">-- Select Locality First --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Project / Society Name</label>
+          <select id="society">
+            <option value="">-- Select Locality First --</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="card step-hidden" id="cardFeatures">
+      <h2><i class="fas fa-sliders-h"></i> Property Features</h2>
+
+      <!-- Residential only: Beds/Baths/Balcony -->
+      <div id="grpResidential">
+        <div class="form-row three">
+          <div class="form-group" id="bedsGroup">
+            <label>Bedrooms *</label>
+            <div class="chip-group" id="bedsChips">
+              <span class="chip">1</span><span class="chip">2</span><span class="chip">3</span><span class="chip">4</span><span class="chip">5+</span>
+            </div>
+            <div class="error-msg" id="err-beds">Please select bedrooms</div>
+          </div>
+          <div class="form-group" id="bathsGroup">
+            <label>Bathrooms *</label>
+            <div class="chip-group" id="bathsChips">
+              <span class="chip">1</span><span class="chip">2</span><span class="chip">3</span><span class="chip">3+</span>
+            </div>
+            <div class="error-msg" id="err-baths">Please select bathrooms</div>
+          </div>
+          <div class="form-group">
+            <label>Balconies</label>
+            <div class="chip-group" id="balcChips">
+              <span class="chip">0</span><span class="chip">1</span><span class="chip">2</span><span class="chip">3+</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- All types: Area -->
+      <div class="form-row three" id="grpArea">
+        <div class="form-group">
+          <label id="areaLabel1">Super Area (sq.ft) *</label>
+          <input type="number" id="superArea" placeholder="e.g., 1400" min="0"/>
+          <div class="error-msg" id="err-area">Please enter area</div>
+        </div>
+        <div class="form-group" id="carpetAreaGroup">
+          <label>Carpet Area (sq.ft)</label>
+          <input type="number" id="carpetArea" placeholder="e.g., 1100" min="0"/>
+        </div>
+        <div class="form-group" id="buildAreaGroup">
+          <label>Build Area (sq.ft)</label>
+          <input type="number" id="buildArea" placeholder="e.g., 1200" min="0"/>
+        </div>
+      </div>
+
+      <!-- Residential + Commercial (not plot) -->
+      <div class="form-row" id="grpFurnished">
+        <div class="form-group">
+          <label>Furnished Status</label>
+          <select id="furnished">
+            <option value="">Select</option>
+            <option value="Furnished">Furnished</option>
+            <option value="Unfurnished">Unfurnished</option>
+            <option value="Semi-Furnished">Semi-Furnished</option>
+          </select>
+        </div>
+        <!-- Floor info for apartment -->
+        <div class="form-group" id="floorGroup">
+          <label>Floor No.</label>
+          <input type="number" id="floorNo" placeholder="e.g., 5" min="0"/>
+        </div>
+      </div>
+
+      <!-- Plot specific -->
+      <div id="grpPlot" style="display:none">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Plot Width (ft)</label>
+            <input type="number" id="plotWidth" placeholder="e.g., 30" min="0"/>
+          </div>
+          <div class="form-group">
+            <label>Plot Length (ft)</label>
+            <input type="number" id="plotLength" placeholder="e.g., 60" min="0"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Facing Direction</label>
+          <select id="facing">
+            <option value="">Select</option>
+            <option>East</option><option>West</option><option>North</option><option>South</option>
+            <option>North-East</option><option>North-West</option><option>South-East</option><option>South-West</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Office/Shop specific -->
+      <div id="grpCommercial" style="display:none">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Cabin / Seats</label>
+            <input type="number" id="cabins" placeholder="e.g., 4" min="0"/>
+          </div>
+          <div class="form-group">
+            <label>Washrooms</label>
+            <div class="chip-group" id="washroomChips">
+              <span class="chip">1</span><span class="chip">2</span><span class="chip">3+</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Price -->
+    <div class="card step-hidden" id="cardPrice">
+      <h2><i class="fas fa-rupee-sign"></i> Price</h2>
+      <div class="form-group">
+        <label>Price *</label>
+        <input type="number" id="price" placeholder="e.g., 5000000" min="0" required/>
+      </div>
+    </div>
+
+    <!-- Images -->
+    <div class="card step-hidden" id="cardImages">
+      <h2><i class="fas fa-images"></i> Property Images</h2>
+      <div class="upload-box" id="uploadBox">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <p><strong>Click to upload</strong> or drag & drop</p>
+        <p style="font-size:0.85rem;color:#999;">PNG, JPG up to 5MB</p>
+        <input type="file" id="fileInput" style="display:none;" accept="image/*" multiple/>
+      </div>
+      <div class="image-preview" id="preview"></div>
+    </div>
+
+    <!-- Amenities -->
+    <div class="card step-hidden" id="cardAmenities">
+      <h2><i class="fas fa-star"></i> Amenities</h2>
+      <div class="chip-group" id="amenitiesChips">
+        <span class="chip"><i class="fas fa-dumbbell"></i> Gym</span>
+        <span class="chip"><i class="fas fa-swimming-pool"></i> Swimming Pool</span>
+        <span class="chip"><i class="fas fa-tree"></i> Garden</span>
+        <span class="chip"><i class="fas fa-car"></i> Parking</span>
+        <span class="chip"><i class="fas fa-shield-alt"></i> Security</span>
+        <span class="chip"><i class="fas fa-elevator"></i> Elevator</span>
+        <span class="chip"><i class="fas fa-door-open"></i> Balcony</span>
+        <span class="chip"><i class="fas fa-home"></i> Terrace</span>
+        <span class="chip"><i class="fas fa-wifi"></i> WiFi</span>
+        <span class="chip"><i class="fas fa-bolt"></i> Power Backup</span>
+        <span class="chip"><i class="fas fa-tint"></i> Water Supply 24/7</span>
+        <span class="chip"><i class="fas fa-fire-extinguisher"></i> Fire Safety</span>
+        <span class="chip"><i class="fas fa-child"></i> Kids Play Area</span>
+        <span class="chip"><i class="fas fa-basketball-ball"></i> Sports Court</span>
+        <span class="chip"><i class="fas fa-video"></i> CCTV</span>
+        <span class="chip"><i class="fas fa-concierge-bell"></i> Club House</span>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn step-hidden" id="submitBtn">
+      <i class="fas fa-paper-plane"></i> Post Property Now
+    </button>
+
+  </form>
+
+  <div class="success-message" id="successMsg">
+    <div class="confetti-row">🎉 🏠 🎊</div>
+    <h2>Property Posted Successfully!</h2>
+    <p>Your listing has been submitted for review. We'll approve it within 24 hours.</p>
+    <div class="success-score-wrap">
+      <div class="success-score-ring" id="successRing">
+        <svg width="140" height="140" viewBox="0 0 140 140">
+          <circle fill="none" stroke="#f0f0f0" stroke-width="12" cx="70" cy="70" r="58"/>
+          <circle id="successCircle" fill="none" stroke="#4CAF50" stroke-width="12" stroke-linecap="round"
+            cx="70" cy="70" r="58"
+            stroke-dasharray="364.4"
+            stroke-dashoffset="364.4"
+            style="transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1), stroke 0.4s"/>
+        </svg>
+        <div class="snum">
+          <span id="successScoreNum">0</span>
+          <small>/ 100</small>
+        </div>
+      </div>
+      <div id="successScoreLabel" style="font-size:1rem;font-weight:700;padding:5px 18px;border-radius:20px;background:#e8f5e9;color:#2e7d32;">Listing Score</div>
+    </div>
+    <p id="successScoreMsg" style="color:#555;font-size:0.95rem;margin-bottom:24px;"></p>
+    <a href="index.html">Back to Home</a>
+  </div>
+
+</div><!-- end pp-wrap -->
+
+<!-- ===== LISTING SCORE PANEL ===== -->
+<div class="score-panel" id="scorePanel">
+  <div class="score-card">
+    <h3><i class="fas fa-trophy"></i> Listing Score</h3>
+    <div class="score-ring-wrap">
+      <div class="score-ring" id="scoreRing">
+        <svg viewBox="0 0 150 150">
+          <defs>
+            <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ff6b35"/>
+              <stop offset="50%" stop-color="#f7c59f" id="gradMid"/>
+              <stop offset="100%" stop-color="#E53935" id="gradEnd"/>
+            </linearGradient>
+          </defs>
+          <!-- Track -->
+          <circle class="track" cx="75" cy="75" r="60"/>
+          <!-- Spinning dashes -->
+          <circle class="spin" cx="75" cy="75" r="60"/>
+          <!-- Glow layer -->
+          <circle class="glow" id="scoreGlow" cx="75" cy="75" r="60"
+            stroke="url(#scoreGrad)"
+            stroke-dasharray="376.99"
+            stroke-dashoffset="376.99"/>
+          <!-- Main fill -->
+          <circle class="fill" id="scoreCircle" cx="75" cy="75" r="60"
+            stroke="url(#scoreGrad)"
+            stroke-dasharray="376.99"
+            stroke-dashoffset="376.99"/>
+        </svg>
+        <div class="score-num">
+          <span id="scoreNum">0</span>
+          <small>/ 100</small>
+        </div>
+      </div>
+      <span class="score-label poor" id="scoreLabel">Start Filling</span>
+    </div>
+    <ul class="score-checklist">
+      <li class="pending" id="sc-name"><span class="si"><i class="fas fa-check"></i></span> Name &amp; Phone <span class="pts">+10</span></li>
+      <li class="pending" id="sc-type"><span class="si"><i class="fas fa-check"></i></span> Property Type <span class="pts">+10</span></li>
+      <li class="pending" id="sc-title"><span class="si"><i class="fas fa-check"></i></span> Property Title <span class="pts">+10</span></li>
+      <li class="pending" id="sc-city"><span class="si"><i class="fas fa-check"></i></span> City &amp; Locality <span class="pts">+15</span></li>
+      <li class="pending" id="sc-price"><span class="si"><i class="fas fa-check"></i></span> Price <span class="pts">+15</span></li>
+      <li class="pending" id="sc-area"><span class="si"><i class="fas fa-check"></i></span> Area (sq.ft) <span class="pts">+10</span></li>
+      <li class="pending" id="sc-beds"><span class="si"><i class="fas fa-check"></i></span> Beds / Baths <span class="pts">+10</span></li>
+      <li class="pending" id="sc-desc"><span class="si"><i class="fas fa-check"></i></span> Description <span class="pts">+10</span></li>
+      <li class="pending" id="sc-images"><span class="si"><i class="fas fa-check"></i></span> Photos <span class="pts">+10</span></li>
+    </ul>
+    <div class="score-tip" id="scoreTip">💡 Fill details to boost your score!</div>
+  </div>
+</div>
+
+</div><!-- end pp-outer -->
+
+<script>
+const API = 'http://localhost:5000/api';
+const uploadedFiles = [];
+
+// ===== CITY → LOCALITY → SUBAREA → PROJECT DATA =====
+const cityData = {
+  'Ahmedabad': {
+    'Prahlad Nagar':   { subs: ['Prahlad Nagar Cross Road','Commerce Six Roads','Anand Nagar Cross Road','Satellite Road','100 Feet Road Prahlad Nagar'], projects: ['Shivalik Sharda','Adani Shantigram','Safal Profitaire','Iscon Platinum','Rajpath Rangoli'] },
+    'Satellite':       { subs: ['Satellite Main Road','Jodhpur Cross Road','Ambawadi','Nehru Nagar','Judges Bungalow Road'], projects: ['Goyal Intercity','Shivalik Sharda','Rajpath Rangoli','Safal Parisar','Adani Aangan'] },
+    'Bopal':           { subs: ['Bopal Chokdi','South Bopal','Ambli Bopal Road','Shilaj','Ghuma'], projects: ['Shivalik Satyamev','Goyal Riviera','Adani Samsara','Safal Parisar II','Rajpath Synfonia'] },
+    'Thaltej':         { subs: ['Thaltej Cross Road','SG Highway Thaltej','Sola Road','Science City Road'], projects: ['Shivalik Sharda II','Adani Shantigram II','Safal Profitaire II','Rajpath Rangoli II'] },
+    'Memnagar':        { subs: ['Memnagar Fire Station','Gurukul Road','Drive In Road','Navrangpura'], projects: ['Goyal Intercity II','Shivalik Sharda III','Rajpath Rangoli III'] },
+    'Vastrapur':       { subs: ['Vastrapur Lake','Vastrapur Cross Road','Judges Bungalow','Bodakdev'], projects: ['Adani Aangan II','Safal Parisar III','Goyal Riviera II'] },
+    'Bodakdev':        { subs: ['Bodakdev Cross Road','100 Feet Road Bodakdev','Sindhu Bhavan Road'], projects: ['Shivalik Satyamev II','Rajpath Synfonia II','Adani Samsara II'] },
+    'Navrangpura':     { subs: ['CG Road','Navrangpura Cross Road','Swastik Cross Road','Panchvati'], projects: ['Safal Profitaire III','Goyal Intercity III'] },
+    'Chandkheda':      { subs: ['Chandkheda Gam','Sola Bhagwat','Visat Cross Road','Tragad'], projects: ['Shivalik Sharda IV','Adani Shantigram III'] },
+    'Shela':           { subs: ['Shela Village','Shela Chokdi','Ambli Road Shela'], projects: ['Goyal Riviera III','Rajpath Rangoli IV','Safal Parisar IV'] },
+    'SG Highway':      { subs: ['Sola','Gota','Motera','Ranip','Sabarmati'], projects: ['Adani Aangan III','Shivalik Satyamev III'] },
+    'CG Road':         { subs: ['Navrangpura','Ellisbridge','Paldi','Ambawadi'], projects: ['Safal Profitaire IV','Goyal Intercity IV'] },
+    'Iscon':           { subs: ['Iscon Cross Road','Iscon Ambli Road','Bopal Road'], projects: ['Rajpath Synfonia III','Adani Samsara III'] },
+    'Giftcity':        { subs: ['GIFT City Block 1','GIFT City Block 2','GIFT City SEZ','Infocity Road'], projects: ['GIFT One','GIFT Two','GIFT SEZ Tower','Infocity Square'] }
+  },
+  'Gandhinagar': {
+    'Giftcity':  { subs: ['GIFT City Block 1','GIFT City Block 2','GIFT City SEZ'], projects: ['GIFT One','GIFT Two','GIFT SEZ Tower'] },
+    'Sector 1':  { subs: ['Sector 1A','Sector 1B','Sector 1C'], projects: ['GDA Sector 1 Residency','Gandhinagar Heights'] },
+    'Sector 5':  { subs: ['Sector 5A','Sector 5B'], projects: ['GDA Sector 5 Residency'] },
+    'Sector 11': { subs: ['Sector 11A','Sector 11B'], projects: ['GDA Sector 11 Residency'] },
+    'Sector 21': { subs: ['Sector 21A','Sector 21B'], projects: ['GDA Sector 21 Residency'] },
+    'Infocity':  { subs: ['Infocity Road','Infocity Phase 1','Infocity Phase 2'], projects: ['Infocity Square','Infocity Heights'] }
+  },
+  'Surat': {
+    'Adajan':   { subs: ['Adajan Patia','Adajan Gam','Pal Adajan Road','Rander Road'], projects: ['Shree Naman Residency','Siddhi Vinayak Tower','Raj Residency'] },
+    'Vesu':     { subs: ['Vesu Main Road','Vesu Canal Road','Bhatar Road'], projects: ['Vesu Heights','Bhatar Residency'] },
+    'Pal':      { subs: ['Pal Gam','Pal Bhatha','Pal Char Rasta'], projects: ['Pal Residency','Pal Heights'] },
+    'Katargam': { subs: ['Katargam Darwaja','Ring Road Katargam','Udhna Magdalla Road'], projects: ['Katargam Tower','Ring Road Residency'] },
+    'Udhna':    { subs: ['Udhna Darwaja','Udhna Magdalla Road','Surat Udhna'], projects: ['Udhna Heights'] },
+    'Althan':   { subs: ['Althan Gam','Althan Bhatha','Bhatar Althan Road'], projects: ['Althan Residency','Bhatar Heights'] }
+  },
+  'Vadodara': {
+    'Alkapuri':       { subs: ['Alkapuri Society','RC Dutt Road','Productivity Road'], projects: ['Alkapuri Heights','RC Dutt Residency'] },
+    'Gotri':          { subs: ['Gotri Road','Gotri Vasna Road','Sama Savli Road'], projects: ['Gotri Residency','Sama Savli Heights'] },
+    'Waghodia Road':  { subs: ['Waghodia Chokdi','Waghodia GIDC','Vadodara Waghodia'], projects: ['Waghodia Residency'] },
+    'Manjalpur':      { subs: ['Manjalpur Gam','Manjalpur Char Rasta','Old Padra Road'], projects: ['Manjalpur Heights','Old Padra Residency'] },
+    'Fatehgunj':      { subs: ['Fatehgunj Main Road','Old Padra Road','Fatehgunj Society'], projects: ['Fatehgunj Residency'] }
+  },
+  'Rajkot': {
+    'Kalawad Road':        { subs: ['Kalawad Road Chokdi','Nana Mava Road','Mavdi Chowk'], projects: ['Kalawad Residency','Nana Mava Heights'] },
+    'Mavdi':               { subs: ['Mavdi Main Road','Mavdi Plot','Mavdi Chowk'], projects: ['Mavdi Residency'] },
+    'Raiya Road':          { subs: ['Raiya Chokdi','Raiya Telephone Exchange','Raiya Road Society'], projects: ['Raiya Heights','Raiya Residency'] },
+    'University Road':     { subs: ['University Road Chokdi','Yagnik Road','Tagore Road'], projects: ['University Heights','Yagnik Residency'] },
+    '150 Feet Ring Road':  { subs: ['150 Feet Ring Road Chokdi','Bhaktinagar','Aji GIDC'], projects: ['Ring Road Residency','Bhaktinagar Heights'] }
+  }
+};
+
+// ===== AUTH STATE =====
+function checkAuthState() {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const token = localStorage.getItem('token');
+  const loginBtn = document.getElementById('loginBtn');
+  const userMenu = document.getElementById('userMenu');
+  const userNameDisplay = document.getElementById('userNameDisplay');
+
+  // Login required — redirect to login page
+  if (!token || !user) {
+    sessionStorage.setItem('redirectAfterLogin', window.location.href);
+    window.location.href = 'login.html?msg=login-required';
+    return;
+  }
+
+  if (loginBtn && userMenu) {
+    loginBtn.style.display = 'none';
+    userMenu.style.display = 'block';
+    userNameDisplay.textContent = user.firstName || user.email?.split('@')[0] || '';
+    const nameEl  = document.getElementById('name');
+    const phoneEl = document.getElementById('phone');
+    const emailEl = document.getElementById('email');
+    if (!nameEl.value  && user.firstName) nameEl.value  = (user.firstName + ' ' + (user.lastName || '')).trim();
+    if (!phoneEl.value && user.phone)     phoneEl.value = user.phone;
+    if (!emailEl.value && user.email)     emailEl.value = user.email;
+  }
+}
+
+function handleLogout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  window.location.reload();
+}
+
+const userMenuBtn = document.getElementById('userMenuBtn');
+const userDropdown = document.getElementById('userDropdown');
+if (userMenuBtn) {
+  userMenuBtn.addEventListener('click', () => {
+    userDropdown.style.display = userDropdown.style.display === 'none' ? 'block' : 'none';
+  });
+  document.addEventListener('click', e => {
+    if (!userMenuBtn.contains(e.target)) userDropdown.style.display = 'none';
+  });
+}
+
+checkAuthState();
+
+// ===== HAMBURGER =====
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('nav').classList.toggle('open');
+});
+
+// ===== NAV DROPDOWN MOBILE =====
+document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      btn.closest('.nav-dropdown').classList.toggle('open');
+    }
+  });
+});
+
+// ===== STICKY HEADER =====
+window.addEventListener('scroll', () => {
+  document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+document.getElementById('city').addEventListener('change', function() {
+  const city = this.value;
+  const localityEl = document.getElementById('locality');
+  const subEl      = document.getElementById('subArea');
+  const projEl     = document.getElementById('society');
+  const locs = Object.keys(cityData[city] || {});
+  localityEl.innerHTML = '<option value="">-- Select Locality --</option>' +
+    locs.map(l => '<option value="' + l + '">' + l + '</option>').join('');
+  subEl.innerHTML  = '<option value="">-- Select Locality First --</option>';
+  projEl.innerHTML = '<option value="">-- Select Locality First --</option>';
+  // Hide detail sections until locality is picked
+  ['cardFeatures','cardPrice','cardImages','cardAmenities','submitBtn'].forEach(id => {
+    document.getElementById(id).classList.add('step-hidden');
+  });
+  updateScore();
+});
+
+document.getElementById('locality').addEventListener('change', function() {
+  const city     = document.getElementById('city').value;
+  const locality = this.value;
+  const data     = (cityData[city] && cityData[city][locality]) || { subs: [], projects: [] };
+  const subEl    = document.getElementById('subArea');
+  const projEl   = document.getElementById('society');
+  subEl.innerHTML = '<option value="">-- Select Sub Area --</option>' +
+    data.subs.map(s => '<option value="' + s + '">' + s + '</option>').join('');
+  projEl.innerHTML = '<option value="">-- Select Project --</option>' +
+    data.projects.map(p => '<option value="' + p + '">' + p + '</option>').join('') +
+    '<option value="__other__">Other (Type Manually)</option>';
+  revealNextSections();
+});
+
+function revealNextSections() {
+  const locality = document.getElementById('locality').value;
+  if (!locality) return;
+  ['cardFeatures','cardPrice','cardImages','cardAmenities','submitBtn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el.classList.contains('step-hidden')) {
+      el.classList.remove('step-hidden');
+      el.classList.add('step-reveal');
+    }
+  });
+  updateFeatureVisibility();
+  updateScore();
+}
+
+// ===== PROPERTY TYPE → DYNAMIC FIELDS =====
+const TYPE_CONFIG = {
+  apartment: { residential: true,  plot: false, commercial: false, floor: true,  carpet: true,  build: true  },
+  villa:     { residential: true,  plot: false, commercial: false, floor: false, carpet: true,  build: true  },
+  bungalow:  { residential: true,  plot: false, commercial: false, floor: false, carpet: true,  build: true  },
+  plot:      { residential: false, plot: true,  commercial: false, floor: false, carpet: false, build: false },
+  office:    { residential: false, plot: false, commercial: true,  floor: true,  carpet: true,  build: false },
+  shop:      { residential: false, plot: false, commercial: true,  floor: true,  carpet: false, build: false },
+};
+
+function updateFeatureVisibility() {
+  const type = document.getElementById('propType').value;
+  const cfg  = TYPE_CONFIG[type] || { residential: false, plot: false, commercial: false, floor: false, carpet: false, build: false };
+
+  document.getElementById('grpResidential').style.display = cfg.residential ? '' : 'none';
+  document.getElementById('grpPlot').style.display        = cfg.plot        ? '' : 'none';
+  document.getElementById('grpCommercial').style.display  = cfg.commercial  ? '' : 'none';
+  document.getElementById('grpFurnished').style.display   = (cfg.residential || cfg.commercial) ? '' : 'none';
+  document.getElementById('floorGroup').style.display     = cfg.floor       ? '' : 'none';
+  document.getElementById('carpetAreaGroup').style.display= cfg.carpet      ? '' : 'none';
+  document.getElementById('buildAreaGroup').style.display = cfg.build       ? '' : 'none';
+
+  // Score checklist beds row
+  const scBeds = document.getElementById('sc-beds');
+  if (scBeds) scBeds.style.display = cfg.residential ? '' : 'none';
+}
+
+// ===== VALIDATION =====
+function clearErrors() {
+  document.querySelectorAll('.field-error').forEach(el => el.classList.remove('field-error'));
+  document.querySelectorAll('.error-msg.show').forEach(el => el.classList.remove('show'));
+  document.querySelectorAll('.chip-group.error').forEach(el => el.classList.remove('error'));
+}
+
+function markError(el, msgEl) {
+  if (el)    el.classList.add('field-error');
+  if (msgEl) msgEl.classList.add('show');
+}
+
+function validateForm() {
+  clearErrors();
+  const type = document.getElementById('propType').value;
+  const cfg  = TYPE_CONFIG[type] || {};
+  let valid = true;
+  let firstError = null;
+
+  function fail(fieldId, msgId) {
+    const el  = document.getElementById(fieldId);
+    const msg = msgId ? document.getElementById(msgId) : null;
+    markError(el, msg);
+    if (!firstError && el) firstError = el;
+    valid = false;
+  }
+
+  // Personal
+  if (!document.getElementById('name').value.trim())  fail('name');
+  if (!document.getElementById('phone').value.trim()) fail('phone');
+
+  // Property type & category
+  if (!document.getElementById('propType').value)   fail('propType');
+  if (!document.getElementById('category').value)   fail('category');
+
+  // Title
+  if (document.getElementById('title').value.trim().length < 3) fail('title');
+
+  // Description — min 20 chars
+  if (document.getElementById('description').value.trim().length < 20) fail('description');
+
+  // Location
+  if (!document.getElementById('city').value)     fail('city');
+  if (!document.getElementById('locality').value) fail('locality');
+
+  // Price
+  if (!(Number(document.getElementById('price').value) > 0)) fail('price');
+
+  // Area
+  if (!(Number(document.getElementById('superArea').value) > 0)) {
+    fail('superArea', 'err-area');
+  }
+
+  // Beds + Baths — only for residential types
+  if (cfg.residential) {
+    if (!document.querySelector('#bedsChips .chip.selected')) {
+      document.getElementById('bedsChips').classList.add('error');
+      document.getElementById('err-beds').classList.add('show');
+      if (!firstError) firstError = document.getElementById('bedsChips');
+      valid = false;
+    }
+    if (!document.querySelector('#bathsChips .chip.selected')) {
+      document.getElementById('bathsChips').classList.add('error');
+      document.getElementById('err-baths').classList.add('show');
+      if (!firstError) firstError = document.getElementById('bathsChips');
+      valid = false;
+    }
+  }
+
+  // Images — at least 1 required
+  if (uploadedFiles.length === 0) {
+    const box = document.getElementById('uploadBox');
+    box.style.borderColor = '#E53935';
+    box.style.background  = '#fff5f5';
+    // inline error under upload box
+    let imgErr = document.getElementById('err-images');
+    if (!imgErr) {
+      imgErr = document.createElement('p');
+      imgErr.id = 'err-images';
+      imgErr.style.cssText = 'color:#E53935;font-size:0.78rem;margin-top:6px;';
+      box.parentNode.insertBefore(imgErr, box.nextSibling);
+    }
+    imgErr.textContent = 'Please upload at least 1 property photo';
+    if (!firstError) firstError = box;
+    valid = false;
+  } else {
+    const box = document.getElementById('uploadBox');
+    box.style.borderColor = '';
+    box.style.background  = '';
+    const imgErr = document.getElementById('err-images');
+    if (imgErr) imgErr.textContent = '';
+  }
+
+  if (!valid && firstError) {
+    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  return valid;
+}
+
+// ===== LISTING SCORE =====
+function updateScore() {
+  const checks = [
+    { id: 'sc-name',   pts: 10, done: () => document.getElementById('name').value.trim() && document.getElementById('phone').value.trim() },
+    { id: 'sc-type',   pts: 10, done: () => document.getElementById('propType').value },
+    { id: 'sc-title',  pts: 10, done: () => document.getElementById('title').value.trim().length >= 5 },
+    { id: 'sc-city',   pts: 15, done: () => document.getElementById('city').value && document.getElementById('locality').value },
+    { id: 'sc-price',  pts: 15, done: () => Number(document.getElementById('price').value) > 0 },
+    { id: 'sc-area',   pts: 10, done: () => Number(document.getElementById('superArea').value) > 0 || Number(document.getElementById('carpetArea').value) > 0 },
+    { id: 'sc-beds',   pts: 10, done: () => document.querySelector('#bedsChips .chip.selected') && document.querySelector('#bathsChips .chip.selected') },
+    { id: 'sc-desc',   pts: 10, done: () => document.getElementById('description').value.trim().length >= 20 },
+    { id: 'sc-images', pts: 10, done: () => uploadedFiles.length > 0 },
+  ];
+
+  const type = document.getElementById('propType').value;
+  const hideBeds = ['plot','office','shop'].includes(type);
+
+  let total = 0, earned = 0;
+  checks.forEach(c => {
+    const li = document.getElementById(c.id);
+    if (!li || li.style.display === 'none') return;
+    total += c.pts;
+    const ok = !!c.done();
+    li.className = ok ? 'done' : 'pending';
+    if (ok) earned += c.pts;
+  });
+
+  // Normalise to 100
+  const score = total > 0 ? Math.round((earned / total) * 100) : 0;
+  document.getElementById('scoreNum').textContent = score;
+
+  // Ring — circumference = 2*PI*60 = 376.99
+  const circ = 376.99;
+  const offset = circ - (circ * score / 100);
+  const circle = document.getElementById('scoreCircle');
+  const glow   = document.getElementById('scoreGlow');
+  circle.style.strokeDashoffset = offset;
+  glow.style.strokeDashoffset   = offset;
+
+  // Gradient color shift based on score
+  const gradMid = document.getElementById('gradMid');
+  const gradEnd = document.getElementById('gradEnd');
+  if (score >= 80)      { gradMid.setAttribute('stop-color','#64b5f6'); gradEnd.setAttribute('stop-color','#1565c0'); }
+  else if (score >= 60) { gradMid.setAttribute('stop-color','#a5d6a7'); gradEnd.setAttribute('stop-color','#2e7d32'); }
+  else if (score >= 40) { gradMid.setAttribute('stop-color','#ffcc80'); gradEnd.setAttribute('stop-color','#e65100'); }
+  else                  { gradMid.setAttribute('stop-color','#f7c59f'); gradEnd.setAttribute('stop-color','#E53935'); }
+
+  // Pulse on every 25% milestone
+  const ring = document.getElementById('scoreRing');
+  if ([25,50,75,100].includes(score)) {
+    ring.classList.remove('pulse');
+    void ring.offsetWidth;
+    ring.classList.add('pulse');
+    setTimeout(() => ring.classList.remove('pulse'), 900);
+  }
+
+  // Label
+  const lbl = document.getElementById('scoreLabel');
+  if (score >= 80)      { lbl.textContent = score === 100 ? '🎉 Perfect!': 'Excellent!'; lbl.className = 'score-label great'; }
+  else if (score >= 60) { lbl.textContent = 'Good';        lbl.className = 'score-label good'; }
+  else if (score >= 40) { lbl.textContent = 'Fair';        lbl.className = 'score-label fair'; }
+  else                  { lbl.textContent = 'Start Filling'; lbl.className = 'score-label poor'; }
+
+  // Tip
+  const tip = document.getElementById('scoreTip');
+  if (score < 100) {
+    const missing = checks.filter(c => { const li = document.getElementById(c.id); return li && li.style.display !== 'none' && !c.done(); });
+    if (missing.length) {
+      const labels = { 'sc-name':'name & phone','sc-type':'property type','sc-title':'title','sc-city':'city & locality','sc-price':'price','sc-area':'area (sq.ft)','sc-beds':'beds & baths','sc-desc':'description (min 20 chars)','sc-images':'at least 1 photo' };
+      tip.textContent = '💡 Add ' + labels[missing[0].id] + ' to boost your score!';
+      tip.classList.add('show');
+    }
+  } else {
+    tip.textContent = '🎉 Perfect listing! You\'re all set.';
+    tip.classList.add('show');
+  }
+
+  // Progress bar = score
+  document.getElementById('progressFill').style.width = score + '%';
+}
+
+document.getElementById('propType').addEventListener('change', function() {
+  updateFeatureVisibility();
+  updateScore();
+});
+document.getElementById('price').addEventListener('input', updateScore);
+
+// Clear field error on input
+['name','phone','propType','category','title','description','city','locality','price','superArea'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => el.classList.remove('field-error'));
+  if (el) el.addEventListener('change', () => el.classList.remove('field-error'));
+});
+
+// Clear image error when file uploaded
+document.getElementById('fileInput').addEventListener('change', () => {
+  document.getElementById('uploadBox').style.borderColor = '';
+  document.getElementById('uploadBox').style.background  = '';
+  const imgErr = document.getElementById('err-images');
+  if (imgErr) imgErr.textContent = '';
+});
+
+// Attach score update to all inputs
+['name','phone','email','title','description','city','locality','superArea','carpetArea','price','furnished'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', updateScore), el.addEventListener('change', updateScore);
+});
+document.querySelectorAll('input[name="listing"], input[name="role"]').forEach(r => r.addEventListener('change', updateScore));
+
+updateScore();
+// Trigger smooth ring animation from 0 on page load
+setTimeout(() => { document.getElementById('scoreCircle').style.transition = 'stroke-dashoffset 0.9s cubic-bezier(.4,0,.2,1), stroke 0.5s'; document.getElementById('scoreGlow').style.transition = 'stroke-dashoffset 0.9s cubic-bezier(.4,0,.2,1), stroke 0.5s'; }, 50);
+
+// ===== CHIPS (single select for beds/baths/balc/washroom) =====
+['bedsChips', 'bathsChips', 'balcChips', 'washroomChips'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', function() {
+      el.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+      this.classList.add('selected');
+      el.classList.remove('error');
+      const errMap = { bedsChips: 'err-beds', bathsChips: 'err-baths' };
+      if (errMap[id]) document.getElementById(errMap[id])?.classList.remove('show');
+      updateScore();
+    });
+  });
+});
+
+// Amenities multi-select
+document.getElementById('amenitiesChips').addEventListener('click', function(e) {
+  const chip = e.target.closest('.chip');
+  if (chip) { chip.classList.toggle('selected'); updateScore(); }
+});
+
+// ===== RADIO BUTTONS =====
+document.querySelectorAll('.radio-option').forEach(option => {
+  option.addEventListener('click', function() {
+    const group = this.parentElement;
+    group.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+    this.classList.add('selected');
+    this.querySelector('input').checked = true;
+  });
+});
+
+// ===== FILE UPLOAD =====
+const uploadBox = document.getElementById('uploadBox');
+const fileInput = document.getElementById('fileInput');
+const preview = document.getElementById('preview');
+
+uploadBox.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', e => handleFiles(e.target.files));
+uploadBox.addEventListener('dragover', e => { e.preventDefault(); uploadBox.style.borderColor = '#E53935'; });
+uploadBox.addEventListener('dragleave', () => { uploadBox.style.borderColor = '#ddd'; });
+uploadBox.addEventListener('drop', e => { e.preventDefault(); uploadBox.style.borderColor = '#ddd'; handleFiles(e.dataTransfer.files); });
+
+function handleFiles(files) {
+  for (let file of files) {
+    if (!file.type.startsWith('image/')) continue;
+    uploadedFiles.push(file);
+    const reader = new FileReader();
+    reader.onload = e => {
+      const div = document.createElement('div');
+      div.className = 'preview-item';
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      const btn = document.createElement('button');
+      btn.className = 'delete-btn';
+      btn.innerHTML = '×';
+      btn.type = 'button';
+      btn.addEventListener('click', () => { div.remove(); uploadedFiles.splice(uploadedFiles.indexOf(file), 1); updateScore(); });
+      div.appendChild(img);
+      div.appendChild(btn);
+      preview.appendChild(div);
+      updateScore();
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// ===== FORM SUBMIT =====
+document.getElementById('mainForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (!validateForm()) return;
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+  // Upload images first
+  let imageUrls = [];
+  if (uploadedFiles.length > 0) {
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading images...';
+    const token = localStorage.getItem('token');
+    for (const file of uploadedFiles) {
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch(`${API}/upload`, {
+          method: 'POST',
+          headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+          body: fd
+        });
+        const data = await res.json();
+        if (data.success) imageUrls.push('http://localhost:5000' + data.url);
+      } catch(e) {}
+    }
+  }
+
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+  const beds = document.querySelector('#bedsChips .chip.selected')?.textContent.trim();
+  const baths = document.querySelector('#bathsChips .chip.selected')?.textContent.trim();
+  const amenities = [...document.querySelectorAll('#amenitiesChips .chip.selected')].map(c => c.textContent.trim());
+
+  const payload = {
+    title: document.getElementById('title').value,
+    description: document.getElementById('description').value,
+    status: document.querySelector('input[name="listing"]:checked')?.value || 'for-sale',
+    type: document.getElementById('propType').value,
+    category: document.getElementById('category').value,
+    price: Number(document.getElementById('price').value),
+    images: imageUrls,
+    location: {
+      city: document.getElementById('city').value,
+      area: document.getElementById('locality').value,
+      subArea: document.getElementById('subArea').value,
+      society: document.getElementById('society').value
+    },
+    specs: {
+      beds: beds ? parseInt(beds) : 0,
+      baths: baths ? parseInt(baths) : 0,
+      sqft: Number(document.getElementById('superArea').value) || Number(document.getElementById('carpetArea').value) || 0,
+      furnished: document.getElementById('furnished').value
+    },
+    amenities,
+    postedBy: {
+      name: document.getElementById('name').value,
+      phone: document.getElementById('phone').value,
+      email: document.getElementById('email').value,
+      role: document.querySelector('input[name="role"]:checked')?.value || 'Owner'
+    }
+  };
+
+  // Try backend first
+  try {
+    const token = localStorage.getItem('token');
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    const endpoint = token ? `${API}/properties/user-post` : `${API}/properties`;
+    const res = await fetch(endpoint, { method: 'POST', headers, body: JSON.stringify(payload) });
+    const data = await res.json();
+    if (data.success || res.ok) {
+      showSuccess();
+      return;
+    }
+  } catch(err) {
+    // Backend not available — save locally and show success
+    const pending = JSON.parse(localStorage.getItem('pendingProperties') || '[]');
+    pending.push({ ...payload, submittedAt: new Date().toISOString() });
+    localStorage.setItem('pendingProperties', JSON.stringify(pending));
+  }
+
+  showSuccess();
+});
+
+function showSuccess() {
+  const finalScore = parseInt(document.getElementById('scoreNum').textContent) || 0;
+  document.getElementById('mainForm').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Animate score ring on success screen
+  const circ = 364.4;
+  const circle = document.getElementById('successCircle');
+  const numEl  = document.getElementById('successScoreNum');
+  const lbl    = document.getElementById('successScoreLabel');
+  const msg    = document.getElementById('successScoreMsg');
+
+  // Color & label based on score
+  const color = finalScore >= 80 ? '#1565c0' : finalScore >= 60 ? '#2e7d32' : finalScore >= 40 ? '#e65100' : '#E53935';
+  circle.style.stroke = color;
+
+  if (finalScore === 100) {
+    lbl.textContent = '100% Complete!';
+    lbl.style.background = '#e3f2fd'; lbl.style.color = '#1565c0';
+    msg.textContent = 'Perfect listing! Your property will get maximum visibility.';
+  } else if (finalScore >= 60) {
+    lbl.textContent = 'Good Listing';
+    lbl.style.background = '#e8f5e9'; lbl.style.color = '#2e7d32';
+    msg.textContent = 'Good job! Fill remaining details to get more enquiries.';
+  } else {
+    lbl.textContent = 'Incomplete';
+    lbl.style.background = '#fff3e0'; lbl.style.color = '#e65100';
+    msg.textContent = 'Your listing was posted but adding more details will boost visibility.';
+  }
+
+  // Animate ring fill
+  setTimeout(() => {
+    circle.style.strokeDashoffset = circ - (circ * finalScore / 100);
+  }, 100);
+
+  // Count-up number animation
+  let current = 0;
+  const step = Math.ceil(finalScore / 60);
+  const timer = setInterval(() => {
+    current = Math.min(current + step, finalScore);
+    numEl.textContent = current;
+    if (current >= finalScore) clearInterval(timer);
+  }, 20);
+}
+</script>
+
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <a href="index.html" class="logo footer-logo">
+          <span class="logo-icon"><i class="fa-solid fa-building-columns"></i></span>
+          <span class="logo-text">City <span class="yellow">Real</span> Space</span>
+        </a>
+        <p class="footer-about">Ahmedabad's most trusted real estate platform. We connect buyers, sellers and investors with verified properties across Gujarat.</p>
+        <div class="social-links">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://wa.me/919377531247" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Our Services</h4>
+        <ul>
+          <li><a href="buy.html"><i class="fa-solid fa-chevron-right"></i> Buy Property</a></li>
+          <li><a href="resale.html"><i class="fa-solid fa-chevron-right"></i> Resale</a></li>
+          <li><a href="land.html"><i class="fa-solid fa-chevron-right"></i> Land</a></li>
+          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell – List Property</a></li>
+          <li><a href="new-launch.html"><i class="fa-solid fa-chevron-right"></i> New Launch</a></li>
+          <li><a href="prelease.html"><i class="fa-solid fa-chevron-right"></i> Prelease</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Property Valuation</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Home Loans</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="faq.html"><i class="fa-solid fa-chevron-right"></i> FAQ</a></li>
+          <li><a href="privacy.html"><i class="fa-solid fa-chevron-right"></i> Privacy Policy</a></li>
+          <li><a href="terms.html"><i class="fa-solid fa-chevron-right"></i> Terms &amp; Conditions</a></li>
+          <li><a href="careers.html"><i class="fa-solid fa-chevron-right"></i> Careers</a></li>
+          <li><a href="blog.html"><i class="fa-solid fa-chevron-right"></i> Blog</a></li>
+          <li><a href="about.html"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
+          <li><a href="contact.html"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <div class="contact-info">
+          <div class="ci"><i class="fa-solid fa-location-dot"></i><span>A-708, Prahlad Nagar Trade Centre, Satellite, Ahmedabad</span></div>
+          <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 98250 12824</span></div>
+          <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 84600 14000</span></div>
+          <div class="ci"><i class="fa-solid fa-envelope"></i><span>admin@cityestate.co.in</span></div>
+        </div>
+        <div class="working-hours">
+          <h5><i class="fa-regular fa-clock"></i> Working Hours</h5>
+          <p>Mon – Sat: 9:00 AM – 7:00 PM</p>
+          <p>Sunday: 10:00 AM – 4:00 PM</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <p>© 2025 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/919377531247" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+<button class="back-top" id="backTop"><i class="fa-solid fa-chevron-up"></i></button>
+
+<script src="cursor.js"></script>
+<script src="bg-animation.js"></script>
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+    document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
+  });
+  document.getElementById('backTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
+</body>
+</html>

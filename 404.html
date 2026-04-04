@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>404 – Page Not Found | City Real Space</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    body { margin: 0; min-height: 100vh; background: #f0f2f5; display: flex; flex-direction: column; }
+
+    .err-page {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 100px 24px 60px; text-align: center;
+      background: linear-gradient(135deg, #1a0533 0%, #0d1b6e 25%, #0a4a6e 50%, #0d3b2a 75%, #1a0533 100%);
+      background-size: 400% 400%;
+      animation: bgShift 8s ease infinite;
+      position: relative; overflow: hidden;
+    }
+    @keyframes bgShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .err-page::before {
+      content: ''; position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&q=80') center/cover no-repeat;
+      opacity: 0.05;
+    }
+
+    /* Floating particles */
+    .particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .particle {
+      position: absolute; width: 6px; height: 6px; border-radius: 50%;
+      animation: floatUp linear infinite;
+    }
+    .particle:nth-child(1)  { left: 10%; animation-duration: 8s;  animation-delay: 0s;   width: 5px;  height: 5px; background: rgba(255,193,7,0.7); }
+    .particle:nth-child(2)  { left: 20%; animation-duration: 10s; animation-delay: 1s;   width: 7px;  height: 7px; background: rgba(229,57,53,0.7); }
+    .particle:nth-child(3)  { left: 35%; animation-duration: 7s;  animation-delay: 2s;   width: 4px;  height: 4px; background: rgba(0,229,255,0.7); }
+    .particle:nth-child(4)  { left: 50%; animation-duration: 9s;  animation-delay: 0.5s; width: 6px;  height: 6px; background: rgba(156,39,176,0.7); }
+    .particle:nth-child(5)  { left: 65%; animation-duration: 11s; animation-delay: 1.5s; width: 5px;  height: 5px; background: rgba(76,175,80,0.7); }
+    .particle:nth-child(6)  { left: 80%; animation-duration: 8s;  animation-delay: 3s;   width: 7px;  height: 7px; background: rgba(255,87,34,0.7); }
+    .particle:nth-child(7)  { left: 90%; animation-duration: 6s;  animation-delay: 0.8s; width: 4px;  height: 4px; background: rgba(33,150,243,0.7); }
+    .particle:nth-child(8)  { left: 45%; animation-duration: 12s; animation-delay: 2.5s; width: 6px;  height: 6px; background: rgba(255,235,59,0.7); }
+    @keyframes floatUp {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 1; }
+      100% { transform: translateY(-100px) scale(1); opacity: 0; }
+    }
+
+    .err-content { position: relative; z-index: 2; max-width: 600px; }
+
+    /* Big animated circle with 404 */
+    .err-circle-wrap {
+      position: relative; width: 220px; height: 220px;
+      margin: 0 auto 40px;
+    }
+
+    /* Rotating outer ring */
+    .err-ring {
+      position: absolute; inset: 0; border-radius: 50%;
+      border: 4px solid transparent;
+      border-top-color: #FFC107;
+      border-right-color: #00E5FF;
+      border-bottom-color: #E53935;
+      border-left-color: #9C27B0;
+      animation: spinRing 3s linear infinite;
+    }
+    .err-ring-2 {
+      position: absolute; inset: 12px; border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: #4CAF50;
+      border-right-color: #FF5722;
+      border-bottom-color: #2196F3;
+      border-left-color: #FFEB3B;
+      animation: spinRing 2s linear infinite reverse;
+    }
+    @keyframes spinRing { to { transform: rotate(360deg); } }
+
+    /* Pulsing rings */
+    .err-pulse { position: absolute; inset: 0; border-radius: 50%; }
+    .err-pulse::before,
+    .err-pulse::after {
+      content: ''; position: absolute; inset: -20px; border-radius: 50%;
+      border: 1px solid rgba(0,229,255,0.4);
+      animation: pulseRing 2.5s ease-out infinite;
+    }
+    .err-pulse::after { animation-delay: 1.2s; border-color: rgba(156,39,176,0.4); }
+    @keyframes pulseRing {
+      0%   { transform: scale(0.8); opacity: 0.8; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+
+    /* Inner circle */
+    .err-inner {
+      position: absolute; inset: 24px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255,193,7,0.2), rgba(0,229,255,0.1), rgba(156,39,176,0.15));
+      border: 2px solid rgba(255,255,255,0.15);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      backdrop-filter: blur(6px);
+    }
+    .err-num {
+      font-size: 3.2rem; font-weight: 800; line-height: 1; letter-spacing: -2px;
+      background: linear-gradient(90deg, #FFC107, #FF5722, #E53935, #9C27B0, #2196F3, #00E5FF);
+      background-size: 300% 100%;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      animation: rainbowText 3s linear infinite;
+    }
+    @keyframes rainbowText {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+    .err-icon { font-size: 1rem; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+    /* Text */
+    .err-tag {
+      display: inline-block;
+      background: linear-gradient(90deg, #E53935, #9C27B0);
+      color: #fff; font-size: 0.75rem; font-weight: 700; padding: 5px 16px;
+      border-radius: 50px; margin-bottom: 16px; letter-spacing: 1px; text-transform: uppercase;
+      box-shadow: 0 4px 15px rgba(229,57,53,0.4);
+    }
+    .err-content h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #fff; margin-bottom: 12px; line-height: 1.3; }
+    .err-content h1 span { color: #FFC107; }
+    .err-content p { color: rgba(255,255,255,0.6); font-size: 0.92rem; line-height: 1.7; margin-bottom: 32px; max-width: 420px; margin-left: auto; margin-right: auto; }
+
+    /* Buttons */
+    .err-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+    .btn-home {
+      background: linear-gradient(135deg, #FFC107, #FF5722); color: #fff; padding: 13px 28px; border-radius: 10px;
+      font-weight: 700; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px;
+      transition: all 0.2s; text-decoration: none; box-shadow: 0 6px 20px rgba(255,87,34,0.4);
+    }
+    .btn-home:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(255,87,34,0.6); }
+    .btn-contact {
+      background: linear-gradient(135deg, #2196F3, #9C27B0); color: #fff; padding: 13px 28px; border-radius: 10px;
+      font-weight: 600; font-size: 0.9rem; border: none;
+      display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; text-decoration: none;
+      box-shadow: 0 6px 20px rgba(33,150,243,0.4);
+    }
+    .btn-contact:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(33,150,243,0.6); }
+
+    /* Quick links */
+    .err-links { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .err-link {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.8); padding: 8px 16px; border-radius: 8px;
+      font-size: 0.8rem; font-weight: 500; text-decoration: none; transition: all 0.25s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .err-link:nth-child(1):hover { background: rgba(255,193,7,0.2);  border-color: #FFC107; color: #FFC107; }
+    .err-link:nth-child(2):hover { background: rgba(0,229,255,0.15); border-color: #00E5FF; color: #00E5FF; }
+    .err-link:nth-child(3):hover { background: rgba(76,175,80,0.15); border-color: #4CAF50; color: #4CAF50; }
+    .err-link:nth-child(4):hover { background: rgba(255,87,34,0.15); border-color: #FF5722; color: #FF5722; }
+    .err-link:nth-child(5):hover { background: rgba(156,39,176,0.15);border-color: #9C27B0; color: #CE93D8; }
+    .err-link i { font-size: 0.75rem; }
+
+    /* Building animation bottom */
+    .err-building {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      display: flex; align-items: flex-end; justify-content: center; gap: 6px;
+      opacity: 0.12; pointer-events: none; overflow: hidden;
+    }
+    .bld { border-radius: 4px 4px 0 0; }
+    .bld:nth-child(odd)  { background: linear-gradient(to top, #FFC107, #FF5722); }
+    .bld:nth-child(even) { background: linear-gradient(to top, #2196F3, #9C27B0); }
+    .bld-1 { width: 40px; height: 120px; }
+    .bld-2 { width: 60px; height: 180px; }
+    .bld-3 { width: 80px; height: 240px; }
+    .bld-4 { width: 50px; height: 160px; }
+    .bld-5 { width: 90px; height: 200px; }
+    .bld-6 { width: 45px; height: 140px; }
+    .bld-7 { width: 70px; height: 190px; }
+    .bld-8 { width: 55px; height: 150px; }
+  </style>
+</head>
+<body>
+
+<script src="splash.js"></script>
+<!-- HEADER -->
+<header class="header" id="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <img src="images/city_real_space_logo_clean-removebg-preview.png" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;"/>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Buy <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="#">All</a>
+          <a href="#">Rent</a>
+          <a href="#">Resale</a>
+          <a href="#">Land</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Sell <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="#">List Property</a>
+          <a href="#">List Project</a>
+        </div>
+      </div>
+      <a href="#">New Launch</a>
+      <a href="#">Prelease</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button class="fav-btn" title="Favorites"><i class="fa-regular fa-heart"></i><span class="fav-count">0</span></button>
+      <div id="userMenu" style="display:none;position:relative">
+        <button class="btn-login" id="userMenuBtn"><i class="fa-solid fa-user"></i> <span id="userNameDisplay"></span> <i class="fa-solid fa-chevron-down" style="font-size:0.7rem"></i></button>
+        <div id="userDropdown" style="display:none;position:absolute;right:0;top:110%;background:#fff;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.15);min-width:160px;z-index:999;overflow:hidden">
+          <button onclick="handleLogout()" style="width:100%;padding:12px 16px;border:none;background:none;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.85rem;color:#E53935;font-weight:600;text-align:left"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+      </div>
+      <a href="login.html" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> Login / Register</a>
+      <button class="btn-inquiry">Inquiry <i class="fa-solid fa-arrow-right"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<!-- ERROR PAGE -->
+<div class="err-page">
+
+  <!-- Particles -->
+  <div class="particles">
+    <div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div>
+  </div>
+
+  <!-- City skyline silhouette -->
+  <div class="err-building">
+    <div class="bld bld-1"></div><div class="bld bld-2"></div>
+    <div class="bld bld-3"></div><div class="bld bld-4"></div>
+    <div class="bld bld-5"></div><div class="bld bld-6"></div>
+    <div class="bld bld-7"></div><div class="bld bld-8"></div>
+    <div class="bld bld-3"></div><div class="bld bld-2"></div>
+    <div class="bld bld-4"></div><div class="bld bld-1"></div>
+  </div>
+
+  <div class="err-content">
+
+    <!-- Animated Circle -->
+    <div class="err-circle-wrap">
+      <div class="err-pulse"></div>
+      <div class="err-ring"></div>
+      <div class="err-ring-2"></div>
+      <div class="err-inner">
+        <div class="err-num">404</div>
+        <div class="err-icon"><i class="fa-solid fa-building-columns"></i></div>
+      </div>
+    </div>
+
+    <div class="err-tag">Page Not Found</div>
+    <h1>Oops! This Property<br/><span>Doesn't Exist</span></h1>
+    <p>The page you're looking for has been moved, deleted or never existed. Let us help you find your perfect property instead!</p>
+
+    <div class="err-btns">
+      <a href="index.html" class="btn-home"><i class="fa-solid fa-home"></i> Back to Home</a>
+      <a href="contact.html" class="btn-contact"><i class="fa-solid fa-headset"></i> Contact Support</a>
+    </div>
+
+    <div class="err-links">
+      <a href="#" class="err-link"><i class="fa-solid fa-building"></i> Buy Property</a>
+      <a href="#" class="err-link"><i class="fa-solid fa-key"></i> Rent Property</a>
+      <a href="#" class="err-link"><i class="fa-solid fa-star"></i> New Launch</a>
+      <a href="blog.html" class="err-link"><i class="fa-solid fa-newspaper"></i> Blog</a>
+      <a href="about.html" class="err-link"><i class="fa-solid fa-users"></i> About Us</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <a href="index.html" class="logo footer-logo">
+          <img src="images/city_real_space_logo_clean-removebg-preview.png" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;filter:brightness(0) invert(1);"/>
+        </a>
+        <p class="footer-about">Ahmedabad's most trusted real estate platform. We connect buyers, sellers and investors with verified properties across Gujarat.</p>
+        <div class="social-links">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://wa.me/919377531247" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Our Services</h4>
+        <ul>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Buy Property</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Sell Property</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Rent Property</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> New Launch Projects</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Pre-Lease Properties</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Property Valuation</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Home Loans</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="faq.html"><i class="fa-solid fa-chevron-right"></i> FAQ</a></li>
+          <li><a href="privacy.html"><i class="fa-solid fa-chevron-right"></i> Privacy Policy</a></li>
+          <li><a href="blog.html"><i class="fa-solid fa-chevron-right"></i> Blog</a></li>
+          <li><a href="about.html"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
+          <li><a href="contact.html"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <div class="contact-info">
+          <div class="ci"><i class="fa-solid fa-location-dot"></i><span>A-708, Prahlad Nagar Trade Centre, Satellite, Ahmedabad</span></div>
+          <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 98250 12824</span></div>
+          <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 84600 14000</span></div>
+          <div class="ci"><i class="fa-solid fa-envelope"></i><span>admin@cityestate.co.in</span></div>
+        </div>
+        <div class="working-hours">
+          <h5><i class="fa-regular fa-clock"></i> Working Hours</h5>
+          <p>Mon – Sat: 9:00 AM – 7:00 PM</p>
+          <p>Sunday: 10:00 AM – 4:00 PM</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <p>© 2025 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/919377531247" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
+  <i class="fa-brands fa-whatsapp"></i>
+</a>
+<button class="back-top" id="backTop"><i class="fa-solid fa-chevron-up"></i></button>
+
+<script src="cursor.js"></script>
+<script src="bg-animation.js"></script>
+<script src="script.js"></script>
+<script>
+  window.addEventListener('scroll', () => {
+    document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+    document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
+  });
+  document.getElementById('backTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
+  document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      btn.closest('.nav-dropdown').classList.toggle('open');
+    });
+  });
+</script>
+</body>
+</html>

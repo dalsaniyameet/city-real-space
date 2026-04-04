@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Properties – City Real Space</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    .prop-page-wrap { max-width: 1280px; margin: 100px auto 60px; padding: 0 20px; }
+    .prop-page-head { margin-bottom: 24px; }
+    .prop-page-head h1 { font-size: 1.6rem; font-weight: 800; color: #0D1B2A; }
+    .prop-page-head p { color: #888; font-size: 0.85rem; margin-top: 4px; }
+    .filter-panel { background: #fff; border-radius: 14px; box-shadow: 0 2px 16px rgba(0,0,0,0.07); padding: 20px 24px; margin-bottom: 28px; display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+    .fp-grp { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 150px; }
+    .fp-grp label { font-size: 0.75rem; font-weight: 600; color: #555; }
+    .fp-grp select, .fp-grp input { border: 1.5px solid #e8e8e8; border-radius: 8px; padding: 9px 12px; font-family: Poppins, sans-serif; font-size: 0.83rem; color: #333; outline: none; background: #fafafa; transition: border 0.2s; }
+    .fp-grp select:focus, .fp-grp input:focus { border-color: #E53935; background: #fff; }
+    .fp-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .fp-tab { padding: 8px 18px; border: 1.5px solid #e8e8e8; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; background: #fafafa; color: #555; font-family: Poppins, sans-serif; transition: all 0.2s; }
+    .fp-tab.active { background: #E53935; border-color: #E53935; color: #fff; }
+    .btn-apply { background: #E53935; color: #fff; border: none; padding: 10px 24px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: Poppins, sans-serif; white-space: nowrap; transition: background 0.2s; }
+    .btn-apply:hover { background: #c62828; }
+    .btn-clear { background: #f5f5f5; color: #555; border: none; padding: 10px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; font-family: Poppins, sans-serif; white-space: nowrap; transition: background 0.2s; }
+    .btn-clear:hover { background: #e8e8e8; }
+    .results-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+    .results-count { font-size: 0.88rem; color: #555; font-weight: 500; }
+    .results-count strong { color: #0D1B2A; }
+    .prop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+    .empty-res { text-align: center; padding: 80px 20px; color: #aaa; grid-column: 1/-1; }
+    .empty-res i { font-size: 3rem; margin-bottom: 16px; display: block; }
+    .empty-res p { font-size: 0.9rem; }
+    @keyframes shimmer { 0%,100% { opacity:1; transform:scale(1); box-shadow:0 0 0 0 rgba(229,57,53,0.5); } 50% { opacity:0.85; transform:scale(1.04); box-shadow:0 0 0 10px rgba(229,57,53,0); } }
+    .btn-req-pulse { animation: shimmer 1.8s ease-in-out infinite; }
+    .loading-res { text-align: center; padding: 80px 20px; grid-column: 1/-1; }
+    .loading-res i { font-size: 2rem; color: #E53935; }
+    .pagination { display: flex; gap: 8px; justify-content: center; margin-top: 36px; flex-wrap: wrap; }
+    .pg-btn { width: 38px; height: 38px; border-radius: 8px; border: 1.5px solid #e8e8e8; background: #fff; color: #555; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: Poppins, sans-serif; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+    .pg-btn.active { background: #E53935; border-color: #E53935; color: #fff; }
+    .pg-btn:hover:not(.active) { border-color: #E53935; color: #E53935; }
+    @media(max-width:600px) { .prop-page-wrap { margin-top: 80px; } .fp-grp { min-width: 100%; } .req-img-panel { display: none !important; } }
+    #reqBox input::placeholder { color: rgba(255,255,255,0.35); }
+  </style>
+</head>
+<body>
+
+<header class="header" id="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;"/>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Buy <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="properties.html">All</a>
+          <a href="rent.html">Rent</a>
+          <a href="resale.html">Resale</a>
+          <a href="land.html">Land</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Sell <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="post-property.html">List Property</a>
+          <a href="post-property.html">List Project</a>
+        </div>
+      </div>
+      <a href="new-launch.html">New Launch</a>
+      <a href="prelease.html">Prelease</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <div id="userMenu" style="display:none;position:relative">
+        <button class="btn-login" id="userMenuBtn"><i class="fa-solid fa-user"></i> <span id="userNameDisplay"></span></button>
+      </div>
+      <a href="login.html" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> Login</a>
+      <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="prop-page-wrap">
+  <div class="prop-page-head">
+    <h1 id="pageTitle">All Properties</h1>
+    <p id="pageSubtitle">Browse verified properties across Gujarat</p>
+  </div>
+
+  <!-- FILTER PANEL -->
+  <div class="filter-panel">
+    <!-- Status Tabs -->
+    <div style="width:100%">
+      <div class="fp-tabs" id="statusTabs">
+        <button class="fp-tab active" data-val="">All</button>
+        <button class="fp-tab" data-val="for-sale">Buy</button>
+        <button class="fp-tab" data-val="for-rent">Rent</button>
+        <button class="fp-tab" data-val="new-launch">New Launch</button>
+      </div>
+    </div>
+
+    <!-- City -->
+    <div class="fp-grp">
+      <label>City</label>
+      <select id="fCity">
+        <option value="">All Cities</option>
+        <option value="Ahmedabad">Ahmedabad</option>
+        <option value="Gandhinagar">Gandhinagar</option>
+        <option value="Surat">Surat</option>
+        <option value="Vadodara">Vadodara</option>
+        <option value="Rajkot">Rajkot</option>
+      </select>
+    </div>
+
+    <!-- Locality -->
+    <div class="fp-grp">
+      <label>Locality</label>
+      <select id="fLocality">
+        <option value="">Select City First</option>
+      </select>
+    </div>
+
+    <!-- Sub Locality -->
+    <div class="fp-grp">
+      <label>Sub Area</label>
+      <select id="fSubLocality">
+        <option value="">All Sub-Areas</option>
+      </select>
+    </div>
+
+    <!-- Property Type -->
+    <div class="fp-grp">
+      <label>Property Type</label>
+      <select id="fType">
+        <option value="">All Types</option>
+        <option value="apartment">Apartment / Flat</option>
+        <option value="villa">Villa</option>
+        <option value="bungalow">Bungalow</option>
+        <option value="rowhouse">Row House</option>
+        <option value="plot">Plot / Land</option>
+        <option value="office">Office Space</option>
+        <option value="shop">Shop / Showroom</option>
+        <option value="warehouse">Warehouse</option>
+      </select>
+    </div>
+
+    <!-- Budget -->
+    <div class="fp-grp">
+      <label>Budget</label>
+      <select id="fBudget">
+        <option value="">Any Budget</option>
+        <option value="0-3000000">Under ₹30L</option>
+        <option value="3000000-6000000">₹30L – ₹60L</option>
+        <option value="6000000-10000000">₹60L – ₹1Cr</option>
+        <option value="10000000-20000000">₹1Cr – ₹2Cr</option>
+        <option value="20000000-50000000">₹2Cr – ₹5Cr</option>
+        <option value="50000000-999999999">Above ₹5Cr</option>
+      </select>
+    </div>
+
+    <!-- Beds (Residential only) -->
+    <div class="fp-grp" id="bedsGrp">
+      <label>Bedrooms</label>
+      <select id="fBeds">
+        <option value="">Any</option>
+        <option value="1">1 BHK</option>
+        <option value="2">2 BHK</option>
+        <option value="3">3 BHK</option>
+        <option value="4">4 BHK</option>
+        <option value="5">5+ BHK</option>
+      </select>
+    </div>
+
+    <!-- Commercial Filters (hidden by default) -->
+    <div class="fp-grp" id="sqftGrp" style="display:none">
+      <label>Carpet Area</label>
+      <select id="fSqft">
+        <option value="">Any Size</option>
+        <option value="0-500">Under 500 sqft</option>
+        <option value="500-1000">500 – 1000 sqft</option>
+        <option value="1000-2000">1000 – 2000 sqft</option>
+        <option value="2000-5000">2000 – 5000 sqft</option>
+        <option value="5000-999999">Above 5000 sqft</option>
+      </select>
+    </div>
+
+    <div class="fp-grp" id="furnishGrp" style="display:none">
+      <label>Furnishing</label>
+      <select id="fFurnish">
+        <option value="">Any</option>
+        <option value="furnished">Fully Furnished</option>
+        <option value="semi-furnished">Semi Furnished</option>
+        <option value="bare-shell">Bare Shell</option>
+      </select>
+    </div>
+
+    <div class="fp-grp" id="possessionGrp" style="display:none">
+      <label>Possession</label>
+      <select id="fPossession">
+        <option value="">Any</option>
+        <option value="ready">Ready to Move</option>
+        <option value="under-construction">Under Construction</option>
+        <option value="new-launch">New Launch</option>
+      </select>
+    </div>
+
+    <button class="btn-apply" id="applyBtn"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+    <button class="btn-clear" id="clearBtn"><i class="fa-solid fa-xmark"></i> Clear</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results-bar">
+    <p class="results-count" id="resultsCount"></p>
+  </div>
+
+  <div class="prop-grid" id="propGrid"></div>
+
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<script>
+const API = 'http://localhost:5000/api';
+
+const cityLocalities = {
+  'Ahmedabad': ['Prahlad Nagar','Satellite','Bopal','Thaltej','Memnagar','Vastrapur','Bodakdev','Navrangpura','Chandkheda','Shela','SG Highway','CG Road','Iscon','Giftcity'],
+  'Gandhinagar': ['Giftcity','Sector 1','Sector 5','Sector 11','Sector 21','Infocity'],
+  'Surat': ['Adajan','Vesu','Pal','Katargam','Udhna','Althan'],
+  'Vadodara': ['Alkapuri','Gotri','Waghodia Road','Manjalpur','Fatehgunj'],
+  'Rajkot': ['Kalawad Road','Mavdi','Raiya Road','University Road','150 Feet Ring Road']
+};
+
+const localitySubAreas = {
+  'Prahlad Nagar': ['Prahlad Nagar Cross Road','Commerce Six Roads','Anand Nagar Cross Road','Satellite Road'],
+  'Satellite': ['Satellite Main Road','Jodhpur Cross Road','Ambawadi','Nehru Nagar'],
+  'Bopal': ['Bopal Chokdi','South Bopal','Ambli Bopal Road','Shilaj','Ghuma'],
+  'Thaltej': ['Thaltej Cross Road','SG Highway Thaltej','Sola Road','Science City Road'],
+  'Memnagar': ['Memnagar Fire Station','Gurukul Road','Drive In Road'],
+  'Vastrapur': ['Vastrapur Lake','Vastrapur Cross Road','Bodakdev'],
+  'Bodakdev': ['Bodakdev Cross Road','100 Feet Road Bodakdev','Sindhu Bhavan Road'],
+  'Navrangpura': ['CG Road','Navrangpura Cross Road','Swastik Cross Road'],
+  'Chandkheda': ['Chandkheda Gam','Sola Bhagwat','Visat Cross Road'],
+  'Shela': ['Shela Village','Shela Chokdi','Ambli Road Shela'],
+  'Giftcity': ['GIFT City Block 1','GIFT City Block 2','GIFT City SEZ'],
+  'SG Highway': ['Sarkhej','Makarba','Shilaj Road','Judges Bungalow Road'],
+  'CG Road': ['Swastik Cross Road','Navrangpura','Ellisbridge'],
+  'Iscon': ['Iscon Cross Road','Iscon Ambli Road','Bopal Road'],
+  // Gandhinagar
+  'Sector 1': ['Sector 1A','Sector 1B','Sector 1C'],
+  'Sector 5': ['Sector 5A','Sector 5B','Sector 5C'],
+  'Sector 11': ['Sector 11A','Sector 11B'],
+  'Sector 21': ['Sector 21A','Sector 21B','Sector 21C'],
+  'Infocity': ['Infocity Circle','Infocity Road','Indroda'],
+  // Surat
+  'Adajan': ['Adajan Patia','Adajan Road','Pal Road'],
+  'Vesu': ['Vesu Main Road','Vesu Circle','Bhatar Road'],
+  'Pal': ['Pal Gam','Pal Bhatha','Pal Char Rasta'],
+  'Katargam': ['Katargam Darwaja','Ring Road Katargam','Udhna Magdalla Road'],
+  'Udhna': ['Udhna Darwaja','Udhna Magdalla Road'],
+  'Althan': ['Althan Gam','Althan Bhatha','Bhatar Road'],
+  // Vadodara
+  'Alkapuri': ['Alkapuri Society','RC Dutt Road','Productivity Road'],
+  'Gotri': ['Gotri Road','Gotri Vasna Road'],
+  'Waghodia Road': ['Waghodia Circle','Waghodia GIDC'],
+  'Manjalpur': ['Manjalpur Gam','Manjalpur Main Road'],
+  'Fatehgunj': ['Fatehgunj Main Road','Old Padra Road'],
+  // Rajkot
+  'Kalawad Road': ['Kalawad Road Circle','Nana Mava','Mavdi'],
+  'Mavdi': ['Mavdi Main Road','Mavdi Circle'],
+  'Raiya Road': ['Raiya Circle','Raiya Chowk'],
+  'University Road': ['University Road Circle','Bhaktinagar'],
+  '150 Feet Ring Road': ['Ring Road Circle','Yagnik Road']
+};
+
+let currentPage = 1;
+
+// Auth
+const user = JSON.parse(localStorage.getItem('user') || 'null');
+if (user) {
+  document.getElementById('loginBtn').style.display = 'none';
+  document.getElementById('userMenu').style.display = 'block';
+  document.getElementById('userNameDisplay').textContent = user.firstName || '';
+}
+
+// City → Locality
+document.getElementById('fCity').addEventListener('change', function() {
+  const locs = cityLocalities[this.value] || [];
+  const el = document.getElementById('fLocality');
+  el.innerHTML = '<option value="">All Localities</option>' + locs.map(l => '<option value="'+l+'">'+l+'</option>').join('');
+  document.getElementById('fSubLocality').innerHTML = '<option value="">All Sub-Areas</option>';
+});
+
+// Locality → Sub Area
+document.getElementById('fLocality').addEventListener('change', function() {
+  const subs = localitySubAreas[this.value] || [];
+  const el = document.getElementById('fSubLocality');
+  el.innerHTML = '<option value="">All Sub-Areas</option>' + subs.map(s => '<option value="'+s+'">'+s+'</option>').join('');
+});
+
+// Read URL params OR sessionStorage
+const urlParams = new URLSearchParams(window.location.search);
+
+// Check sessionStorage first (from clean URL pages like buy.html)
+const ssStatus = sessionStorage.getItem('initStatus') || '';
+const ssType   = sessionStorage.getItem('initType') || '';
+sessionStorage.removeItem('initStatus');
+sessionStorage.removeItem('initType');
+
+const initStatus   = urlParams.get('status') || ssStatus || '';
+const initCity     = urlParams.get('city') || '';
+const initArea     = urlParams.get('area') || '';
+const initType     = urlParams.get('type') || ssType || '';
+const initMinPrice = urlParams.get('minPrice') || '';
+const initMaxPrice = urlParams.get('maxPrice') || '';
+
+// Set status tab
+document.querySelectorAll('.fp-tab').forEach(t => t.classList.toggle('active', t.dataset.val === initStatus));
+
+// Set city + locality from URL
+if (initCity) {
+  document.getElementById('fCity').value = initCity;
+  const locs = cityLocalities[initCity] || [];
+  document.getElementById('fLocality').innerHTML = '<option value="">All Localities</option>' + locs.map(l => '<option value="'+l+'">'+l+'</option>').join('');
+  if (initArea) document.getElementById('fLocality').value = initArea;
+} else if (initArea) {
+  document.getElementById('fLocality').innerHTML = '<option value="'+initArea+'">'+initArea+'</option>';
+  document.getElementById('fLocality').value = initArea;
+}
+
+if (initType) document.getElementById('fType').value = initType;
+if (initMinPrice && initMaxPrice) document.getElementById('fBudget').value = initMinPrice + '-' + initMaxPrice;
+
+// Status tabs click
+document.querySelectorAll('.fp-tab').forEach(t => {
+  t.addEventListener('click', function() {
+    document.querySelectorAll('.fp-tab').forEach(x => x.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Commercial filter toggle
+const commercialTypes = ['office','shop','warehouse'];
+function toggleFilters() {
+  const isC = commercialTypes.includes(document.getElementById('fType').value);
+  document.getElementById('bedsGrp').style.display    = isC ? 'none' : '';
+  document.getElementById('sqftGrp').style.display     = isC ? '' : 'none';
+  document.getElementById('furnishGrp').style.display  = isC ? '' : 'none';
+  document.getElementById('possessionGrp').style.display = isC ? '' : 'none';
+}
+document.getElementById('fType').addEventListener('change', toggleFilters);
+toggleFilters();
+
+function getFilters() {
+  return {
+    status:   document.querySelector('.fp-tab.active')?.dataset.val || '',
+    city:     document.getElementById('fCity').value,
+    area:     document.getElementById('fSubLocality').value || document.getElementById('fLocality').value,
+    type:     document.getElementById('fType').value,
+    beds:     document.getElementById('fBeds').value,
+    budget:   document.getElementById('fBudget').value
+  };
+}
+
+function updateTitle(f) {
+  const map = {'for-sale':'Properties for Sale','for-rent':'Properties for Rent','new-launch':'New Launch Projects','':'All Properties'};
+  const loc = f.area || f.city;
+  document.getElementById('pageTitle').textContent = loc ? (map[f.status]||'All Properties') + ' in ' + loc : (map[f.status]||'All Properties');
+  document.getElementById('pageSubtitle').textContent = loc ? 'Showing properties in ' + loc : 'Browse verified properties across Gujarat';
+}
+
+// Render card
+function createCard(p) {
+  const statusMap = { 'for-sale': 'For Sale', 'for-rent': 'For Rent', 'new-launch': 'New Launch' };
+  const badgeClass = p.status === 'for-rent' ? 'rent' : p.status === 'new-launch' ? 'new' : '';
+  const badge = statusMap[p.status] || p.status;
+  const price = p.priceLabel || '₹' + p.price;
+  const loc = (p.location?.area || '') + ', ' + (p.location?.city || '');
+  const initials = p.agent?.initials || 'CRS';
+  const agentName = p.agent?.name || 'CRS Agent';
+  const specs = p.category === 'commercial'
+    ? '<div class="cs"><i class="fa-solid fa-vector-square"></i>' + (p.specs?.sqft || 0) + ' sqft</div><div class="cs"><i class="fa-solid fa-building"></i>' + p.type + '</div>'
+    : '<div class="cs"><i class="fa-solid fa-bed"></i>' + (p.specs?.beds || 0) + ' Beds</div><div class="cs"><i class="fa-solid fa-bath"></i>' + (p.specs?.baths || 0) + ' Baths</div><div class="cs"><i class="fa-solid fa-vector-square"></i>' + (p.specs?.sqft || 0) + ' sqft</div>';
+
+  // Build images array — fallback to 3 placeholder images if only 1
+  const fallbacks = [
+    'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
+    'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80',
+    'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80'
+  ];
+  const imgs = (p.images && p.images.length > 1) ? p.images : [p.images?.[0] || fallbacks[0], fallbacks[1], fallbacks[2]];
+  const id = 'cs_' + (p._id || Math.random().toString(36).substr(2,6));
+
+  const slides = imgs.map((src, i) =>
+    '<div class="ci-slide' + (i===0?' active':'') + '"><img src="' + src + '" alt="' + p.title + '" loading="lazy"/></div>'
+  ).join('');
+
+  const dots = imgs.length > 1 ? '<div class="ci-dots">' + imgs.map((_,i) =>
+    '<span class="ci-dot' + (i===0?' active':'') + '" onclick="ciGo(\'' + id + '\',' + i + ',event)"></span>'
+  ).join('') + '</div>' : '';
+
+  const arrows = imgs.length > 1
+    ? '<button class="ci-arr ci-prev" onclick="ciMove(\'' + id + '\',-1,event)"><i class="fa-solid fa-chevron-left"></i></button>' +
+      '<button class="ci-arr ci-next" onclick="ciMove(\'' + id + '\',1,event)"><i class="fa-solid fa-chevron-right"></i></button>'
+    : '';
+
+  return '<div class="prop-card" onclick="window.location.href=\'property-detail.html?id=' + p._id + '\'" style="cursor:pointer">' +
+    '<div class="card-img" id="' + id + '">' +
+    slides + arrows + dots +
+    '<span class="card-badge ' + badgeClass + '">' + badge + '</span>' +
+    '<button class="card-fav" onclick="event.stopPropagation()"><i class="fa-regular fa-heart"></i></button>' +
+    '<div class="card-price"><span>' + price + '</span></div></div>' +
+    '<div class="card-body">' +
+    '<div class="card-loc"><i class="fa-solid fa-location-dot"></i>' + loc + '</div>' +
+    '<div class="card-title">' + p.title + '</div>' +
+    '<div class="card-specs">' + specs + '</div>' +
+    '<div class="card-footer"><div class="card-agent"><div class="agent-av">' + initials + '</div><span class="agent-name">' + agentName + '</span></div>' +
+    '<button class="btn-offer" onclick="requireLoginForOffer(event,\'' + p.title.replace(/'/g,"\\'") + '\',\'' + loc.replace(/'/g,"\\'") + '\')" >Get Offer</button></div></div></div>';
+}
+
+// Card image slider functions
+function ciMove(id, dir, e) {
+  e.stopPropagation();
+  const wrap = document.getElementById(id);
+  const slides = wrap.querySelectorAll('.ci-slide');
+  const dots = wrap.querySelectorAll('.ci-dot');
+  let cur = [...slides].findIndex(s => s.classList.contains('active'));
+  slides[cur].classList.remove('active');
+  if (dots[cur]) dots[cur].classList.remove('active');
+  cur = (cur + dir + slides.length) % slides.length;
+  slides[cur].classList.add('active');
+  if (dots[cur]) dots[cur].classList.add('active');
+}
+function ciGo(id, idx, e) {
+  e.stopPropagation();
+  const wrap = document.getElementById(id);
+  wrap.querySelectorAll('.ci-slide').forEach((s,i) => s.classList.toggle('active', i===idx));
+  wrap.querySelectorAll('.ci-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+}
+const _ciTimers = {};
+function bindCardHover() {
+  document.querySelectorAll('.prop-card').forEach(function(card) {
+    if (card.dataset.hoverBound) return;
+    card.dataset.hoverBound = '1';
+    const el = card.querySelector('.card-img');
+    if (!el) return;
+    const slides = el.querySelectorAll('.ci-slide');
+    if (slides.length < 2) return;
+    card.addEventListener('mouseenter', function() {
+      if (_ciTimers[el.id]) return;
+      _ciTimers[el.id] = setInterval(function() {
+        const dots = el.querySelectorAll('.ci-dot');
+        let cur = [...slides].findIndex(s => s.classList.contains('active'));
+        slides[cur].classList.remove('active');
+        if (dots[cur]) dots[cur].classList.remove('active');
+        cur = (cur + 1) % slides.length;
+        slides[cur].classList.add('active');
+        if (dots[cur]) dots[cur].classList.add('active');
+      }, 1400);
+    });
+    card.addEventListener('mouseleave', function() {
+      clearInterval(_ciTimers[el.id]);
+      delete _ciTimers[el.id];
+    });
+  });
+}
+
+// Auto scroll images on all cards
+function startAutoScroll() {
+  document.querySelectorAll('.prop-card').forEach(function(card) {
+    if (card.dataset.autoScroll) return;
+    card.dataset.autoScroll = '1';
+    const el = card.querySelector('.card-img');
+    if (!el) return;
+    const slides = el.querySelectorAll('.ci-slide');
+    if (slides.length < 2) return;
+    setInterval(function() {
+      const dots = el.querySelectorAll('.ci-dot');
+      let cur = [...slides].findIndex(s => s.classList.contains('active'));
+      slides[cur].classList.remove('active');
+      if (dots[cur]) dots[cur].classList.remove('active');
+      cur = (cur + 1) % slides.length;
+      slides[cur].classList.add('active');
+      if (dots[cur]) dots[cur].classList.add('active');
+    }, 1500);
+  });
+}
+
+// ===== STATIC FALLBACK DATA =====
+const staticAllProps = [
+  { _id:'s1', title:'3BHK Luxury Apartment', status:'for-sale', type:'apartment', category:'residential', price:12000000, priceLabel:'₹1.2 Cr', images:['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80','https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80','https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80'], location:{area:'Prahlad Nagar',city:'Ahmedabad'}, specs:{beds:3,baths:2,sqft:1850}, agent:{name:'Rahul K.',initials:'RK'} },
+  { _id:'s2', title:'2BHK Smart Apartment', status:'new-launch', type:'apartment', category:'residential', price:8500000, priceLabel:'₹85 L', images:['https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80','https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80','https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=80'], location:{area:'Giftcity',city:'Gandhinagar'}, specs:{beds:2,baths:2,sqft:1200}, agent:{name:'Priya S.',initials:'PS'} },
+  { _id:'s3', title:'4BHK Ultra-Modern Penthouse', status:'for-sale', type:'apartment', category:'residential', price:25000000, priceLabel:'₹2.5 Cr', images:['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80','https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600&q=80','https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80'], location:{area:'Prahlad Nagar',city:'Ahmedabad'}, specs:{beds:4,baths:3,sqft:3200}, agent:{name:'Amit M.',initials:'AM'} },
+  { _id:'s4', title:'3BHK Semi-Furnished Flat', status:'for-rent', type:'apartment', category:'residential', price:35000, priceLabel:'₹35K/mo', images:['https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80','https://images.unsplash.com/photo-1576941089067-2de3c901e126?w=600&q=80','https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80'], location:{area:'Satellite',city:'Ahmedabad'}, specs:{beds:3,baths:2,sqft:1650}, agent:{name:'Neha K.',initials:'NK'} },
+  { _id:'s5', title:'3BHK Elegant Row House', status:'for-sale', type:'rowhouse', category:'residential', price:18000000, priceLabel:'₹1.8 Cr', images:['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80','https://images.unsplash.com/photo-1598228723793-52759bba239c?w=600&q=80','https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80'], location:{area:'Thaltej',city:'Ahmedabad'}, specs:{beds:3,baths:3,sqft:2100}, agent:{name:'Vijay D.',initials:'VD'} },
+  { _id:'s6', title:'2BHK Affordable Apartment', status:'new-launch', type:'apartment', category:'residential', price:6500000, priceLabel:'₹65 L', images:['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=80','https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80','https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80'], location:{area:'Memnagar',city:'Ahmedabad'}, specs:{beds:2,baths:1,sqft:980}, agent:{name:'Sonal J.',initials:'SJ'} },
+  { _id:'s7', title:'3BHK Modern Apartment', status:'for-sale', type:'apartment', category:'residential', price:9500000, priceLabel:'₹95 L', images:['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80','https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80','https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80'], location:{area:'Shela',city:'Ahmedabad'}, specs:{beds:3,baths:2,sqft:1550}, agent:{name:'Ankit K.',initials:'AK'} },
+  { _id:'s8', title:'4BHK Luxury Duplex Villa', status:'for-sale', type:'villa', category:'residential', price:14000000, priceLabel:'₹1.4 Cr', images:['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600&q=80','https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80','https://images.unsplash.com/photo-1598228723793-52759bba239c?w=600&q=80'], location:{area:'Vastrapur',city:'Ahmedabad'}, specs:{beds:4,baths:4,sqft:2800}, agent:{name:'Meera R.',initials:'MR'} },
+  { _id:'s9', title:'2BHK Furnished Apartment', status:'for-rent', type:'apartment', category:'residential', price:22000, priceLabel:'₹22K/mo', images:['https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80','https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=80','https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80'], location:{area:'Navrangpura',city:'Ahmedabad'}, specs:{beds:2,baths:1,sqft:1050}, agent:{name:'Dhruv P.',initials:'DP'} },
+  { _id:'s10', title:'2BHK Gated Society', status:'new-launch', type:'apartment', category:'residential', price:7200000, priceLabel:'₹72 L', images:['https://images.unsplash.com/photo-1576941089067-2de3c901e126?w=600&q=80','https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80','https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80'], location:{area:'Chandkheda',city:'Ahmedabad'}, specs:{beds:2,baths:2,sqft:1100}, agent:{name:'Hiral B.',initials:'HB'} },
+  { _id:'s11', title:'5BHK Premium Bungalow', status:'for-sale', type:'bungalow', category:'residential', price:32000000, priceLabel:'₹3.2 Cr', images:['https://images.unsplash.com/photo-1598228723793-52759bba239c?w=600&q=80','https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600&q=80','https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80'], location:{area:'Bodakdev',city:'Ahmedabad'}, specs:{beds:5,baths:5,sqft:4500}, agent:{name:'Jay M.',initials:'JM'} },
+  { _id:'s12', title:'3BHK Villa with Garden', status:'for-sale', type:'villa', category:'residential', price:16000000, priceLabel:'₹1.6 Cr', images:['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80','https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80','https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80'], location:{area:'Bopal',city:'Ahmedabad'}, specs:{beds:3,baths:3,sqft:2200}, agent:{name:'Raj S.',initials:'RS'} },
+  { _id:'s13', title:'Premium Office Space 3500 sqft', status:'for-sale', type:'office', category:'commercial', price:28000000, priceLabel:'₹2.8 Cr', images:['https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80','https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80','https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80'], location:{area:'Prahlad Nagar',city:'Ahmedabad'}, specs:{beds:null,baths:null,sqft:3500}, agent:{name:'Raj S.',initials:'RS'} },
+  { _id:'s14', title:'Corporate Office Floor 5000 sqft', status:'for-rent', type:'office', category:'commercial', price:120000, priceLabel:'₹1.2L/mo', images:['https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80','https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80','https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80'], location:{area:'SG Highway',city:'Ahmedabad'}, specs:{beds:null,baths:null,sqft:5000}, agent:{name:'Kiran P.',initials:'KP'} },
+  { _id:'s15', title:'Retail Shop Prime Location', status:'for-sale', type:'shop', category:'commercial', price:8500000, priceLabel:'₹85 L', images:['https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80','https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80','https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80'], location:{area:'CG Road',city:'Ahmedabad'}, specs:{beds:null,baths:null,sqft:650}, agent:{name:'Bhavesh T.',initials:'BT'} },
+  { _id:'s16', title:'GIFT City Office Suite 2200 sqft', status:'new-launch', type:'office', category:'commercial', price:15000000, priceLabel:'₹1.5 Cr', images:['https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80','https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80','https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80'], location:{area:'Giftcity',city:'Gandhinagar'}, specs:{beds:null,baths:null,sqft:2200}, agent:{name:'Neel V.',initials:'NV'} },
+  { _id:'s17', title:'2BHK Apartment Adajan', status:'for-sale', type:'apartment', category:'residential', price:5500000, priceLabel:'₹55 L', images:['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=80','https://images.unsplash.com/photo-1576941089067-2de3c901e126?w=600&q=80','https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80'], location:{area:'Adajan',city:'Surat'}, specs:{beds:2,baths:2,sqft:1050}, agent:{name:'Surat Agent',initials:'SA'} },
+  { _id:'s18', title:'3BHK Villa Vesu', status:'for-sale', type:'villa', category:'residential', price:11000000, priceLabel:'₹1.1 Cr', images:['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80','https://images.unsplash.com/photo-1598228723793-52759bba239c?w=600&q=80','https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600&q=80'], location:{area:'Vesu',city:'Surat'}, specs:{beds:3,baths:3,sqft:1900}, agent:{name:'Surat Agent',initials:'SA'} },
+  { _id:'s19', title:'2BHK Apartment Alkapuri', status:'for-sale', type:'apartment', category:'residential', price:6000000, priceLabel:'₹60 L', images:['https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80','https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80','https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80'], location:{area:'Alkapuri',city:'Vadodara'}, specs:{beds:2,baths:2,sqft:1100}, agent:{name:'Vadodara Agent',initials:'VA'} },
+  { _id:'s20', title:'3BHK Apartment Kalawad Road', status:'for-sale', type:'apartment', category:'residential', price:7500000, priceLabel:'₹75 L', images:['https://images.unsplash.com/photo-1576941089067-2de3c901e126?w=600&q=80','https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=80','https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80'], location:{area:'Kalawad Road',city:'Rajkot'}, specs:{beds:3,baths:2,sqft:1400}, agent:{name:'Rajkot Agent',initials:'RA'} }
+];
+
+function filterStatic(params) {
+  let list = [...staticAllProps];
+  const status   = params.get('status');
+  const city     = params.get('city');
+  const area     = params.get('area');
+  const type     = params.get('type');
+  const category = params.get('category');
+  const beds     = params.get('beds');
+  const minPrice = params.get('minPrice');
+  const maxPrice = params.get('maxPrice');
+  if (status)   list = list.filter(p => p.status === status);
+  if (city)     list = list.filter(p => p.location.city.toLowerCase() === city.toLowerCase());
+  if (area)     list = list.filter(p => p.location.area.toLowerCase().includes(area.toLowerCase()));
+  if (type)     list = list.filter(p => p.type === type);
+  if (category) list = list.filter(p => p.category === category);
+  if (beds)     list = list.filter(p => p.specs.beds >= parseInt(beds));
+  if (minPrice) list = list.filter(p => p.price >= parseInt(minPrice));
+  if (maxPrice) list = list.filter(p => p.price <= parseInt(maxPrice));
+  return list;
+}
+
+// Pagination
+function renderPagination(totalPages, current) {
+  var el = document.getElementById('pagination');
+  if (totalPages <= 1) { el.innerHTML = ''; return; }
+  var html = '';
+  for (var i = 1; i <= totalPages; i++) {
+    html += '<button class="pg-btn' + (i === current ? ' active' : '') + '" onclick="loadProperties(' + i + ')">' + i + '</button>';
+  }
+  el.innerHTML = html;
+}
+
+document.getElementById('applyBtn').addEventListener('click', function() { loadProperties(1); });
+
+document.getElementById('clearBtn').addEventListener('click', function() {
+  document.querySelectorAll('.fp-tab').forEach(function(t) { t.classList.toggle('active', t.dataset.val === ''); });
+  document.getElementById('fCity').value = '';
+  document.getElementById('fLocality').innerHTML = '<option value="">Select City First</option>';
+  document.getElementById('fSubLocality').innerHTML = '<option value="">All Sub-Areas</option>';
+  document.getElementById('fType').value = '';
+  document.getElementById('fBudget').value = '';
+  document.getElementById('fBeds').value = '';
+  toggleFilters();
+  history.replaceState(null, '', 'properties.html');
+  loadProperties(1);
+});
+
+document.getElementById('hamburger').addEventListener('click', function() {
+  document.getElementById('nav').classList.toggle('open');
+});
+
+window.addEventListener('scroll', function() {
+  document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+  var bt = document.getElementById('backTop');
+  if (bt) bt.classList.toggle('show', window.scrollY > 400);
+});
+var _backTop = document.getElementById('backTop');
+if (_backTop) _backTop.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+var _reqModalShown = false;
+function showReqModal() {
+  if (_reqModalShown) return;
+  _reqModalShown = true;
+  setTimeout(function() { window.openReqModal && window.openReqModal(); }, 800);
+}
+
+// Load properties
+function loadProperties(page) {
+  currentPage = page || 1;
+  _reqModalShown = false;
+  var f = getFilters();
+  updateTitle(f);
+
+  var grid = document.getElementById('propGrid');
+  grid.innerHTML = '<div class="loading-res"><i class="fa-solid fa-spinner fa-spin"></i></div>';
+  document.getElementById('resultsCount').innerHTML = '';
+  document.getElementById('pagination').innerHTML = '';
+
+  var url = API + '/properties?page=' + currentPage + '&limit=12';
+  if (f.status) url += '&status=' + encodeURIComponent(f.status);
+  if (f.city)   url += '&city='   + encodeURIComponent(f.city);
+  if (f.area)   url += '&area='   + encodeURIComponent(f.area);
+  if (f.type)   url += '&type='   + encodeURIComponent(f.type);
+  if (f.beds)   url += '&beds='   + encodeURIComponent(f.beds);
+  if (f.budget) {
+    var parts = f.budget.split('-');
+    url += '&minPrice=' + parts[0] + '&maxPrice=' + parts[1];
+  }
+
+  fetch(url)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.success && data.properties && data.properties.length > 0) {
+        grid.innerHTML = data.properties.map(createCard).join('');
+        document.getElementById('resultsCount').innerHTML = '<strong>' + (data.total || data.properties.length) + '</strong> properties found';
+        renderPagination(data.pages || 1, currentPage);
+        bindCardHover();
+        startAutoScroll();
+      } else {
+        showFromStatic(f, grid);
+      }
+    })
+    .catch(function() {
+      showFromStatic(f, grid);
+    });
+}
+
+function showFromStatic(f, grid) {
+  var list = staticAllProps.slice();
+  if (f.status) list = list.filter(function(p) { return p.status === f.status; });
+  if (f.city)   list = list.filter(function(p) { return p.location.city.toLowerCase() === f.city.toLowerCase(); });
+  if (f.area)   list = list.filter(function(p) { return p.location.area.toLowerCase().indexOf(f.area.toLowerCase()) !== -1; });
+  if (f.type)   list = list.filter(function(p) { return p.type === f.type; });
+  if (f.beds)   list = list.filter(function(p) { return p.specs.beds && p.specs.beds >= parseInt(f.beds); });
+  if (f.budget) {
+    var bp = f.budget.split('-');
+    list = list.filter(function(p) { return p.price >= parseInt(bp[0]) && p.price <= parseInt(bp[1]); });
+  }
+  if (!list.length) {
+    grid.innerHTML = '<div class="empty-res"><i class="fa-solid fa-building"></i><p>No properties found.<br/>Try different filters.</p><p style="font-size:0.82rem;color:#bbb;margin-top:8px">Can\'t find what you need? We\'ll find it for you!</p><button onclick="window.openReqModal && window.openReqModal()" class="btn-req-pulse" style="margin-top:16px;background:#E53935;color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:inline-flex;align-items:center;gap:8px"><i class="fa-solid fa-bell"></i> Post Your Requirement</button></div>';
+    document.getElementById('resultsCount').innerHTML = '<strong>0</strong> properties found';
+    document.getElementById('pagination').innerHTML = '';
+    showReqModal();
+    return;
+  }
+  var perPage = 12;
+  var totalPages = Math.ceil(list.length / perPage);
+  var paginated = list.slice((currentPage - 1) * perPage, currentPage * perPage);
+  grid.innerHTML = paginated.map(createCard).join('');
+  document.getElementById('resultsCount').innerHTML = '<strong>' + list.length + '</strong> properties found';
+  renderPagination(totalPages, currentPage);
+  bindCardHover();
+  startAutoScroll();
+}
+
+// ===== POST REQUIREMENT MODAL =====
+(function(){
+  const overlay = document.createElement('div');
+  overlay.id = 'reqOverlay';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:3000;background:rgba(13,27,42,0.55);backdrop-filter:blur(4px);display:flex;align-items:stretch;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity 0.3s';
+  overlay.innerHTML = `
+    <div id="reqBox" style="background:#fff;width:100%;max-width:780px;height:100%;overflow-y:auto;box-shadow:-8px 0 40px rgba(0,0,0,0.25);transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);position:relative;display:flex;flex-direction:row">
+      <!-- Left: Woman Image -->
+      <div style="width:280px;min-width:280px;background:#0D1B2A;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;flex-shrink:0" class="req-img-panel">
+        <img src="images/agent.jpg" alt="Agent" style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:92%;width:auto;max-width:none;opacity:0.95"/>
+        <div style="position:relative;z-index:1;padding:28px 24px;background:linear-gradient(to top,rgba(13,27,42,0.95) 0%,transparent 100%)">
+          <div style="display:inline-block;background:#E53935;color:#fff;font-size:0.7rem;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:10px;letter-spacing:0.5px">FREE SERVICE</div>
+          <p style="color:#fff;font-size:1.1rem;font-weight:800;margin:0 0 6px;line-height:1.4">Can't find your dream property?</p>
+          <p style="color:rgba(255,255,255,0.7);font-size:0.8rem;margin:0">Our experts will find the perfect match for you within 24 hours.</p>
+        </div>
+      </div>
+      <!-- Right: Form -->
+      <div style="flex:1;display:flex;flex-direction:column;min-width:0;background:#0D1B2A">
+      <div style="padding:24px 28px 20px;">
+        <button id="reqCloseBtn" style="position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,0.15);color:#fff;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-xmark"></i></button>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <div style="width:44px;height:44px;background:rgba(229,57,53,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-bell" style="color:#E53935;font-size:1.2rem"></i>
+          </div>
+          <div>
+            <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin:0">Post Your Requirement</h3>
+            <p style="color:rgba(255,255,255,0.45);font-size:0.78rem;margin:2px 0 0">Can't find what you need? We'll find it for you!</p>
+          </div>
+        </div>
+      </div>
+      <div style="padding:24px 28px;flex:1">
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
+            <i class="fa-solid fa-user" style="color:#E53935;font-size:0.85rem"></i>
+            <input id="reqName" name="reqName" type="text" placeholder="Your Full Name *" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#fff;background:transparent" />
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
+            <i class="fa-solid fa-phone" style="color:#E53935;font-size:0.85rem"></i>
+            <span style="font-size:0.85rem;font-weight:600;color:rgba(255,255,255,0.5);border-right:1px solid rgba(255,255,255,0.15);padding-right:10px">+91</span>
+            <input id="reqPhone" name="reqPhone" type="tel" placeholder="Mobile Number *" maxlength="10" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#fff;background:transparent" />
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
+            <i class="fa-solid fa-building" style="color:#E53935;font-size:0.85rem"></i>
+            <select id="reqType" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:rgba(255,255,255,0.8);background:transparent;cursor:pointer">
+              <option value="" style="background:#0D1B2A">Property Type (Optional)</option>
+              <option style="background:#0D1B2A">Apartment / Flat</option>
+              <option style="background:#0D1B2A">Villa</option>
+              <option style="background:#0D1B2A">Bungalow</option>
+              <option style="background:#0D1B2A">Row House</option>
+              <option style="background:#0D1B2A">Plot / Land</option>
+              <option style="background:#0D1B2A">Office Space</option>
+              <option style="background:#0D1B2A">Shop / Showroom</option>
+            </select>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
+            <i class="fa-solid fa-indian-rupee-sign" style="color:#E53935;font-size:0.85rem"></i>
+            <select id="reqBudget" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:rgba(255,255,255,0.8);background:transparent;cursor:pointer">
+              <option value="" style="background:#0D1B2A">Budget Range (Optional)</option>
+              <option style="background:#0D1B2A">Under ₹30 Lakh</option>
+              <option style="background:#0D1B2A">₹30L – ₹60L</option>
+              <option style="background:#0D1B2A">₹60L – ₹1 Cr</option>
+              <option style="background:#0D1B2A">₹1Cr – ₹2Cr</option>
+              <option style="background:#0D1B2A">₹2Cr – ₹5Cr</option>
+              <option style="background:#0D1B2A">Above ₹5Cr</option>
+            </select>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
+            <i class="fa-solid fa-comment" style="color:#E53935;font-size:0.85rem"></i>
+            <input id="reqMsg" name="reqMsg" type="text" placeholder="Any specific requirement? (Optional)" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#fff;background:transparent" />
+          </div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button id="reqWaBtn" style="flex:1;background:#25D366;color:#fff;border:none;padding:13px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:Poppins,sans-serif">
+            <i class="fa-brands fa-whatsapp" style="font-size:1rem"></i> WhatsApp
+          </button>
+          <button id="reqSubmitBtn" style="flex:1;background:#E53935;color:#fff;border:none;padding:13px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:Poppins,sans-serif">
+            <i class="fa-solid fa-paper-plane"></i> Submit
+          </button>
+        </div>
+        <p style="text-align:center;font-size:0.72rem;color:rgba(255,255,255,0.35);margin-top:10px">🔒 Your details are safe. No spam calls.</p>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  function closeReq() { overlay.style.opacity='0'; overlay.style.pointerEvents='none'; document.getElementById('reqBox').style.transform='translateX(100%)'; }
+  overlay.addEventListener('click', e => { if(e.target===overlay) closeReq(); });
+  document.getElementById('reqCloseBtn').addEventListener('click', closeReq);
+
+  function getReqData() {
+    return {
+      name: document.getElementById('reqName').value.trim(),
+      phone: document.getElementById('reqPhone').value.trim(),
+      type: document.getElementById('reqType').value,
+      budget: document.getElementById('reqBudget').value,
+      msg: document.getElementById('reqMsg').value.trim()
+    };
+  }
+
+  document.getElementById('reqWaBtn').addEventListener('click', function(){
+    const d = getReqData();
+    if(!d.name||!d.phone){alert('Please enter your name and phone number.');return;}
+    const text = 'Hi, I am '+d.name+' (+91 '+d.phone+'). I am looking for: '+(d.type||'Property')+(d.budget?' | Budget: '+d.budget:'')+(d.msg?' | Note: '+d.msg:'')+'.';
+    window.open('https://wa.me/919377531247?text='+encodeURIComponent(text),'_blank');
+    closeReq();
+  });
+
+  document.getElementById('reqSubmitBtn').addEventListener('click', async function(){
+    const d = getReqData();
+    if(!d.name||!d.phone){alert('Please enter your name and phone number.');return;}
+    const btn = document.getElementById('reqSubmitBtn');
+    btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+    btn.disabled=true;
+    const f = getFilters();
+    const message = 'Requirement: '+(d.type||f.type||'Any')+(d.budget?' | Budget: '+d.budget:'')+(f.city?' | City: '+f.city:'')+(d.msg?' | Note: '+d.msg:'');
+    try{
+      const res = await fetch(API+'/inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:d.name,phone:d.phone,lookingFor:'Post Requirement',interestedIn:d.type||f.type||'',propertyType:d.type||f.type||'Any',budget:d.budget||'',city:f.city||'',message:message})});
+      const result = await res.json();
+      console.log('Requirement saved:', result);
+    }catch(e){ console.error('Requirement save error:', e); }
+    btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Submit';
+    btn.disabled=false;
+    closeReq();
+    let t=document.querySelector('.auth-toast');
+    if(!t){t=document.createElement('div');t.className='auth-toast';document.body.appendChild(t);}
+    t.innerHTML='<i class="fa-solid fa-circle-check"></i> Requirement submitted! We\'ll contact you soon.';
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),3500);
+  });
+
+  const u=JSON.parse(localStorage.getItem('user')||'null');
+  if(u){
+    if(u.firstName) document.getElementById('reqName').value=(u.firstName+' '+(u.lastName||'')).trim();
+    if(u.phone) document.getElementById('reqPhone').value=u.phone.replace('+91','').trim();
+  }
+
+  window.openReqModal=function(){
+    overlay.style.opacity='1';
+    overlay.style.pointerEvents='all';
+    document.getElementById('reqBox').style.transform='translateX(0)';
+  };
+})();
+
+// ===== GET OFFER MODAL =====
+(function(){
+  const overlay = document.createElement('div');
+  overlay.id = 'offerOverlay';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:3000;background:rgba(13,27,42,0.75);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.25s';
+  overlay.innerHTML = `
+    <div id="offerBox" style="background:#fff;border-radius:20px;width:100%;max-width:460px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.3);transform:translateY(24px) scale(0.97);transition:transform 0.25s;position:relative">
+      <div style="background:linear-gradient(135deg,#0D1B2A,#1a3a5c);padding:24px 28px 20px;">
+        <button id="offerCloseBtn" style="position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,0.15);color:#fff;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-xmark"></i></button>
+        <p style="color:rgba(255,255,255,0.6);font-size:0.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Get Best Offer On</p>
+        <h3 id="offerPropTitle" style="color:#fff;font-size:1.1rem;font-weight:800;margin:0 0 4px;line-height:1.3">Property</h3>
+        <p id="offerPropLoc" style="color:#FFC107;font-size:0.8rem;display:flex;align-items:center;gap:5px;margin:0"><i class="fa-solid fa-location-dot"></i> <span></span></p>
+      </div>
+      <div style="padding:24px 28px">
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:10px;border:1.5px solid #e0e0e0;border-radius:10px;padding:11px 14px">
+            <i class="fa-solid fa-user" style="color:#E53935;font-size:0.85rem"></i>
+            <input id="offerName" type="text" placeholder="Your Full Name *" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#333;background:transparent"/>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;border:1.5px solid #e0e0e0;border-radius:10px;padding:11px 14px">
+            <i class="fa-solid fa-phone" style="color:#E53935;font-size:0.85rem"></i>
+            <span style="font-size:0.85rem;font-weight:600;color:#555;border-right:1px solid #e0e0e0;padding-right:10px">+91</span>
+            <input id="offerPhone" type="tel" placeholder="Mobile Number *" maxlength="10" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#333;background:transparent"/>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;border:1.5px solid #e0e0e0;border-radius:10px;padding:11px 14px">
+            <i class="fa-solid fa-clock" style="color:#E53935;font-size:0.85rem"></i>
+            <select id="offerTime" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#555;background:transparent;cursor:pointer">
+              <option value="">Preferred Call Time (Optional)</option>
+              <option>Morning (9AM – 12PM)</option>
+              <option>Afternoon (12PM – 3PM)</option>
+              <option>Evening (3PM – 7PM)</option>
+              <option>Anytime</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button id="offerWaBtn" style="flex:1;background:#25D366;color:#fff;border:none;padding:13px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:Poppins,sans-serif">
+            <i class="fa-brands fa-whatsapp" style="font-size:1rem"></i> WhatsApp
+          </button>
+          <button id="offerCallBtn" style="flex:1;background:#E53935;color:#fff;border:none;padding:13px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:Poppins,sans-serif">
+            <i class="fa-solid fa-phone"></i> Request Call
+          </button>
+        </div>
+        <p style="text-align:center;font-size:0.72rem;color:#aaa;margin-top:10px">🔒 Your details are safe. No spam calls.</p>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  function closeOffer() { overlay.style.opacity='0'; overlay.style.pointerEvents='none'; }
+  overlay.addEventListener('click', e => { if(e.target===overlay) closeOffer(); });
+  document.getElementById('offerCloseBtn').addEventListener('click', closeOffer);
+
+  document.getElementById('offerWaBtn').addEventListener('click', function(){
+    const name=document.getElementById('offerName').value.trim();
+    const phone=document.getElementById('offerPhone').value.trim();
+    const title=document.getElementById('offerPropTitle').textContent;
+    const loc=document.getElementById('offerPropLoc').querySelector('span').textContent;
+    if(!name||!phone){alert('Please enter your name and phone number.');return;}
+    const msg=encodeURIComponent('Hi, I am '+name+' (+91 '+phone+'). Interested in: '+title+' ('+loc+'). Please share best offer.');
+    window.open('https://wa.me/919377531247?text='+msg,'_blank');
+    closeOffer();
+  });
+
+  document.getElementById('offerCallBtn').addEventListener('click', async function(){
+    const name=document.getElementById('offerName').value.trim();
+    const phone=document.getElementById('offerPhone').value.trim();
+    const title=document.getElementById('offerPropTitle').textContent;
+    const loc=document.getElementById('offerPropLoc').querySelector('span').textContent;
+    if(!name||!phone){alert('Please enter your name and phone number.');return;}
+    try{
+      await fetch('http://localhost:5000/api/inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone,propertyName:title,propertyType:title,lookingFor:'Get Offer',city:loc,message:'Get Offer: '+title+' ('+loc+')'})});
+    }catch(e){}
+    closeOffer();
+    let t=document.querySelector('.auth-toast');
+    if(!t){t=document.createElement('div');t.className='auth-toast';document.body.appendChild(t);}
+    t.innerHTML='<i class="fa-solid fa-circle-check"></i> Callback request sent! We\'ll call you shortly.';
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),3500);
+  });
+
+  const u=JSON.parse(localStorage.getItem('user')||'null');
+  if(u){
+    if(u.firstName) document.getElementById('offerName').value=(u.firstName+' '+(u.lastName||'')).trim();
+    if(u.phone) document.getElementById('offerPhone').value=u.phone.replace('+91','').trim();
+  }
+
+  window.openOfferModal=function(title,loc){
+    document.getElementById('offerPropTitle').textContent=title;
+    document.getElementById('offerPropLoc').querySelector('span').textContent=loc;
+    overlay.style.opacity='1';
+    overlay.style.pointerEvents='all';
+    document.getElementById('offerBox').style.transform='translateY(0) scale(1)';
+  };
+})();
+
+// ===== LOGIN REQUIRED HELPERS =====
+
+// Init — after IIFEs so window.openReqModal is ready
+loadProperties(1);
+
+function requireLoginForOffer(e, title, loc) {
+  e.stopPropagation();
+  if (!localStorage.getItem('token')) {
+    showLoginToast('Login karo to get the best offer!');
+    return;
+  }
+  openOfferModal(title, loc);
+}
+
+function showLoginToast(msg) {
+  let t = document.querySelector('.auth-toast');
+  if (!t) { t = document.createElement('div'); t.className = 'auth-toast'; document.body.appendChild(t); }
+  t.style.background = '#1565c0';
+  t.innerHTML = '<i class="fa-solid fa-user"></i> ' + msg + ' &nbsp;<a href="login.html" style="color:#fff;font-weight:700;text-decoration:underline;">Login / Register</a>';
+  t.classList.add('show');
+  setTimeout(() => { t.classList.remove('show'); t.style.background = ''; }, 4000);
+}
+</script>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <a href="index.html" class="logo footer-logo">
+          <span class="logo-icon"><i class="fa-solid fa-building-columns"></i></span>
+          <span class="logo-text">City <span class="yellow">Real</span> Space</span>
+        </a>
+        <p class="footer-about">Ahmedabad's most trusted real estate platform. We connect buyers, sellers and investors with verified properties across Gujarat.</p>
+        <div class="social-links">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://wa.me/919377531247" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Our Services</h4>
+        <ul>
+          <li><a href="properties.html?status=for-sale"><i class="fa-solid fa-chevron-right"></i> Buy Property</a></li>
+          <li><a href="properties.html?status=for-sale&type=apartment"><i class="fa-solid fa-chevron-right"></i> Resale</a></li>
+          <li><a href="properties.html?status=for-sale&type=plot"><i class="fa-solid fa-chevron-right"></i> Land</a></li>
+          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell – List Property</a></li>
+          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell – List Project</a></li>
+          <li><a href="properties.html?status=new-launch"><i class="fa-solid fa-chevron-right"></i> New Launch</a></li>
+          <li><a href="properties.html?status=for-rent"><i class="fa-solid fa-chevron-right"></i> Prelease</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Property Valuation</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Home Loans</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="faq.html"><i class="fa-solid fa-chevron-right"></i> FAQ</a></li>
+          <li><a href="privacy.html"><i class="fa-solid fa-chevron-right"></i> Privacy Policy</a></li>
+          <li><a href="blog.html"><i class="fa-solid fa-chevron-right"></i> Blog</a></li>
+          <li><a href="about.html"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
+          <li><a href="contact.html"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <div class="contact-info">
+          <div class="ci"><i class="fa-solid fa-location-dot"></i><span>A-708, Prahlad Nagar Trade Centre, Satellite, Ahmedabad</span></div>
+          <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 98250 12824</span></div>
+          <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 84600 14000</span></div>
+          <div class="ci"><i class="fa-solid fa-envelope"></i><span>admin@cityestate.co.in</span></div>
+        </div>
+        <div class="working-hours">
+          <h5><i class="fa-regular fa-clock"></i> Working Hours</h5>
+          <p>Mon – Sat: 9:00 AM – 7:00 PM</p>
+          <p>Sunday: 10:00 AM – 4:00 PM</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <p>© 2025 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/919377531247" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+<button class="back-top" id="backTop"><i class="fa-solid fa-chevron-up"></i></button>
+
+<script src="cursor.js"></script>
+</body>
+</html>

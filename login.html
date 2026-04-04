@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login – City Real Space</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    body { margin: 0; min-height: 100vh; background: #f0f2f5; display: flex; align-items: center; justify-content: center; padding: 20px; }
+
+    .page-card {
+      background: #fff; border-radius: 20px; overflow: hidden;
+      display: flex; width: 100%; max-width: 900px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.18);
+      min-height: 580px;
+    }
+
+    /* ---- LEFT PANEL ---- */
+    .page-left {
+      width: 42%; background: linear-gradient(160deg, #0D1B2A 0%, #1a3a5c 60%, #0d2137 100%);
+      padding: 50px 40px; display: flex; flex-direction: column; justify-content: center;
+      position: relative; overflow: hidden; flex-shrink: 0;
+    }
+    .page-left::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,193,7,0.08); }
+    .page-left::after  { content: ''; position: absolute; bottom: -40px; left: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(229,57,53,0.07); }
+
+    .pl-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; position: relative; }
+    .pl-brand .logo-icon { width: 42px; height: 42px; background: linear-gradient(135deg, #FFC107, #ff8f00); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.1rem; box-shadow: 0 4px 14px rgba(255,193,7,0.4); }
+    .pl-brand .logo-text { font-size: 1.2rem; font-weight: 800; color: #fff; }
+    .pl-brand .logo-text span { color: #FFC107; }
+
+    .page-left h2 { font-size: 1.5rem; font-weight: 800; color: #fff; line-height: 1.3; margin-bottom: 12px; position: relative; }
+    .page-left > p { color: rgba(255,255,255,0.6); font-size: 0.84rem; line-height: 1.7; margin-bottom: 28px; position: relative; }
+
+    .pl-perks { list-style: none; padding: 0; margin: 0 0 32px; position: relative; }
+    .pl-perks li { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.8); font-size: 0.82rem; margin-bottom: 12px; }
+    .pl-perks li i { color: #FFC107; font-size: 0.85rem; }
+
+    .pl-stats { display: flex; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 22px; position: relative; }
+    .pl-stats div { flex: 1; text-align: center; }
+    .pl-stats div:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.12); }
+    .pl-stats span { display: block; font-size: 1.3rem; font-weight: 800; color: #FFC107; }
+    .pl-stats small { font-size: 0.72rem; color: rgba(255,255,255,0.5); }
+
+    /* ---- RIGHT PANEL ---- */
+    .page-right { flex: 1; padding: 50px 44px; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
+
+    .page-right h3 { font-size: 1.6rem; font-weight: 800; color: #0D1B2A; margin-bottom: 4px; }
+    .page-right .sub { font-size: 0.85rem; color: #888; margin-bottom: 30px; }
+
+    .form-grp { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
+    .form-grp label { font-size: 0.8rem; font-weight: 600; color: #555; }
+    .finput { display: flex; align-items: center; gap: 10px; border: 1.5px solid #e8e8e8; border-radius: 10px; padding: 12px 14px; transition: border-color 0.2s, box-shadow 0.2s; background: #fff; }
+    .finput:focus-within { border-color: #FFC107; box-shadow: 0 0 0 3px rgba(255,193,7,0.1); }
+    .finput > i { color: #E53935; font-size: 0.85rem; flex-shrink: 0; }
+    .finput input { flex: 1; border: none; outline: none; font-size: 0.88rem; color: #333; font-family: 'Poppins', sans-serif; background: transparent; }
+    .eye-btn { background: none; border: none; cursor: pointer; color: #aaa; font-size: 0.85rem; padding: 0; transition: color 0.2s; }
+    .eye-btn:hover { color: #E53935; }
+
+    .form-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .check-label { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #666; cursor: pointer; }
+    .check-label input { accent-color: #E53935; width: 15px; height: 15px; }
+    .forgot { font-size: 0.8rem; color: #E53935; font-weight: 600; text-decoration: none; }
+    .forgot:hover { text-decoration: underline; }
+
+    .btn-submit { width: 100%; background: #E53935; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Poppins', sans-serif; margin-bottom: 20px; }
+    .btn-submit:hover { background: #c62828; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(229,57,53,0.35); }
+
+    .divider { display: flex; align-items: center; gap: 12px; color: #bbb; font-size: 0.78rem; margin-bottom: 16px; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e8e8e8; }
+
+    .social-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
+    .soc-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 11px; border: 1.5px solid #e8e8e8; border-radius: 10px; background: #fff; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Poppins', sans-serif; color: #444; }
+    .soc-btn:hover { border-color: #ccc; background: #f9f9f9; transform: translateY(-1px); }
+    .soc-btn .fa-google { color: #EA4335; }
+    .soc-btn .fa-facebook-f { color: #1877F2; }
+
+    .switch-link { text-align: center; font-size: 0.83rem; color: #888; }
+    .switch-link a { color: #E53935; font-weight: 700; text-decoration: none; }
+    .switch-link a:hover { text-decoration: underline; }
+
+    .back-home { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.55); font-size: 0.78rem; text-decoration: none; margin-bottom: 24px; transition: color 0.2s; position: relative; }
+    .back-home:hover { color: #FFC107; }
+
+    /* Hero bg image */
+    .page-left-bg {
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80') center/cover no-repeat;
+      opacity: 0.06;
+    }
+
+    @media (max-width: 700px) {
+      .page-left { display: none; }
+      .page-right { padding: 36px 24px; }
+      .page-card { max-height: none; }
+    }
+  </style>
+</head>
+<body>
+<script src="splash.js"></script>
+
+<div class="page-card">
+
+  <!-- LEFT -->
+  <div class="page-left">
+    <div class="page-left-bg"></div>
+    <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+    <div class="pl-brand">
+      <span class="logo-icon"><i class="fa-solid fa-building-columns"></i></span>
+      <span class="logo-text">City <span>Real</span> Space</span>
+    </div>
+    <h2>Gujarat's Most Trusted<br/>Real Estate Platform</h2>
+    <p>Join 8,200+ happy clients. Buy, Sell & Invest in verified properties across Ahmedabad, Gandhinagar & beyond.</p>
+    <ul class="pl-perks">
+      <li><i class="fa-solid fa-circle-check"></i> 12,500+ Verified Listings</li>
+      <li><i class="fa-solid fa-circle-check"></i> Free Property Consultation</li>
+      <li><i class="fa-solid fa-circle-check"></i> Exclusive New Launch Deals</li>
+      <li><i class="fa-solid fa-circle-check"></i> Dedicated Relationship Manager</li>
+    </ul>
+    <div class="pl-stats">
+      <div><span>12K+</span><small>Properties</small></div>
+      <div><span>8K+</span><small>Clients</small></div>
+      <div><span>350+</span><small>Agents</small></div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="page-right">
+    <div id="loginFormWrap">
+    <h3>Welcome Back 👋</h3>
+    <p class="sub">Login to your City Real Space account</p>
+
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="form-grp">
+        <label>Email Address</label>
+        <div class="finput">
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" placeholder="Email Address" required/>
+        </div>
+      </div>
+      <div class="form-grp">
+        <label>Password</label>
+        <div class="finput">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="loginPass" placeholder="Password" required/>
+          <button type="button" class="eye-btn" onclick="togglePass('loginPass', this)"><i class="fa-regular fa-eye"></i></button>
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="check-label"><input type="checkbox"/> Remember me</label>
+    <a href="#" class="forgot" onclick="showForgot(event)">Forgot Password?</a>
+      </div>
+      <button type="submit" class="btn-submit">Login to Account <i class="fa-solid fa-arrow-right"></i></button>
+    </form>
+
+    <div class="divider"><span>or continue with</span></div>
+    <div class="social-row">
+      <button class="soc-btn" onclick="googleLogin()"><i class="fa-brands fa-google"></i> Google</button>
+      <button class="soc-btn"><i class="fa-brands fa-facebook-f"></i> Facebook</button>
+    </div>
+    <p class="switch-link">Don't have an account? <a href="register.html">Register Free</a></p>
+    </div>
+
+    <!-- LOGIN OTP VERIFY -->
+    <div id="loginOtpWrap" style="display:none">
+      <div style="text-align:center;margin-bottom:24px">
+        <div style="width:72px;height:72px;background:linear-gradient(135deg,#1565c0,#0d47a1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.8rem;color:#fff"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3 style="font-size:1.4rem;font-weight:800;color:#0D1B2A;margin:0 0 6px">Verify Your Login</h3>
+        <p style="font-size:0.85rem;color:#888">OTP sent to <strong id="loginOtpEmailDisplay" style="color:#E53935"></strong></p>
+      </div>
+      <div class="form-grp">
+        <label>Enter 6-Digit OTP</label>
+        <div class="finput">
+          <i class="fa-solid fa-key"></i>
+          <input type="text" id="loginOtpInput" placeholder="● ● ● ● ● ●" maxlength="6" style="text-align:center;font-size:1.5rem;font-weight:800;letter-spacing:12px"/>
+        </div>
+      </div>
+      <p id="loginOtpMsg" style="font-size:0.82rem;margin:6px 0 12px;text-align:center"></p>
+      <button id="loginOtpVerifyBtn" onclick="verifyLoginPageOTP()" class="btn-submit">Verify & Login <i class="fa-solid fa-arrow-right"></i></button>
+      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px">Didn't get OTP? <a href="#" onclick="fetch(API+'/auth/resend-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:document.getElementById('loginOtpWrap').dataset.email})}).then(()=>{document.getElementById('loginOtpMsg').style.color='#27ae60';document.getElementById('loginOtpMsg').textContent='OTP resent!'})" style="color:#E53935;font-weight:600">Resend</a></p>
+      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:8px"><a href="#" onclick="document.getElementById('loginFormWrap').style.display='';document.getElementById('loginOtpWrap').style.display='none'" style="color:#555"><i class="fa-solid fa-arrow-left"></i> Back to Login</a></p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FORGOT PASSWORD OVERLAY -->
+<div id="forgotOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:20px;padding:36px;width:100%;max-width:420px;margin:20px;position:relative;font-family:Poppins,sans-serif">
+    <button onclick="closeForgot()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:#999"><i class="fa-solid fa-xmark"></i></button>
+
+    <!-- Step 1: Email -->
+    <div id="fpStep1">
+      <h3 style="color:#0D1B2A;margin-bottom:6px">Forgot Password?</h3>
+      <p style="color:#888;font-size:0.85rem;margin-bottom:24px">Enter your registered email, we'll send an OTP.</p>
+      <div class="form-grp">
+        <label>Email Address</label>
+        <div class="finput"><i class="fa-solid fa-envelope"></i><input type="email" id="fpEmail" placeholder="yourname@email.com" required/></div>
+      </div>
+      <button onclick="sendOTP()" class="btn-submit" style="margin-top:8px">Send OTP <i class="fa-solid fa-paper-plane"></i></button>
+      <p id="fpMsg1" style="color:#E53935;font-size:0.82rem;margin-top:8px;text-align:center"></p>
+    </div>
+
+    <!-- Step 2: OTP -->
+    <div id="fpStep2" style="display:none">
+      <h3 style="color:#0D1B2A;margin-bottom:6px">Enter OTP</h3>
+      <p style="color:#888;font-size:0.85rem;margin-bottom:24px">6-digit OTP sent to your email. Valid for 10 minutes.</p>
+      <div class="form-grp">
+        <label>OTP Code</label>
+        <div class="finput"><i class="fa-solid fa-key"></i><input type="text" id="fpOTP" placeholder="Enter 6-digit OTP" maxlength="6" required/></div>
+      </div>
+      <button onclick="verifyOTP()" class="btn-submit" style="margin-top:8px">Verify OTP <i class="fa-solid fa-check"></i></button>
+      <p id="fpMsg2" style="color:#E53935;font-size:0.82rem;margin-top:8px;text-align:center"></p>
+    </div>
+
+    <!-- Step 3: New Password -->
+    <div id="fpStep3" style="display:none">
+      <h3 style="color:#0D1B2A;margin-bottom:6px">Set New Password</h3>
+      <p style="color:#888;font-size:0.85rem;margin-bottom:24px">Create a strong new password.</p>
+      <div class="form-grp">
+        <label>New Password</label>
+        <div class="finput"><i class="fa-solid fa-lock"></i><input type="password" id="fpNewPass" placeholder="Min 8 chars, 1 number, 1 special" required/></div>
+      </div>
+      <div class="form-grp">
+        <label>Confirm Password</label>
+        <div class="finput"><i class="fa-solid fa-lock"></i><input type="password" id="fpConfPass" placeholder="Re-enter password" required/></div>
+      </div>
+      <button onclick="resetPassword()" class="btn-submit" style="margin-top:8px">Reset Password <i class="fa-solid fa-arrow-right"></i></button>
+      <p id="fpMsg3" style="color:#E53935;font-size:0.82rem;margin-top:8px;text-align:center"></p>
+    </div>
+
+    <!-- Step 4: Success -->
+    <div id="fpStep4" style="display:none;text-align:center">
+      <div style="font-size:3.5rem;margin-bottom:12px">✅</div>
+      <h3 style="color:#0D1B2A">Password Reset!</h3>
+      <p style="color:#888;font-size:0.85rem;margin-bottom:20px">Your password has been updated successfully.</p>
+      <button onclick="closeForgot()" class="btn-submit">Login Now <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<script src="cursor.js"></script>
+<script src="bg-animation.js"></script>
+<script>
+function togglePass(id, btn) {
+  const inp = document.getElementById(id);
+  const isText = inp.type === 'text';
+  inp.type = isText ? 'password' : 'text';
+  btn.querySelector('i').className = isText ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
+}
+const API = 'http://localhost:5000/api';
+let fpEmailVal = '', fpOTPVal = '';
+
+function showForgot(e) {
+  e.preventDefault();
+  const o = document.getElementById('forgotOverlay');
+  o.style.display = 'flex';
+  ['fpStep1','fpStep2','fpStep3','fpStep4'].forEach((id,i) => document.getElementById(id).style.display = i===0?'block':'none');
+  document.getElementById('fpMsg1').textContent = '';
+}
+function closeForgot() {
+  document.getElementById('forgotOverlay').style.display = 'none';
+}
+async function sendOTP() {
+  const email = document.getElementById('fpEmail').value.trim();
+  const msg = document.getElementById('fpMsg1');
+  if (!email) { msg.textContent = 'Please enter email'; return; }
+  msg.style.color = '#888'; msg.textContent = 'Sending OTP...';
+  try {
+    const res = await fetch(`${API}/auth/forgot-password`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email}) });
+    const data = await res.json();
+    if (data.success) {
+      fpEmailVal = email;
+      document.getElementById('fpStep1').style.display = 'none';
+      document.getElementById('fpStep2').style.display = 'block';
+    } else { msg.style.color='#E53935'; msg.textContent = data.message; }
+  } catch { msg.style.color='#E53935'; msg.textContent = 'Server error'; }
+}
+async function verifyOTP() {
+  const otp = document.getElementById('fpOTP').value.trim();
+  const msg = document.getElementById('fpMsg2');
+  if (!otp) { msg.textContent = 'Please enter OTP'; return; }
+  msg.style.color = '#888'; msg.textContent = 'Verifying...';
+  try {
+    const res = await fetch(`${API}/auth/verify-otp`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email: fpEmailVal, otp}) });
+    const data = await res.json();
+    if (data.success) {
+      fpOTPVal = otp;
+      document.getElementById('fpStep2').style.display = 'none';
+      document.getElementById('fpStep3').style.display = 'block';
+    } else { msg.style.color='#E53935'; msg.textContent = data.message; }
+  } catch { msg.style.color='#E53935'; msg.textContent = 'Server error'; }
+}
+async function resetPassword() {
+  const newPass = document.getElementById('fpNewPass').value;
+  const confPass = document.getElementById('fpConfPass').value;
+  const msg = document.getElementById('fpMsg3');
+  if (newPass !== confPass) { msg.textContent = 'Passwords do not match'; return; }
+  if (newPass.length < 8 || !/[0-9]/.test(newPass) || !/[^A-Za-z0-9]/.test(newPass)) {
+    msg.textContent = 'Min 8 chars, 1 number, 1 special character'; return;
+  }
+  msg.style.color = '#888'; msg.textContent = 'Resetting...';
+  try {
+    const res = await fetch(`${API}/auth/reset-password`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email: fpEmailVal, otp: fpOTPVal, newPassword: newPass}) });
+    const data = await res.json();
+    if (data.success) {
+      document.getElementById('fpStep3').style.display = 'none';
+      document.getElementById('fpStep4').style.display = 'block';
+    } else { msg.style.color='#E53935'; msg.textContent = data.message; }
+  } catch { msg.style.color='#E53935'; msg.textContent = 'Server error'; }
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const btn = document.querySelector('.btn-submit');
+  const email = document.querySelector('input[type="email"]').value;
+  const password = document.getElementById('loginPass').value;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
+  btn.disabled = true;
+  try {
+    const res = await fetch(`${API}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (data.success && data.needsOTP) {
+      document.getElementById('loginFormWrap').style.display = 'none';
+      document.getElementById('loginOtpWrap').style.display = 'block';
+      document.getElementById('loginOtpEmailDisplay').textContent = email;
+      document.getElementById('loginOtpWrap').dataset.email = email;
+      document.getElementById('loginOtpInput').value = '';
+    } else if (data.success) {
+      // Direct login (no OTP case)
+      const role = data.user && data.user.role;
+      if (role === 'admin') {
+        // Admin ko main site login se block karo — admin panel use karo
+        alert('Admin login ke liye Admin Panel use karein: /admin/login.html');
+        btn.innerHTML = 'Login to Account <i class="fa-solid fa-arrow-right"></i>';
+        btn.disabled = false;
+        return;
+      }
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      const ownerRoles = ['owner','seller','agent','builder'];
+      window.location.href = ownerRoles.includes(role) ? 'dashboard.html' : 'index.html';
+    } else {
+      if (data.message && data.message.toLowerCase().includes('verify')) {
+        // Unverified user — show OTP verify overlay
+        showVerifyOverlay(email);
+      } else {
+        alert(data.message || 'Login failed');
+      }
+      btn.innerHTML = 'Login to Account <i class="fa-solid fa-arrow-right"></i>';
+      btn.disabled = false;
+    }
+  } catch {
+    alert('Server error. Make sure backend is running.');
+    btn.innerHTML = 'Login to Account <i class="fa-solid fa-arrow-right"></i>';
+    btn.disabled = false;
+  }
+}
+
+async function verifyLoginPageOTP() {
+  const btn   = document.getElementById('loginOtpVerifyBtn');
+  const email = document.getElementById('loginOtpWrap').dataset.email;
+  const otp   = document.getElementById('loginOtpInput').value.trim();
+  const msg   = document.getElementById('loginOtpMsg');
+  if (!otp || otp.length < 6) { msg.style.color='#E53935'; msg.textContent='Enter 6-digit OTP'; return; }
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
+  btn.disabled = true;
+  try {
+    const res  = await fetch(`${API}/auth/verify-login`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email, otp }) });
+    const data = await res.json();
+    if (data.success) {
+      const role = data.user && data.user.role;
+      if (role === 'admin') {
+        msg.style.color = '#E53935';
+        msg.textContent = 'Admin login ke liye Admin Panel use karein: /admin/login.html';
+        btn.innerHTML = 'Verify & Login <i class="fa-solid fa-arrow-right"></i>';
+        btn.disabled = false;
+        return;
+      }
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      const ownerRoles = ['owner','seller','agent','builder'];
+      window.location.href = ownerRoles.includes(role) ? 'dashboard.html' : 'index.html';
+    } else {
+      msg.style.color = '#E53935';
+      msg.textContent = data.message || 'Invalid OTP';
+      btn.innerHTML = 'Verify & Login <i class="fa-solid fa-arrow-right"></i>';
+      btn.disabled = false;
+    }
+  } catch {
+    msg.style.color = '#E53935';
+    msg.textContent = 'Server error.';
+    btn.innerHTML = 'Verify & Login <i class="fa-solid fa-arrow-right"></i>';
+    btn.disabled = false;
+  }
+}
+let verifyEmailVal = '';
+function showVerifyOverlay(email) {
+  verifyEmailVal = email;
+  document.getElementById('verifyOverlay').style.display = 'flex';
+  document.getElementById('verifyMsg').textContent = 'OTP sent to ' + email;
+  document.getElementById('verifyMsg').style.color = '#888';
+  // auto-resend OTP
+  fetch(`${API}/auth/resend-otp`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email}) });
+}
+async function submitVerifyOTP() {
+  const otp = document.getElementById('verifyOTPInput').value.trim();
+  const msg = document.getElementById('verifyMsg');
+  if (!otp) { msg.style.color='#E53935'; msg.textContent='Enter OTP'; return; }
+  msg.style.color='#888'; msg.textContent='Verifying...';
+  try {
+    const res = await fetch(`${API}/auth/verify-register`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email: verifyEmailVal, otp}) });
+    const data = await res.json();
+    if (data.success) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('showWelcome', 'login');
+      window.location.href = 'index.html';
+    } else { msg.style.color='#E53935'; msg.textContent = data.message; }
+  } catch { msg.style.color='#E53935'; msg.textContent='Server error'; }
+}
+</script>
+
+<!-- EMAIL VERIFY OVERLAY -->
+<div id="verifyOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:20px;padding:36px;width:100%;max-width:400px;margin:20px;font-family:Poppins,sans-serif;position:relative">
+    <button onclick="document.getElementById('verifyOverlay').style.display='none'" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:#999"><i class="fa-solid fa-xmark"></i></button>
+    <h3 style="color:#0D1B2A;margin-bottom:6px">Verify Your Email</h3>
+    <p style="color:#888;font-size:0.85rem;margin-bottom:20px">Enter the 6-digit OTP sent to your email to activate your account.</p>
+    <div class="form-grp">
+      <label>OTP Code</label>
+      <div class="finput"><i class="fa-solid fa-key"></i><input type="text" id="verifyOTPInput" placeholder="Enter 6-digit OTP" maxlength="6"/></div>
+    </div>
+    <p id="verifyMsg" style="font-size:0.82rem;margin:8px 0 12px;text-align:center"></p>
+    <button onclick="submitVerifyOTP()" class="btn-submit">Verify & Login <i class="fa-solid fa-arrow-right"></i></button>
+    <p style="text-align:center;font-size:0.8rem;color:#888;margin-top:12px">Didn't get OTP? <a href="#" style="color:#E53935;font-weight:600" onclick="fetch(API+'/auth/resend-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:verifyEmailVal})}).then(()=>{document.getElementById('verifyMsg').style.color='#27ae60';document.getElementById('verifyMsg').textContent='OTP resent!'})">Resend</a></p>
+  </div>
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+function googleLogin() {
+  google.accounts.oauth2.initTokenClient({
+    client_id: 'YOUR_GOOGLE_CLIENT_ID',
+    scope: 'email profile',
+    callback: async (resp) => {
+      if (resp.error) return;
+      try {
+        const info = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: 'Bearer ' + resp.access_token }
+        }).then(r => r.json());
+
+        const res  = await fetch(`${API}/auth/google`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            firstName: info.given_name || info.name.split(' ')[0],
+            lastName:  info.family_name || info.name.split(' ')[1] || '',
+            email:     info.email,
+            googleId:  info.sub,
+            avatar:    info.picture
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          window.location.href = 'index.html';
+        } else {
+          alert(data.message || 'Google login failed');
+        }
+      } catch { alert('Google login error. Try again.'); }
+    }
+  }).requestAccessToken();
+}
+</script>
+</body>

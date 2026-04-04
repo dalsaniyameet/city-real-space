@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blog – City Real Space</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    .bd-wrap { max-width: 900px; margin: 90px auto 60px; padding: 0 20px; }
+    .bd-hero { position: relative; height: 420px; border-radius: 20px; overflow: hidden; margin-bottom: 32px; }
+    .bd-hero img { width: 100%; height: 100%; object-fit: cover; }
+    .bd-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(13,27,42,0.7) 0%, transparent 60%); }
+    .bd-hero-cat { position: absolute; top: 20px; left: 20px; background: #E53935; color: #fff; font-size: 0.75rem; font-weight: 700; padding: 5px 14px; border-radius: 50px; }
+    .bd-meta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+    .bd-meta span { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: #888; }
+    .bd-meta i { color: #FFC107; }
+    .bd-title { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; color: #0D1B2A; line-height: 1.3; margin-bottom: 16px; }
+    .bd-excerpt { font-size: 1rem; color: #666; line-height: 1.7; margin-bottom: 28px; padding-bottom: 28px; border-bottom: 2px solid #f0f0f0; font-style: italic; }
+    .bd-content { font-size: 0.95rem; color: #444; line-height: 1.9; }
+    .bd-content h2 { font-size: 1.4rem; font-weight: 800; color: #0D1B2A; margin: 32px 0 14px; }
+    .bd-content h3 { font-size: 1.15rem; font-weight: 700; color: #0D1B2A; margin: 24px 0 10px; }
+    .bd-content p { margin-bottom: 16px; }
+    .bd-content ul, .bd-content ol { padding-left: 24px; margin-bottom: 16px; }
+    .bd-content li { margin-bottom: 8px; }
+    .bd-content a { color: #E53935; font-weight: 600; }
+    .bd-content img { width: 100%; border-radius: 12px; margin: 20px 0; }
+    .bd-share { display: flex; align-items: center; gap: 12px; margin-top: 40px; padding-top: 28px; border-top: 1px solid #f0f0f0; flex-wrap: wrap; }
+    .bd-share span { font-size: 0.85rem; font-weight: 700; color: #0D1B2A; }
+    .bd-share-btn { display: flex; align-items: center; gap: 7px; padding: 8px 18px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: 1.5px solid #e8e8e8; background: #fff; transition: all 0.2s; font-family: Poppins, sans-serif; }
+    .bd-share-btn:hover { border-color: #E53935; color: #E53935; }
+    .bd-share-btn.wa { background: #25D366; color: #fff; border-color: #25D366; }
+    .bd-share-btn.wa:hover { background: #1ebe5d; }
+    .bd-back { display: inline-flex; align-items: center; gap: 8px; color: #E53935; font-size: 0.85rem; font-weight: 700; margin-bottom: 24px; text-decoration: none; transition: gap 0.2s; }
+    .bd-back:hover { gap: 12px; }
+    .bd-loading { text-align: center; padding: 100px 20px; color: #aaa; }
+    .bd-loading i { font-size: 2.5rem; color: #E53935; margin-bottom: 16px; display: block; }
+    .bd-cta { background: linear-gradient(135deg, #0D1B2A, #1a3a5c); border-radius: 16px; padding: 32px; text-align: center; margin-top: 48px; }
+    .bd-cta h3 { color: #fff; font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
+    .bd-cta p { color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-bottom: 20px; }
+    .bd-cta a { background: #E53935; color: #fff; padding: 12px 28px; border-radius: 10px; font-weight: 700; font-size: 0.88rem; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
+    .bd-cta a:hover { background: #c62828; transform: translateY(-2px); }
+    @media(max-width:600px) { .bd-hero { height: 240px; } .bd-wrap { margin-top: 80px; } }
+  </style>
+</head>
+<body>
+<script src="splash.js"></script>
+<header class="header" id="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;"/>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Buy <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="properties.html">All</a>
+          <a href="rent.html">Rent</a>
+          <a href="resale.html">Resale</a>
+          <a href="land.html">Land</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Sell <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="post-property.html">List Property</a>
+          <a href="post-property.html">List Project</a>
+        </div>
+      </div>
+      <a href="new-launch.html">New Launch</a>
+      <a href="prelease.html">Prelease</a>
+      <a href="about.html">About</a>
+      <a href="blog.html" class="active">Blog</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button class="fav-btn"><i class="fa-regular fa-heart"></i><span class="fav-count">0</span></button>
+      <div id="userMenu" style="display:none;position:relative">
+        <button class="btn-login" id="userMenuBtn"><i class="fa-solid fa-user"></i> <span id="userNameDisplay"></span></button>
+      </div>
+      <a href="login.html" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> Login</a>
+      <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<div class="bd-wrap">
+  <div id="bdLoading" class="bd-loading">
+    <i class="fa-solid fa-spinner fa-spin"></i>
+    <p>Loading article...</p>
+  </div>
+  <div id="bdContent" style="display:none">
+    <a href="blog.html" class="bd-back"><i class="fa-solid fa-arrow-left"></i> Back to Blog</a>
+    <div class="bd-hero" id="bdHero">
+      <img id="bdImg" src="" alt=""/>
+      <div class="bd-hero-overlay"></div>
+      <span class="bd-hero-cat" id="bdCat"></span>
+    </div>
+    <div class="bd-meta" id="bdMeta"></div>
+    <h1 class="bd-title" id="bdTitle"></h1>
+    <p class="bd-excerpt" id="bdExcerpt"></p>
+    <div class="bd-content" id="bdBody"></div>
+    <div class="bd-share">
+      <span>Share:</span>
+      <button class="bd-share-btn wa" id="bdShareWa"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+      <button class="bd-share-btn" id="bdShareCopy"><i class="fa-solid fa-link"></i> Copy Link</button>
+    </div>
+    <div class="bd-cta">
+      <h3>Looking for Your Dream Property? 🏠</h3>
+      <p>Browse 12,500+ verified properties across Ahmedabad with City Real Space.</p>
+      <a href="properties.html"><i class="fa-solid fa-building"></i> View Properties</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <a href="index.html" class="logo footer-logo">
+          <img src="images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;filter:brightness(0) invert(1);"/>
+        </a>
+        <p class="footer-about">Ahmedabad's most trusted real estate platform.</p>
+        <div class="social-links">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://wa.me/919377531247" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="properties.html"><i class="fa-solid fa-chevron-right"></i> Properties</a></li>
+          <li><a href="blog.html"><i class="fa-solid fa-chevron-right"></i> Blog</a></li>
+          <li><a href="about.html"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
+          <li><a href="contact.html"><i class="fa-solid fa-chevron-right"></i> Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <div class="contact-info">
+          <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 98250 12824</span></div>
+          <div class="ci"><i class="fa-solid fa-envelope"></i><span>admin@cityestate.co.in</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <p>© 2025 City Real Space. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/919377531247" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+<button class="back-top" id="backTop"><i class="fa-solid fa-chevron-up"></i></button>
+
+<script src="cursor.js"></script>
+<script src="bg-animation.js"></script>
+<script>
+const API = 'http://localhost:5000/api';
+const slug = new URLSearchParams(window.location.search).get('slug');
+
+// Auth
+const user = JSON.parse(localStorage.getItem('user') || 'null');
+if (user) {
+  document.getElementById('loginBtn').style.display = 'none';
+  document.getElementById('userMenu').style.display = 'block';
+  document.getElementById('userNameDisplay').textContent = user.firstName || '';
+}
+
+async function loadBlog() {
+  if (!slug) { showError('Blog post not found.'); return; }
+  try {
+    const res = await fetch(`${API}/blogs/${slug}`);
+    const data = await res.json();
+    if (data.success && data.blog) { renderBlog(data.blog); return; }
+  } catch(e) {}
+  showError('Blog post not found. <a href="blog.html" style="color:#E53935;font-weight:700;">← Back to Blog</a>');
+}
+
+function renderBlog(b) {
+  document.title = b.title + ' – City Real Space';
+  const date = new Date(b.createdAt).toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' });
+
+  // Hero image
+  if (b.image) {
+    document.getElementById('bdImg').src = b.image;
+  } else {
+    document.getElementById('bdHero').style.display = 'none';
+  }
+  document.getElementById('bdCat').textContent = b.category || '';
+  document.getElementById('bdMeta').innerHTML =
+    `<span><i class="fa-regular fa-calendar"></i> ${date}</span>
+     <span><i class="fa-regular fa-user"></i> ${b.author || 'CRS Team'}</span>
+     <span><i class="fa-solid fa-eye"></i> ${b.views || 0} views</span>`;
+  document.getElementById('bdTitle').textContent = b.title;
+  if (b.excerpt) document.getElementById('bdExcerpt').textContent = b.excerpt;
+  else document.getElementById('bdExcerpt').style.display = 'none';
+  document.getElementById('bdBody').innerHTML = b.content || '';
+
+  // Share buttons
+  document.getElementById('bdShareWa').onclick = () => {
+    window.open(`https://wa.me/?text=${encodeURIComponent(b.title + ' - ' + window.location.href)}`, '_blank');
+  };
+  document.getElementById('bdShareCopy').onclick = function() {
+    navigator.clipboard.writeText(window.location.href);
+    this.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+    setTimeout(() => { this.innerHTML = '<i class="fa-solid fa-link"></i> Copy Link'; }, 2000);
+  };
+
+  document.getElementById('bdLoading').style.display = 'none';
+  document.getElementById('bdContent').style.display = 'block';
+}
+
+function showError(msg) {
+  document.getElementById('bdLoading').innerHTML =
+    `<i class="fa-solid fa-newspaper" style="color:#E53935"></i><p>${msg}</p>`;
+}
+
+// Scroll & nav
+window.addEventListener('scroll', () => {
+  document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+  document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
+});
+document.getElementById('backTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
+document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+  btn.addEventListener('click', e => { e.preventDefault(); btn.closest('.nav-dropdown').classList.toggle('open'); });
+});
+
+loadBlog();
+</script>
+</body>
+</html>

@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>City Real Space – Premium Properties in Ahmedabad</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+<style>
+/* SEO Keywords Section Styles */
+.seo-links a:hover { 
+  color: #E53935 !important; 
+  background: rgba(229, 57, 53, 0.05);
+  transform: translateX(3px);
+}
+.seo-section {
+  background: #fff;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(229, 57, 53, 0.1);
+}
+.seo-section:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(229, 57, 53, 0.15);
+  border-color: rgba(229, 57, 53, 0.2);
+}
+.seo-keywords-section {
+  position: relative;
+  overflow: hidden;
+}
+.seo-keywords-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #E53935, #FFC107, #E53935);
+}
+.sec-tag {
+  position: relative;
+  display: inline-block;
+}
+.sec-tag::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 2px;
+  background: #E53935;
+}
+@media(max-width:768px) {
+  .seo-grid { 
+    grid-template-columns: 1fr !important; 
+    gap: 20px !important; 
+  }
+  .seo-header h2 { 
+    font-size: 1.8rem !important; 
+    line-height: 1.3 !important;
+  }
+  .seo-description { 
+    padding: 24px !important; 
+  }
+  .seo-section {
+    padding: 20px !important;
+  }
+  .seo-links a {
+    font-size: 0.85rem !important;
+    padding: 6px 10px !important;
+  }
+}
+@media(max-width:480px) {
+  .seo-keywords-section {
+    padding: 40px 0 !important;
+  }
+  .seo-header {
+    margin-bottom: 30px !important;
+  }
+  .seo-header h2 {
+    font-size: 1.5rem !important;
+  }
+}
+</style>
+<script src="splash.js"></script>
+<header class="header" id="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <img src="images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;"/>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Buy <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="properties.html">All</a>
+          <a href="rent.html">Rent</a>
+          <a href="resale.html">Resale</a>
+          <a href="land.html">Land</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Sell <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="post-property.html">List Property</a>
+          <a href="post-property.html">List Project</a>
+        </div>
+      </div>
+      <a href="new-launch.html">New Launch</a>
+      <a href="prelease.html">Prelease</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button class="fav-btn" title="Favorites"><i class="fa-regular fa-heart"></i><span class="fav-count">0</span></button>
+      <a href="post-property.html" class="btn-post-prop" id="postPropBtn" style="display:none"><i class="fa-solid fa-plus"></i> Post Property</a>
+      <div id="userMenu" style="display:none;position:relative">
+        <button class="btn-login" id="userMenuBtn"><i class="fa-solid fa-user"></i> <span id="userNameDisplay"></span> <i class="fa-solid fa-chevron-down" style="font-size:0.7rem"></i></button>
+        <div id="userDropdown" style="display:none;position:absolute;right:0;top:110%;background:#fff;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.15);min-width:180px;z-index:999;overflow:hidden;border:1px solid #f0f0f0">
+          <a href="dashboard.html" style="display:flex;align-items:center;gap:8px;padding:12px 16px;font-size:0.85rem;color:#333;font-weight:600;border-bottom:1px solid #f5f5f5;"><i class="fa-solid fa-gauge" style="color:#E53935"></i> My Dashboard</a>
+          <button onclick="openProfileModal()" style="width:100%;padding:12px 16px;border:none;border-bottom:1px solid #f5f5f5;background:none;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.85rem;color:#333;font-weight:600;text-align:left;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-user-pen" style="color:#E53935"></i> Edit Profile</button>
+          <button onclick="handleLogout()" style="width:100%;padding:12px 16px;border:none;background:none;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.85rem;color:#E53935;font-weight:600;text-align:left;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+      </div>
+      <a href="login.html" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> Login / Register</a>
+      <button class="btn-inquiry">Inquiry <i class="fa-solid fa-arrow-right"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HERO / SEARCH ===== -->
+<section class="hero">
+  <!-- BG Slider -->
+  <div class="hero-slides">
+    <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&q=80')">
+      <div class="slide-label">
+        <span class="slide-badge">For Sale</span>
+        <h2>5BHK Apartment For Sale</h2>
+        <p><i class="fa-solid fa-location-dot"></i> Prahlad Nagar, Ahmedabad</p>
+      </div>
+    </div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600&q=80')">
+      <div class="slide-label">
+        <span class="slide-badge">For Sale</span>
+        <h2>Industrial Land For Sale</h2>
+        <p><i class="fa-solid fa-location-dot"></i> Sanand, Ahmedabad</p>
+      </div>
+    </div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&q=80')">
+      <div class="slide-label" style="background:linear-gradient(135deg,rgba(229,57,53,0.88),rgba(13,27,42,0.82));border-left:4px solid #FFC107;">
+        <span class="slide-badge" style="background:#FFC107;color:#0D1B2A;">New</span>
+        <h2>Can't Find Your Property?</h2>
+        <p><i class="fa-solid fa-bell"></i> Post Your Requirement — We'll Find It For You!</p>
+        <a href="properties.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:10px;background:#E53935;color:#fff;border:none;padding:9px 22px;border-radius:8px;font-family:Poppins,sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;text-decoration:none;"><i class="fa-solid fa-paper-plane"></i> Post Requirement</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-tag hero-anim-tag"><i class="fa-solid fa-star"></i> #1 Real Estate Platform in Ahmedabad</p>
+    <h1 id="heroTitle"></h1>
+    <p class="hero-sub" id="heroSub"></p>
+  </div>
+</section>
+
+<!-- ===== SEARCH + STATS (WHITE BG) ===== -->
+<div class="search-stats-wrap">
+  <div class="container">
+
+    <div class="search-box">
+      <div class="search-tabs">
+        <button class="stab active" data-status="for-sale">Buy</button>
+        <button class="stab" data-status="for-rent">Rent</button>
+        <button class="stab" data-status="new-launch">New Launch</button>
+        <button class="stab" data-status="commercial">Commercial</button>
+      </div>
+      <div class="search-fields">
+        <div class="sf">
+          <i class="fa-solid fa-location-dot"></i>
+          <select id="searchCity">
+            <option value="">Select City</option>
+            <option value="Ahmedabad">Ahmedabad</option>
+            <option value="Gandhinagar">Gandhinagar</option>
+            <option value="Surat">Surat</option>
+            <option value="Vadodara">Vadodara</option>
+            <option value="Rajkot">Rajkot</option>
+          </select>
+        </div>
+        <div class="sf">
+          <i class="fa-solid fa-map-pin"></i>
+          <select id="searchLocality">
+            <option value="">Select Locality</option>
+          </select>
+        </div>
+        <div class="sf">
+          <i class="fa-solid fa-home"></i>
+          <select id="searchType">
+            <option value="">Property Type</option>
+            <option value="apartment">Apartment / Flat</option>
+            <option value="villa">Villa</option>
+            <option value="bungalow">Bungalow</option>
+            <option value="rowhouse">Row House</option>
+            <option value="plot">Plot / Land</option>
+            <option value="office">Office Space</option>
+            <option value="shop">Shop / Showroom</option>
+            <option value="warehouse">Warehouse</option>
+          </select>
+        </div>
+        <div class="sf">
+          <i class="fa-solid fa-sliders"></i>
+          <select id="searchBudget">
+            <option value="">Budget Filter</option>
+            <option value="0-3000000">Under ₹30L</option>
+            <option value="3000000-6000000">₹30L – ₹60L</option>
+            <option value="6000000-10000000">₹60L – ₹1Cr</option>
+            <option value="10000000-20000000">₹1Cr – ₹2Cr</option>
+            <option value="20000000-50000000">₹2Cr – ₹5Cr</option>
+            <option value="50000000-999999999">Above ₹5Cr</option>
+          </select>
+        </div>
+        <button class="btn-search" id="mainSearchBtn"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+      </div>
+    </div>
+
+
+
+    <div class="popular-areas popular-areas-light">
+      <span class="pa-label">Popular Areas:</span>
+      <div class="pa-marquee-wrap">
+        <div class="pa-marquee">
+          <a href="properties.html?area=Chekhla">Chekhla</a>
+          <a href="properties.html?area=Memnagar">Memnagar</a>
+          <a href="properties.html?area=Giftcity">Giftcity</a>
+          <a href="properties.html?area=Bopal">Bopal</a>
+          <a href="properties.html?area=Prahlad Nagar">Prahlad Nagar</a>
+          <a href="properties.html?area=Satellite">Satellite</a>
+          <a href="properties.html?area=Thaltej">Thaltej</a>
+          <a href="properties.html?area=Shela">Shela</a>
+          <a href="properties.html?area=Chekhla">Chekhla</a>
+          <a href="properties.html?area=Memnagar">Memnagar</a>
+          <a href="properties.html?area=Giftcity">Giftcity</a>
+          <a href="properties.html?area=Bopal">Bopal</a>
+          <a href="properties.html?area=Prahlad Nagar">Prahlad Nagar</a>
+          <a href="properties.html?area=Satellite">Satellite</a>
+          <a href="properties.html?area=Thaltej">Thaltej</a>
+          <a href="properties.html?area=Shela">Shela</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-inner">
+      <div class="stat"><span class="snum" data-target="12500" data-suffix="+">12,500+</span><span class="slabel">Properties Listed</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="snum" data-target="8200" data-suffix="+">8,200+</span><span class="slabel">Happy Clients</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="snum" data-target="350" data-suffix="+">350+</span><span class="slabel">Expert Agents</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="snum" data-target="15" data-suffix="+">15+</span><span class="slabel">Years Experience</span></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== TRENDING PROPERTIES ===== -->
+<section class="section" id="trending">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <p class="sec-tag">Hot Picks</p>
+        <h2>Trending Properties <span class="yellow">in Ahmedabad</span></h2>
+        <p class="sec-sub">Handpicked premium listings with verified details and best market prices.</p>
+      </div>
+      <a href="#" class="btn-outline">View All <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="cards-grid" id="trendingGrid"></div>
+  </div>
+</section>
+
+<!-- ===== LATEST POSTS ===== -->
+<section class="section bg-light">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <p class="sec-tag">Latest Posts</p>
+        <h2>Property <span class="yellow">Updates &amp; Tips</span></h2>
+        <p class="sec-sub">Stay updated with the latest real estate news, tips and market insights.</p>
+      </div>
+      <a href="blog.html" class="btn-outline">View All Posts <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="posts-grid" id="homePostsGrid">
+      <div style="grid-column:1/-1;text-align:center;padding:40px;color:#aaa;"><i class="fa-solid fa-spinner fa-spin" style="font-size:1.5rem"></i></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RESIDENTIAL ===== -->
+<section class="section bg-light" id="residential">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <p class="sec-tag">Residential</p>
+        <h2>Residential <span class="yellow">Properties</span></h2>
+        <p class="sec-sub">Comfortable homes for every lifestyle and budget across Ahmedabad.</p>
+      </div>
+      <div class="slider-controls">
+        <button class="sc-btn" id="resPrev"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="sc-btn" id="resNext"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </div>
+    <div class="slider-wrap">
+      <div class="cards-slider" id="resSlider"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMMERCIAL ===== -->
+<section class="section" id="commercial">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <p class="sec-tag">Commercial</p>
+        <h2>Commercial <span class="yellow">Properties</span></h2>
+        <p class="sec-sub">Prime office spaces, shops & warehouses for your business growth.</p>
+      </div>
+      <div class="slider-controls">
+        <button class="sc-btn" id="comPrev"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="sc-btn" id="comNext"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </div>
+    <div class="slider-wrap">
+      <div class="cards-slider" id="comSlider"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY CHOOSE US ===== -->
+<section class="section bg-light">
+  <div class="container">
+    <div class="section-head center">
+      <div>
+        <p class="sec-tag">Why Us</p>
+        <h2>Why Choose <span class="yellow">City Real Space</span></h2>
+        <p class="sec-sub">We make property buying simple, transparent and rewarding.</p>
+      </div>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h4>100% Verified Listings</h4>
+        <p>Every property is physically verified by our expert team before listing.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="fa-solid fa-handshake"></i></div>
+        <h4>Trusted Agents</h4>
+        <p>350+ certified agents with deep local market knowledge.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h4>Best Market Price</h4>
+        <p>Get the most competitive prices with our market analysis tools.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><i class="fa-solid fa-headset"></i></div>
+        <h4>24/7 Support</h4>
+        <p>Our dedicated support team is always ready to assist you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA BANNER ===== -->
+<section class="cta-banner">
+  <div class="cta-overlay"></div>
+  <div class="cta-content">
+    <h2>Ready to Find Your <span class="yellow">Perfect Property?</span></h2>
+    <p>Join 8,200+ happy clients who found their dream home with City Real Space.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-red">View All Properties <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="#" class="btn-white">Talk to an Expert</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TEAM ===== -->
+<section class="section bg-light">
+  <div class="container">
+    <div class="section-head center">
+      <div>
+        <p class="sec-tag">Our Team</p>
+        <h2>Meet Our <span class="yellow">Experts</span></h2>
+        <p class="sec-sub">The dedicated professionals powering City Real Space.</p>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:24px;">
+
+      <div style="background:#fff;border-radius:18px;padding:28px 16px 22px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e8e8e8;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 40px rgba(229,57,53,0.15)';this.style.borderColor='rgba(229,57,53,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(0,0,0,0.08)';this.style.borderColor='#e8e8e8'">
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#f5f5f5,#e8e8e8);border:3px solid #E53935;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;overflow:hidden;">
+          <i class="fa-solid fa-user" style="font-size:2rem;color:#ccc;"></i>
+        </div>
+        <h4 style="font-size:0.95rem;font-weight:700;color:#0D1B2A;margin-bottom:4px;">Nikhil Bhai</h4>
+        <p style="color:#E53935;font-size:0.72rem;font-weight:700;margin-bottom:6px;">Residential &amp; Commercial Manager</p>
+        <p style="color:#888;font-size:0.78rem;line-height:1.5;">Expert in both residential &amp; commercial property deals.</p>
+      </div>
+
+      <div style="background:#fff;border-radius:18px;padding:28px 16px 22px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e8e8e8;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 40px rgba(229,57,53,0.15)';this.style.borderColor='rgba(229,57,53,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(0,0,0,0.08)';this.style.borderColor='#e8e8e8'">
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#f5f5f5,#e8e8e8);border:3px solid #E53935;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;overflow:hidden;">
+          <i class="fa-solid fa-user" style="font-size:2rem;color:#ccc;"></i>
+        </div>
+        <h4 style="font-size:0.95rem;font-weight:700;color:#0D1B2A;margin-bottom:4px;">Amit Parmani</h4>
+        <p style="color:#E53935;font-size:0.72rem;font-weight:700;margin-bottom:6px;">Residential &amp; Commercial Sales</p>
+        <p style="color:#888;font-size:0.78rem;line-height:1.5;">Specializes in property sales at the best market prices.</p>
+      </div>
+
+      <div style="background:#fff;border-radius:18px;padding:28px 16px 22px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e8e8e8;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 40px rgba(255,193,7,0.2)';this.style.borderColor='rgba(255,193,7,0.4)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(0,0,0,0.08)';this.style.borderColor='#e8e8e8'">
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#f5f5f5,#e8e8e8);border:3px solid #FFC107;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;overflow:hidden;">
+          <i class="fa-solid fa-user" style="font-size:2rem;color:#ccc;"></i>
+        </div>
+        <h4 style="font-size:0.95rem;font-weight:700;color:#0D1B2A;margin-bottom:4px;">Aarti Patel</h4>
+        <p style="color:#E53935;font-size:0.72rem;font-weight:700;margin-bottom:6px;">Tele Caller</p>
+        <p style="color:#888;font-size:0.78rem;line-height:1.5;">First point of contact for all client inquiries.</p>
+      </div>
+
+      <div style="background:#fff;border-radius:18px;padding:28px 16px 22px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e8e8e8;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 40px rgba(229,57,53,0.15)';this.style.borderColor='rgba(229,57,53,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(0,0,0,0.08)';this.style.borderColor='#e8e8e8'">
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#f5f5f5,#e8e8e8);border:3px solid #E53935;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;overflow:hidden;">
+          <i class="fa-solid fa-user" style="font-size:2rem;color:#ccc;"></i>
+        </div>
+        <h4 style="font-size:0.95rem;font-weight:700;color:#0D1B2A;margin-bottom:4px;">Deep Bhai</h4>
+        <p style="color:#E53935;font-size:0.72rem;font-weight:700;margin-bottom:6px;">Residential Manager</p>
+        <p style="color:#888;font-size:0.78rem;line-height:1.5;">Helping families find their perfect dream home.</p>
+      </div>
+
+      <div style="background:#fff;border-radius:18px;padding:28px 16px 22px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e8e8e8;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 40px rgba(229,57,53,0.15)';this.style.borderColor='rgba(229,57,53,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(0,0,0,0.08)';this.style.borderColor='#e8e8e8'">
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#f5f5f5,#e8e8e8);border:3px solid #E53935;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;overflow:hidden;">
+          <i class="fa-solid fa-user" style="font-size:2rem;color:#ccc;"></i>
+        </div>
+        <h4 style="font-size:0.95rem;font-weight:700;color:#0D1B2A;margin-bottom:4px;">Yogesh</h4>
+        <p style="color:#E53935;font-size:0.72rem;font-weight:700;margin-bottom:6px;">Commercial Manager</p>
+        <p style="color:#888;font-size:0.78rem;line-height:1.5;">Expert in offices, shops &amp; warehouses across Gujarat.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== SEO FOOTER KEYWORDS ===== -->
+<section class="seo-keywords-section" style="background:linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);padding:30px 0;border-top:1px solid #e8e8e8">
+  <div class="container">
+    <div class="seo-content" style="max-width:1200px;margin:0 auto">
+      <div class="seo-header" style="text-align:center;margin-bottom:24px">
+        <h2 style="color:#0D1B2A;font-size:2.2rem;font-weight:800;margin-bottom:16px;line-height:1.2">Find Your Perfect Property in <span class="yellow">Ahmedabad</span></h2>
+        <p style="color:#666;font-size:1.1rem;line-height:1.6;max-width:600px;margin:0 auto">City Real Space - Gujarat's most trusted real estate platform with verified properties across major cities</p>
+      </div>
+      
+      <div class="seo-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:20px">
+        
+        <!-- Property Options in Ahmedabad -->
+        <div class="seo-section">
+          <h4 style="color:#0D1B2A;font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-building" style="color:#E53935;font-size:1rem"></i>Property Options in Ahmedabad</h4>
+          <div class="seo-links" style="display:flex;flex-direction:column;gap:4px">
+            <a href="properties.html?city=Ahmedabad&beds=2" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>2 BHK Flats in Ahmedabad</a>
+            <a href="properties.html?city=Ahmedabad&beds=3" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>3 BHK Flats in Ahmedabad</a>
+            <a href="properties.html?city=Ahmedabad&beds=4" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>4 BHK Flats in Ahmedabad</a>
+            <a href="properties.html?city=Ahmedabad&type=villa" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Villas in Ahmedabad</a>
+            <a href="properties.html?city=Ahmedabad&type=apartment" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Apartments in Ahmedabad</a>
+          </div>
+        </div>
+
+        <!-- Popular Area Searches -->
+        <div class="seo-section">
+          <h4 style="color:#0D1B2A;font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-location-dot" style="color:#E53935;font-size:1rem"></i>Popular Area Searches</h4>
+          <div class="seo-links" style="display:flex;flex-direction:column;gap:4px">
+            <a href="properties.html?city=Ahmedabad&area=Prahlad Nagar" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Properties in Prahlad Nagar</a>
+            <a href="properties.html?city=Ahmedabad&area=Satellite" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Properties in Satellite</a>
+            <a href="properties.html?city=Ahmedabad&area=Bopal" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Properties in Bopal</a>
+            <a href="properties.html?city=Ahmedabad&area=Thaltej" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Properties in Thaltej</a>
+            <a href="properties.html?city=Ahmedabad&area=SG Highway" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Properties on SG Highway</a>
+          </div>
+        </div>
+
+        <!-- Budget Wise Searches -->
+        <div class="seo-section">
+          <h4 style="color:#0D1B2A;font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-indian-rupee-sign" style="color:#E53935;font-size:1rem"></i>Budget Wise Searches</h4>
+          <div class="seo-links" style="display:flex;flex-direction:column;gap:4px">
+            <a href="properties.html?budget=0-5000000" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Flats under 50 lakhs</a>
+            <a href="properties.html?budget=0-7500000" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Flats under 75 lakhs</a>
+            <a href="properties.html?budget=0-10000000" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Flats under 1 Cr</a>
+            <a href="properties.html?city=Ahmedabad&beds=2&budget=0-7000000" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>2 BHK under 70 lakhs</a>
+            <a href="properties.html?city=Ahmedabad&beds=3&budget=0-10000000" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>3 BHK under 1 Cr</a>
+          </div>
+        </div>
+
+        <!-- Property Types -->
+        <div class="seo-section">
+          <h4 style="color:#0D1B2A;font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-home" style="color:#E53935;font-size:1rem"></i>Property Types</h4>
+          <div class="seo-links" style="display:flex;flex-direction:column;gap:4px">
+            <a href="properties.html?status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Properties for Sale</a>
+            <a href="properties.html?status=for-rent" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Properties for Rent</a>
+            <a href="properties.html?status=new-launch" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>New Launch Projects</a>
+            <a href="properties.html?type=office" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Commercial Properties</a>
+            <a href="properties.html?type=plot" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Plots & Land</a>
+          </div>
+        </div>
+
+      </div>
+      
+      <!-- Additional SEO Content -->
+      <div class="seo-description" style="background:#fff;padding:18px 24px;border-radius:16px;border:1px solid #e8e8e8;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.08)">
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px">
+          <i class="fa-solid fa-star" style="color:#FFC107;font-size:1.2rem"></i>
+          <h3 style="color:#0D1B2A;font-size:1.3rem;font-weight:700;margin:0">Ahmedabad's #1 Real Estate Platform</h3>
+          <i class="fa-solid fa-star" style="color:#FFC107;font-size:1.2rem"></i>
+        </div>
+        <p style="color:#666;font-size:1rem;line-height:1.7;margin:0;max-width:800px;margin:0 auto">
+          <strong style="color:#0D1B2A">City Real Space</strong> is Ahmedabad's premier real estate platform offering verified properties in 
+          <a href="properties.html?city=Ahmedabad" style="color:#E53935;text-decoration:none;font-weight:600">Ahmedabad</a>. 
+          Find ready to move, under construction, and new launch properties. Buy, sell, or rent apartments, villas, plots, and commercial spaces with complete transparency and best market prices.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <a href="index.html" class="logo footer-logo">
+          <img src="images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;filter:brightness(0) invert(1);"/>
+        </a>
+        <p class="footer-about">Ahmedabad's most trusted real estate platform. We connect buyers, sellers and investors with verified properties across Gujarat.</p>
+        <div class="social-links">
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://wa.me/919377531247" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Our Services</h4>
+        <ul>
+          <li><a href="buy.html"><i class="fa-solid fa-chevron-right"></i> Buy Property</a></li>
+          <li><a href="resale.html"><i class="fa-solid fa-chevron-right"></i> Resale</a></li>
+          <li><a href="land.html"><i class="fa-solid fa-chevron-right"></i> Land</a></li>
+          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell – List Property</a></li>
+          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell – List Project</a></li>
+          <li><a href="new-launch.html"><i class="fa-solid fa-chevron-right"></i> New Launch</a></li>
+          <li><a href="prelease.html"><i class="fa-solid fa-chevron-right"></i> Prelease</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Property Valuation</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Home Loans</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="faq.html"><i class="fa-solid fa-chevron-right"></i> FAQ</a></li>
+          <li><a href="privacy.html"><i class="fa-solid fa-chevron-right"></i> Privacy Policy</a></li>
+          <li><a href="blog.html"><i class="fa-solid fa-chevron-right"></i> Blog</a></li>
+          <li><a href="about.html"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
+          <li><a href="contact.html"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <div class="contact-info">
+          <div class="ci"><i class="fa-solid fa-location-dot"></i><span>A-708, Prahlad Nagar Trade Centre, Satellite, Ahmedabad</span></div>
+          <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 98250 12824</span></div>
+          <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 84600 14000</span></div>
+          <div class="ci"><i class="fa-solid fa-envelope"></i><span>admin@cityestate.co.in</span></div>
+        </div>
+        <div class="working-hours">
+          <h5><i class="fa-regular fa-clock"></i> Working Hours</h5>
+          <p>Mon – Sat: 9:00 AM – 7:00 PM</p>
+          <p>Sunday: 10:00 AM – 4:00 PM</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">
+      <p>© 2025 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== AUTH MODAL ===== -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-modal">
+
+    <!-- Close -->
+    <button class="auth-close" id="authClose"><i class="fa-solid fa-xmark"></i></button>
+
+    <!-- Left Panel -->
+    <div class="auth-left">
+      <div class="auth-brand">
+        <span class="logo-icon"><i class="fa-solid fa-building-columns"></i></span>
+        <span class="logo-text">City <span class="yellow">Real</span> Space</span>
+      </div>
+      <h2>Gujarat's Most Trusted<br/>Real Estate Platform</h2>
+      <p>Join 8,200+ happy clients. Buy, Sell & Invest in verified properties across Ahmedabad, Gandhinagar & beyond.</p>
+      <ul class="auth-perks">
+        <li><i class="fa-solid fa-circle-check"></i> 12,500+ Verified Listings</li>
+        <li><i class="fa-solid fa-circle-check"></i> Free Property Consultation</li>
+        <li><i class="fa-solid fa-circle-check"></i> Exclusive New Launch Deals</li>
+        <li><i class="fa-solid fa-circle-check"></i> Dedicated Relationship Manager</li>
+      </ul>
+      <div class="auth-stats">
+        <div><span>12K+</span><small>Properties</small></div>
+        <div><span>8K+</span><small>Clients</small></div>
+        <div><span>350+</span><small>Agents</small></div>
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="auth-right">
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="atab active" data-tab="login">Login</button>
+        <button class="atab" data-tab="register">Register</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form class="auth-form" id="loginForm">
+        <div class="form-grp">
+          <label>Email Address</label>
+          <div class="finput"><i class="fa-solid fa-envelope"></i><input type="email" id="loginEmail" placeholder="yourname@email.com" required/></div>
+        </div>
+        <div class="form-grp">
+          <label>Password</label>
+          <div class="finput"><i class="fa-solid fa-lock"></i><input type="password" id="loginPass" placeholder="Password" required/><button type="button" class="eye-btn" onclick="togglePass('loginPass',this)"><i class="fa-regular fa-eye"></i></button></div>
+        </div>
+        <div class="form-row">
+          <label class="check-label"><input type="checkbox"/> Remember me</label>
+          <a href="#" class="forgot" onclick="showForgotFlow()">Forgot Password?</a>
+        </div>
+        <button type="submit" class="btn-auth">Login to Account <i class="fa-solid fa-arrow-right"></i></button>
+        <div class="auth-divider"><span>or continue with</span></div>
+        <div class="social-auth">
+          <button type="button" class="soc-btn google"><i class="fa-brands fa-google"></i> Google</button>
+          <button type="button" class="soc-btn facebook"><i class="fa-brands fa-facebook-f"></i> Facebook</button>
+        </div>
+        <p class="auth-switch">Don't have an account? <a href="#" onclick="switchTab('register')">Register Free</a></p>
+      </form>
+
+      <!-- FORGOT PASSWORD FLOW -->
+      <div class="auth-form hidden" id="forgotForm">
+        <div style="text-align:center;margin-bottom:20px">
+          <div style="width:64px;height:64px;background:linear-gradient(135deg,#1565c0,#0d47a1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.6rem;color:#fff"><i class="fa-solid fa-lock-open"></i></div>
+          <h3 style="font-size:1.1rem;font-weight:800;color:#0D1B2A;margin:0 0 6px">Forgot Password?</h3>
+          <p style="font-size:0.82rem;color:#888;margin:0">Enter your email to receive a reset OTP</p>
+        </div>
+        <div class="form-grp">
+          <label>Email Address</label>
+          <div class="finput"><i class="fa-solid fa-envelope"></i><input type="email" id="forgotEmail" placeholder="yourname@email.com" required/></div>
+        </div>
+        <button type="button" class="btn-auth" id="forgotSendBtn" onclick="sendForgotOTP()">Send OTP <i class="fa-solid fa-paper-plane"></i></button>
+        <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px"><a href="#" onclick="showLoginForm()" style="color:#555"><i class="fa-solid fa-arrow-left"></i> Back to Login</a></p>
+      </div>
+
+      <!-- FORGOT OTP VERIFY -->
+      <div class="auth-form hidden" id="forgotOtpForm">
+        <div style="text-align:center;margin-bottom:20px">
+          <div style="width:64px;height:64px;background:linear-gradient(135deg,#1565c0,#0d47a1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.6rem;color:#fff"><i class="fa-solid fa-envelope-open-text"></i></div>
+          <h3 style="font-size:1.1rem;font-weight:800;color:#0D1B2A;margin:0 0 6px">Enter OTP</h3>
+          <p style="font-size:0.82rem;color:#888;margin:0">OTP sent to <strong id="forgotEmailDisplay" style="color:#E53935"></strong></p>
+        </div>
+        <div class="form-grp">
+          <label>6-Digit OTP</label>
+          <div class="finput"><i class="fa-solid fa-key"></i><input type="text" id="forgotOtpInput" placeholder="Enter OTP" maxlength="6" style="text-align:center;font-size:1.4rem;font-weight:800;letter-spacing:10px"/></div>
+        </div>
+        <div class="form-grp">
+          <label>New Password</label>
+          <div class="finput"><i class="fa-solid fa-lock"></i><input type="password" id="newPassInput" placeholder="New Password"/></div>
+        </div>
+        <button type="button" class="btn-auth" id="resetPassBtn" onclick="resetPassword()">Reset Password <i class="fa-solid fa-check"></i></button>
+        <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px">Didn't receive? <a href="#" onclick="sendForgotOTP()" style="color:#E53935;font-weight:600">Resend OTP</a></p>
+      </div>
+
+      <!-- REGISTER FORM -->
+      <form class="auth-form hidden" id="registerForm">
+        <div class="form-row-2">
+          <div class="form-grp">
+            <label>First Name</label>
+            <div class="finput"><i class="fa-solid fa-user"></i><input type="text" id="regFirst" placeholder="First Name" required/></div>
+          </div>
+          <div class="form-grp">
+            <label>Last Name</label>
+            <div class="finput"><i class="fa-solid fa-user"></i><input type="text" id="regLast" placeholder="Last Name" required/></div>
+          </div>
+        </div>
+        <div class="form-grp">
+          <label>Mobile Number</label>
+          <div class="finput"><i class="fa-solid fa-phone"></i><span class="isd">+91</span><input type="tel" id="regPhone" placeholder="Mobile Number" maxlength="10" required/></div>
+        </div>
+        <div class="form-grp">
+          <label>Email Address</label>
+          <div class="finput"><i class="fa-solid fa-envelope"></i><input type="email" id="regEmail" placeholder="yourname@email.com" required/></div>
+        </div>
+        <div class="form-grp">
+          <label>I am a</label>
+          <div class="finput"><i class="fa-solid fa-briefcase"></i>
+            <select id="regRole" required>
+              <option value="">Select your role</option>
+              <option value="buyer">Buyer</option>
+              <option value="seller">Seller / Owner</option>
+              <option value="agent">Real Estate Agent / Broker</option>
+              <option value="builder">Builder / Developer</option>
+              <option value="investor">Investor</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grp">
+          <label>City</label>
+          <div class="finput"><i class="fa-solid fa-location-dot"></i>
+            <select id="regCity" required>
+              <option value="">Select City</option>
+              <option>Ahmedabad</option><option>Gandhinagar</option><option>Surat</option><option>Vadodara</option><option>Rajkot</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grp">
+          <label>Password</label>
+          <div class="finput"><i class="fa-solid fa-lock"></i><input type="password" id="regPass" placeholder="Password" required/><button type="button" class="eye-btn" onclick="togglePass('regPass',this)"><i class="fa-regular fa-eye"></i></button></div>
+        </div>
+        <label class="check-label terms"><input type="checkbox" id="regTerms" required/> I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a></label>
+        <button type="submit" class="btn-auth">Create Free Account <i class="fa-solid fa-arrow-right"></i></button>
+        <div class="auth-divider"><span>or continue with</span></div>
+        <div class="social-auth">
+          <button type="button" class="soc-btn google"><i class="fa-brands fa-google"></i> Google</button>
+          <button type="button" class="soc-btn facebook"><i class="fa-brands fa-facebook-f"></i> Facebook</button>
+        </div>
+        <p class="auth-switch">Already have an account? <a href="#" onclick="switchTab('login')">Login Here</a></p>
+      </form>
+
+      <!-- OTP VERIFY FORM (Register) -->
+      <div class="auth-form hidden" id="otpForm">
+        <div style="text-align:center;margin-bottom:20px">
+          <div style="width:64px;height:64px;background:linear-gradient(135deg,#E53935,#c62828);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.6rem;color:#fff"><i class="fa-solid fa-envelope-open-text"></i></div>
+          <h3 style="font-size:1.1rem;font-weight:800;color:#0D1B2A;margin:0 0 6px">Check Your Email</h3>
+          <p style="font-size:0.82rem;color:#888;margin:0">We sent a 6-digit OTP to <strong id="otpEmailDisplay" style="color:#E53935"></strong></p>
+        </div>
+        <div class="form-grp">
+          <label>Enter OTP</label>
+          <div class="finput" style="justify-content:center">
+            <i class="fa-solid fa-key"></i>
+            <input type="text" id="otpInput" placeholder="Enter 6-digit OTP" maxlength="6" style="text-align:center;font-size:1.4rem;font-weight:800;letter-spacing:10px" required/>
+          </div>
+        </div>
+        <button type="button" class="btn-auth" id="otpVerifyBtn" onclick="verifyRegisterOTP()">Verify & Activate Account <i class="fa-solid fa-check"></i></button>
+        <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px">Didn't receive OTP? <a href="#" onclick="resendOTP()" style="color:#E53935;font-weight:600">Resend OTP</a></p>
+        <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:6px"><a href="#" onclick="switchTab('register')" style="color:#555"><i class="fa-solid fa-arrow-left"></i> Back to Register</a></p>
+      </div>
+
+      <!-- OTP VERIFY FORM (Login) -->
+      <div class="auth-form hidden" id="loginOtpForm">
+        <div style="text-align:center;margin-bottom:20px">
+          <div style="width:64px;height:64px;background:linear-gradient(135deg,#1565c0,#0d47a1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.6rem;color:#fff"><i class="fa-solid fa-shield-halved"></i></div>
+          <h3 style="font-size:1.1rem;font-weight:800;color:#0D1B2A;margin:0 0 6px">Verify Your Login</h3>
+          <p style="font-size:0.82rem;color:#888;margin:0">OTP sent to <strong id="loginOtpEmailDisplay" style="color:#E53935"></strong></p>
+        </div>
+        <div class="form-grp">
+          <label>Enter OTP</label>
+          <div class="finput" style="justify-content:center">
+            <i class="fa-solid fa-key"></i>
+            <input type="text" id="loginOtpInput" placeholder="Enter 6-digit OTP" maxlength="6" style="text-align:center;font-size:1.4rem;font-weight:800;letter-spacing:10px" required/>
+          </div>
+        </div>
+        <button type="button" class="btn-auth" id="loginOtpVerifyBtn" onclick="verifyLoginOTP()">Verify & Login <i class="fa-solid fa-check"></i></button>
+        <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px">Didn't receive OTP? <a href="#" onclick="resendLoginOTP()" style="color:#E53935;font-weight:600">Resend OTP</a></p>
+        <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:6px"><a href="#" onclick="switchTab('login')" style="color:#555"><i class="fa-solid fa-arrow-left"></i> Back to Login</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====F= INQUIRY MODAL ===== -->
+<div class="inq-overlay" id="inqOverlay">
+  <div class="inq-modal">
+    <button class="inq-close" id="inqClose"><i class="fa-solid fa-xmark"></i></button>
+
+    <div class="inq-left">
+      <div class="auth-brand" style="margin-bottom:20px">
+        <span class="logo-icon"><i class="fa-solid fa-building-columns"></i></span>
+        <span class="logo-text" style="color:#fff">City <span class="yellow">Real</span> Space</span>
+      </div>
+      <h3>Get Free Expert<br/>Property Advice</h3>
+      <p>Our property consultants will call you within 30 minutes with the best options matching your needs.</p>
+      <div class="inq-features">
+        <div class="inq-feat"><i class="fa-solid fa-phone-volume"></i><span>Free Callback in 30 min</span></div>
+        <div class="inq-feat"><i class="fa-solid fa-shield-halved"></i><span>100% Verified Properties</span></div>
+        <div class="inq-feat"><i class="fa-solid fa-tag"></i><span>Best Price Guaranteed</span></div>
+        <div class="inq-feat"><i class="fa-solid fa-user-tie"></i><span>Dedicated Relationship Manager</span></div>
+      </div>
+      <div class="inq-contact-box">
+        <p><i class="fa-solid fa-phone"></i> +91 98250 12824 / +91 84600 14000</p>
+        <p><i class="fa-solid fa-envelope"></i> admin@cityestate.co.in</p>
+      </div>
+    </div>
+
+    <div class="inq-right">
+      <div class="inq-header">
+        <h4>Send Inquiry</h4>
+        <p>Fill the form below and our team will get back to you shortly.</p>
+      </div>
+      <form class="inq-form" id="inqForm">
+        <div class="form-row-2">
+          <div class="form-grp">
+            <label>Full Name *</label>
+            <div class="finput">
+              <i class="fa-solid fa-user"></i>
+              <input type="text" placeholder="Full Name" required/>
+            </div>
+          </div>
+          <div class="form-grp">
+            <label>Mobile Number *</label>
+            <div class="finput">
+              <i class="fa-solid fa-phone"></i>
+              <span class="isd">+91</span>
+              <input type="tel" placeholder="Mobile Number" maxlength="10" required/>
+            </div>
+          </div>
+        </div>
+        <div class="form-grp">
+          <label>Email Address</label>
+          <div class="finput">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" placeholder="Email Address"/>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-grp">
+            <label>Property Type *</label>
+            <div class="finput">
+              <i class="fa-solid fa-home"></i>
+              <select required>
+                <option value="">Select Type</option>
+                <option>Apartment / Flat</option>
+                <option>Villa / Bungalow</option>
+                <option>Row House</option>
+                <option>Plot / Land</option>
+                <option>Office Space</option>
+                <option>Shop / Showroom</option>
+                <option>Warehouse</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grp">
+            <label>Looking For *</label>
+            <div class="finput">
+              <i class="fa-solid fa-briefcase"></i>
+              <select required>
+                <option value="">Select</option>
+                <option>Buy</option>
+                <option>Rent / Lease</option>
+                <option>Sell My Property</option>
+                <option>New Launch</option>
+                <option>Investment</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-grp">
+            <label>Preferred City *</label>
+            <div class="finput">
+              <i class="fa-solid fa-location-dot"></i>
+              <select required>
+                <option value="">Select City</option>
+                <option>Ahmedabad</option>
+                <option>Gandhinagar</option>
+                <option>Surat</option>
+                <option>Vadodara</option>
+                <option>Rajkot</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grp">
+            <label>Budget Range</label>
+            <div class="finput">
+              <i class="fa-solid fa-indian-rupee-sign"></i>
+              <select>
+                <option value="">Select Budget</option>
+                <option>Under ₹30 Lakh</option>
+                <option>₹30L – ₹60L</option>
+                <option>₹60L – ₹1 Cr</option>
+                <option>₹1Cr – ₹2Cr</option>
+                <option>₹2Cr – ₹5Cr</option>
+                <option>Above ₹5 Cr</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-grp">
+          <label>Preferred Area / Locality</label>
+          <div class="finput">
+            <i class="fa-solid fa-map-pin"></i>
+            <input type="text" placeholder="Area / Locality"/>
+          </div>
+        </div>
+        <div class="form-grp">
+          <label>Message / Requirements</label>
+          <div class="finput finput-ta">
+            <i class="fa-solid fa-message" style="align-self:flex-start;margin-top:2px"></i>
+            <textarea placeholder="Tell us more about your property requirements..." rows="3"></textarea>
+          </div>
+        </div>
+        <div class="inq-check-row">
+          <label class="check-label"><input type="checkbox" checked/> I agree to be contacted by City Real Space team</label>
+        </div>
+        <button type="submit" class="btn-auth"><i class="fa-solid fa-paper-plane"></i> Submit Inquiry — Get Free Callback</button>
+      </form>
+
+      <!-- SUCCESS SCREEN -->
+      <div class="inq-success" id="inqSuccess">
+        <div class="iss-anim">
+          <div class="iss-circle">
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <div class="iss-rings">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+        <h3>Inquiry Submitted<br/>Successfully! 🎉</h3>
+        <p class="iss-sub">Thank you! Our property expert will contact you within <strong>30 minutes.</strong></p>
+        <div class="iss-info-cards">
+          <div class="iss-card">
+            <i class="fa-solid fa-phone-volume"></i>
+            <div>
+              <strong>Call Back</strong>
+              <span>Within 30 Minutes</span>
+            </div>
+          </div>
+          <div class="iss-card">
+            <i class="fa-solid fa-clock"></i>
+            <div>
+              <strong>Working Hours</strong>
+              <span>Mon–Sat: 9AM – 7PM</span>
+            </div>
+          </div>
+          <div class="iss-card">
+            <i class="fa-solid fa-headset"></i>
+            <div>
+              <strong>Direct Call</strong>
+              <span>+91 93775 31247</span>
+            </div>
+          </div>
+        </div>
+        <div class="iss-ref">
+          <span>Reference ID:</span>
+          <strong id="inqRefId">CRS-000000</strong>
+        </div>
+        <div class="iss-actions">
+
+          <button class="iss-close-btn" id="inqSuccessClose">Back to Website</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GIFT BUTTON ===== -->
+<div class="gift-btn" id="giftBtn">
+  <div class="gift-icon">&#127873;</div>
+  <span class="gift-label">Free Visit</span>
+</div>
+
+<!-- ===== GIFT POPUP ===== -->
+<div class="gift-popup" id="giftPopup">
+  <button class="gift-popup-close" id="giftPopupClose"><i class="fa-solid fa-xmark"></i></button>
+  <div class="gift-popup-inner">
+    <div class="gift-strip">
+      <span class="gift-strip-emoji">&#127873;</span>
+      <h4>Exclusive Offer For You!</h4>
+      <p>Limited time property deal</p>
+    </div>
+    <div class="gift-offers">
+      <div class="go-item"><i class="fa-solid fa-circle-check"></i> Free Site Visit &#8211; No Charges</div>
+      <div class="go-item"><i class="fa-solid fa-circle-check"></i> Free Home Loan Guidance</div>
+      <div class="go-item"><i class="fa-solid fa-circle-check"></i> Zero Brokerage on Select Projects</div>
+      <div class="go-item"><i class="fa-solid fa-circle-check"></i> Free Legal Documentation Help</div>
+    </div>
+    <div class="gift-timer">
+      <i class="fa-solid fa-clock"></i> Offer ends in: <strong id="giftCountdown">23:59:47</strong>
+    </div>
+    <a href="https://wa.me/919377531247?text=Hi%2C%20I%20want%20to%20book%20a%20Free%20Site%20Visit" target="_blank" class="gift-wa-btn">
+      <i class="fa-brands fa-whatsapp"></i> Book Free Site Visit
+    </a>
+    <span class="gift-note">* Valid for new customers only. T&amp;C apply.</span>
+  </div>
+</div>
+
+<!-- ===== LIVE CHAT BUTTON ===== -->
+<div class="live-chat-btn" id="liveChatBtn" title="Live Chat">
+  <i class="fa-solid fa-comment-dots"></i>
+  <span class="live-chat-label">Live Chat</span>
+</div>
+
+<!-- ===== LIVE CHAT WIDGET ===== -->
+<div class="live-chat-widget" id="liveChatWidget">
+  <div class="lcw-header">
+    <div class="lcw-agent">
+      <div class="lcw-avatar"><i class="fa-solid fa-headset"></i></div>
+      <div>
+        <strong>City Real Space</strong>
+        <span><span class="lcw-dot"></span> Online Now</span>
+      </div>
+    </div>
+    <button class="lcw-close" id="liveChatClose"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="lcw-body">
+    <div class="lcw-msg bot">
+      <div class="lcw-bubble">👋 Hello! How can we help you today?</div>
+    </div>
+    <div class="lcw-quick-btns">
+      <button onclick="lcwQuick('I want to buy a property')">🏠 Buy Property</button>
+      <button onclick="lcwQuick('I want to sell my property')">💰 Sell Property</button>
+      <button onclick="lcwQuick('I need property consultation')">📞 Get Consultation</button>
+      <button onclick="lcwQuick('I want to schedule a site visit')">📅 Site Visit</button>
+    </div>
+  </div>
+  <div class="lcw-footer">
+    <div class="lcw-input-row">
+      <input type="text" id="lcwInput" placeholder="Type your message..." />
+      <button id="lcwSend"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+    <p class="lcw-wa-note">Prefer WhatsApp? <a href="https://wa.me/919377531247" target="_blank"><i class="fa-brands fa-whatsapp"></i> Chat Now</a></p>
+  </div>
+</div>
+
+<!-- ===== WHATSAPP FLOAT ===== -->
+<a href="https://wa.me/919377531247" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">
+  <i class="fa-brands fa-whatsapp"></i>
+  <span class="wa-tooltip">Chat with us!</span>
+</a>
+
+<!-- ===== BACK TO TOP ===== -->
+<button class="back-top" id="backTop" title="Back to Top"><i class="fa-solid fa-chevron-up"></i></button>
+
+<!-- ===== PROFILE EDIT MODAL ===== -->
+<div id="profileOverlay" style="display:none;position:fixed;inset:0;z-index:4000;background:rgba(13,27,42,0.78);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:20px;width:100%;max-width:460px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.3);position:relative">
+    <div style="background:linear-gradient(135deg,#0D1B2A,#1a3a5c);padding:24px 28px 20px">
+      <button onclick="closeProfileModal()" style="position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,0.15);color:#fff;font-size:0.9rem;cursor:pointer"><i class="fa-solid fa-xmark"></i></button>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:48px;height:48px;background:linear-gradient(135deg,#FFC107,#ff8f00);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:800;color:#fff" id="profileAvatar">U</div>
+        <div>
+          <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin:0">Edit Profile</h3>
+          <p style="color:rgba(255,255,255,0.55);font-size:0.78rem;margin:2px 0 0">Update your personal details</p>
+        </div>
+      </div>
+    </div>
+    <div style="padding:24px 28px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <label style="font-size:0.78rem;font-weight:600;color:#555">First Name</label>
+          <div style="display:flex;align-items:center;gap:8px;border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 12px">
+            <i class="fa-solid fa-user" style="color:#E53935;font-size:0.8rem"></i>
+            <input id="pEditFirst" type="text" placeholder="First Name" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.85rem;color:#333"/>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <label style="font-size:0.78rem;font-weight:600;color:#555">Last Name</label>
+          <div style="display:flex;align-items:center;gap:8px;border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 12px">
+            <i class="fa-solid fa-user" style="color:#E53935;font-size:0.8rem"></i>
+            <input id="pEditLast" type="text" placeholder="Last Name" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.85rem;color:#333"/>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <label style="font-size:0.78rem;font-weight:600;color:#555">Mobile Number</label>
+        <div style="display:flex;align-items:center;gap:8px;border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 12px">
+          <i class="fa-solid fa-phone" style="color:#E53935;font-size:0.8rem"></i>
+          <span style="font-size:0.82rem;font-weight:600;color:#555;border-right:1px solid #e8e8e8;padding-right:8px">+91</span>
+          <input id="pEditPhone" type="tel" maxlength="10" placeholder="Mobile Number" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.85rem;color:#333"/>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <label style="font-size:0.78rem;font-weight:600;color:#555">Email Address</label>
+        <div style="display:flex;align-items:center;gap:8px;border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 12px;background:#f9f9f9">
+          <i class="fa-solid fa-envelope" style="color:#aaa;font-size:0.8rem"></i>
+          <input id="pEditEmail" type="email" disabled style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.85rem;color:#aaa;background:transparent"/>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <label style="font-size:0.78rem;font-weight:600;color:#555">City</label>
+        <div style="display:flex;align-items:center;gap:8px;border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 12px">
+          <i class="fa-solid fa-location-dot" style="color:#E53935;font-size:0.8rem"></i>
+          <select id="pEditCity" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.85rem;color:#333;background:transparent">
+            <option value="">Select City</option>
+            <option>Ahmedabad</option><option>Gandhinagar</option><option>Surat</option><option>Vadodara</option><option>Rajkot</option>
+          </select>
+        </div>
+      </div>
+      <button onclick="saveProfile()" style="background:#E53935;color:#fff;border:none;padding:13px;border-radius:10px;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px" id="pSaveBtn">
+        <i class="fa-solid fa-floppy-disk"></i> Save Changes
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+function openProfileModal() {
+  const u = JSON.parse(localStorage.getItem('user') || '{}');
+  document.getElementById('pEditFirst').value  = u.firstName || '';
+  document.getElementById('pEditLast').value   = u.lastName  || '';
+  document.getElementById('pEditPhone').value  = (u.phone || '').replace('+91','').trim();
+  document.getElementById('pEditEmail').value  = u.email || '';
+  document.getElementById('pEditCity').value   = u.city  || '';
+  document.getElementById('profileAvatar').textContent = (u.firstName || 'U')[0].toUpperCase();
+  const o = document.getElementById('profileOverlay');
+  o.style.display = 'flex';
+  document.getElementById('userDropdown').style.display = 'none';
+}
+function closeProfileModal() {
+  document.getElementById('profileOverlay').style.display = 'none';
+}
+document.getElementById('profileOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeProfileModal();
+});
+async function saveProfile() {
+  const btn = document.getElementById('pSaveBtn');
+  const firstName = document.getElementById('pEditFirst').value.trim();
+  const lastName  = document.getElementById('pEditLast').value.trim();
+  const phone     = document.getElementById('pEditPhone').value.trim();
+  const city      = document.getElementById('pEditCity').value;
+  if (!firstName) { alert('First name required'); return; }
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+  btn.disabled = true;
+  const token = localStorage.getItem('token');
+  try {
+    const res = await fetch('http://localhost:5000/api/auth/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ firstName, lastName, phone, city })
+    });
+    const data = await res.json();
+    if (data.success) {
+      const u = JSON.parse(localStorage.getItem('user') || '{}');
+      Object.assign(u, { firstName, lastName, phone, city });
+      localStorage.setItem('user', JSON.stringify(u));
+    }
+  } catch(e) {
+    const u = JSON.parse(localStorage.getItem('user') || '{}');
+    Object.assign(u, { firstName, lastName, phone, city });
+    localStorage.setItem('user', JSON.stringify(u));
+  }
+  document.getElementById('userNameDisplay').textContent = firstName;
+  closeProfileModal();
+  btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Changes';
+  btn.disabled = false;
+  let t = document.querySelector('.auth-toast');
+  if (!t) { t = document.createElement('div'); t.className = 'auth-toast'; document.body.appendChild(t); }
+  t.innerHTML = '<i class="fa-solid fa-circle-check"></i> Profile updated successfully!';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+
+<script src="images/images.js"></script>
+<script src="cursor.js"></script>
+<script src="bg-animation.js"></script>
+<script src="script.js?v=3"></script>
+
+<script>
+// ===== HERO TEXT ANIMATION =====
+(function(){
+  const titleEl = document.getElementById('heroTitle');
+  const subEl   = document.getElementById('heroSub');
+
+  // h1 parts: plain text + yellow span + plain + br + plain
+  const h1Parts = [
+    { text: 'Find Your ', yellow: false },
+    { text: 'Dream',      yellow: true  },
+    { text: ' Property',  yellow: false },
+    { text: null,         br: true      },
+    { text: 'in the Heart of the City', yellow: false }
+  ];
+  const subText = 'Explore thousands of verified listings — residential, commercial & new launches.';
+
+  let charIndex = 0;
+  let partIndex = 0;
+  let totalChars = 0;
+
+  // flatten all chars with their style info
+  const chars = [];
+  h1Parts.forEach(part => {
+    if (part.br) { chars.push({ br: true }); return; }
+    for (const ch of part.text) chars.push({ ch, yellow: part.yellow });
+  });
+
+  // build spans upfront (hidden)
+  chars.forEach(c => {
+    if (c.br) { titleEl.appendChild(document.createElement('br')); return; }
+    const s = document.createElement('span');
+    if (c.ch === ' ') {
+      s.innerHTML = '&nbsp;';
+      s.style.cssText = 'opacity:0;display:inline-block;width:0.35em;transition:opacity 0.2s,width 0.25s';
+    } else {
+      s.textContent = c.ch;
+      s.style.cssText = 'opacity:0;display:inline-block;transform:translateY(20px);transition:opacity 0.3s,transform 0.3s';
+    }
+    if (c.yellow) s.classList.add('yellow');
+    titleEl.appendChild(s);
+  });
+
+  const spans = titleEl.querySelectorAll('span');
+
+  function revealNext() {
+    if (totalChars >= spans.length) {
+      setTimeout(() => typeSub(0), 150);
+      return;
+    }
+    const sp = spans[totalChars];
+    sp.style.opacity = '1';
+    sp.style.transform = 'translateY(0)';
+    if (sp.innerHTML === '&nbsp;') sp.style.width = '0.35em';
+    totalChars++;
+    setTimeout(revealNext, 28);
+  }
+
+  function typeSub(i) {
+    if (i === 0) subEl.textContent = '';
+    if (i >= subText.length) return;
+    subEl.textContent += subText[i];
+    setTimeout(() => typeSub(i + 1), 18);
+  }
+
+  // start after splash
+  setTimeout(revealNext, 1950);
+})();
+</script>
+
+<!-- WELCOME FULLSCREEN -->
+<div id="welcomeScreen" style="display:none;position:fixed;inset:0;z-index:999999;background:#0D1B2A;align-items:center;justify-content:center;flex-direction:column;font-family:Poppins,sans-serif;overflow:hidden">
+
+  <!-- Fireworks Canvas -->
+  <canvas id="fwCanvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+
+  <!-- Content -->
+  <div style="position:relative;text-align:center;z-index:2">
+    <div id="welcomeEmoji" style="font-size:5rem;margin-bottom:16px;animation:popIn 0.6s cubic-bezier(0.175,0.885,0.32,1.275) forwards">🎉</div>
+    <h1 id="welcomeMsg" style="font-size:2.2rem;font-weight:800;color:#fff;margin:0 0 10px;opacity:0;animation:fadeUp 0.7s 0.3s forwards">Welcome to City Real Space!</h1>
+    <p id="welcomeSub" style="font-size:1.1rem;color:#FFC107;font-weight:600;opacity:0;animation:fadeUp 0.7s 0.5s forwards"></p>
+  </div>
+
+  <style>
+    @keyframes popIn{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+    @keyframes fadeUp{0%{transform:translateY(30px);opacity:0}100%{transform:translateY(0);opacity:1}}
+    @keyframes fadeOut{0%{opacity:1}100%{opacity:0;pointer-events:none}}
+  </style>
+</div>
+
+<script>
+(function(){
+  const type = localStorage.getItem('showWelcome');
+  if (!type) return;
+  localStorage.removeItem('showWelcome');
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const name = user.firstName || 'there';
+  const screen = document.getElementById('welcomeScreen');
+  const msg = document.getElementById('welcomeMsg');
+  const sub = document.getElementById('welcomeSub');
+  const emoji = document.getElementById('welcomeEmoji');
+
+  if (type === 'register') {
+    emoji.textContent = '🎉';
+    msg.textContent = 'Welcome to City Real Space!';
+    sub.textContent = 'Hello ' + name + ', your journey begins now 🏠';
+  } else {
+    emoji.textContent = '👋';
+    msg.textContent = 'Welcome Back!';
+    sub.textContent = 'Good to see you again, ' + name + ' 😊';
+  }
+
+  screen.style.display = 'flex';
+
+  // Fireworks
+  const canvas = document.getElementById('fwCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = [];
+  const colors = ['#FFC107','#E53935','#fff','#4CAF50','#2196F3','#FF5722','#9C27B0','#00BCD4'];
+
+  function burst(x, y) {
+    for (let i = 0; i < 80; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 8 + 2;
+      particles.push({
+        x, y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        alpha: 1,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        size: Math.random() * 5 + 2,
+        gravity: 0.15
+      });
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p, i) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += p.gravity;
+      p.alpha -= 0.018;
+      ctx.globalAlpha = Math.max(p.alpha, 0);
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+    for (let i = particles.length - 1; i >= 0; i--) {
+      if (particles[i].alpha <= 0) particles.splice(i, 1);
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // Auto bursts
+  const positions = [[0.2,0.3],[0.8,0.2],[0.5,0.5],[0.1,0.7],[0.9,0.6],[0.4,0.2],[0.7,0.8]];
+  positions.forEach((p, i) => {
+    setTimeout(() => burst(canvas.width * p[0], canvas.height * p[1]), i * 300);
+  });
+  setInterval(() => {
+    burst(Math.random() * canvas.width, Math.random() * canvas.height * 0.7);
+  }, 600);
+
+  // Hide after 3.5s
+  setTimeout(() => {
+    screen.style.animation = 'fadeOut 0.8s forwards';
+    setTimeout(() => screen.style.display = 'none', 800);
+  }, 3500);
+})();
+</script>
+</body>
+</html>
