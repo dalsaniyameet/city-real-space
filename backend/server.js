@@ -18,19 +18,12 @@ app.use((req, res, next) => {
   next();
 });
 
-const FRONTEND = path.resolve(__dirname);
-
 // Serve frontend static files
-app.use(express.static(FRONTEND));
+app.use(express.static(path.join(__dirname, '../')));
+// Serve admin panel
+app.use('/admin', express.static(path.join(__dirname, '../admin')));
 // Serve uploaded images
-app.use('/images', express.static(path.join(FRONTEND, 'images')));
-// Fallback — serve requested .html file or index.html
-app.get(/^(?!\/api).*/, (req, res) => {
-  const reqPath = req.path === '/' ? 'index.html' : req.path.replace(/^\//, '');
-  res.sendFile(reqPath, { root: FRONTEND }, (err) => {
-    if (err) res.sendFile('index.html', { root: FRONTEND });
-  });
-});
+app.use('/images', express.static(path.join(__dirname, '../images')));
 
 // Routes
 app.use('/api/auth',       require('./routes/auth'));
@@ -58,8 +51,4 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-  console.log(`__dirname: ${__dirname}`);
-  console.log(`FRONTEND: ${FRONTEND}`);
-});
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
