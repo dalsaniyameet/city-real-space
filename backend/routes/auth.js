@@ -276,7 +276,7 @@ router.post('/login', async (req, res) => {
 
     // Admin — OTP bhejo
     if (user.role === 'admin') {
-      const ALLOWED_ADMINS = ['patelshriji72@gmail.com'];
+      const ALLOWED_ADMINS = ['admin@cityrealspace.com', 'patelshriji72@gmail.com'];
       if (!ALLOWED_ADMINS.includes(user.email)) {
         return res.status(403).json({ success: false, message: 'Access denied. Unauthorized admin account.' });
       }
