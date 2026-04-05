@@ -332,8 +332,7 @@ async function handleLogin(e) {
       document.getElementById('loginOtpEmailDisplay').textContent = email;
       document.getElementById('loginOtpWrap').dataset.email = email;
       document.getElementById('loginOtpInput').value = '';
-    } else if (data.success) {
-      // Direct login (no OTP case)
+    } else if (data.success && data.token) {
       const role = data.user && data.user.role;
       if (role === 'admin') {
         // Admin ko main site login se block karo — admin panel use karo

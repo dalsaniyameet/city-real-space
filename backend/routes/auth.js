@@ -275,7 +275,11 @@ router.post('/login', async (req, res) => {
     user.resetOTP = otp;
     user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
     await user.save();
-    await sendOTPEmail(email, otp, user.firstName, 'login');
+    try {
+      await sendOTPEmail(email, otp, user.firstName, 'login');
+    } catch(emailErr) {
+      console.error('Email send failed:', emailErr.message);
+    }
     res.json({ success: true, needsOTP: true, email });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
