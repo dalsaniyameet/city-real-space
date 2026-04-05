@@ -137,7 +137,7 @@
         <label>Email Address</label>
         <div class="finput">
           <i class="fa-solid fa-envelope"></i>
-          <input type="email" placeholder="Email Address" required/>
+      <input type="email" id="loginEmail" placeholder="Email Address" required/>
         </div>
       </div>
       <div class="form-grp">
@@ -315,12 +315,12 @@ async function resetPassword() {
 async function handleLogin(e) {
   e.preventDefault();
   const btn = document.getElementById('loginSubmitBtn');
-  const email = document.querySelector('#loginForm input[type="email"]').value.trim();
+  const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPass').value;
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
   btn.disabled = true;
   try {
-    const res = await fetch(`${API}/auth/login`, {
+    const res = await fetch(API + '/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -335,7 +335,6 @@ async function handleLogin(e) {
     } else if (data.success && data.token) {
       const role = data.user && data.user.role;
       if (role === 'admin') {
-        // Admin ko main site login se block karo — admin panel use karo
         alert('Admin login ke liye Admin Panel use karein: /admin/login.html');
         btn.innerHTML = 'Login to Account <i class="fa-solid fa-arrow-right"></i>';
         btn.disabled = false;
@@ -347,7 +346,6 @@ async function handleLogin(e) {
       window.location.href = ownerRoles.includes(role) ? 'dashboard.html' : 'index.html';
     } else {
       if (data.message && data.message.toLowerCase().includes('verify')) {
-        // Unverified user — show OTP verify overlay
         showVerifyOverlay(email);
       } else {
         alert(data.message || 'Login failed');
@@ -355,7 +353,7 @@ async function handleLogin(e) {
       btn.innerHTML = 'Login to Account <i class="fa-solid fa-arrow-right"></i>';
       btn.disabled = false;
     }
-  } catch {
+  } catch(err) {
     alert('Server error. Make sure backend is running.');
     btn.innerHTML = 'Login to Account <i class="fa-solid fa-arrow-right"></i>';
     btn.disabled = false;
