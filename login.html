@@ -152,7 +152,7 @@
         <label class="check-label"><input type="checkbox"/> Remember me</label>
     <a href="#" class="forgot" onclick="showForgot(event)">Forgot Password?</a>
       </div>
-      <button type="submit" class="btn-submit">Login to Account <i class="fa-solid fa-arrow-right"></i></button>
+      <button type="submit" id="loginSubmitBtn" class="btn-submit">Login to Account <i class="fa-solid fa-arrow-right"></i></button>
     </form>
 
     <div class="divider"><span>or continue with</span></div>
@@ -314,7 +314,7 @@ async function resetPassword() {
 
 async function handleLogin(e) {
   e.preventDefault();
-  const btn = document.querySelector('#loginForm .btn-submit');
+  const btn = document.getElementById('loginSubmitBtn');
   const email = document.querySelector('#loginForm input[type="email"]').value.trim();
   const password = document.getElementById('loginPass').value;
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
