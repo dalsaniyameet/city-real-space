@@ -125,6 +125,7 @@ function getTransporter() {
 }
 
 // ===== SEND OTP EMAIL =====
+// ===== SEND OTP EMAIL =====
 async function sendOTPEmail(email, otp, name, type) {
   const isRegister = type === 'register';
   const isLogin    = type === 'login';
@@ -136,32 +137,41 @@ async function sendOTPEmail(email, otp, name, type) {
     ? 'Use the OTP below to complete your login. Valid for 10 minutes. Do not share it with anyone.'
     : 'Use the OTP below to reset your password. Do not share it with anyone.';
 
-  await getTransporter().sendMail({
-    from: `"City Real Space" <${process.env.EMAIL_USER}>`,
-    to: email,
-    subject,
-    html: `
-    <div style="font-family:Poppins,Arial,sans-serif;max-width:500px;margin:auto;background:#0D1B2A;border-radius:16px;overflow:hidden">
-      <div style="background:linear-gradient(135deg,#E53935,#c62828);padding:28px 32px;text-align:center">
-        <h1 style="color:#fff;margin:0;font-size:1.5rem;font-weight:800">City Real Space</h1>
-        <p style="color:rgba(255,255,255,0.8);margin:6px 0 0;font-size:0.85rem">Gujarat's Most Trusted Real Estate Platform</p>
-      </div>
-      <div style="padding:32px">
-        <h2 style="color:#FFC107;margin:0 0 12px;font-size:1.2rem">${heading}</h2>
-        <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;line-height:1.6">Hi <strong style="color:#fff">${name}</strong>,</p>
-        <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;line-height:1.6">${msg}</p>
-        <div style="background:rgba(255,255,255,0.06);border:2px dashed rgba(255,193,7,0.4);border-radius:12px;padding:24px;text-align:center;margin:24px 0">
-          <p style="color:rgba(255,255,255,0.5);font-size:0.75rem;margin:0 0 8px;letter-spacing:2px;text-transform:uppercase">Your OTP</p>
-          <div style="font-size:2.8rem;font-weight:900;letter-spacing:14px;color:#FFC107">${otp}</div>
-          <p style="color:rgba(255,255,255,0.4);font-size:0.75rem;margin:10px 0 0">Valid for <strong style="color:#fff">10 minutes</strong></p>
+  try {
+    const transporter = getTransporter();
+    console.log(`📧 Sending ${type} OTP email to ${email}`);
+    
+    await transporter.sendMail({
+      from: `"City Real Space" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject,
+      html: `
+      <div style="font-family:Poppins,Arial,sans-serif;max-width:500px;margin:auto;background:#0D1B2A;border-radius:16px;overflow:hidden">
+        <div style="background:linear-gradient(135deg,#E53935,#c62828);padding:28px 32px;text-align:center">
+          <h1 style="color:#fff;margin:0;font-size:1.5rem;font-weight:800">City Real Space</h1>
+          <p style="color:rgba(255,255,255,0.8);margin:6px 0 0;font-size:0.85rem">Gujarat's Most Trusted Real Estate Platform</p>
         </div>
-        <p style="color:rgba(255,255,255,0.4);font-size:0.78rem">If you didn't request this, please ignore this email.</p>
-      </div>
-      <div style="background:rgba(0,0,0,0.3);padding:16px 32px;text-align:center">
-        <p style="color:rgba(255,255,255,0.3);font-size:0.75rem;margin:0">© 2025 City Real Space · Ahmedabad, Gujarat</p>
-      </div>
-    </div>`
-  });
+        <div style="padding:32px">
+          <h2 style="color:#FFC107;margin:0 0 12px;font-size:1.2rem">${heading}</h2>
+          <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;line-height:1.6">Hi <strong style="color:#fff">${name}</strong>,</p>
+          <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;line-height:1.6">${msg}</p>
+          <div style="background:rgba(255,255,255,0.06);border:2px dashed rgba(255,193,7,0.4);border-radius:12px;padding:24px;text-align:center;margin:24px 0">
+            <p style="color:rgba(255,255,255,0.5);font-size:0.75rem;margin:0 0 8px;letter-spacing:2px;text-transform:uppercase">Your OTP</p>
+            <div style="font-size:2.8rem;font-weight:900;letter-spacing:14px;color:#FFC107">${otp}</div>
+            <p style="color:rgba(255,255,255,0.4);font-size:0.75rem;margin:10px 0 0">Valid for <strong style="color:#fff">10 minutes</strong></p>
+          </div>
+          <p style="color:rgba(255,255,255,0.4);font-size:0.78rem">If you didn't request this, please ignore this email.</p>
+        </div>
+        <div style="background:rgba(0,0,0,0.3);padding:16px 32px;text-align:center">
+          <p style="color:rgba(255,255,255,0.3);font-size:0.75rem;margin:0">© 2025 City Real Space · Ahmedabad, Gujarat</p>
+        </div>
+      </div>`
+    });
+    console.log(`✅ Email sent successfully to ${email}`);
+  } catch (error) {
+    console.error(`❌ Email send failed for ${email}:`, error.message);
+    throw new Error(`Email service unavailable: ${error.message}`);
+  }
 }
 
 // ===== GET /api/auth/check-email?email= — MX record check =====
@@ -211,9 +221,17 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    await sendOTPEmail(email, otp, firstName, 'register');
+    try {
+      await sendOTPEmail(email, otp, firstName, 'register');
+      console.log(`✅ Registration OTP sent to ${email}`);
+    } catch (emailErr) {
+      console.error(`⚠️ Email failed for ${email}, but OTP saved to DB:`, emailErr.message);
+      // Still return success — OTP is saved in DB, can resend
+    }
+    
     res.status(201).json({ success: true, message: 'OTP sent to your email. Please verify.' });
   } catch (err) {
+    console.error('Registration error:', err);
     res.status(500).json({ success: false, message: err.message });
   }
 });
@@ -275,13 +293,19 @@ router.post('/login', async (req, res) => {
     user.resetOTP = otp;
     user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
     await user.save();
+    
+    // Send email but don't block if it fails
     try {
       await sendOTPEmail(email, otp, user.firstName, 'login');
+      console.log(`✅ OTP email sent to ${email}`);
     } catch(emailErr) {
-      console.error('Email send failed:', emailErr.message);
+      console.error(`❌ Email send failed for ${email}:`, emailErr.message);
+      // Still send OTP screen — user can resend if email fails
     }
+    
     res.json({ success: true, needsOTP: true, email });
   } catch (err) {
+    console.error('Login error:', err);
     res.status(500).json({ success: false, message: err.message });
   }
 });
@@ -319,9 +343,17 @@ router.post('/resend-otp', async (req, res) => {
     user.resetOTP = otp;
     user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
     await user.save();
-    await sendOTPEmail(email, otp, user.firstName, user.isVerified ? 'login' : 'register');
+    
+    try {
+      await sendOTPEmail(email, otp, user.firstName, user.isVerified ? 'login' : 'register');
+      console.log(`✅ Resend OTP sent to ${email}`);
+    } catch (emailErr) {
+      console.error(`⚠️ Resend email failed for ${email}:`, emailErr.message);
+    }
+    
     res.json({ success: true, message: 'OTP resent successfully' });
   } catch (err) {
+    console.error('Resend OTP error:', err);
     res.status(500).json({ success: false, message: err.message });
   }
 });
@@ -336,9 +368,17 @@ router.post('/forgot-password', async (req, res) => {
     user.resetOTP = otp;
     user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
     await user.save();
-    await sendOTPEmail(email, otp, user.firstName, 'forgot');
+    
+    try {
+      await sendOTPEmail(email, otp, user.firstName, 'forgot');
+      console.log(`✅ Forgot password OTP sent to ${email}`);
+    } catch (emailErr) {
+      console.error(`⚠️ Forgot password email failed for ${email}:`, emailErr.message);
+    }
+    
     res.json({ success: true, message: 'OTP sent to your email' });
   } catch (err) {
+    console.error('Forgot password error:', err);
     res.status(500).json({ success: false, message: 'Failed to send OTP. Check email config.' });
   }
 });

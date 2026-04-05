@@ -79,8 +79,15 @@
 </div>
 
 <script>
-const API = 'https://city-real-space.onrender.com/api';
+const API = (function() {
+  if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return 'http://localhost:5000/api';
+  }
+  return 'https://city-real-space.onrender.com/api';
+})();
 let _adminEmail = '';
+
+console.log('🔒 Admin Panel - API Endpoint:', API);
 
 // OTP box auto-jump
 document.querySelectorAll('.otp-digit').forEach((inp, i, arr) => {
@@ -104,33 +111,43 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
   e.preventDefault();
   hideErr();
   const btn = document.getElementById('loginBtn');
+  const email = document.getElementById('adminEmail').value.trim();
+  const password = document.getElementById('pass').value;
+  
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
   btn.disabled = true;
+  
   try {
+    console.log('🔐 Admin login request:', { email, API });
     const res = await fetch(API + '/auth/login', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ email: document.getElementById('adminEmail').value, password: document.getElementById('pass').value })
+      body: JSON.stringify({ email, password })
     });
     const data = await res.json();
+    console.log('📨 Backend response:', data);
+    
     if (data.success && data.needsOTP) {
+      console.log('✅ Admin OTP needed - showing OTP screen');
       _adminEmail = data.email;
       document.getElementById('otpEmailShow').textContent = _adminEmail;
       document.getElementById('loginForm').classList.add('hidden');
       document.getElementById('otpStep').classList.remove('hidden');
       document.getElementById('o1').focus();
     } else if (data.success && !data.needsOTP) {
-      // Non-admin user ne admin panel login try kiya
-      showErr('Access denied. Sirf Admin is panel mein login kar sakta hai.');
+      console.error('❌ Non-admin user tried to access admin panel');
+      showErr('Access denied. Admin only.');
       btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login to Admin Panel';
       btn.disabled = false;
     } else {
+      console.error('❌ Login failed:', data.message);
       showErr(data.message || 'Invalid credentials');
       btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login to Admin Panel';
       btn.disabled = false;
     }
   } catch(err) {
-    showErr('Server error. Make sure backend is running on port 5000.');
+    console.error('🚨 Fetch error:', err);
+    showErr('Server error. Make sure backend is running on ' + API);
     btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login to Admin Panel';
     btn.disabled = false;
   }
@@ -141,34 +158,42 @@ async function verifyOTP() {
   hideErr();
   const otp = ['o1','o2','o3','o4','o5','o6'].map(id => document.getElementById(id).value).join('');
   if (otp.length < 6) { showErr('Enter complete 6-digit OTP'); return; }
+  
   const btn = document.getElementById('otpVerifyBtn');
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
   btn.disabled = true;
+  
   try {
+    console.log('🔑 Admin OTP verify request:', { email: _adminEmail, otp });
     const res = await fetch(API + '/auth/verify-login', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ email: _adminEmail, otp })
     });
     const data = await res.json();
-    if (data.success && data.user.role === 'admin') {
+    console.log('📨 Verify response:', data);
+    
+    if (data.success && data.user && data.user.role === 'admin') {
+      console.log('✅ Admin verified - redirecting to dashboard');
       localStorage.setItem('adminToken', data.token);
       localStorage.setItem('adminUser', JSON.stringify(data.user));
       localStorage.setItem('adminLastActive', Date.now().toString());
-      // Main site ka token clear karo taaki conflict na ho
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = 'index.html';
-    } else if (data.success && data.user.role !== 'admin') {
-      showErr('Access denied. Aap admin nahi hain.');
+    } else if (data.success && data.user && data.user.role !== 'admin') {
+      console.error('❌ User is not admin');
+      showErr('Access denied. Admin only.');
       btn.innerHTML = '<i class="fa-solid fa-shield-halved"></i> Verify & Enter Panel';
       btn.disabled = false;
     } else {
+      console.error('❌ OTP verification failed:', data.message);
       showErr(data.message || 'Invalid OTP');
       btn.innerHTML = '<i class="fa-solid fa-shield-halved"></i> Verify & Enter Panel';
       btn.disabled = false;
     }
   } catch(err) {
+    console.error('🚨 OTP verify error:', err);
     showErr('Server error.');
     btn.innerHTML = '<i class="fa-solid fa-shield-halved"></i> Verify & Enter Panel';
     btn.disabled = false;
@@ -179,16 +204,31 @@ async function verifyOTP() {
 async function resendOTP() {
   if (!_adminEmail) return;
   try {
+    console.log('🔄 Resending OTP for:', _adminEmail);
     const res = await fetch(API + '/auth/resend-otp', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ email: _adminEmail })
     });
     const data = await res.json();
-    if (data.success) { hideErr(); ['o1','o2','o3','o4','o5','o6'].forEach(id => document.getElementById(id).value = ''); document.getElementById('o1').focus(); }
-    else showErr(data.message || 'Error resending OTP');
-  } catch { showErr('Server error.'); }
+    console.log('📨 Resend response:', data);
+    
+    if (data.success) { 
+      console.log('✅ OTP resent');
+      hideErr();
+      ['o1','o2','o3','o4','o5','o6'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('o1').focus();
+    }
+    else {
+      console.error('❌ Resend failed:', data.message);
+      showErr(data.message || 'Error resending OTP');
+    }
+  } catch(err) {
+    console.error('🚨 Resend error:', err);
+    showErr('Server error.');
+  }
 }
 </script>
+
 </body>
 </html>

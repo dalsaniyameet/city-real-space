@@ -282,7 +282,14 @@ function togglePass(id, btn) {
   inp.type = isText ? 'password' : 'text';
   btn.querySelector('i').className = isText ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
 }
-const API = 'https://city-real-space.onrender.com/api';
+const API = (function() {
+  if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return 'http://localhost:5000/api';
+  }
+  return 'https://city-real-space.onrender.com/api';
+})();
+
+console.log('📝 Register Page - API Endpoint:', API);
 
 function checkStrength(val) {
   const bar = document.getElementById('strengthBar');
@@ -355,23 +362,30 @@ async function handleRegister(e) {
   btn.disabled = true;
 
   try {
+    console.log('📝 Register request:', { firstName, lastName, email, role, city, API });
     const res  = await fetch(`${API}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ firstName, lastName, email, password, phone, role, city })
     });
     const data = await res.json();
+    console.log('📨 Backend response:', data);
+    
     if (data.success) {
+      console.log('✅ OTP needed - showing OTP screen');
       document.getElementById('regFormWrap').style.display = 'none';
       document.getElementById('regOtpWrap').style.display = 'block';
       document.getElementById('regOtpEmailDisplay').textContent = email;
       document.getElementById('regOtpWrap').dataset.email = email;
       document.getElementById('regOtpInput').value = '';
+      document.getElementById('regOtpInput').focus();
     } else {
+      console.error('❌ Registration failed:', data.message);
       alert(data.message || 'Registration failed');
     }
-  } catch {
-    alert('Server error. Make sure backend is running.');
+  } catch(err) {
+    console.error('🚨 Fetch error:', err);
+    alert('Server error. Make sure backend is running on ' + API);
   }
   btn.innerHTML = 'Create Free Account <i class="fa-solid fa-arrow-right"></i>';
   btn.disabled = false;
@@ -383,24 +397,32 @@ async function verifyRegOTP() {
   const otp   = document.getElementById('regOtpInput').value.trim();
   const msg   = document.getElementById('regOtpMsg');
   if (!otp || otp.length < 6) { msg.style.color='#E53935'; msg.textContent='Enter 6-digit OTP'; return; }
+  
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
   btn.disabled = true;
+  
   try {
+    console.log('🔑 Register OTP verify:', { email, otp });
     const res  = await fetch(`${API}/auth/verify-register`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email, otp }) });
     const data = await res.json();
+    console.log('📨 Verify response:', data);
+    
     if (data.success) {
+      console.log('✅ Account created successfully');
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       localStorage.setItem('showWelcome', 'register');
       document.getElementById('regOtpWrap').style.display = 'none';
       document.getElementById('regSuccess').classList.add('show');
     } else {
+      console.error('❌ OTP verification failed:', data.message);
       msg.style.color = '#E53935';
       msg.textContent = data.message || 'Invalid OTP';
       btn.innerHTML = 'Verify & Create Account <i class="fa-solid fa-check"></i>';
       btn.disabled = false;
     }
-  } catch {
+  } catch(err) {
+    console.error('🚨 Verify error:', err);
     msg.style.color = '#E53935';
     msg.textContent = 'Server error.';
     btn.innerHTML = 'Verify & Create Account <i class="fa-solid fa-check"></i>';
@@ -412,12 +434,18 @@ async function resendRegOTP() {
   const email = document.getElementById('regOtpWrap').dataset.email;
   if (!email) return;
   try {
+    console.log('🔄 Resend OTP:', { email });
     const res  = await fetch(`${API}/auth/resend-otp`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
     const data = await res.json();
+    console.log('📨 Resend response:', data);
+    
     const msg  = document.getElementById('regOtpMsg');
     msg.style.color = data.success ? '#27ae60' : '#E53935';
     msg.textContent = data.success ? 'OTP resent to ' + email : (data.message || 'Error');
-  } catch { document.getElementById('regOtpMsg').textContent = 'Server error'; }
+  } catch(err) { 
+    console.error('🚨 Resend error:', err);
+    document.getElementById('regOtpMsg').textContent = 'Server error'; 
+  }
 }
 </script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>

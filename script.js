@@ -1,5 +1,12 @@
 // ===== AUTH STATE ===== v2
-const API = 'https://city-real-space.onrender.com/api';
+const API = (function() {
+  if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return 'http://localhost:5000/api';
+  }
+  return 'https://city-real-space.onrender.com/api';
+})();
+
+console.log('🌐 Main Site - API Endpoint:', API);
 
 async function checkAuthState() {
   const user  = JSON.parse(localStorage.getItem('user') || 'null');

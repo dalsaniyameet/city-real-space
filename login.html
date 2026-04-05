@@ -179,8 +179,8 @@
       </div>
       <p id="loginOtpMsg" style="font-size:0.82rem;margin:6px 0 12px;text-align:center"></p>
       <button id="loginOtpVerifyBtn" onclick="verifyLoginPageOTP()" class="btn-submit">Verify & Login <i class="fa-solid fa-arrow-right"></i></button>
-      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px">Didn't get OTP? <a href="#" onclick="fetch(API+'/auth/resend-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:document.getElementById('loginOtpWrap').dataset.email})}).then(()=>{document.getElementById('loginOtpMsg').style.color='#27ae60';document.getElementById('loginOtpMsg').textContent='OTP resent!'})" style="color:#E53935;font-weight:600">Resend</a></p>
-      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:8px"><a href="#" onclick="document.getElementById('loginFormWrap').style.display='';document.getElementById('loginOtpWrap').style.display='none'" style="color:#555"><i class="fa-solid fa-arrow-left"></i> Back to Login</a></p>
+      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px">Didn't get OTP? <a href="javascript:void(0)" onclick="resendLoginOTP()" style="color:#E53935;font-weight:600">Resend</a></p>
+      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:8px"><a href="javascript:void(0)" onclick="document.getElementById('loginFormWrap').style.display='';document.getElementById('loginOtpWrap').style.display='none'" style="color:#555"><i class="fa-solid fa-arrow-left"></i> Back to Login</a></p>
     </div>
   </div>
 
@@ -250,7 +250,12 @@ function togglePass(id, btn) {
   inp.type = isText ? 'password' : 'text';
   btn.querySelector('i').className = isText ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
 }
-const API = 'https://city-real-space.onrender.com/api';
+const API = (function() {
+  if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return 'http://localhost:5000/api';
+  }
+  return 'https://city-real-space.onrender.com/api';
+})();
 let fpEmailVal = '', fpOTPVal = '';
 
 function showForgot(e) {
@@ -320,19 +325,25 @@ async function handleLogin(e) {
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
   btn.disabled = true;
   try {
+    console.log('🔐 Login request:', { email, API });
     const res = await fetch(API + '/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
     const data = await res.json();
+    console.log('📨 Backend response:', data);
+    
     if (data.success && data.needsOTP) {
+      console.log('✅ OTP needed - showing OTP screen');
       document.getElementById('loginFormWrap').style.display = 'none';
       document.getElementById('loginOtpWrap').style.display = 'block';
       document.getElementById('loginOtpEmailDisplay').textContent = email;
       document.getElementById('loginOtpWrap').dataset.email = email;
       document.getElementById('loginOtpInput').value = '';
+      document.getElementById('loginOtpInput').focus();
     } else if (data.success && data.token) {
+      console.log('🔑 Token received - logging in');
       const role = data.user && data.user.role;
       if (role === 'admin') {
         alert('Admin login ke liye Admin Panel use karein: /admin/login.html');
@@ -345,6 +356,7 @@ async function handleLogin(e) {
       const ownerRoles = ['owner','seller','agent','builder'];
       window.location.href = ownerRoles.includes(role) ? 'dashboard.html' : 'index.html';
     } else {
+      console.error('❌ Unexpected response:', data);
       if (data.message && data.message.toLowerCase().includes('verify')) {
         showVerifyOverlay(email);
       } else {
@@ -354,7 +366,8 @@ async function handleLogin(e) {
       btn.disabled = false;
     }
   } catch(err) {
-    alert('Server error. Make sure backend is running.');
+    console.error('🚨 Fetch error:', err);
+    alert('Server error. Make sure backend is running on ' + API);
     btn.innerHTML = 'Login to Account <i class="fa-solid fa-arrow-right"></i>';
     btn.disabled = false;
   }
@@ -397,6 +410,26 @@ async function verifyLoginPageOTP() {
     btn.disabled = false;
   }
 }
+async function resendLoginOTP() {
+  const email = document.getElementById('loginOtpWrap').dataset.email;
+  const msg = document.getElementById('loginOtpMsg');
+  if (!email) return;
+  msg.style.color = '#888';
+  msg.textContent = 'Resending OTP...';
+  try {
+    const res = await fetch(`${API}/auth/resend-otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    msg.style.color = data.success ? '#27ae60' : '#E53935';
+    msg.textContent = data.message || (data.success ? 'OTP resent!' : 'Unable to resend OTP');
+  } catch {
+    msg.style.color = '#E53935';
+    msg.textContent = 'Server error.';
+  }
+}
 let verifyEmailVal = '';
 function showVerifyOverlay(email) {
   verifyEmailVal = email;
@@ -436,7 +469,7 @@ async function submitVerifyOTP() {
     </div>
     <p id="verifyMsg" style="font-size:0.82rem;margin:8px 0 12px;text-align:center"></p>
     <button onclick="submitVerifyOTP()" class="btn-submit">Verify & Login <i class="fa-solid fa-arrow-right"></i></button>
-    <p style="text-align:center;font-size:0.8rem;color:#888;margin-top:12px">Didn't get OTP? <a href="#" style="color:#E53935;font-weight:600" onclick="fetch(API+'/auth/resend-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:verifyEmailVal})}).then(()=>{document.getElementById('verifyMsg').style.color='#27ae60';document.getElementById('verifyMsg').textContent='OTP resent!'})">Resend</a></p>
+    <p style="text-align:center;font-size:0.8rem;color:#888;margin-top:12px">Didn't get OTP? <a href="javascript:void(0)" style="color:#E53935;font-weight:600" onclick="fetch(API+'/auth/resend-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:verifyEmailVal})}).then(()=>{document.getElementById('verifyMsg').style.color='#27ae60';document.getElementById('verifyMsg').textContent='OTP resent!'})">Resend</a></p>
   </div>
 </div>
 
