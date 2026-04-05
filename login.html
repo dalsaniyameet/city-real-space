@@ -314,8 +314,8 @@ async function resetPassword() {
 
 async function handleLogin(e) {
   e.preventDefault();
-  const btn = document.querySelector('.btn-submit');
-  const email = document.querySelector('input[type="email"]').value;
+  const btn = document.querySelector('#loginForm .btn-submit');
+  const email = document.querySelector('#loginForm input[type="email"]').value.trim();
   const password = document.getElementById('loginPass').value;
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
   btn.disabled = true;
