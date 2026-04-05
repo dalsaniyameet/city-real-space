@@ -17,8 +17,8 @@ const seedData = async () => {
     // Create admin user
     const admin = await User.create({
       firstName: 'Admin', lastName: 'CRS',
-      email: 'admin@cityrealspace.com', phone: '9876543210',
-      password: 'admin123', role: 'admin', city: 'Ahmedabad'
+      email: 'patelshriji72@gmail.com', phone: '9876543210',
+      password: 'CRS@Meet#2026!', role: 'admin', city: 'Ahmedabad'
     });
 
     // Sample properties
