@@ -1,7 +1,7 @@
 const express    = require('express');
 const router     = require('express').Router();
 const jwt        = require('jsonwebtoken');
-const https      = require('https');
+const axios      = require('axios');
 const User       = require('../models/User');
 const { protect } = require('../middleware/auth');
 const { otpLimiter } = require('../middleware/limiters');
@@ -117,18 +117,18 @@ _City Real Space – Gujarat's Most Trusted Real Estate Platform_ 🏆`;
   }
 }
 
-// ===== EMAIL — Resend via native HTTPS (no SDK needed) =====
+// ===== EMAIL — Resend via Axios =====
 async function sendOTPEmail(email, otp, name, type) {
   const isRegister = type === 'register';
   const isLogin    = type === 'login';
   const subject    = isRegister ? 'Verify Your Email – City Real Space'
                    : isLogin    ? 'Login OTP – City Real Space'
                    :              'Password Reset OTP – City Real Space';
-  const color = isRegister ? '#69f0ae' : isLogin ? '#82b1ff' : '#ffab40';
+  const color   = isRegister ? '#69f0ae' : isLogin ? '#82b1ff' : '#ffab40';
   const heading = isRegister ? 'Activate Your Account' : isLogin ? 'Verify Your Login' : 'Reset Your Password';
-  const msg = isRegister ? 'Use the OTP below to verify your email.'
-            : isLogin    ? 'Use the OTP below to complete your login. Valid for 10 minutes.'
-            :               'Use the OTP below to reset your password.';
+  const msg     = isRegister ? 'Use the OTP below to verify your email.'
+                : isLogin    ? 'Use the OTP below to complete your login. Valid for 10 minutes.'
+                :               'Use the OTP below to reset your password.';
 
   const html = `<div style="font-family:Arial,sans-serif;max-width:500px;margin:auto;background:#0a1628;border-radius:16px;overflow:hidden">
     <div style="background:#E53935;padding:28px;text-align:center">
@@ -150,40 +150,26 @@ async function sendOTPEmail(email, otp, name, type) {
     </div>
   </div>`;
 
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
+  try {
+    console.log(`📧 Sending ${type} OTP to ${email}`);
+    const response = await axios.post('https://api.resend.com/emails', {
       from: 'City Real Space <onboarding@resend.dev>',
       to: [email],
       subject,
       html
-    });
-    const req = https.request({
-      hostname: 'api.resend.com',
-      path: '/emails',
-      method: 'POST',
+    }, {
       headers: {
         'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(body)
-      }
-    }, (res) => {
-      let data = '';
-      res.on('data', c => data += c);
-      res.on('end', () => {
-        if (res.statusCode >= 200 && res.statusCode < 300) {
-          console.log(`✅ Email sent to ${email}`);
-          resolve();
-        } else {
-          console.error(`❌ Resend ${res.statusCode}:`, data);
-          reject(new Error(`Resend error ${res.statusCode}: ${data}`));
-        }
-      });
+        'Content-Type': 'application/json'
+      },
+      timeout: 15000
     });
-    req.on('error', e => reject(new Error(`Email failed: ${e.message}`)));
-    req.setTimeout(12000, () => { req.destroy(); reject(new Error('Email timeout')); });
-    req.write(body);
-    req.end();
-  });
+    console.log(`✅ Email sent to ${email}`, response.data);
+  } catch (err) {
+    const msg2 = err.response?.data?.message || err.message;
+    console.error(`❌ Email failed for ${email}:`, msg2);
+    throw new Error(`Email service unavailable: ${msg2}`);
+  }
 }
 
 // ===== EMAIL DOMAIN VALIDATION =====
