@@ -1,7 +1,6 @@
 const express    = require('express');
 const router     = require('express').Router();
 const jwt        = require('jsonwebtoken');
-const axios      = require('axios');
 const User       = require('../models/User');
 const { protect } = require('../middleware/auth');
 const { otpLimiter } = require('../middleware/limiters');
@@ -117,7 +116,19 @@ _City Real Space – Gujarat's Most Trusted Real Estate Platform_ 🏆`;
   }
 }
 
-// ===== EMAIL — Resend via Axios =====
+// ===== EMAIL — Gmail SMTP via Nodemailer =====
+const nodemailer = require('nodemailer');
+
+const gmailTransporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
 async function sendOTPEmail(email, otp, name, type) {
   const isRegister = type === 'register';
   const isLogin    = type === 'login';
@@ -151,24 +162,17 @@ async function sendOTPEmail(email, otp, name, type) {
   </div>`;
 
   try {
-    console.log(`📧 Sending ${type} OTP to ${email}`);
-    const response = await axios.post('https://api.resend.com/emails', {
-      from: 'City Real Space <onboarding@resend.dev>',
-      to: [email],
+    console.log(`📧 Sending ${type} OTP to ${email} via Gmail SMTP`);
+    await gmailTransporter.sendMail({
+      from: `"City Real Space" <${process.env.EMAIL_USER}>`,
+      to: email,
       subject,
       html
-    }, {
-      headers: {
-        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      timeout: 15000
     });
-    console.log(`✅ Email sent to ${email}`, response.data);
+    console.log(`✅ Email sent to ${email}`);
   } catch (err) {
-    const msg2 = err.response?.data?.message || err.message;
-    console.error(`❌ Email failed for ${email}:`, msg2);
-    throw new Error(`Email service unavailable: ${msg2}`);
+    console.error(`❌ Gmail SMTP failed for ${email}:`, err.message);
+    throw new Error(`Email service unavailable: ${err.message}`);
   }
 }
 
