@@ -71,10 +71,15 @@ table { width: 100%; overflow-x: auto; display: block; }
   .btn-inquiry i { display: none; }
 }
 
-/* ===== NAV MOBILE ===== */
+/* ===== NAV MOBILE OVERRIDE ===== */
 @media (max-width: 768px) {
   .nav { top: 97px !important; }
   .nav.open { display: flex !important; }
+  .nav > a, .nav-drop-btn, .nav-drop-menu a {
+    min-height: unset !important;
+    height: auto !important;
+    line-height: 1.3 !important;
+  }
   .hamburger { display: flex !important; }
   .fav-btn { display: none !important; }
 }
