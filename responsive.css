@@ -549,14 +549,11 @@ table { width: 100%; overflow-x: auto; display: block; }
 
 /* ===== TOUCH IMPROVEMENTS ===== */
 @media (hover: none) and (pointer: coarse) {
-  /* Larger tap targets on touch devices */
   .btn-search, .btn-apply, .btn-auth, .btn-submit, .btn-primary { min-height: 46px; }
-  .nav a, .nav-drop-btn { min-height: 44px; }
+  /* Nav links — NO min-height override, keep compact */
   .fp-tab, .stab, .dash-tab { min-height: 40px; }
-  /* Remove hover transforms on touch */
   .prop-card:hover, .feat-card:hover, .testi-card:hover,
   .seo-section:hover, .value-card:hover, .ci-card:hover { transform: none !important; }
-  /* Disable custom cursor on touch */
   .cursor-dot, .cursor-ring { display: none !important; }
   * { cursor: auto !important; }
 }
