@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    .prop-page-wrap { max-width: 1280px; margin: 110px auto 60px; padding: 0 20px; }
+    .prop-page-wrap { max-width: 1280px; margin: 40px auto 60px; padding: 0 20px; }
     .prop-page-head { margin-bottom: 24px; }
     .prop-page-head h1 { font-size: 1.6rem; font-weight: 800; color: #0D1B2A; }
     .prop-page-head p { color: #888; font-size: 0.85rem; margin-top: 4px; }
@@ -106,7 +106,7 @@
 <body>
 
 <!-- NTC REG BAR -->
-<div style="position:fixed;top:0;left:0;right:0;z-index:1001;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);">
+<div style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);">
   <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
   &nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;
   <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
@@ -646,7 +646,9 @@ document.getElementById('clearBtn').addEventListener('click', function() {
   loadProperties(1);
 });
 
-// nav handled by mobile-nav.js
+document.getElementById('hamburger').addEventListener('click', function() {
+  document.getElementById('nav').classList.toggle('open');
+});
 
 window.addEventListener('scroll', function() {
   document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
@@ -1083,7 +1085,6 @@ function showLoginToast(msg) {
 </div>
 
 <script src="cursor.js"></script>
-<script src="mobile-nav.js"></script>
 <script>
 // ===== PROPERTY COMPARISON =====
 const MAX_COMPARE = 3;

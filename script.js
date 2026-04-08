@@ -351,7 +351,10 @@ window.addEventListener('scroll', () => {
 // ===== BACK TO TOP =====
 if (document.getElementById('backTop')) document.getElementById('backTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-// ===== HAMBURGER & NAV — handled by mobile-nav.js =====
+// ===== HAMBURGER =====
+if (document.getElementById('hamburger')) document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('nav').classList.toggle('open');
+});
 
 // ===== SEARCH TABS =====
 const cityLocalities = {
@@ -988,7 +991,20 @@ document.getElementById('inqSuccessClose').addEventListener('click', () => inqOv
 
 }
 
-// ===== NAV DROPDOWN & CLOSE — handled by mobile-nav.js =====
+// ===== NAV DROPDOWN MOBILE =====
+document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      btn.closest('.nav-dropdown').classList.toggle('open');
+    }
+  });
+});
+
+// ===== NAV CLOSE ON LINK CLICK =====
+document.querySelectorAll('.nav a').forEach(a => {
+  a.addEventListener('click', () => document.getElementById('nav').classList.remove('open'));
+});
 
 // ===== LIVE CHAT WIDGET =====
 const liveChatBtn = document.getElementById('liveChatBtn');

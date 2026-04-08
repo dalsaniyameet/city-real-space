@@ -92,7 +92,7 @@
 <script src="splash.js"></script>
 
 <!-- NTC REG BAR -->
-<div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:1001;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;">
+<div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;">
   <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
   &nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;
   <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
@@ -104,10 +104,10 @@
     <a href="index.html" class="logo">
       <img src="images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;"/>
     </a>
-    <nav class="nav" id="mainNav">
+    <nav class="nav" id="nav">
       <a href="index.html">Home</a>
       <div class="nav-dropdown">
-        <button class="nav-drop-btn" type="button">Buy <i class="fa-solid fa-chevron-down"></i></button>
+        <a href="#" class="nav-drop-btn">Buy <i class="fa-solid fa-chevron-down"></i></a>
         <div class="nav-drop-menu">
           <a href="properties.html">All</a>
           <a href="rent.html">Rent</a>
@@ -116,7 +116,7 @@
         </div>
       </div>
       <div class="nav-dropdown">
-        <button class="nav-drop-btn" type="button">Sell <i class="fa-solid fa-chevron-down"></i></button>
+        <a href="#" class="nav-drop-btn">Sell <i class="fa-solid fa-chevron-down"></i></a>
         <div class="nav-drop-menu">
           <a href="post-property.html">List Property</a>
           <a href="post-property.html">List Project</a>
@@ -130,9 +130,9 @@
     </nav>
     <div class="header-actions">
       <button class="fav-btn" title="Favorites"><i class="fa-regular fa-heart"></i><span class="fav-count">0</span></button>
-      <button id="postReqBtn" onclick="window.openReqModal && window.openReqModal()" style="background:#E53935;color:#fff;border:none;padding:9px 16px;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:6px;white-space:nowrap;animation:reqPulse 2s ease-in-out infinite;"><i class="fa-solid fa-bell"></i><span class="req-btn-text"> Post Requirement</span></button>
-      <style>@keyframes reqPulse{0%,100%{box-shadow:0 0 0 0 rgba(229,57,53,0.5)}50%{box-shadow:0 0 0 8px rgba(229,57,53,0)}}@media(max-width:480px){.req-btn-text{display:none}#postReqBtn{padding:9px 10px}.fav-btn{display:none!important}}</style>
-      <a href="post-property.html" class="btn-post-prop" id="postPropBtn" style="display:none"><i class="fa-solid fa-plus"></i><span class="post-prop-text"> Post Property</span></a>
+      <button id="postReqBtn" onclick="window.openReqModal && window.openReqModal()" style="background:#E53935;color:#fff;border:none;padding:9px 16px;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:6px;white-space:nowrap;animation:reqPulse 2s ease-in-out infinite;"><i class="fa-solid fa-bell"></i> Post Requirement</button>
+      <style>@keyframes reqPulse{0%,100%{box-shadow:0 0 0 0 rgba(229,57,53,0.5)}50%{box-shadow:0 0 0 8px rgba(229,57,53,0)}}</style>
+      <a href="post-property.html" class="btn-post-prop" id="postPropBtn" style="display:none"><i class="fa-solid fa-plus"></i> Post Property</a>
       <div id="userMenu" style="display:none;position:relative">
         <button class="btn-login" id="userMenuBtn"><i class="fa-solid fa-user"></i> <span id="userNameDisplay"></span> <i class="fa-solid fa-chevron-down" style="font-size:0.7rem"></i></button>
         <div id="userDropdown" style="display:none;position:absolute;right:0;top:110%;background:#fff;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.15);min-width:180px;z-index:999;overflow:hidden;border:1px solid #f0f0f0">
@@ -141,8 +141,8 @@
           <button onclick="handleLogout()" style="width:100%;padding:12px 16px;border:none;background:none;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.85rem;color:#E53935;font-weight:600;text-align:left;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
         </div>
       </div>
-      <a href="login.html" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i><span class="login-btn-text"> Login</span></a>
-      <button class="btn-inquiry" onclick="document.getElementById('inqOverlay').classList.add('open')"><i class="fa-solid fa-headset"></i><span class="inq-btn-text"> Inquiry</span></button>
+      <a href="login.html" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> Login / Register</a>
+      <button class="btn-inquiry">Inquiry <i class="fa-solid fa-arrow-right"></i></button>
       <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
     </div>
   </div>
@@ -1280,8 +1280,7 @@ async function saveProfile() {
 <script src="images/images.js"></script>
 <script src="cursor.js"></script>
 <script src="bg-animation.js"></script>
-<script src="mobile-nav.js"></script>
-<script src="script.js?v=4"></script>
+<script src="script.js?v=3"></script>
 
 <!-- POST REQUIREMENT MODAL -->
 <div id="reqOverlay" style="position:fixed;inset:0;z-index:5000;background:rgba(13,27,42,0.7);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s">

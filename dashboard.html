@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    .dash-wrap { max-width: 1100px; margin: 110px auto 60px; padding: 0 20px; }
+    .dash-wrap { max-width: 1100px; margin: 90px auto 60px; padding: 0 20px; }
     .dash-header { display: flex; align-items: center; gap: 20px; background: linear-gradient(135deg,#0D1B2A,#1a3a5c); border-radius: 20px; padding: 28px 32px; margin-bottom: 32px; }
     .dash-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg,#FFC107,#ff8f00); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; color: #0D1B2A; flex-shrink: 0; }
     .dash-user-info h2 { color: #fff; font-size: 1.4rem; font-weight: 800; margin-bottom: 4px; }
@@ -57,7 +57,7 @@
 </script>
 <script src="splash.js"></script>
 <!-- NTC REG BAR -->
-<div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:1001;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;">
+<div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;">
   <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
   &nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;
   <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
@@ -185,7 +185,6 @@
 
 <script src="cursor.js"></script>
 <script src="bg-animation.js"></script>
-<script src="mobile-nav.js"></script>
 <script>
 const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? 'http://localhost:5000/api'
@@ -319,7 +318,10 @@ window.addEventListener('scroll', () => {
   document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
 });
 document.getElementById('backTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-// nav handled by mobile-nav.js
+document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
+document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+  btn.addEventListener('click', e => { e.preventDefault(); btn.closest('.nav-dropdown').classList.toggle('open'); });
+});
 
 loadListings();
 </script>
