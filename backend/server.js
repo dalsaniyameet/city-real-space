@@ -59,7 +59,8 @@ const allowedOrigins = [
   'http://127.0.0.1:5000',
   'https://cityrealspace.com',
   'https://www.cityrealspace.com',
-  'https://city-real-space.onrender.com'
+  'https://city-real-space.onrender.com',
+  'https://city-real-space.vercel.app'
 ];
 app.use(cors({
   origin: function(origin, callback) {
@@ -101,9 +102,8 @@ app.use((req, res, next) => {
   next();
 });
 
-const FRONTEND = process.env.NODE_ENV === 'production'
-  ? path.join(__dirname, '../')
-  : path.join(__dirname, '../');
+// Frontend path — Vercel pe __dirname = /var/task/backend, so go up one level
+const FRONTEND = path.join(__dirname, '../');
 
 // Serve frontend static files
 app.use(express.static(FRONTEND));
