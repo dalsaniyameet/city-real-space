@@ -27,10 +27,23 @@ table { width: 100%; overflow-x: auto; display: block; }
 @media (max-width: 768px) {
   .header { top: 33px !important; }
   body { padding-top: 97px !important; }
+  .header-inner { height: 64px; }
+  .logo img { height: 38px !important; }
+  .btn-login { padding: 7px 10px !important; font-size: 0.78rem !important; }
+  .btn-inquiry { padding: 7px 10px !important; font-size: 0.78rem !important; }
+  .login-btn-text { display: none; }
+  .inq-btn-text { display: none; }
+  .post-prop-text { display: none; }
+  .header-actions { gap: 5px !important; }
 }
 @media (max-width: 480px) {
   .header { top: 28px !important; }
-  body { padding-top: 88px !important; }
+  body { padding-top: 92px !important; }
+  .header-inner { height: 60px; }
+  .logo img { height: 34px !important; }
+  .btn-login { padding: 6px 8px !important; font-size: 0.75rem !important; }
+  .btn-inquiry { padding: 6px 8px !important; }
+  .header-actions { gap: 4px !important; }
 }
 
 /* Hide login text on very small screens, keep icon */
