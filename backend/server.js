@@ -18,6 +18,9 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false
 }));
 
+// ===== TRUST PROXY — Vercel/Render ke liye zaroori =====
+app.set('trust proxy', 1);
+
 // ===== RATE LIMITING =====
 const rateLimitHandler = (req, res) => {
   if (req.path.startsWith('/api/')) {
@@ -32,24 +35,26 @@ app.use(rateLimit({
   max: 500,
   handler: rateLimitHandler,
   standardHeaders: true,
-  legacyHeaders: false
+  legacyHeaders: false,
+  keyGenerator: (req) => req.ip || req.headers['x-forwarded-for']?.split(',')[0] || 'unknown'
 }));
 
-// Auth routes — strict limit (login/register brute force rokne ke liye)
+// Auth routes — strict limit
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 30,
-  handler: rateLimitHandler
+  handler: rateLimitHandler,
+  keyGenerator: (req) => req.ip || req.headers['x-forwarded-for']?.split(',')[0] || 'unknown'
 });
 
-// OTP verify — sabse strict (brute force attack rokne ke liye)
-// 10 attempts / 15 min per IP — iske baad block
+// OTP verify — sabse strict
 const otpLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10,
   handler: rateLimitHandler,
   standardHeaders: true,
-  legacyHeaders: false
+  legacyHeaders: false,
+  keyGenerator: (req) => req.ip || req.headers['x-forwarded-for']?.split(',')[0] || 'unknown'
 });
 
 // ===== CORS =====
