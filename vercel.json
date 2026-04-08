@@ -4,6 +4,26 @@
     {
       "src": "backend/server.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "images/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "admin/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -13,11 +33,51 @@
     },
     {
       "src": "/images/(.*)",
-      "dest": "backend/server.js"
+      "dest": "/images/$1"
     },
     {
-      "src": "/admin/(.*)",
-      "dest": "backend/server.js"
+      "src": "/admin/(.*\\.html)",
+      "dest": "/admin/$1"
+    },
+    {
+      "src": "/admin/(.*\\.css)",
+      "dest": "/admin/$1"
+    },
+    {
+      "src": "/admin/(.*\\.js)",
+      "dest": "/admin/$1"
+    },
+    {
+      "src": "/(.*\\.css)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.js)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.html)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.json)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.xml)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.txt)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*\\.(jpg|jpeg|png|gif|svg|ico|webp))",
+      "dest": "/$1"
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
     },
     {
       "src": "/(.*)",
