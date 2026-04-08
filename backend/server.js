@@ -106,9 +106,14 @@ app.use((req, res, next) => {
 const FRONTEND = path.join(__dirname, '../');
 
 // Serve frontend static files
-app.use(express.static(FRONTEND));
+app.use(express.static(FRONTEND, { index: 'index.html' }));
 // Serve uploaded images
 app.use('/images', express.static(path.join(FRONTEND, 'images')));
+
+// Root — explicitly serve index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(FRONTEND, 'index.html'));
+});
 
 // Admin panel — login.html & assets freely accessible, index.html needs valid admin JWT
 app.use('/admin', async (req, res, next) => {
