@@ -351,26 +351,7 @@ window.addEventListener('scroll', () => {
 // ===== BACK TO TOP =====
 if (document.getElementById('backTop')) document.getElementById('backTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-// ===== HAMBURGER =====
-if (document.getElementById('hamburger')) {
-  document.getElementById('hamburger').addEventListener('click', function() {
-    const nav = document.getElementById('nav');
-    const isOpen = nav.classList.toggle('open');
-    this.innerHTML = isOpen
-      ? '<i class="fa-solid fa-xmark"></i>'
-      : '<i class="fa-solid fa-bars"></i>';
-  });
-}
-
-// Close nav when clicking outside
-document.addEventListener('click', function(e) {
-  const nav = document.getElementById('nav');
-  const hamburger = document.getElementById('hamburger');
-  if (nav && hamburger && !nav.contains(e.target) && !hamburger.contains(e.target)) {
-    nav.classList.remove('open');
-    hamburger.innerHTML = '<i class="fa-solid fa-bars"></i>';
-  }
-});
+// ===== HAMBURGER & NAV — handled by mobile-nav.js =====
 
 // ===== SEARCH TABS =====
 const cityLocalities = {
@@ -1007,29 +988,7 @@ document.getElementById('inqSuccessClose').addEventListener('click', () => inqOv
 
 }
 
-// ===== NAV DROPDOWN MOBILE =====
-document.querySelectorAll('.nav-drop-btn').forEach(function(btn) {
-  btn.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    const dropdown = this.closest('.nav-dropdown');
-    // Close all other dropdowns
-    document.querySelectorAll('.nav-dropdown').forEach(function(d) {
-      if (d !== dropdown) d.classList.remove('open');
-    });
-    dropdown.classList.toggle('open');
-  });
-});
-
-// ===== NAV CLOSE ON LINK CLICK =====
-document.querySelectorAll('.nav a:not(.nav-drop-btn)').forEach(function(a) {
-  a.addEventListener('click', function() {
-    const nav = document.getElementById('nav');
-    const hamburger = document.getElementById('hamburger');
-    if (nav) nav.classList.remove('open');
-    if (hamburger) hamburger.innerHTML = '<i class="fa-solid fa-bars"></i>';
-  });
-});
+// ===== NAV DROPDOWN & CLOSE — handled by mobile-nav.js =====
 
 // ===== LIVE CHAT WIDGET =====
 const liveChatBtn = document.getElementById('liveChatBtn');

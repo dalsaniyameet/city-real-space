@@ -185,6 +185,7 @@
 
 <script src="cursor.js"></script>
 <script src="bg-animation.js"></script>
+<script src="mobile-nav.js"></script>
 <script>
 const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? 'http://localhost:5000/api'
@@ -318,25 +319,7 @@ window.addEventListener('scroll', () => {
   document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
 });
 document.getElementById('backTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-document.getElementById('hamburger').addEventListener('click', function() {
-  const nav = document.getElementById('nav');
-  const isOpen = nav.classList.toggle('open');
-  this.innerHTML = isOpen ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
-});
-document.querySelectorAll('.nav-drop-btn').forEach(function(btn) {
-  btn.addEventListener('click', function(e) {
-    e.preventDefault(); e.stopPropagation();
-    this.closest('.nav-dropdown').classList.toggle('open');
-  });
-});
-document.addEventListener('click', function(e) {
-  const nav = document.getElementById('nav');
-  const hb = document.getElementById('hamburger');
-  if (nav && hb && !nav.contains(e.target) && !hb.contains(e.target)) {
-    nav.classList.remove('open');
-    hb.innerHTML = '<i class="fa-solid fa-bars"></i>';
-  }
-});
+// nav handled by mobile-nav.js
 
 loadListings();
 </script>

@@ -646,25 +646,7 @@ document.getElementById('clearBtn').addEventListener('click', function() {
   loadProperties(1);
 });
 
-document.getElementById('hamburger').addEventListener('click', function() {
-  const nav = document.getElementById('nav');
-  const isOpen = nav.classList.toggle('open');
-  this.innerHTML = isOpen ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
-});
-document.querySelectorAll('.nav-drop-btn').forEach(function(btn) {
-  btn.addEventListener('click', function(e) {
-    e.preventDefault(); e.stopPropagation();
-    this.closest('.nav-dropdown').classList.toggle('open');
-  });
-});
-document.addEventListener('click', function(e) {
-  const nav = document.getElementById('nav');
-  const hb = document.getElementById('hamburger');
-  if (nav && hb && !nav.contains(e.target) && !hb.contains(e.target)) {
-    nav.classList.remove('open');
-    hb.innerHTML = '<i class="fa-solid fa-bars"></i>';
-  }
-});
+// nav handled by mobile-nav.js
 
 window.addEventListener('scroll', function() {
   document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
@@ -1101,6 +1083,7 @@ function showLoginToast(msg) {
 </div>
 
 <script src="cursor.js"></script>
+<script src="mobile-nav.js"></script>
 <script>
 // ===== PROPERTY COMPARISON =====
 const MAX_COMPARE = 3;
