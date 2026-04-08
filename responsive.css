@@ -10,12 +10,28 @@ body { overflow-x: hidden; min-width: 320px; }
 img { max-width: 100%; height: auto; }
 table { width: 100%; overflow-x: auto; display: block; }
 
+/* ===== NTC BAR MOBILE ===== */
+@media (max-width: 480px) {
+  #ntcBar { font-size: 0.65rem !important; padding: 5px 8px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #ntcBar span { font-size: 0.65rem !important; }
+}
+
 /* ===== CONTAINER ===== */
 .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 16px; }
 
 /* ===== HEADER ===== */
 .header-inner { flex-wrap: nowrap; gap: 8px; }
 .logo img { height: 40px !important; }
+
+/* Header top offset fix for NTC bar */
+@media (max-width: 768px) {
+  .header { top: 33px !important; }
+  body { padding-top: 97px !important; }
+}
+@media (max-width: 480px) {
+  .header { top: 28px !important; }
+  body { padding-top: 88px !important; }
+}
 
 /* Hide login text on very small screens, keep icon */
 @media (max-width: 400px) {
@@ -28,7 +44,7 @@ table { width: 100%; overflow-x: auto; display: block; }
 /* ===== NAV MOBILE ===== */
 @media (max-width: 768px) {
   .nav {
-    position: fixed; top: 64px; left: 0; right: 0; bottom: 0;
+    position: fixed; top: 97px; left: 0; right: 0; bottom: 0;
     background: #fff; flex-direction: column;
     padding: 16px; overflow-y: auto; z-index: 999;
     box-shadow: 0 8px 24px rgba(0,0,0,0.12);
@@ -49,6 +65,9 @@ table { width: 100%; overflow-x: auto; display: block; }
   .nav-drop-menu a { padding: 10px 16px; font-size: 0.85rem; }
   .hamburger { display: flex !important; }
   .fav-btn { display: none; }
+}
+@media (max-width: 480px) {
+  .nav { top: 88px; }
 }
 
 /* ===== HERO ===== */
@@ -140,6 +159,9 @@ table { width: 100%; overflow-x: auto; display: block; }
   .gift-popup { right: 8px; width: calc(100vw - 16px); max-width: 340px; bottom: 210px; }
   .live-chat-btn { right: 14px; bottom: 82px; }
   .live-chat-widget { right: 8px; width: calc(100vw - 16px); max-width: 340px; bottom: 150px; }
+  /* Post Requirement button mobile */
+  #postReqBtn { font-size: 0.75rem !important; padding: 8px 10px !important; }
+  #postReqBtn span { display: none; }
 }
 @media (max-width: 380px) {
   .gift-btn { right: 10px; }
@@ -153,6 +175,7 @@ table { width: 100%; overflow-x: auto; display: block; }
   .auth-left { display: none; }
   .auth-right { padding: 24px 18px; overflow-y: auto; }
   .form-row-2 { grid-template-columns: 1fr; }
+  .auth-overlay { padding: 12px; }
 }
 @media (max-width: 400px) {
   .auth-right { padding: 20px 14px; }
@@ -227,7 +250,7 @@ table { width: 100%; overflow-x: auto; display: block; }
 .filter-panel { padding: 16px !important; gap: 10px !important; }
 .fp-grp { min-width: 140px; }
 @media (max-width: 768px) {
-  .prop-page-wrap { margin-top: 72px !important; }
+  .prop-page-wrap { margin-top: 110px !important; }
   .filter-panel { flex-direction: column; }
   .fp-grp { min-width: 100% !important; width: 100%; }
   .fp-tabs { flex-wrap: wrap; gap: 6px; }
@@ -237,6 +260,7 @@ table { width: 100%; overflow-x: auto; display: block; }
   .results-bar { flex-direction: column; align-items: flex-start; gap: 6px; }
 }
 @media (max-width: 480px) {
+  .prop-page-wrap { margin-top: 100px !important; }
   .prop-grid { grid-template-columns: 1fr !important; }
   .prop-page-head h1 { font-size: 1.3rem; }
 }
@@ -250,6 +274,12 @@ table { width: 100%; overflow-x: auto; display: block; }
 
 /* ===== PROPERTY DETAIL PAGE ===== */
 .pd-wrap { margin-top: 80px !important; padding: 0 14px !important; }
+@media (max-width: 768px) {
+  .pd-wrap { margin-top: 110px !important; }
+}
+@media (max-width: 480px) {
+  .pd-wrap { margin-top: 100px !important; }
+}
 .pd-grid { display: grid; grid-template-columns: 1fr 360px; gap: 28px; }
 @media (max-width: 960px) {
   .pd-grid { grid-template-columns: 1fr; }
@@ -297,24 +327,27 @@ table { width: 100%; overflow-x: auto; display: block; }
 .dash-wrap { margin-top: 80px !important; padding: 0 14px !important; }
 .dash-header { flex-wrap: wrap; gap: 14px; padding: 20px 18px !important; }
 @media (max-width: 768px) {
+  .dash-wrap { margin-top: 110px !important; }
   .dash-header { flex-direction: column; align-items: flex-start; }
   .dash-header a[href="post-property.html"] { margin-left: 0 !important; width: 100%; justify-content: center; }
   .dash-avatar { width: 56px !important; height: 56px !important; font-size: 1.4rem !important; }
   .dash-user-info h2 { font-size: 1.1rem; }
   .dash-stats { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .dash-tabs { gap: 6px; }
+  .dash-tabs { gap: 6px; flex-wrap: wrap; }
   .dash-tab { padding: 8px 14px; font-size: 0.8rem; }
   .prop-list { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
 }
 @media (max-width: 480px) {
-  .dash-stats { grid-template-columns: 1fr; }
+  .dash-wrap { margin-top: 100px !important; }
+  .dash-stats { grid-template-columns: 1fr 1fr; }
   .prop-list { grid-template-columns: 1fr; }
   .plc-actions { gap: 6px; }
+  .plc-btn { font-size: 0.7rem; padding: 6px 4px; }
 }
 
 /* ===== POST PROPERTY PAGE ===== */
 @media (max-width: 768px) {
-  .post-wrap, .pp-wrap { margin-top: 72px !important; padding: 0 14px !important; }
+  .post-wrap, .pp-wrap { margin-top: 110px !important; padding: 0 14px !important; }
   .pp-grid, .post-grid { grid-template-columns: 1fr !important; }
   .pp-form-box, .post-form-box { padding: 20px 16px !important; }
 }
@@ -334,6 +367,18 @@ table { width: 100%; overflow-x: auto; display: block; }
   .blog-detail-hero { height: 220px !important; }
 }
 
+/* ===== PAGE HERO MARGIN FIX (all pages with header) ===== */
+@media (max-width: 768px) {
+  .page-hero { padding-top: 110px !important; }
+  .about-page-wrap, .contact-page-wrap, .blog-page-wrap,
+  .careers-wrap, .faq-wrap, .privacy-wrap, .terms-wrap {
+    margin-top: 110px !important;
+  }
+}
+@media (max-width: 480px) {
+  .page-hero { padding-top: 100px !important; }
+}
+
 /* ===== NEW LAUNCH / PRELEASE / RESALE / RENT / LAND / BUY ===== */
 @media (max-width: 768px) {
   .nl-grid, .prelease-grid, .resale-grid, .rent-grid, .land-grid, .buy-grid {
@@ -347,6 +392,18 @@ table { width: 100%; overflow-x: auto; display: block; }
   .login-wrap, .register-wrap { padding: 80px 14px 40px !important; }
   .login-box, .register-box { padding: 24px 16px !important; border-radius: 14px !important; }
   .login-box h2, .register-box h2 { font-size: 1.3rem !important; }
+}
+/* login.html / register.html page-card mobile fix */
+@media (max-width: 700px) {
+  .page-card { flex-direction: column; min-height: auto; }
+  .page-left { display: none !important; }
+  .page-right { padding: 32px 20px !important; width: 100% !important; }
+  .form-row-2 { grid-template-columns: 1fr !important; }
+  .social-row { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 400px) {
+  .page-right { padding: 24px 14px !important; }
+  .social-row { grid-template-columns: 1fr; }
 }
 
 /* ===== CAREERS PAGE ===== */
@@ -455,6 +512,34 @@ table { width: 100%; overflow-x: auto; display: block; }
   .admin-main { padding: 16px !important; }
   .admin-table { font-size: 0.78rem; }
   .admin-table th, .admin-table td { padding: 8px 10px !important; }
+}
+
+/* ===== HEADER ACTIONS OVERFLOW FIX ===== */
+@media (max-width: 480px) {
+  .header-actions { gap: 4px !important; }
+  .btn-post-prop { display: none !important; }
+  .fav-btn { display: none !important; }
+  #postReqBtn i { margin: 0 !important; }
+}
+
+/* ===== COMPARE DRAWER MOBILE ===== */
+@media (max-width: 480px) {
+  #cmpDrawer .cmp-bar { flex-direction: column; align-items: flex-start; gap: 8px; padding: 10px 14px; }
+  .cmp-slots { width: 100%; }
+  .cmp-slot { min-width: 0; flex: 1; }
+  .btn-cmp-compare, .btn-cmp-clear { width: 100%; justify-content: center; }
+}
+
+/* ===== VISIT SLOTS MOBILE ===== */
+@media (max-width: 480px) {
+  .visit-slots { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .visit-slot { font-size: 0.72rem; padding: 7px 6px; }
+}
+
+/* ===== EMI CALCULATOR MOBILE ===== */
+@media (max-width: 480px) {
+  .emi-breakdown { grid-template-columns: 1fr 1fr; }
+  .emi-result strong { font-size: 1.3rem; }
 }
 
 /* ===== GENERAL UTILITY ===== */
