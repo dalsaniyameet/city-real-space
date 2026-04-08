@@ -107,8 +107,8 @@
     <nav class="nav" id="nav">
       <a href="index.html">Home</a>
       <div class="nav-dropdown">
-        <a href="#" class="nav-drop-btn" onclick="(function(btn){var menu=btn.nextElementSibling;var open=menu.style.display==='block';menu.style.display=open?'none':'block';btn.style.color=open?'':'#E53935';btn.style.background=open?'':'#fff5f5';btn.querySelector('i').style.transform=open?'':'rotate(180deg)';return false;})(this);return false;">Buy <i class="fa-solid fa-chevron-down" style="font-size:0.7rem;transition:transform 0.25s"></i></a>
-        <div class="nav-drop-menu" style="display:none">
+        <a href="#" class="nav-drop-btn">Buy <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
           <a href="properties.html">All</a>
           <a href="rent.html">Rent</a>
           <a href="resale.html">Resale</a>
@@ -116,8 +116,8 @@
         </div>
       </div>
       <div class="nav-dropdown">
-        <a href="#" class="nav-drop-btn" onclick="(function(btn){var menu=btn.nextElementSibling;var open=menu.style.display==='block';menu.style.display=open?'none':'block';btn.style.color=open?'':'#E53935';btn.style.background=open?'':'#fff5f5';btn.querySelector('i').style.transform=open?'':'rotate(180deg)';return false;})(this);return false;">Sell <i class="fa-solid fa-chevron-down" style="font-size:0.7rem;transition:transform 0.25s"></i></a>
-        <div class="nav-drop-menu" style="display:none">
+        <a href="#" class="nav-drop-btn">Sell <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
           <a href="post-property.html">List Property</a>
           <a href="post-property.html">List Project</a>
         </div>
@@ -143,7 +143,7 @@
       </div>
       <a href="login.html" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i><span class="login-btn-text"> Login</span></a>
       <button class="btn-inquiry" onclick="document.getElementById('inqOverlay').classList.add('open')"><i class="fa-solid fa-headset"></i><span class="inq-btn-text"> Inquiry</span></button>
-      <button class="hamburger" id="hamburger" style="display:flex;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#0D1B2A;padding:6px;align-items:center;justify-content:center;" onclick="var n=document.getElementById('nav');var o=n.style.display==='block';n.style.display=o?'none':'block';n.style.position='fixed';n.style.top='97px';n.style.left='0';n.style.right='0';n.style.bottom='0';n.style.background='#fff';n.style.zIndex='99999';n.style.overflowY='auto';n.style.borderTop='3px solid #E53935';n.style.boxShadow='0 4px 20px rgba(0,0,0,0.2)';n.style.flexDirection='column';n.style.alignItems='stretch';n.style.padding='0';if(o){n.style.display='none';}this.innerHTML=o?'<i class="fa-solid fa-bars"></i>':'<i class="fa-solid fa-xmark"></i>';"><i class="fa-solid fa-bars"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
     </div>
   </div>
 </header>
