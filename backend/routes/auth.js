@@ -1,6 +1,7 @@
 const express    = require('express');
 const router     = require('express').Router();
 const jwt        = require('jsonwebtoken');
+const axios      = require('axios');
 const User       = require('../models/User');
 const { protect } = require('../middleware/auth');
 const { otpLimiter } = require('../middleware/limiters');
@@ -116,19 +117,29 @@ _City Real Space – Gujarat's Most Trusted Real Estate Platform_ 🏆`;
   }
 }
 
-// ===== EMAIL — Gmail SMTP via Nodemailer =====
-const nodemailer = require('nodemailer');
-
-const gmailTransporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+// ===== SEND OTP via WhatsApp (Twilio) =====
+async function sendOTPWhatsApp(phone, otp, name, type) {
+  if (!phone || phone === '0000000000') return false;
+  try {
+    const twilio = require('twilio');
+    const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+    const typeLabel = type === 'register' ? 'Account Verification'
+                    : type === 'login'    ? 'Login Verification'
+                    :                       'Password Reset';
+    await client.messages.create({
+      from: process.env.TWILIO_WA_FROM,
+      to:   `whatsapp:+91${phone}`,
+      body: `🔐 *City Real Space – ${typeLabel}*\n\nHi ${name},\n\nYour OTP is:\n\n*${otp}*\n\nValid for 10 minutes only. Do not share with anyone.\n\n_City Real Space Team_`
+    });
+    console.log(`✅ OTP sent via WhatsApp to +91${phone}`);
+    return true;
+  } catch (err) {
+    console.error('WhatsApp OTP failed:', err.message);
+    return false;
   }
-});
+}
 
+// ===== SEND OTP EMAIL via Resend API =====
 async function sendOTPEmail(email, otp, name, type) {
   const isRegister = type === 'register';
   const isLogin    = type === 'login';
@@ -161,18 +172,40 @@ async function sendOTPEmail(email, otp, name, type) {
     </div>
   </div>`;
 
+  // Resend API key check
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error('RESEND_API_KEY not configured');
+  }
+
   try {
-    console.log(`📧 Sending ${type} OTP to ${email} via Gmail SMTP`);
-    await gmailTransporter.sendMail({
-      from: `"City Real Space" <${process.env.EMAIL_USER}>`,
-      to: email,
+    console.log(`📧 Sending ${type} OTP to ${email} via Resend`);
+    const response = await axios.post('https://api.resend.com/emails', {
+      from: 'City Real Space <onboarding@resend.dev>',
+      to: [email],
       subject,
       html
+    }, {
+      headers: {
+        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      timeout: 15000
     });
-    console.log(`✅ Email sent to ${email}`);
+    console.log(`✅ Email sent to ${email}`, response.data);
+    return true;
   } catch (err) {
-    console.error(`❌ Gmail SMTP failed for ${email}:`, err.message);
-    throw new Error(`Email service unavailable: ${err.message}`);
+    const errMsg = err.response?.data?.message || err.message;
+    console.error(`❌ Resend email failed for ${email}:`, errMsg);
+    return false;
+  }
+}
+
+// ===== SEND OTP — Email try karo, fail ho toh WhatsApp =====
+async function sendOTP(email, phone, otp, name, type) {
+  const emailSent = await sendOTPEmail(email, otp, name, type);
+  if (!emailSent && phone && phone !== '0000000000') {
+    console.log(`📱 Email failed, trying WhatsApp OTP to +91${phone}`);
+    await sendOTPWhatsApp(phone, otp, name, type);
   }
 }
 
@@ -233,10 +266,9 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    res.status(201).json({ success: true, message: 'OTP sent to your email. Please verify.' });
-    sendOTPEmail(email, otp, firstName, 'register')
-      .then(() => console.log(`✅ Registration OTP sent to ${email}`))
-      .catch(e => console.error(`⚠️ Email failed for ${email}:`, e.message));
+    res.status(201).json({ success: true, message: 'OTP sent to your email/WhatsApp. Please verify.' });
+    sendOTP(email, phone, otp, firstName, 'register')
+      .catch(e => console.error(`⚠️ OTP send failed:`, e.message));
   } catch (err) {
     console.error('Registration error:', err);
     res.status(500).json({ success: false, message: err.message });
@@ -292,9 +324,8 @@ router.post('/login', async (req, res) => {
       user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
       await user.save();
       res.json({ success: true, needsOTP: true, email: user.email, isAdmin: true });
-      sendOTPEmail(user.email, otp, user.firstName, 'login')
-        .then(() => console.log(`✅ Admin OTP sent to ${user.email}`))
-        .catch(e => console.error(`❌ Admin OTP email failed:`, e.message));
+      sendOTP(user.email, user.phone, otp, user.firstName, 'login')
+        .catch(e => console.error(`❌ Admin OTP failed:`, e.message));
       return;
     }
 
@@ -305,9 +336,8 @@ router.post('/login', async (req, res) => {
     await user.save();
     
     res.json({ success: true, needsOTP: true, email, isAdmin: false });
-    sendOTPEmail(email, otp, user.firstName, 'login')
-      .then(() => console.log(`✅ OTP email sent to ${email}`))
-      .catch(e => console.error(`❌ Email send failed for ${email}:`, e.message));
+    sendOTP(email, user.phone, otp, user.firstName, 'login')
+      .catch(e => console.error(`❌ OTP send failed:`, e.message));
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ success: false, message: err.message });
@@ -364,9 +394,8 @@ router.post('/resend-otp', async (req, res) => {
     await user.save();
     
     res.json({ success: true, message: 'OTP resent successfully' });
-    sendOTPEmail(email, otp, user.firstName, user.isVerified ? 'login' : 'register')
-      .then(() => console.log(`✅ Resend OTP sent to ${email}`))
-      .catch(e => console.error(`⚠️ Resend email failed for ${email}:`, e.message));
+    sendOTP(email, user.phone, otp, user.firstName, user.isVerified ? 'login' : 'register')
+      .catch(e => console.error(`⚠️ OTP resend failed:`, e.message));
   } catch (err) {
     console.error('Resend OTP error:', err);
     res.status(500).json({ success: false, message: err.message });
@@ -388,10 +417,9 @@ router.post('/forgot-password', async (req, res) => {
     user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
     await user.save();
     
-    res.json({ success: true, message: 'OTP sent to your email' });
-    sendOTPEmail(email, otp, user.firstName, 'forgot')
-      .then(() => console.log(`✅ Forgot password OTP sent to ${email}`))
-      .catch(e => console.error(`⚠️ Forgot password email failed for ${email}:`, e.message));
+    res.json({ success: true, message: 'OTP sent to your email/WhatsApp' });
+    sendOTP(email, user.phone, otp, user.firstName, 'forgot')
+      .catch(e => console.error(`⚠️ Forgot OTP failed:`, e.message));
   } catch (err) {
     console.error('Forgot password error:', err);
     res.status(500).json({ success: false, message: 'Failed to send OTP. Check email config.' });
