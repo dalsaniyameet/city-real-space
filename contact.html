@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Contact Us – City Real Space</title>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="responsive.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    .page-hero { background: linear-gradient(135deg, #0D1B2A 0%, #1a3a5c 100%); padding: 120px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+    .page-hero { background: linear-gradient(135deg, #0D1B2A 0%, #1a3a5c 100%); padding: 60px 24px 60px; text-align: center; position: relative; overflow: hidden; }
     .page-hero::before { content: ''; position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80') center/cover; opacity: 0.08; }
     .page-hero-overlay { position: absolute; inset: 0; background: rgba(13,27,42,0.7); }
     .page-hero-content { position: relative; z-index: 2; }
@@ -69,6 +70,14 @@
 </head>
 <body>
 <script src="splash.js"></script>
+
+<!-- NTC REG BAR -->
+<div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;">
+  <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
+  &nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;
+  <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
+</div>
+<div style="height:33px;"></div>
 
 <!-- HEADER -->
 <header class="header" id="header">
@@ -238,9 +247,9 @@
   <div class="footer-top">
     <div class="container footer-grid">
       <div class="footer-col">
-        <a href="index.html" class="logo footer-logo">
-          <span class="logo-icon"><i class="fa-solid fa-building-columns"></i></span>
-          <span class="logo-text">City <span class="yellow">Real</span> Space</span>
+        <a href="index.html" class="footer-logo" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
+          <img src="images/logo.jpeg" alt="City Real Space" style="height:52px;width:52px;object-fit:contain;border-radius:10px;background:#fff;padding:4px;"/>
+          <span style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1.2;">City <span style="color:#FFC107;">Real</span> Space</span>
         </a>
         <p class="footer-about">Ahmedabad's most trusted real estate platform. We connect buyers, sellers and investors with verified properties across Gujarat.</p>
         <div class="social-links">
@@ -328,7 +337,7 @@
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
     btn.disabled = true;
     try {
-      const res = await fetch('https://city-real-space.onrender.com/api/contact', {
+    const res = await fetch((window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1'?'http://localhost:5000/api':'/api') + '/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, phone, email, subject, message })

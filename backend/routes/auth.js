@@ -4,9 +4,12 @@ const jwt        = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const User       = require('../models/User');
 const { protect } = require('../middleware/auth');
+const { otpLimiter } = require('../middleware/limiters');
+const { OAuth2Client } = require('google-auth-library');
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const twilio = require('twilio');
-const genToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });
+const genToken = (id, role) => jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });
 function genOTP() { return Math.floor(100000 + Math.random() * 900000).toString(); }
 
 // ===== SEND WHATSAPP NOTIFICATION TO CITY REAL SPACE =====
@@ -129,42 +132,88 @@ function getTransporter() {
 async function sendOTPEmail(email, otp, name, type) {
   const isRegister = type === 'register';
   const isLogin    = type === 'login';
-  const subject = isRegister ? 'Verify Your Email – City Real Space' : isLogin ? 'Login OTP – City Real Space' : 'Password Reset OTP – City Real Space';
-  const heading  = isRegister ? 'Verify Your Email' : isLogin ? 'Your Login OTP' : 'Reset Your Password';
-  const msg      = isRegister
-    ? 'Welcome to City Real Space! Use the OTP below to verify your email and activate your account.'
+
+  const subject = isRegister
+    ? 'Verify Your Email – City Real Space'
     : isLogin
-    ? 'Use the OTP below to complete your login. Valid for 10 minutes. Do not share it with anyone.'
-    : 'Use the OTP below to reset your password. Do not share it with anyone.';
+    ? 'Login OTP – City Real Space'
+    : 'Password Reset OTP – City Real Space';
+
+  // Per-type config
+  const config = isRegister ? {
+    headerBg:   'linear-gradient(135deg,#1b5e20,#2e7d32)',
+    icon:       '&#127968;',
+    heading:    'Activate Your Account',
+    subheading: 'Email Verification',
+    otpColor:   '#69f0ae',
+    otpBorder:  'rgba(105,240,174,0.35)',
+    msg:        'Welcome to City Real Space! Use the OTP below to verify your email and activate your account.'
+  } : isLogin ? {
+    headerBg:   'linear-gradient(135deg,#0d47a1,#1565c0)',
+    icon:       '&#128274;',
+    heading:    'Verify Your Login',
+    subheading: 'Secure Login OTP',
+    otpColor:   '#82b1ff',
+    otpBorder:  'rgba(130,177,255,0.35)',
+    msg:        'Use the OTP below to complete your login. Valid for 10 minutes. Do not share it with anyone.'
+  } : {
+    headerBg:   'linear-gradient(135deg,#e65100,#bf360c)',
+    icon:       '&#128273;',
+    heading:    'Reset Your Password',
+    subheading: 'Password Reset OTP',
+    otpColor:   '#ffab40',
+    otpBorder:  'rgba(255,171,64,0.35)',
+    msg:        'Use the OTP below to reset your password. Do not share it with anyone.'
+  };
 
   try {
     const transporter = getTransporter();
     console.log(`📧 Sending ${type} OTP email to ${email}`);
-    
+
     await transporter.sendMail({
       from: `"City Real Space" <${process.env.EMAIL_USER}>`,
       to: email,
       subject,
       html: `
-      <div style="font-family:Poppins,Arial,sans-serif;max-width:500px;margin:auto;background:#0D1B2A;border-radius:16px;overflow:hidden">
-        <div style="background:linear-gradient(135deg,#E53935,#c62828);padding:28px 32px;text-align:center">
-          <h1 style="color:#fff;margin:0;font-size:1.5rem;font-weight:800">City Real Space</h1>
-          <p style="color:rgba(255,255,255,0.8);margin:6px 0 0;font-size:0.85rem">Gujarat's Most Trusted Real Estate Platform</p>
+      <div style="font-family:Arial,sans-serif;max-width:520px;margin:auto;background:#0a1628;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.4)">
+
+        <!-- HEADER -->
+        <div style="background:${config.headerBg};padding:32px;text-align:center;position:relative">
+          <div style="font-size:2.4rem;margin-bottom:10px">${config.icon}</div>
+          <h1 style="color:#fff;margin:0;font-size:1.6rem;font-weight:800;letter-spacing:-0.5px">City Real Space</h1>
+          <p style="color:rgba(255,255,255,0.75);margin:6px 0 0;font-size:0.82rem;letter-spacing:0.5px">Gujarat's #1 Real Estate Platform &mdash; Ahmedabad West</p>
         </div>
-        <div style="padding:32px">
-          <h2 style="color:#FFC107;margin:0 0 12px;font-size:1.2rem">${heading}</h2>
-          <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;line-height:1.6">Hi <strong style="color:#fff">${name}</strong>,</p>
-          <p style="color:rgba(255,255,255,0.75);font-size:0.9rem;line-height:1.6">${msg}</p>
-          <div style="background:rgba(255,255,255,0.06);border:2px dashed rgba(255,193,7,0.4);border-radius:12px;padding:24px;text-align:center;margin:24px 0">
-            <p style="color:rgba(255,255,255,0.5);font-size:0.75rem;margin:0 0 8px;letter-spacing:2px;text-transform:uppercase">Your OTP</p>
-            <div style="font-size:2.8rem;font-weight:900;letter-spacing:14px;color:#FFC107">${otp}</div>
-            <p style="color:rgba(255,255,255,0.4);font-size:0.75rem;margin:10px 0 0">Valid for <strong style="color:#fff">10 minutes</strong></p>
+
+        <!-- BODY -->
+        <div style="padding:36px 32px">
+          <div style="margin-bottom:24px">
+            <p style="color:rgba(255,255,255,0.45);font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;margin:0 0 4px">${config.subheading}</p>
+            <h2 style="color:#fff;margin:0;font-size:1.3rem;font-weight:800">${config.heading}</h2>
           </div>
-          <p style="color:rgba(255,255,255,0.4);font-size:0.78rem">If you didn't request this, please ignore this email.</p>
+
+          <p style="color:rgba(255,255,255,0.65);font-size:0.88rem;line-height:1.7;margin:0 0 8px">Hi <strong style="color:#fff">${name}</strong>,</p>
+          <p style="color:rgba(255,255,255,0.65);font-size:0.88rem;line-height:1.7;margin:0 0 28px">${config.msg}</p>
+
+          <!-- OTP BOX -->
+          <div style="background:rgba(255,255,255,0.05);border:2px solid ${config.otpBorder};border-radius:16px;padding:28px;text-align:center;margin-bottom:28px">
+            <p style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin:0 0 12px;letter-spacing:3px;text-transform:uppercase">Your One-Time Password</p>
+            <div style="font-size:3rem;font-weight:900;letter-spacing:16px;color:${config.otpColor};font-family:monospace">${otp}</div>
+            <div style="margin-top:14px;display:inline-block;background:rgba(255,255,255,0.07);border-radius:20px;padding:5px 16px">
+              <p style="color:rgba(255,255,255,0.5);font-size:0.72rem;margin:0">&#9201; Valid for <strong style="color:#fff">10 minutes</strong> only</p>
+            </div>
+          </div>
+
+          <!-- SECURITY NOTE -->
+          <div style="background:rgba(255,255,255,0.04);border-left:3px solid rgba(255,255,255,0.15);border-radius:0 8px 8px 0;padding:12px 16px">
+            <p style="color:rgba(255,255,255,0.35);font-size:0.78rem;margin:0;line-height:1.6">&#128274; <strong style="color:rgba(255,255,255,0.5)">Security tip:</strong> City Real Space will never ask for your OTP. If you did not request this, please ignore this email.</p>
+          </div>
         </div>
-        <div style="background:rgba(0,0,0,0.3);padding:16px 32px;text-align:center">
-          <p style="color:rgba(255,255,255,0.3);font-size:0.75rem;margin:0">© 2025 City Real Space · Ahmedabad, Gujarat</p>
+
+        <!-- FOOTER -->
+        <div style="background:rgba(0,0,0,0.35);padding:18px 32px;text-align:center;border-top:1px solid rgba(255,255,255,0.06)">
+          <p style="color:rgba(255,255,255,0.25);font-size:0.72rem;margin:0">&copy; 2026 City Real Space &middot; Ahmedabad West, Gujarat</p>
         </div>
+
       </div>`
     });
     console.log(`✅ Email sent successfully to ${email}`);
@@ -174,18 +223,24 @@ async function sendOTPEmail(email, otp, name, type) {
   }
 }
 
-// ===== GET /api/auth/check-email?email= — MX record check =====
+// ===== EMAIL DOMAIN VALIDATION =====
 const dns = require('dns').promises;
-router.get('/check-email', async (req, res) => {
-  const { email } = req.query;
-  if (!email || !email.includes('@')) return res.json({ valid: false });
+async function isValidEmailDomain(email) {
+  if (!email || !email.includes('@')) return false;
   const domain = email.split('@')[1];
   try {
     const mx = await dns.resolveMx(domain);
-    res.json({ valid: mx && mx.length > 0 });
+    return mx && mx.length > 0;
   } catch {
-    res.json({ valid: false });
+    return false;
   }
+}
+
+// ===== GET /api/auth/check-email?email= — MX record check =====
+router.get('/check-email', async (req, res) => {
+  const { email } = req.query;
+  const valid = await isValidEmailDomain(email);
+  res.json({ valid });
 });
 
 // ===== POST /api/auth/register — send OTP, don't create account yet =====
@@ -194,6 +249,10 @@ router.post('/register', async (req, res) => {
     const { firstName, lastName, email, phone, password, role, city } = req.body;
     if (!firstName || !lastName || !email || !phone || !password)
       return res.status(400).json({ success: false, message: 'All fields required' });
+
+    const emailValid = await isValidEmailDomain(email);
+    if (!emailValid)
+      return res.status(400).json({ success: false, message: 'Invalid email address. Please check and try again.' });
 
     const exists = await User.findOne({ email });
     if (exists && exists.isVerified)
@@ -205,7 +264,7 @@ router.post('/register', async (req, res) => {
     const mappedRole = roleMap[role] || (validRoles.includes(role) ? role : 'buyer');
 
     const otp     = genOTP();
-    const expires = Date.now() + 10 * 60 * 1000;
+    const expires = Date.now() + 1 * 60 * 1000; // 1 minute
 
     if (exists && !exists.isVerified) {
       exists.resetOTP = otp;
@@ -221,15 +280,10 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    try {
-      await sendOTPEmail(email, otp, firstName, 'register');
-      console.log(`✅ Registration OTP sent to ${email}`);
-    } catch (emailErr) {
-      console.error(`⚠️ Email failed for ${email}, but OTP saved to DB:`, emailErr.message);
-      // Still return success — OTP is saved in DB, can resend
-    }
-    
     res.status(201).json({ success: true, message: 'OTP sent to your email. Please verify.' });
+    sendOTPEmail(email, otp, firstName, 'register')
+      .then(() => console.log(`✅ Registration OTP sent to ${email}`))
+      .catch(e => console.error(`⚠️ Email failed for ${email}:`, e.message));
   } catch (err) {
     console.error('Registration error:', err);
     res.status(500).json({ success: false, message: err.message });
@@ -237,7 +291,7 @@ router.post('/register', async (req, res) => {
 });
 
 // ===== POST /api/auth/verify-register — verify OTP and activate account =====
-router.post('/verify-register', async (req, res) => {
+router.post('/verify-register', otpLimiter, async (req, res) => {
   try {
     const { email, otp } = req.body;
     const user = await User.findOne({ email });
@@ -255,7 +309,7 @@ router.post('/verify-register', async (req, res) => {
     res.json({
       success: true,
       message: 'Email verified! Account activated.',
-      token: genToken(user._id),
+      token: genToken(user._id, user.role),
       user: { id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role, phone: user.phone, city: user.city }
     });
   } catch (err) {
@@ -270,22 +324,25 @@ router.post('/login', async (req, res) => {
     if (!email || !password)
       return res.status(400).json({ success: false, message: 'Email and password required' });
 
+    const emailValid = await isValidEmailDomain(email);
+    if (!emailValid)
+      return res.status(400).json({ success: false, message: 'Invalid email address. Please check and try again.' });
+
     const user = await User.findOne({ email });
     if (!user || !(await user.matchPassword(password)))
       return res.status(401).json({ success: false, message: 'Invalid email or password' });
 
-    // Admin — OTP bhejo
+    // Admin — OTP bhejo (DB mein role admin hai toh allowed hai)
     if (user.role === 'admin') {
-      const ALLOWED_ADMINS = ['admin@cityrealspace.com', 'patelshriji72@gmail.com'];
-      if (!ALLOWED_ADMINS.includes(user.email)) {
-        return res.status(403).json({ success: false, message: 'Access denied. Unauthorized admin account.' });
-      }
       const otp = genOTP();
       user.resetOTP = otp;
       user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
       await user.save();
-      await sendOTPEmail(user.email, otp, user.firstName, 'login');
-      return res.json({ success: true, needsOTP: true, email: user.email });
+      res.json({ success: true, needsOTP: true, email: user.email, isAdmin: true });
+      sendOTPEmail(user.email, otp, user.firstName, 'login')
+        .then(() => console.log(`✅ Admin OTP sent to ${user.email}`))
+        .catch(e => console.error(`❌ Admin OTP email failed:`, e.message));
+      return;
     }
 
     // Normal user — OTP bhejo
@@ -294,16 +351,10 @@ router.post('/login', async (req, res) => {
     user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
     await user.save();
     
-    // Send email but don't block if it fails
-    try {
-      await sendOTPEmail(email, otp, user.firstName, 'login');
-      console.log(`✅ OTP email sent to ${email}`);
-    } catch(emailErr) {
-      console.error(`❌ Email send failed for ${email}:`, emailErr.message);
-      // Still send OTP screen — user can resend if email fails
-    }
-    
-    res.json({ success: true, needsOTP: true, email });
+    res.json({ success: true, needsOTP: true, email, isAdmin: false });
+    sendOTPEmail(email, otp, user.firstName, 'login')
+      .then(() => console.log(`✅ OTP email sent to ${email}`))
+      .catch(e => console.error(`❌ Email send failed for ${email}:`, e.message));
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ success: false, message: err.message });
@@ -311,7 +362,7 @@ router.post('/login', async (req, res) => {
 });
 
 // ===== POST /api/auth/verify-login =====
-router.post('/verify-login', async (req, res) => {
+router.post('/verify-login', otpLimiter, async (req, res) => {
   try {
     const { email, otp } = req.body;
     const user = await User.findOne({ email });
@@ -323,9 +374,24 @@ router.post('/verify-login', async (req, res) => {
 
     try { notifyWhatsApp(user, 'login'); } catch(e) {}
 
+    const token = genToken(user._id, user.role);
+
+    // Admin ke liye httpOnly cookie + single session enforce karo
+    if (user.role === 'admin') {
+      // Purane saare sessions clear karo — sirf ek hi active session
+      user.loginSessions = [{ token, expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }];
+      await user.save();
+      res.cookie('adminToken', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60 * 1000
+      });
+    }
+
     res.json({
       success: true,
-      token: genToken(user._id),
+      token,
       user: { id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role, phone: user.phone, city: user.city }
     });
   } catch (err) {
@@ -344,14 +410,10 @@ router.post('/resend-otp', async (req, res) => {
     user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
     await user.save();
     
-    try {
-      await sendOTPEmail(email, otp, user.firstName, user.isVerified ? 'login' : 'register');
-      console.log(`✅ Resend OTP sent to ${email}`);
-    } catch (emailErr) {
-      console.error(`⚠️ Resend email failed for ${email}:`, emailErr.message);
-    }
-    
     res.json({ success: true, message: 'OTP resent successfully' });
+    sendOTPEmail(email, otp, user.firstName, user.isVerified ? 'login' : 'register')
+      .then(() => console.log(`✅ Resend OTP sent to ${email}`))
+      .catch(e => console.error(`⚠️ Resend email failed for ${email}:`, e.message));
   } catch (err) {
     console.error('Resend OTP error:', err);
     res.status(500).json({ success: false, message: err.message });
@@ -362,6 +424,10 @@ router.post('/resend-otp', async (req, res) => {
 router.post('/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
+    const emailValid = await isValidEmailDomain(email);
+    if (!emailValid)
+      return res.status(400).json({ success: false, message: 'Invalid email address. Please check and try again.' });
+
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ success: false, message: 'No account found with this email' });
     const otp = genOTP();
@@ -369,14 +435,10 @@ router.post('/forgot-password', async (req, res) => {
     user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
     await user.save();
     
-    try {
-      await sendOTPEmail(email, otp, user.firstName, 'forgot');
-      console.log(`✅ Forgot password OTP sent to ${email}`);
-    } catch (emailErr) {
-      console.error(`⚠️ Forgot password email failed for ${email}:`, emailErr.message);
-    }
-    
     res.json({ success: true, message: 'OTP sent to your email' });
+    sendOTPEmail(email, otp, user.firstName, 'forgot')
+      .then(() => console.log(`✅ Forgot password OTP sent to ${email}`))
+      .catch(e => console.error(`⚠️ Forgot password email failed for ${email}:`, e.message));
   } catch (err) {
     console.error('Forgot password error:', err);
     res.status(500).json({ success: false, message: 'Failed to send OTP. Check email config.' });
@@ -414,36 +476,76 @@ router.post('/reset-password', async (req, res) => {
 });
 
 // ===== POST /api/auth/google — Google OAuth login/register =====
+// Google ID token verify karo — bina is check ke koi bhi fake data bhej sakta tha
 router.post('/google', async (req, res) => {
   try {
-    const { firstName, lastName, email, googleId, avatar } = req.body;
-    if (!email || !googleId) return res.status(400).json({ success: false, message: 'Invalid Google data' });
+    const { credential } = req.body;  // frontend se Google ID token aata hai
+    if (!credential) return res.status(400).json({ success: false, message: 'Google token missing' });
+
+    // Google ke servers se token verify karo
+    let payload;
+    try {
+      const ticket = await googleClient.verifyIdToken({
+        idToken: credential,
+        audience: process.env.GOOGLE_CLIENT_ID
+      });
+      payload = ticket.getPayload();
+    } catch {
+      return res.status(401).json({ success: false, message: 'Invalid Google token. Please try again.' });
+    }
+
+    const { sub: googleId, email, given_name: firstName, family_name: lastName, picture: avatar, email_verified } = payload;
+
+    if (!email_verified)
+      return res.status(400).json({ success: false, message: 'Google account email not verified' });
 
     let user = await User.findOne({ email });
+    let isNew = false;
+
     if (user) {
-      // Already exists — seedha login
       notifyWhatsApp(user, 'login');
     } else {
-      // New user — auto register
-      const randomPass = googleId + process.env.JWT_SECRET;
+      // Secure random password — Google users password se login nahi karte
+      const randomPass = googleId + process.env.JWT_SECRET + Date.now();
       user = await User.create({
-        firstName, lastName, email,
+        firstName: firstName || 'User',
+        lastName:  lastName  || '',
+        email,
         phone: '0000000000',
         password: randomPass,
         role: 'buyer', city: '',
         isVerified: true
       });
-      notifyWhatsApp(user, 'register');
+      isNew = true;
     }
+
+    const needsProfile = !user.phone || user.phone === '0000000000' || !user.city;
 
     res.json({
       success: true,
-      token: genToken(user._id),
+      needsProfile,
+      isNew,
+      token: genToken(user._id, user.role),
       user: { id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role, phone: user.phone, city: user.city }
     });
+
+    if (isNew) notifyWhatsApp(user, 'register');
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
+});
+
+// ===== POST /api/auth/admin-logout =====
+router.post('/admin-logout', async (req, res) => {
+  try {
+    const token = req.cookies && req.cookies.adminToken;
+    if (token) {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      await User.findByIdAndUpdate(decoded.id, { loginSessions: [] });
+    }
+  } catch(e) {}
+  res.clearCookie('adminToken');
+  res.json({ success: true });
 });
 
 // ===== GET /api/auth/me =====
@@ -451,13 +553,27 @@ router.get('/me', protect, async (req, res) => {
   res.json({ success: true, user: req.user });
 });
 
+// ===== GET /api/auth/saved — get saved properties =====
+router.get('/saved', protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).populate('savedProperties');
+    res.json({ success: true, properties: user.savedProperties || [] });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // ===== PUT /api/auth/profile =====
 router.put('/profile', protect, async (req, res) => {
   try {
-    const { firstName, lastName, phone, city } = req.body;
+    const { firstName, lastName, phone, city, role } = req.body;
+    const updateData = { firstName, lastName, phone, city };
+    // Role sirf tab update karo jab explicitly bheja ho aur valid ho
+    const validRoles = ['buyer', 'seller', 'agent', 'builder', 'investor'];
+    if (role && validRoles.includes(role)) updateData.role = role;
     const user = await User.findByIdAndUpdate(
       req.user._id,
-      { firstName, lastName, phone, city },
+      updateData,
       { new: true, runValidators: true }
     ).select('-password');
     res.json({ success: true, user });

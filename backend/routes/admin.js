@@ -63,8 +63,12 @@ router.get('/user-properties', async (req, res) => {
 // PROPERTIES
 router.get('/properties', async (req, res) => {
   try {
-    const { status } = req.query;
-    const query = status === 'pending' ? { isApproved: false } : status === 'approved' ? { isApproved: true } : {};
+    const { status, category, featured } = req.query;
+    const query = {};
+    if (status === 'pending')  query.isApproved = false;
+    if (status === 'approved') query.isApproved = true;
+    if (category) query.category = category;
+    if (featured === 'true') query.isFeatured = true;
     const properties = await Property.find(query).sort({ createdAt: -1 });
     res.json({ success: true, properties });
   } catch (err) {
@@ -83,7 +87,47 @@ router.post('/properties', async (req, res) => {
 
 router.put('/properties/:id/approve', async (req, res) => {
   try {
-    const property = await Property.findByIdAndUpdate(req.params.id, { isApproved: true }, { new: true });
+    const property = await Property.findByIdAndUpdate(
+      req.params.id,
+      { isApproved: true, isRejected: false, rejectedReason: '' },
+      { new: true }
+    ).populate('postedBy', 'firstName phone');
+    // WA notify user
+    if (property && property.postedBy && property.postedBy.phone) {
+      try {
+        const client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+        await client.messages.create({
+          from: process.env.TWILIO_WA_FROM,
+          to: 'whatsapp:+91' + property.postedBy.phone,
+          body: '✅ *Property Approved – City Real Space*\n\nNamaste ' + (property.postedBy.firstName || '') + ' ji!\n\nAapki property *"' + property.title + '"* approve ho gayi hai aur ab website pe live hai.\n\n🌐 cityrealspace.com\n📞 +91 97235 50764'
+        });
+      } catch(e) { console.error('WA notify error:', e.message); }
+    }
+    res.json({ success: true, property });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+router.put('/properties/:id/reject', async (req, res) => {
+  try {
+    const { reason } = req.body;
+    const property = await Property.findByIdAndUpdate(
+      req.params.id,
+      { isApproved: false, isRejected: true, rejectedReason: reason || 'Does not meet listing standards' },
+      { new: true }
+    ).populate('postedBy', 'firstName phone');
+    // WA notify user
+    if (property && property.postedBy && property.postedBy.phone) {
+      try {
+        const client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+        await client.messages.create({
+          from: process.env.TWILIO_WA_FROM,
+          to: 'whatsapp:+91' + property.postedBy.phone,
+          body: '❌ *Property Rejected – City Real Space*\n\nNamaste ' + (property.postedBy.firstName || '') + ' ji,\n\nAapki property *"' + property.title + '"* approve nahi ho payi.\n\n📋 *Reason:* ' + (reason || 'Does not meet listing standards') + '\n\nKripya details update karke dobara submit karein.\n📞 Help: +91 97235 50764'
+        });
+      } catch(e) { console.error('WA notify error:', e.message); }
+    }
     res.json({ success: true, property });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

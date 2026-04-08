@@ -3,7 +3,7 @@ const API = (function() {
   if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     return 'http://localhost:5000/api';
   }
-  return 'https://city-real-space.onrender.com/api';
+  return '/api';
 })();
 
 console.log('🌐 Main Site - API Endpoint:', API);
@@ -278,7 +278,7 @@ loadAllProperties();
   const grid = document.getElementById('homePostsGrid');
   if (!grid) return;
   try {
-    const res = await fetch('https://city-real-space.onrender.com/api/blogs?limit=4');
+    const res = await fetch(`${API}/blogs?limit=4`);
     const data = await res.json();
     if (data.success && data.blogs.length) {
       grid.innerHTML = data.blogs.map((b, i) => {
@@ -533,7 +533,7 @@ if (mainSearchBtn) {
     const loc   = document.getElementById('offerPropLoc').querySelector('span').textContent;
     if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
     try {
-      await fetch('https://city-real-space.onrender.com/api/inquiry', {
+      await fetch(`${API}/inquiry`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, phone, propertyName: title, propertyType: title, lookingFor: 'Get Offer', city: loc, message: 'Get Offer request for: ' + title + ' (' + loc + ')' })
@@ -586,7 +586,7 @@ async function toggleFav(btn) {
     const match = onclick.match(/property-detail\.html\?id=([^'"]+)/);
     if (match) {
       try {
-        await fetch('https://city-real-space.onrender.com/api/properties/' + match[1] + '/save', {
+        await fetch(`${API}/properties/` + match[1] + '/save', {
           method: 'POST',
           headers: { 'Authorization': 'Bearer ' + token }
         });
@@ -598,10 +598,6 @@ async function toggleFav(btn) {
 // ===== LOGIN REQUIRED HELPERS =====
 function requireLoginForOffer(e, title, loc) {
   e.stopPropagation();
-  if (!localStorage.getItem('token')) {
-    showLoginPrompt('Login to get the best offer on this property!');
-    return;
-  }
   openOfferModal(title, loc);
 }
 
@@ -751,16 +747,7 @@ if (document.getElementById('loginForm')) {
   try {
     const res  = await fetch(`${API}/auth/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, password}) });
     const data = await res.json();
-    if (data.success && data.needsOTP) {
-      // OTP form dikhao — koi welcome nahi
-      document.getElementById('loginForm').classList.add('hidden');
-      document.getElementById('loginOtpForm').classList.remove('hidden');
-      document.getElementById('loginOtpForm').dataset.email = email;
-      document.getElementById('loginOtpEmailDisplay').textContent = email;
-      document.getElementById('loginOtpInput').value = '';
-      showToast('OTP sent to ' + email);
-    } else if (data.success) {
-      // Admin direct login
+    if (data.success) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       window.location.reload();
@@ -774,40 +761,7 @@ if (document.getElementById('loginForm')) {
   btn.disabled = false;
 });
 
-async function verifyLoginOTP() {
-  const btn   = document.getElementById('loginOtpVerifyBtn');
-  const email = document.getElementById('loginOtpForm').dataset.email;
-  const otp   = document.getElementById('loginOtpInput').value.trim();
-  if (!otp || otp.length < 6) { showToast('Enter 6-digit OTP'); return; }
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
-  btn.disabled = true;
-  try {
-    const res  = await fetch(`${API}/auth/verify-login`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email, otp }) });
-    const data = await res.json();
-    if (data.success) {
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      // Login pe welcome screen nahi — sirf register pe
-      window.location.reload();
-    } else {
-      showToast(data.message || 'Invalid OTP');
-    }
-  } catch {
-    showToast('Server error.');
-  }
-  btn.innerHTML = 'Verify & Login <i class="fa-solid fa-check"></i>';
-  btn.disabled = false;
-}
 
-async function resendLoginOTP() {
-  const email = document.getElementById('loginOtpForm').dataset.email;
-  if (!email) return;
-  try {
-    const res  = await fetch(`${API}/auth/resend-otp`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
-    const data = await res.json();
-    showToast(data.success ? 'OTP resent to ' + email : (data.message || 'Error'));
-  } catch { showToast('Server error.'); }
-}
 
 let _regData = {};
 document.getElementById('registerForm').addEventListener('submit', async e => {
@@ -881,7 +835,9 @@ async function verifyRegisterOTP() {
       localStorage.setItem('user', JSON.stringify(data.user));
       localStorage.setItem('showWelcome', 'register');
       isRegistered = true;
-      window.location.reload();
+      const redirect = sessionStorage.getItem('redirectAfterLogin');
+      if (redirect) { sessionStorage.removeItem('redirectAfterLogin'); window.location.href = redirect; }
+      else window.location.reload();
     } else {
       showToast(data.message || 'Invalid OTP');
     }
@@ -950,6 +906,42 @@ async function resetPassword() {
 }
 
 } // end loginForm block
+
+async function verifyLoginOTP() {
+  const btn   = document.getElementById('loginOtpVerifyBtn');
+  const email = document.getElementById('loginOtpForm').dataset.email;
+  const otp   = document.getElementById('loginOtpInput').value.trim();
+  if (!otp || otp.length < 6) { showToast('Enter 6-digit OTP'); return; }
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
+  btn.disabled = true;
+  try {
+    const res  = await fetch(`${API}/auth/verify-login`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email, otp }) });
+    const data = await res.json();
+    if (data.success) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      const redirect = sessionStorage.getItem('redirectAfterLogin');
+      if (redirect) { sessionStorage.removeItem('redirectAfterLogin'); window.location.href = redirect; }
+      else window.location.reload();
+    } else {
+      showToast(data.message || 'Invalid OTP');
+    }
+  } catch {
+    showToast('Server error.');
+  }
+  btn.innerHTML = 'Verify & Login <i class="fa-solid fa-check"></i>';
+  btn.disabled = false;
+}
+
+async function resendLoginOTP() {
+  const email = document.getElementById('loginOtpForm').dataset.email;
+  if (!email) return;
+  try {
+    const res  = await fetch(`${API}/auth/resend-otp`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
+    const data = await res.json();
+    showToast(data.success ? 'OTP resent to ' + email : (data.message || 'Error'));
+  } catch { showToast('Server error.'); }
+}
 
 // ===== INQUIRY MODAL =====
 const inqOverlay = document.getElementById('inqOverlay');
@@ -1024,21 +1016,79 @@ if (liveChatBtn && liveChatWidget) {
   liveChatClose.addEventListener('click', () => liveChatWidget.classList.remove('open'));
 }
 
-// Q&A knowledge base
+// AI Q&A knowledge base — City Real Space
 const lcwQA = [
-  { q: ['buy', 'purchase', 'kharidna', 'kharidu'], a: 'Great! We have 12,500+ verified properties for sale across Ahmedabad, Gandhinagar & Surat. 🏠 What type of property are you looking for — Apartment, Villa, or Plot?' },
-  { q: ['sell', 'bechna', 'bechu', 'list'], a: 'We can help you sell your property at the best market price! 💰 Our team will do a free valuation and list it for you. Please share your property details.' },
-  { q: ['rent', 'lease', 'kiraya'], a: 'We have excellent rental properties starting from ₹15,000/month. 🏡 Which area and BHK are you looking for?' },
-  { q: ['price', 'cost', 'budget', 'kitna', 'rate'], a: 'Our properties range from ₹30 Lakh to ₹5 Crore+. 💎 What is your budget range? We will find the best options for you!' },
-  { q: ['location', 'area', 'where', 'kahan', 'bopal', 'satellite', 'prahlad', 'thaltej', 'giftcity'], a: 'We cover all prime areas — Bopal, Satellite, Prahlad Nagar, Thaltej, GIFT City, Memnagar & more! 📍 Which area interests you?' },
-  { q: ['loan', 'home loan', 'finance', 'emi'], a: 'We provide free Home Loan guidance! 🏦 We work with 15+ banks to get you the best interest rates. Want us to connect you with our loan expert?' },
-  { q: ['visit', 'site visit', 'dekhna', 'show'], a: 'We offer FREE site visits — no charges at all! 🚗 Just share your preferred date and time, and we will arrange everything.' },
-  { q: ['contact', 'call', 'phone', 'number', 'agent'], a: 'You can reach us at 📞 +91 98250 12824 or +91 84600 14000. Our team is available Mon–Sat 9AM–7PM.' },
-  { q: ['new launch', 'new project', 'upcoming'], a: 'We have exciting new launch projects in GIFT City, Bopal & Shela with pre-launch prices! 🚀 Interested in knowing more?' },
-  { q: ['commercial', 'office', 'shop', 'warehouse'], a: 'We have premium commercial spaces — offices, shops & warehouses across Ahmedabad. 🏢 What size and location are you looking for?' },
+  {
+    q: ['buy', 'purchase', 'kharidna', 'kharidu', 'kharidni', 'lena', 'leni', 'property chahiye', 'flat chahiye', 'ghar chahiye'],
+    a: '🏠 Bilkul! Hamare paas 12,500+ verified properties hain — Ahmedabad, Gandhinagar, Surat mein. Aap kaunsa property type dhundh rahe hain?\n\n• Apartment / Flat\n• Villa / Bungalow\n• Plot / Land\n• Commercial'
+  },
+  {
+    q: ['sell', 'bechna', 'bechu', 'list', 'bechni', 'property sell', 'meri property'],
+    a: '💰 Hum aapki property best market price pe sell karenge! Free valuation + zero brokerage on select projects.\n\nAbhi WhatsApp karein: +91 93775 31247'
+  },
+  {
+    q: ['rent', 'lease', 'kiraya', 'rental', 'kiraye pe', 'rent pe'],
+    a: '🏡 Hamare paas ₹15,000/month se shuru rental properties hain. Kaun sa area aur BHK chahiye aapko?'
+  },
+  {
+    q: ['2bhk', '2 bhk', 'two bhk', 'do bhk'],
+    a: '🛏️ 2 BHK flats available hain:\n• Bopal: ₹55L – ₹75L\n• Satellite: ₹70L – ₹95L\n• Memnagar: ₹60L – ₹80L\n\nKaunsa area prefer karenge?'
+  },
+  {
+    q: ['3bhk', '3 bhk', 'three bhk', 'teen bhk'],
+    a: '🛏️ 3 BHK options:\n• Prahlad Nagar: ₹90L – ₹1.5Cr\n• Thaltej: ₹85L – ₹1.2Cr\n• Bopal: ₹75L – ₹1Cr\n\nBudget kya hai aapka?'
+  },
+  {
+    q: ['4bhk', '4 bhk', 'four bhk', 'char bhk'],
+    a: '🏠 4 BHK premium properties:\n• Prahlad Nagar: ₹1.5Cr – ₹2.5Cr\n• Bodakdev: ₹1.8Cr – ₹3Cr\n• Vastrapur: ₹1.6Cr – ₹2.8Cr\n\nSite visit book karein — bilkul free!'
+  },
+  {
+    q: ['price', 'cost', 'budget', 'kitna', 'rate', 'kitne ka', 'daam', 'paisa'],
+    a: '💎 Hamare properties ka range:\n• Budget: ₹30L – ₹60L\n• Mid Range: ₹60L – ₹1.5Cr\n• Premium: ₹1.5Cr – ₹5Cr+\n\nAapka budget kya hai? Best options suggest karunga!'
+  },
+  {
+    q: ['bopal', 'satellite', 'prahlad nagar', 'thaltej', 'giftcity', 'gift city', 'memnagar', 'shela', 'vastrapur', 'bodakdev', 'navrangpura', 'chandkheda'],
+    a: '📍 Hum sab prime areas cover karte hain — Bopal, Satellite, Prahlad Nagar, Thaltej, GIFT City, Memnagar, Shela aur bahut zyada!\n\nKaunse area mein property chahiye?'
+  },
+  {
+    q: ['loan', 'home loan', 'finance', 'emi', 'bank', 'interest'],
+    a: '🏦 Free Home Loan guidance dete hain hum! 15+ banks ke saath kaam karte hain — SBI, HDFC, ICICI, Axis.\n\nBest interest rate ke liye abhi call karein: +91 98250 12824'
+  },
+  {
+    q: ['visit', 'site visit', 'dekhna', 'show', 'dikhao', 'visit book', 'free visit'],
+    a: '🚗 FREE Site Visit — koi charge nahi!\n\nBas apna preferred date & time share karein, hum sab arrange kar denge. WhatsApp karein: +91 93775 31247'
+  },
+  {
+    q: ['contact', 'call', 'phone', 'number', 'agent', 'baat', 'expert'],
+    a: '📞 Hamare experts se baat karein:\n• +91 98250 12824\n• +91 84600 14000\n• admin@cityestate.co.in\n\nMon–Sat: 9AM – 7PM | Sun: 10AM – 4PM'
+  },
+  {
+    q: ['new launch', 'new project', 'upcoming', 'naya', 'launch'],
+    a: '🚀 New Launch projects available hain:\n• GIFT City — pre-launch prices\n• Bopal — 2 & 3 BHK\n• Shela — premium villas\n\nEarly bird discount ke liye abhi contact karein!'
+  },
+  {
+    q: ['commercial', 'office', 'shop', 'warehouse', 'dukaan', 'godown'],
+    a: '🏢 Commercial properties:\n• Office spaces: 500 – 10,000 sqft\n• Shops / Showrooms: CG Road, SG Highway\n• Warehouses: Sanand, Changodar\n\nKya requirement hai aapki?'
+  },
+  {
+    q: ['brokerage', 'commission', 'charge', 'fees', 'zero brokerage'],
+    a: '✅ Select projects pe Zero Brokerage! Aur sab properties pe transparent pricing — koi hidden charges nahi.'
+  },
+  {
+    q: ['legal', 'document', 'registration', 'agreement', 'papers'],
+    a: '📄 Free Legal Documentation help dete hain hum — sale agreement, registration, title verification sab.\n\nHamara legal team aapki poori help karega!'
+  },
+  {
+    q: ['hello', 'hi', 'hey', 'helo', 'namaste', 'namaskar', 'kem cho', 'kaise ho'],
+    a: '👋 Hello! City Real Space mein aapka swagat hai!\n\nMain aapki property search mein help kar sakta hoon. Aap kya dhundh rahe hain?'
+  },
+  {
+    q: ['thanks', 'thank you', 'shukriya', 'dhanyawad', 'ok', 'okay', 'theek hai'],
+    a: '🙏 Aapka shukriya! Koi bhi sawaal ho toh zaroor poochein. Hamare experts 30 minutes mein aapse contact karenge!'
+  },
 ];
 
-const lcwFinalMsg = '🙏 Thank you for chatting with us! Our property expert will contact you shortly within 30 minutes. Have a great day! 😊';
+const lcwFinalMsg = '🙏 Thank you for chatting with us! Our property expert will contact you within 30 minutes. You can also call us directly at 📞 +91 98250 12824. Have a great day! 😊';
 
 let lcwMsgCount = 0;
 
@@ -1047,7 +1097,8 @@ function lcwGetReply(text) {
   for (const item of lcwQA) {
     if (item.q.some(k => lower.includes(k))) return item.a;
   }
-  return 'Thanks for your message! 😊 Our property consultant will get back to you shortly. You can also call us at +91 9377531247.';
+  // Default smart fallback
+  return '😊 Samajh gaya! Hamare property expert aapko 30 minutes mein call karenge.\n\nYa abhi call karein: 📞 +91 98250 12824';
 }
 
 function lcwAddMsg(text, type) {
@@ -1055,7 +1106,8 @@ function lcwAddMsg(text, type) {
   const body = liveChatWidget.querySelector('.lcw-body');
   const div = document.createElement('div');
   div.className = 'lcw-msg ' + type;
-  div.innerHTML = `<div class="lcw-bubble">${text}</div>`;
+  // Convert \n to <br> for formatting
+  div.innerHTML = `<div class="lcw-bubble">${text.replace(/\n/g, '<br>')}</div>`;
   body.appendChild(div);
   body.scrollTop = body.scrollHeight;
 }
@@ -1074,18 +1126,18 @@ function lcwShowTyping() {
 function lcwBotReply(userText) {
   const typingEl = lcwShowTyping();
   lcwMsgCount++;
-  const isLast = lcwMsgCount >= 3;
+  const isLast = lcwMsgCount >= 4;
   setTimeout(() => {
-    typingEl.remove();
+    if (typingEl) typingEl.remove();
     const reply = isLast ? lcwFinalMsg : lcwGetReply(userText);
     lcwAddMsg(reply, 'bot');
     if (isLast) {
-      // disable input after final message
-      document.getElementById('lcwInput').disabled = true;
-      document.getElementById('lcwInput').placeholder = 'Chat ended. Call us directly!';
-      document.getElementById('lcwSend').disabled = true;
+      const inp = document.getElementById('lcwInput');
+      const snd = document.getElementById('lcwSend');
+      if (inp) { inp.disabled = true; inp.placeholder = 'Call us: +91 98250 12824'; }
+      if (snd) snd.disabled = true;
     }
-  }, 5000);
+  }, 1200);
 }
 
 function lcwQuick(text) {
@@ -1104,9 +1156,16 @@ function lcwSendMsg() {
   const input = document.getElementById('lcwInput');
   const text = input.value.trim();
   if (!text || input.disabled) return;
-  const qb = liveChatWidget.querySelector('.lcw-quick-btns');
+  const qb = liveChatWidget && liveChatWidget.querySelector('.lcw-quick-btns');
   if (qb) qb.remove();
   lcwAddMsg(text, 'user');
   input.value = '';
   lcwBotReply(text);
 }
+
+// ===== COOKIE CONSENT =====
+(function loadCookieConsent() {
+  const s = document.createElement('script');
+  s.src = 'cookie-consent.js';
+  document.body.appendChild(s);
+})();

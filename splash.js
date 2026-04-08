@@ -12,6 +12,7 @@
         display: flex; align-items: center; justify-content: center;
         transition: opacity 0.5s ease;
         overflow: hidden;
+        cursor: pointer;
       }
       #splashBg {
         position: absolute; inset: 0;
@@ -37,8 +38,29 @@
   `;
   document.body.appendChild(splash);
 
-  setTimeout(() => {
-    splash.style.opacity = '0';
-    setTimeout(() => splash.remove(), 500);
-  }, 1300);
+  function dismissSplash() {
+    if (splash.parentNode) {
+      splash.style.opacity = '0';
+      setTimeout(() => { if (splash.parentNode) splash.remove(); }, 500);
+    }
+  }
+
+  // Auto dismiss after 2.2s
+  const autoTimer = setTimeout(dismissSplash, 2200);
+
+  // Click on splash to dismiss
+  splash.addEventListener('click', function () {
+    clearTimeout(autoTimer);
+    dismissSplash();
+  });
+
+  // Dismiss only when user interacts with actual form fields (not just any click)
+  document.addEventListener('focusin', function onFocus(e) {
+    const tag = e.target.tagName;
+    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') {
+      clearTimeout(autoTimer);
+      dismissSplash();
+      document.removeEventListener('focusin', onFocus);
+    }
+  });
 })();

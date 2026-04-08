@@ -12,7 +12,9 @@ const propertySchema = new mongoose.Schema({
     area:    { type: String, required: true },
     city:    { type: String, default: 'Ahmedabad' },
     state:   { type: String, default: 'Gujarat' },
-    pincode: { type: String, default: '' }
+    pincode: { type: String, default: '' },
+    lat:     { type: Number, default: null },
+    lng:     { type: Number, default: null }
   },
   specs: {
     beds:  { type: Number, default: 0 },
@@ -36,6 +38,8 @@ const propertySchema = new mongoose.Schema({
   reraNo:    { type: String, default: '' },
   isFeatured:{ type: Boolean, default: false },
   isApproved: { type: Boolean, default: false },
+  isRejected: { type: Boolean, default: false },
+  rejectedReason: { type: String, default: '' },
   views:     { type: Number, default: 0 },
   agent: {
     name:  { type: String, default: '' },

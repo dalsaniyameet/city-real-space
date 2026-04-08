@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>About Us – City Real Space</title>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="responsive.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    .page-hero { background: linear-gradient(135deg, #0D1B2A 0%, #1a3a5c 100%); padding: 120px 24px 60px; text-align: center; position: relative; overflow: hidden; }
+    .page-hero { background: linear-gradient(135deg, #0D1B2A 0%, #1a3a5c 100%); padding: 60px 24px 60px; text-align: center; position: relative; overflow: hidden; }
     .page-hero::before { content: ''; position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80') center/cover; opacity: 0.08; }
     .page-hero-overlay { position: absolute; inset: 0; background: rgba(13,27,42,0.7); }
     .page-hero-content { position: relative; z-index: 2; }
@@ -58,6 +59,14 @@
 </head>
 <body>
 <script src="splash.js"></script>
+
+<!-- NTC REG BAR -->
+<div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;">
+  <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
+  &nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;
+  <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
+</div>
+<div style="height:33px;"></div>
 
 <!-- HEADER -->
 <header class="header" id="header">
@@ -165,40 +174,99 @@
 </section>
 
 <!-- TEAM -->
-<section class="section">
+<section style="background:linear-gradient(135deg,#0D1B2A 0%,#1a3a5c 60%,#0D1B2A 100%);padding:80px 0;position:relative;overflow:hidden;">
+  <div style="position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(229,57,53,0.06);pointer-events:none;"></div>
+  <div style="position:absolute;bottom:-60px;left:-60px;width:240px;height:240px;border-radius:50%;background:rgba(255,193,7,0.05);pointer-events:none;"></div>
+  <style>
+    @keyframes avatarPulse{0%,100%{box-shadow:0 8px 24px var(--ac,rgba(229,57,53,0.4))}50%{box-shadow:0 8px 36px var(--ac,rgba(229,57,53,0.7)),0 0 0 8px rgba(255,255,255,0.04)}}
+    @keyframes rotateRing{to{transform:rotate(360deg)}}
+    @keyframes shimmerBar{0%{background-position:0%}100%{background-position:200%}}
+    .tm-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px 20px 24px;text-align:center;transition:all 0.3s;position:relative;overflow:hidden;}
+    .tm-card:hover{transform:translateY(-8px);}
+    .tm-avatar{width:88px;height:88px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:2.2rem;font-weight:900;color:#fff;position:relative;animation:avatarPulse 3s ease-in-out infinite;}
+    .tm-ring{position:absolute;inset:-5px;border-radius:50%;border:2px dashed rgba(255,255,255,0.2);animation:rotateRing 6s linear infinite;}
+    .tm-name{font-size:1rem;font-weight:800;color:#fff;margin-bottom:5px;}
+    .tm-role{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
+    .tm-desc{color:rgba(255,255,255,0.5);font-size:0.78rem;line-height:1.6;margin-bottom:14px;}
+    .tm-tag{font-size:0.62rem;font-weight:700;padding:3px 9px;border-radius:20px;display:inline-block;margin:2px;}
+  </style>
   <div class="container">
-    <div class="section-head center">
+    <div class="section-head center" style="margin-bottom:48px;">
       <div>
-        <p class="sec-tag">Our Team</p>
-        <h2>Meet Our <span class="yellow">Expert Agents</span></h2>
-        <p class="sec-sub">350+ certified agents with deep local knowledge across Gujarat.</p>
+        <p class="sec-tag" style="color:#FFC107;">Our Team</p>
+        <h2 style="color:#fff;">Meet Our <span style="color:#FFC107;">Expert Team</span></h2>
+        <p class="sec-sub" style="color:rgba(255,255,255,0.55);">The dedicated professionals powering City Real Space.</p>
       </div>
     </div>
-    <div class="team-grid">
-      <div class="team-card">
-        <div class="team-img"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Agent"/></div>
-        <div class="team-body"><h4>Rahul Kapoor</h4><span>Senior Property Advisor</span>
-          <div class="team-social"><a href="#"><i class="fa-brands fa-linkedin-in"></i></a><a href="#"><i class="fa-brands fa-instagram"></i></a><a href="#"><i class="fa-solid fa-phone"></i></a></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:24px;">
+
+      <!-- Amit Parmani - FOUNDER -->
+      <div class="tm-card" style="background:linear-gradient(135deg,#1a0a00,#2d1200,#1a0800);border-color:rgba(255,193,7,0.4);" onmouseover="this.style.boxShadow='0 24px 60px rgba(255,193,7,0.3)';this.style.borderColor='rgba(255,193,7,0.7)'" onmouseout="this.style.boxShadow='';this.style.borderColor='rgba(255,193,7,0.4)'">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FFC107,#ff8f00,#FFC107);background-size:200%;animation:shimmerBar 2s linear infinite;"></div>
+        <div style="position:absolute;top:12px;right:12px;font-size:1rem;">👑</div>
+        <div style="display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#FFC107,#ff8f00);color:#1a0a00;font-size:0.6rem;font-weight:800;padding:3px 9px;border-radius:20px;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;">⭐ Founder &amp; Owner</div>
+        <div class="tm-avatar" style="background:linear-gradient(135deg,#FFC107,#ff8f00);--ac:rgba(255,193,7,0.5);width:96px;height:96px;font-size:2.4rem;">A<div class="tm-ring" style="border-color:rgba(255,193,7,0.4);"></div></div>
+        <div class="tm-name" style="color:#FFC107;font-size:1.1rem;">Amit Parmani</div>
+        <div class="tm-role" style="color:rgba(255,193,7,0.7);">Founder &amp; Managing Director</div>
+        <div class="tm-desc">Visionary leader &amp; founder of City Real Space. Expert in residential &amp; commercial property deals across Gujarat.</div>
+        <div style="background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.3);border-radius:10px;padding:8px;margin-bottom:12px;"><div style="font-size:1.5rem;font-weight:900;color:#FFC107;line-height:1;">25+</div><div style="font-size:0.6rem;color:rgba(255,193,7,0.7);font-weight:700;text-transform:uppercase;letter-spacing:1px;">Years of Trust</div></div>
+        <a href="tel:+919825012824" style="display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(255,193,7,0.15);border:1px solid rgba(255,193,7,0.4);color:#FFC107;padding:8px 14px;border-radius:10px;font-size:0.78rem;font-weight:700;text-decoration:none;margin-bottom:8px;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,193,7,0.3)'" onmouseout="this.style.background='rgba(255,193,7,0.15)'"><i class="fa-solid fa-phone"></i> +91 98250 12824</a>
+        <a href="https://wa.me/919825012824" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.3);color:#25D366;padding:8px 14px;border-radius:10px;font-size:0.78rem;font-weight:700;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='rgba(37,211,102,0.25)'" onmouseout="this.style.background='rgba(37,211,102,0.15)'"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+      </div>
+
+      <!-- Nikhil Bhai -->
+      <div class="tm-card" onmouseover="this.style.background='rgba(229,57,53,0.1)';this.style.borderColor='rgba(229,57,53,0.4)';this.style.boxShadow='0 20px 50px rgba(229,57,53,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#E53935,#FFC107);"></div>
+        <div class="tm-avatar" style="background:linear-gradient(135deg,#E53935,#c62828);--ac:rgba(229,57,53,0.5);">N<div class="tm-ring"></div></div>
+        <div class="tm-name">Nikhil Bhai</div>
+        <div class="tm-role" style="color:#f87171;">Residential &amp; Commercial Manager</div>
+        <div class="tm-desc">Expert in both residential &amp; commercial property deals across Ahmedabad.</div>
+        <span class="tm-tag" style="background:rgba(229,57,53,0.15);color:#f87171;border:1px solid rgba(229,57,53,0.3);">Residential</span>
+        <span class="tm-tag" style="background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.3);">Commercial</span>
+        <div style="margin-top:12px;">
+          <a href="tel:+919825012824" style="display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(229,57,53,0.12);border:1px solid rgba(229,57,53,0.3);color:#f87171;padding:7px 12px;border-radius:10px;font-size:0.75rem;font-weight:700;text-decoration:none;"><i class="fa-solid fa-phone"></i> Call Now</a>
         </div>
       </div>
-      <div class="team-card">
-        <div class="team-img"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" alt="Agent"/></div>
-        <div class="team-body"><h4>Priya Shah</h4><span>Commercial Property Expert</span>
-          <div class="team-social"><a href="#"><i class="fa-brands fa-linkedin-in"></i></a><a href="#"><i class="fa-brands fa-instagram"></i></a><a href="#"><i class="fa-solid fa-phone"></i></a></div>
+
+      <!-- Aarti Patel -->
+      <div class="tm-card" onmouseover="this.style.background='rgba(255,193,7,0.08)';this.style.borderColor='rgba(255,193,7,0.4)';this.style.boxShadow='0 20px 50px rgba(255,193,7,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FFC107,#ff8f00);"></div>
+        <div class="tm-avatar" style="background:linear-gradient(135deg,#FFC107,#ff8f00);--ac:rgba(255,193,7,0.5);">A<div class="tm-ring" style="border-color:rgba(255,193,7,0.3);"></div></div>
+        <div class="tm-name">Aarti Patel</div>
+        <div class="tm-role" style="color:#fbbf24;">Tele Caller</div>
+        <div class="tm-desc">First point of contact for all client inquiries. Ensures every client gets prompt assistance.</div>
+        <span class="tm-tag" style="background:rgba(255,193,7,0.15);color:#fbbf24;border:1px solid rgba(255,193,7,0.3);">Client Relations</span>
+        <div style="margin-top:12px;">
+          <a href="tel:+918460014000" style="display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(255,193,7,0.12);border:1px solid rgba(255,193,7,0.3);color:#fbbf24;padding:7px 12px;border-radius:10px;font-size:0.75rem;font-weight:700;text-decoration:none;"><i class="fa-solid fa-phone"></i> +91 84600 14000</a>
         </div>
       </div>
-      <div class="team-card">
-        <div class="team-img"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80" alt="Agent"/></div>
-        <div class="team-body"><h4>Amit Mehta</h4><span>Residential Sales Head</span>
-          <div class="team-social"><a href="#"><i class="fa-brands fa-linkedin-in"></i></a><a href="#"><i class="fa-brands fa-instagram"></i></a><a href="#"><i class="fa-solid fa-phone"></i></a></div>
+
+      <!-- Deep Bhai -->
+      <div class="tm-card" onmouseover="this.style.background='rgba(16,185,129,0.08)';this.style.borderColor='rgba(16,185,129,0.4)';this.style.boxShadow='0 20px 50px rgba(16,185,129,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#059669);"></div>
+        <div class="tm-avatar" style="background:linear-gradient(135deg,#10b981,#059669);--ac:rgba(16,185,129,0.5);">D<div class="tm-ring" style="border-color:rgba(16,185,129,0.3);"></div></div>
+        <div class="tm-name">Deep Bhai</div>
+        <div class="tm-role" style="color:#34d399;">Residential Manager</div>
+        <div class="tm-desc">Helping families find their perfect dream home with personalized guidance.</div>
+        <span class="tm-tag" style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);">Residential</span>
+        <div style="margin-top:12px;">
+          <a href="tel:+919825012824" style="display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);color:#34d399;padding:7px 12px;border-radius:10px;font-size:0.75rem;font-weight:700;text-decoration:none;"><i class="fa-solid fa-phone"></i> Call Now</a>
         </div>
       </div>
-      <div class="team-card">
-        <div class="team-img"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80" alt="Agent"/></div>
-        <div class="team-body"><h4>Neha Patel</h4><span>New Launch Specialist</span>
-          <div class="team-social"><a href="#"><i class="fa-brands fa-linkedin-in"></i></a><a href="#"><i class="fa-brands fa-instagram"></i></a><a href="#"><i class="fa-solid fa-phone"></i></a></div>
+
+      <!-- Yogesh -->
+      <div class="tm-card" onmouseover="this.style.background='rgba(99,102,241,0.1)';this.style.borderColor='rgba(99,102,241,0.4)';this.style.boxShadow='0 20px 50px rgba(99,102,241,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#6366f1,#8b5cf6);"></div>
+        <div class="tm-avatar" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);--ac:rgba(99,102,241,0.5);">Y<div class="tm-ring" style="border-color:rgba(99,102,241,0.3);"></div></div>
+        <div class="tm-name">Yogesh</div>
+        <div class="tm-role" style="color:#a5b4fc;">Commercial Manager</div>
+        <div class="tm-desc">Expert in offices, shops &amp; warehouses across Gujarat.</div>
+        <span class="tm-tag" style="background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.3);">Commercial</span>
+        <div style="margin-top:12px;">
+          <a href="tel:+919825012824" style="display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);color:#a5b4fc;padding:7px 12px;border-radius:10px;font-size:0.75rem;font-weight:700;text-decoration:none;"><i class="fa-solid fa-phone"></i> Call Now</a>
         </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -208,8 +276,9 @@
   <div class="footer-top">
     <div class="container footer-grid">
       <div class="footer-col">
-        <a href="index.html" class="logo footer-logo">
-          <img src="images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;filter:brightness(0) invert(1);"/>
+        <a href="index.html" class="footer-logo" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
+          <img src="images/logo.jpeg" alt="City Real Space" style="height:52px;width:52px;object-fit:contain;border-radius:10px;background:#fff;padding:4px;"/>
+          <span style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1.2;">City <span style="color:#FFC107;">Real</span> Space</span>
         </a>
         <p class="footer-about">Ahmedabad's most trusted real estate platform. We connect buyers, sellers and investors with verified properties across Gujarat.</p>
         <div class="social-links">

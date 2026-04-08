@@ -51,7 +51,7 @@
   <form id="loginForm">
     <div class="grp">
       <label>Email Address</label>
-      <div class="inp"><i class="fa-solid fa-envelope"></i><input type="email" id="adminEmail" placeholder="patelshriji72@gmail.com" required/></div>
+      <div class="inp"><i class="fa-solid fa-envelope"></i><input type="email" id="adminEmail" placeholder="Enter your email" required/></div>
     </div>
     <div class="grp">
       <label>Password</label>
@@ -128,14 +128,19 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     console.log('📨 Backend response:', data);
     
     if (data.success && data.needsOTP) {
-      console.log('✅ Admin OTP needed - showing OTP screen');
+      // Check admin role via isAdmin flag
+      if (!data.isAdmin) {
+        showErr('Access denied. Admin only.');
+        btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login to Admin Panel';
+        btn.disabled = false;
+        return;
+      }
       _adminEmail = data.email;
       document.getElementById('otpEmailShow').textContent = _adminEmail;
       document.getElementById('loginForm').classList.add('hidden');
       document.getElementById('otpStep').classList.remove('hidden');
       document.getElementById('o1').focus();
     } else if (data.success && !data.needsOTP) {
-      console.error('❌ Non-admin user tried to access admin panel');
       showErr('Access denied. Admin only.');
       btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login to Admin Panel';
       btn.disabled = false;

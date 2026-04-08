@@ -2,5 +2,6 @@ node_modules/
 backend/node_modules/
 backend/.env
 backend/server.log
+backend/server_output.txt
 .env
 *.log

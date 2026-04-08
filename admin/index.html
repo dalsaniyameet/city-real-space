@@ -85,6 +85,21 @@
         <h2>Dashboard Overview</h2>
         <p>Welcome back! Here's what's happening today.</p>
       </div>
+
+      <!-- API STATUS BAR -->
+      <div id="apiStatusBar" style="background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid rgba(99,102,241,0.2);border-radius:14px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div id="apiStatusDot" style="width:10px;height:10px;border-radius:50%;background:#64748b;box-shadow:0 0 0 3px rgba(100,116,139,0.2);flex-shrink:0;"></div>
+          <div>
+            <span id="apiStatusText" style="font-size:0.85rem;font-weight:700;color:#94a3b8;">Checking API...</span>
+            <span id="apiStatusDetail" style="font-size:0.75rem;color:#475569;margin-left:10px;"></span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span id="apiStatusPing" style="font-size:0.72rem;color:#475569;"></span>
+          <button onclick="checkApiStatus()" id="apiRefreshBtn" style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.25);color:#a5b4fc;padding:6px 14px;border-radius:8px;font-size:0.75rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:6px;transition:all 0.2s;"><i class="fa-solid fa-rotate-right"></i> Test API</button>
+        </div>
+      </div>
       <div class="stats-grid" id="statsGrid">
         <div class="stat-card"><div class="sc-icon blue"><i class="fa-solid fa-building"></i></div><div class="sc-info"><span id="st-total">0</span><p>Total Properties</p></div></div>
         <div class="stat-card"><div class="sc-icon orange"><i class="fa-solid fa-clock"></i></div><div class="sc-info"><span id="st-pending">0</span><p>Pending Approval</p></div></div>
@@ -94,6 +109,80 @@
         <div class="stat-card"><div class="sc-icon yellow"><i class="fa-solid fa-newspaper"></i></div><div class="sc-info"><span id="st-blogs">0</span><p>Blog Posts</p></div></div>
         <div class="stat-card"><div class="sc-icon orange"><i class="fa-solid fa-bell"></i></div><div class="sc-info"><span id="st-reqs">0</span><p>User Requirements</p></div></div>
       </div>
+
+      <!-- ===== PROPERTY CATEGORY CARDS ===== -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;">
+
+        <!-- Trending -->
+        <div onclick="goPage('properties');setTimeout(function(){document.getElementById('btnTrending').click();},100)" style="cursor:pointer;background:#fff;border-radius:18px;padding:22px 20px;border:1.5px solid #ffe082;box-shadow:0 4px 24px rgba(245,158,11,0.12);position:relative;overflow:hidden;transition:all 0.25s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 36px rgba(245,158,11,0.22)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(245,158,11,0.12)'">
+          <div style="position:absolute;top:0;right:0;width:80px;height:80px;background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(251,191,36,0.06));border-radius:0 18px 0 80px;"></div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <div style="width:46px;height:46px;background:linear-gradient(135deg,#f59e0b,#d97706);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(245,158,11,0.4);">
+              <i class="fa-solid fa-fire" style="color:#fff;font-size:1.2rem;"></i>
+            </div>
+            <div>
+              <p style="font-size:0.72rem;font-weight:600;color:#92400e;text-transform:uppercase;letter-spacing:0.8px;margin:0;">Trending</p>
+              <span id="st-trending" style="font-size:2rem;font-weight:900;color:#d97706;line-height:1.1;display:block;">0</span>
+            </div>
+          </div>
+          <p style="font-size:0.78rem;color:#78350f;font-weight:600;margin:0 0 12px;">Featured Properties</p>
+          <div style="display:flex;gap:6px;">
+            <span style="background:#fef3c7;color:#92400e;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #fde68a;">🔥 Hot Picks</span>
+            <span style="background:#fff7ed;color:#c2410c;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #fed7aa;">Shown on Home</span>
+          </div>
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid #fde68a;display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:0.75rem;color:#92400e;font-weight:600;">Click to manage</span>
+            <i class="fa-solid fa-arrow-right" style="color:#f59e0b;font-size:0.8rem;"></i>
+          </div>
+        </div>
+
+        <!-- Residential -->
+        <div onclick="goPage('properties');setTimeout(function(){document.getElementById('btnResidential').click();},100)" style="cursor:pointer;background:#fff;border-radius:18px;padding:22px 20px;border:1.5px solid #6ee7b7;box-shadow:0 4px 24px rgba(16,185,129,0.1);position:relative;overflow:hidden;transition:all 0.25s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 36px rgba(16,185,129,0.2)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(16,185,129,0.1)'">
+          <div style="position:absolute;top:0;right:0;width:80px;height:80px;background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(52,211,153,0.05));border-radius:0 18px 0 80px;"></div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <div style="width:46px;height:46px;background:linear-gradient(135deg,#10b981,#059669);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(16,185,129,0.4);">
+              <i class="fa-solid fa-house" style="color:#fff;font-size:1.2rem;"></i>
+            </div>
+            <div>
+              <p style="font-size:0.72rem;font-weight:600;color:#065f46;text-transform:uppercase;letter-spacing:0.8px;margin:0;">Residential</p>
+              <span id="st-residential" style="font-size:2rem;font-weight:900;color:#059669;line-height:1.1;display:block;">0</span>
+            </div>
+          </div>
+          <p style="font-size:0.78rem;color:#064e3b;font-weight:600;margin:0 0 12px;">Flats, Villas, Bungalows</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span style="background:#d1fae5;color:#065f46;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #6ee7b7;">🏠 Apartments</span>
+            <span style="background:#ecfdf5;color:#047857;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #a7f3d0;">Villas</span>
+          </div>
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid #6ee7b7;display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:0.75rem;color:#065f46;font-weight:600;">Click to filter</span>
+            <i class="fa-solid fa-arrow-right" style="color:#10b981;font-size:0.8rem;"></i>
+          </div>
+        </div>
+
+        <!-- Commercial -->
+        <div onclick="goPage('properties');setTimeout(function(){document.getElementById('btnCommercial').click();},100)" style="cursor:pointer;background:#fff;border-radius:18px;padding:22px 20px;border:1.5px solid #93c5fd;box-shadow:0 4px 24px rgba(59,130,246,0.1);position:relative;overflow:hidden;transition:all 0.25s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 36px rgba(59,130,246,0.2)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(59,130,246,0.1)'">
+          <div style="position:absolute;top:0;right:0;width:80px;height:80px;background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(96,165,250,0.05));border-radius:0 18px 0 80px;"></div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <div style="width:46px;height:46px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(59,130,246,0.4);">
+              <i class="fa-solid fa-city" style="color:#fff;font-size:1.2rem;"></i>
+            </div>
+            <div>
+              <p style="font-size:0.72rem;font-weight:600;color:#1e3a8a;text-transform:uppercase;letter-spacing:0.8px;margin:0;">Commercial</p>
+              <span id="st-commercial" style="font-size:2rem;font-weight:900;color:#1d4ed8;line-height:1.1;display:block;">0</span>
+            </div>
+          </div>
+          <p style="font-size:0.78rem;color:#1e3a8a;font-weight:600;margin:0 0 12px;">Offices, Shops, Warehouses</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span style="background:#dbeafe;color:#1e40af;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #93c5fd;">🏢 Offices</span>
+            <span style="background:#eff6ff;color:#1d4ed8;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #bfdbfe;">Shops</span>
+          </div>
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid #93c5fd;display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:0.75rem;color:#1e3a8a;font-weight:600;">Click to filter</span>
+            <i class="fa-solid fa-arrow-right" style="color:#3b82f6;font-size:0.8rem;"></i>
+          </div>
+        </div>
+
+      </div>
       <div class="dash-quick">
         <h3>Quick Actions</h3>
         <div class="quick-btns">
@@ -101,7 +190,9 @@
           <button class="qbtn" onclick="goPage('blogs'); setTimeout(()=>document.getElementById('addBlogBtn').click(),200)"><i class="fa-solid fa-pen"></i> Write Blog</button>
           <button class="qbtn" onclick="goPage('inquiries')"><i class="fa-solid fa-message"></i> View Inquiries</button>
           <button class="qbtn" onclick="goPage('properties')"><i class="fa-solid fa-clock"></i> Pending Approvals</button>
+          <button class="qbtn" id="testApiBtn" onclick="testApiConnection()" style="border-color:rgba(99,102,241,0.4);color:#a5b4fc;"><i class="fa-solid fa-plug"></i> Test API</button>
         </div>
+        <div id="apiTestResult" style="display:none;margin-top:14px;padding:12px 16px;border-radius:10px;font-size:0.82rem;font-weight:600;"></div>
       </div>
     </div>
 
@@ -118,11 +209,14 @@
         <button class="fbtn active" data-filter="all">All</button>
         <button class="fbtn" data-filter="pending">Pending</button>
         <button class="fbtn" data-filter="approved">Approved</button>
+        <button class="fbtn" id="btnResidential" style="background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.3);color:#34d399;"><span style="width:7px;height:7px;border-radius:50%;background:#34d399;display:inline-block;margin-right:4px;"></span>Residential</button>
+        <button class="fbtn" id="btnCommercial" style="background:rgba(59,130,246,0.12);border-color:rgba(59,130,246,0.3);color:#60a5fa;"><span style="width:7px;height:7px;border-radius:50%;background:#60a5fa;display:inline-block;margin-right:4px;"></span>Commercial</button>
+        <button class="fbtn" id="btnTrending" style="background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.3);color:#fbbf24;"><i class="fa-solid fa-fire" style="margin-right:4px;font-size:0.75rem;"></i>Trending</button>
       </div>
       <div class="table-wrap">
         <div class="table-scroll">
         <table class="admin-table" id="propTable">
-          <thead><tr><th>Property</th><th>Type</th><th>Location</th><th>Price</th><th>Listing</th><th>Status</th><th>Approval</th><th>Actions</th></tr></thead>
+          <thead><tr><th>Property</th><th>Category</th><th>Location</th><th>Price</th><th>Status</th><th>Approval</th><th>Actions</th></tr></thead>
           <tbody id="propTbody"></tbody>
         </table>
         </div>

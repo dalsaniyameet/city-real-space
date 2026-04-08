@@ -72,14 +72,11 @@ router.get('/commercial', async (req, res) => {
   }
 });
 
-// GET /api/properties/:id
-router.get('/:id', async (req, res) => {
+// GET /api/properties/user-post — logged in user ki apni listings
+router.get('/user-post', protect, async (req, res) => {
   try {
-    const property = await Property.findById(req.params.id);
-    if (!property) return res.status(404).json({ success: false, message: 'Property not found' });
-    property.views += 1;
-    await property.save();
-    res.json({ success: true, property });
+    const properties = await Property.find({ postedBy: req.user._id }).sort({ createdAt: -1 });
+    res.json({ success: true, properties });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -94,6 +91,22 @@ router.post('/user-post', protect, async (req, res) => {
       postedBy: req.user._id
     });
     res.status(201).json({ success: true, property });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET /api/properties/:id
+router.get('/:id', async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id);
+    if (!property) return res.status(404).json({ success: false, message: 'Property not found' });
+    // Count view only if requested (frontend sends ?countView=1)
+    if (req.query.countView === '1') {
+      await Property.findByIdAndUpdate(req.params.id, { $inc: { views: 1 } });
+      property.views += 1;
+    }
+    res.json({ success: true, property });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -120,12 +133,35 @@ router.put('/:id', protect, adminOnly, async (req, res) => {
   }
 });
 
-// DELETE /api/properties/:id — admin only
-router.delete('/:id', protect, adminOnly, async (req, res) => {
+// DELETE /api/properties/:id — admin ya property owner
+router.delete('/:id', protect, async (req, res) => {
   try {
-    const property = await Property.findByIdAndDelete(req.params.id);
+    const property = await Property.findById(req.params.id);
     if (!property) return res.status(404).json({ success: false, message: 'Property not found' });
+    // Admin ya khud ka property
+    if (req.user.role !== 'admin' && String(property.postedBy) !== String(req.user._id))
+      return res.status(403).json({ success: false, message: 'Not authorized' });
+    await property.deleteOne();
     res.json({ success: true, message: 'Property deleted' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PUT /api/properties/:id/owner — owner apni property edit kar sakta hai
+router.put('/:id/owner', protect, async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id);
+    if (!property) return res.status(404).json({ success: false, message: 'Property not found' });
+    if (String(property.postedBy) !== String(req.user._id))
+      return res.status(403).json({ success: false, message: 'Not authorized' });
+    // Edit ke baad re-approval
+    const updated = await Property.findByIdAndUpdate(
+      req.params.id,
+      { ...req.body, isApproved: false },
+      { new: true }
+    );
+    res.json({ success: true, property: updated });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>City Real Space – Premium Properties in Ahmedabad</title>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="responsive.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 </head>
@@ -89,6 +90,15 @@
 }
 </style>
 <script src="splash.js"></script>
+
+<!-- NTC REG BAR -->
+<div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;">
+  <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
+  &nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;
+  <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
+</div>
+<div style="height:33px;"></div>
+
 <header class="header" id="header">
   <div class="container header-inner">
     <a href="index.html" class="logo">
@@ -120,6 +130,8 @@
     </nav>
     <div class="header-actions">
       <button class="fav-btn" title="Favorites"><i class="fa-regular fa-heart"></i><span class="fav-count">0</span></button>
+      <button id="postReqBtn" onclick="window.openReqModal && window.openReqModal()" style="background:#E53935;color:#fff;border:none;padding:9px 16px;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:6px;white-space:nowrap;animation:reqPulse 2s ease-in-out infinite;"><i class="fa-solid fa-bell"></i> Post Requirement</button>
+      <style>@keyframes reqPulse{0%,100%{box-shadow:0 0 0 0 rgba(229,57,53,0.5)}50%{box-shadow:0 0 0 8px rgba(229,57,53,0)}}</style>
       <a href="post-property.html" class="btn-post-prop" id="postPropBtn" style="display:none"><i class="fa-solid fa-plus"></i> Post Property</a>
       <div id="userMenu" style="display:none;position:relative">
         <button class="btn-login" id="userMenuBtn"><i class="fa-solid fa-user"></i> <span id="userNameDisplay"></span> <i class="fa-solid fa-chevron-down" style="font-size:0.7rem"></i></button>
@@ -391,60 +403,99 @@
 </section>
 
 <!-- ===== TEAM ===== -->
-<section class="section bg-light">
+<section style="background:linear-gradient(135deg,#0D1B2A 0%,#1a3a5c 60%,#0D1B2A 100%);padding:80px 0;position:relative;overflow:hidden;">
+  <!-- BG decoration -->
+  <div style="position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(229,57,53,0.06);pointer-events:none;"></div>
+  <div style="position:absolute;bottom:-60px;left:-60px;width:240px;height:240px;border-radius:50%;background:rgba(255,193,7,0.05);pointer-events:none;"></div>
+
   <div class="container">
-    <div class="section-head center">
+    <div class="section-head center" style="margin-bottom:48px;">
       <div>
-        <p class="sec-tag">Our Team</p>
-        <h2>Meet Our <span class="yellow">Experts</span></h2>
-        <p class="sec-sub">The dedicated professionals powering City Real Space.</p>
+        <p class="sec-tag" style="color:#FFC107;">Our Team</p>
+        <h2 style="color:#fff;">Meet Our <span style="color:#FFC107;">Experts</span></h2>
+        <p class="sec-sub" style="color:rgba(255,255,255,0.55);">The dedicated professionals powering City Real Space.</p>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:24px;">
 
-      <div style="background:#fff;border-radius:18px;padding:28px 16px 22px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e8e8e8;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 40px rgba(229,57,53,0.15)';this.style.borderColor='rgba(229,57,53,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(0,0,0,0.08)';this.style.borderColor='#e8e8e8'">
-        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#f5f5f5,#e8e8e8);border:3px solid #E53935;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;overflow:hidden;">
-          <i class="fa-solid fa-user" style="font-size:2rem;color:#ccc;"></i>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:24px;">
+
+      <!-- Nikhil Bhai -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px 20px 24px;text-align:center;transition:all 0.3s;position:relative;overflow:hidden;" onmouseover="this.style.background='rgba(229,57,53,0.1)';this.style.borderColor='rgba(229,57,53,0.4)';this.style.transform='translateY(-8px)';this.style.boxShadow='0 20px 50px rgba(229,57,53,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.transform='';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#E53935,#FFC107);"></div>
+        <div style="width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#E53935,#c62828);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 8px 24px rgba(229,57,53,0.4);position:relative;"><span style="font-size:2rem;font-weight:800;color:#fff;animation:letterPulse 2s ease-in-out infinite;">N</span><div style="position:absolute;inset:-4px;border-radius:50%;border:2px dashed rgba(229,57,53,0.5);animation:rotateRing 6s linear infinite;"></div></div>
+        <h4 style="font-size:1rem;font-weight:800;color:#fff;margin-bottom:6px;">Nikhil Bhai</h4>
+        <p style="color:#FFC107;font-size:0.72rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Residential &amp; Commercial Manager</p>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.78rem;line-height:1.6;">Expert in both residential &amp; commercial property deals.</p>
+        <div style="margin-top:16px;display:flex;justify-content:center;gap:8px;">
+          <span style="background:rgba(229,57,53,0.15);color:#f87171;font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid rgba(229,57,53,0.3);">Residential</span>
+          <span style="background:rgba(59,130,246,0.15);color:#60a5fa;font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid rgba(59,130,246,0.3);">Commercial</span>
         </div>
-        <h4 style="font-size:0.95rem;font-weight:700;color:#0D1B2A;margin-bottom:4px;">Nikhil Bhai</h4>
-        <p style="color:#E53935;font-size:0.72rem;font-weight:700;margin-bottom:6px;">Residential &amp; Commercial Manager</p>
-        <p style="color:#888;font-size:0.78rem;line-height:1.5;">Expert in both residential &amp; commercial property deals.</p>
       </div>
 
-      <div style="background:#fff;border-radius:18px;padding:28px 16px 22px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e8e8e8;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 40px rgba(229,57,53,0.15)';this.style.borderColor='rgba(229,57,53,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(0,0,0,0.08)';this.style.borderColor='#e8e8e8'">
-        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#f5f5f5,#e8e8e8);border:3px solid #E53935;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;overflow:hidden;">
-          <i class="fa-solid fa-user" style="font-size:2rem;color:#ccc;"></i>
+      <!-- Amit Parmani - FOUNDER/OWNER - Special Card -->
+      <div style="background:linear-gradient(135deg,#1a0a00 0%,#2d1200 50%,#1a0800 100%);border:1.5px solid rgba(255,193,7,0.4);border-radius:20px;padding:32px 20px 24px;text-align:center;transition:all 0.3s;position:relative;overflow:hidden;grid-column:span 1;" onmouseover="this.style.transform='translateY(-10px)';this.style.boxShadow='0 24px 60px rgba(255,193,7,0.3)';this.style.borderColor='rgba(255,193,7,0.7)'" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.borderColor='rgba(255,193,7,0.4)'">
+        <!-- Gold shimmer top bar -->
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FFC107,#ff8f00,#FFC107);background-size:200%;animation:shimmerBar 2s linear infinite;"></div>
+        <style>@keyframes shimmerBar{0%{background-position:0%}100%{background-position:200%}}</style>
+        <!-- Crown icon -->
+        <div style="position:absolute;top:12px;right:12px;width:26px;height:26px;background:linear-gradient(135deg,#FFC107,#ff8f00);border-radius:7px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,193,7,0.5);"><i class="fa-solid fa-crown" style="color:#1a0a00;font-size:0.72rem;"></i></div>
+        <!-- Founder badge -->
+        <div style="display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#FFC107,#ff8f00);color:#1a0a00;font-size:0.62rem;font-weight:800;padding:3px 10px;border-radius:20px;margin-bottom:14px;letter-spacing:0.5px;text-transform:uppercase;">⭐ Founder &amp; Owner</div>
+        <!-- Avatar -->
+        <div style="width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,#FFC107,#ff8f00);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 0 0 4px rgba(255,193,7,0.2),0 8px 28px rgba(255,193,7,0.5);position:relative;">
+          <span style="font-size:2.2rem;font-weight:900;color:#1a0a00;animation:letterPulse 2s ease-in-out infinite;">A</span>
+          <div style="position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(255,193,7,0.6);animation:rotateRing 4s linear infinite;"></div>
+          <div style="position:absolute;inset:-10px;border-radius:50%;border:1.5px dashed rgba(255,193,7,0.3);animation:rotateRing 8s linear infinite reverse;"></div>
+          <style>@keyframes rotateRing{to{transform:rotate(360deg)}}@keyframes letterPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}</style>
         </div>
-        <h4 style="font-size:0.95rem;font-weight:700;color:#0D1B2A;margin-bottom:4px;">Amit Parmani</h4>
-        <p style="color:#E53935;font-size:0.72rem;font-weight:700;margin-bottom:6px;">Residential &amp; Commercial Sales</p>
-        <p style="color:#888;font-size:0.78rem;line-height:1.5;">Specializes in property sales at the best market prices.</p>
+        <h4 style="font-size:1.1rem;font-weight:900;color:#FFC107;margin-bottom:4px;">Amit Parmani</h4>
+        <p style="color:rgba(255,193,7,0.7);font-size:0.72rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.8px;">Founder &amp; Managing Director</p>
+        <p style="color:rgba(255,255,255,0.6);font-size:0.78rem;line-height:1.6;margin-bottom:14px;">Visionary leader &amp; founder of City Real Space. Expert in residential &amp; commercial property deals across Gujarat.</p>
+        <!-- 25 Years badge -->
+        <div style="background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.3);border-radius:12px;padding:10px 14px;margin-bottom:12px;">
+          <div style="font-size:1.6rem;font-weight:900;color:#FFC107;line-height:1;">25+</div>
+          <div style="font-size:0.65rem;color:rgba(255,193,7,0.7);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Years of Trust</div>
+        </div>
+        <div style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap;">
+          <span style="background:rgba(255,193,7,0.15);color:#fbbf24;font-size:0.62rem;font-weight:700;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,193,7,0.3);">Residential</span>
+          <span style="background:rgba(255,193,7,0.15);color:#fbbf24;font-size:0.62rem;font-weight:700;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,193,7,0.3);">Commercial</span>
+        </div>
       </div>
 
-      <div style="background:#fff;border-radius:18px;padding:28px 16px 22px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e8e8e8;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 40px rgba(255,193,7,0.2)';this.style.borderColor='rgba(255,193,7,0.4)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(0,0,0,0.08)';this.style.borderColor='#e8e8e8'">
-        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#f5f5f5,#e8e8e8);border:3px solid #FFC107;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;overflow:hidden;">
-          <i class="fa-solid fa-user" style="font-size:2rem;color:#ccc;"></i>
+      <!-- Aarti Patel -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px 20px 24px;text-align:center;transition:all 0.3s;position:relative;overflow:hidden;" onmouseover="this.style.background='rgba(255,193,7,0.08)';this.style.borderColor='rgba(255,193,7,0.4)';this.style.transform='translateY(-8px)';this.style.boxShadow='0 20px 50px rgba(255,193,7,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.transform='';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FFC107,#ff8f00);"></div>
+        <div style="width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#FFC107,#ff8f00);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 8px 24px rgba(255,193,7,0.4);position:relative;"><span style="font-size:2rem;font-weight:800;color:#fff;animation:letterPulse 2s ease-in-out infinite;">A</span><div style="position:absolute;inset:-4px;border-radius:50%;border:2px dashed rgba(255,193,7,0.5);animation:rotateRing 6s linear infinite;"></div></div>
+        <h4 style="font-size:1rem;font-weight:800;color:#fff;margin-bottom:6px;">Aarti Patel</h4>
+        <p style="color:#FFC107;font-size:0.72rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Tele Caller</p>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.78rem;line-height:1.6;">First point of contact for all client inquiries.</p>
+        <div style="margin-top:16px;display:flex;justify-content:center;gap:8px;">
+          <span style="background:rgba(255,193,7,0.15);color:#fbbf24;font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,193,7,0.3);">Client Relations</span>
         </div>
-        <h4 style="font-size:0.95rem;font-weight:700;color:#0D1B2A;margin-bottom:4px;">Aarti Patel</h4>
-        <p style="color:#E53935;font-size:0.72rem;font-weight:700;margin-bottom:6px;">Tele Caller</p>
-        <p style="color:#888;font-size:0.78rem;line-height:1.5;">First point of contact for all client inquiries.</p>
       </div>
 
-      <div style="background:#fff;border-radius:18px;padding:28px 16px 22px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e8e8e8;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 40px rgba(229,57,53,0.15)';this.style.borderColor='rgba(229,57,53,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(0,0,0,0.08)';this.style.borderColor='#e8e8e8'">
-        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#f5f5f5,#e8e8e8);border:3px solid #E53935;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;overflow:hidden;">
-          <i class="fa-solid fa-user" style="font-size:2rem;color:#ccc;"></i>
+      <!-- Deep Bhai -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px 20px 24px;text-align:center;transition:all 0.3s;position:relative;overflow:hidden;" onmouseover="this.style.background='rgba(229,57,53,0.1)';this.style.borderColor='rgba(229,57,53,0.4)';this.style.transform='translateY(-8px)';this.style.boxShadow='0 20px 50px rgba(229,57,53,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.transform='';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#059669);"></div>
+        <div style="width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 8px 24px rgba(16,185,129,0.4);position:relative;"><span style="font-size:2rem;font-weight:800;color:#fff;animation:letterPulse 2s ease-in-out infinite;">D</span><div style="position:absolute;inset:-4px;border-radius:50%;border:2px dashed rgba(16,185,129,0.5);animation:rotateRing 6s linear infinite;"></div></div>
+        <h4 style="font-size:1rem;font-weight:800;color:#fff;margin-bottom:6px;">Deep Bhai</h4>
+        <p style="color:#FFC107;font-size:0.72rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Residential Manager</p>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.78rem;line-height:1.6;">Helping families find their perfect dream home.</p>
+        <div style="margin-top:16px;display:flex;justify-content:center;gap:8px;">
+          <span style="background:rgba(16,185,129,0.15);color:#34d399;font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid rgba(16,185,129,0.3);">Residential</span>
         </div>
-        <h4 style="font-size:0.95rem;font-weight:700;color:#0D1B2A;margin-bottom:4px;">Deep Bhai</h4>
-        <p style="color:#E53935;font-size:0.72rem;font-weight:700;margin-bottom:6px;">Residential Manager</p>
-        <p style="color:#888;font-size:0.78rem;line-height:1.5;">Helping families find their perfect dream home.</p>
       </div>
 
-      <div style="background:#fff;border-radius:18px;padding:28px 16px 22px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e8e8e8;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 40px rgba(229,57,53,0.15)';this.style.borderColor='rgba(229,57,53,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(0,0,0,0.08)';this.style.borderColor='#e8e8e8'">
-        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#f5f5f5,#e8e8e8);border:3px solid #E53935;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;overflow:hidden;">
-          <i class="fa-solid fa-user" style="font-size:2rem;color:#ccc;"></i>
+      <!-- Yogesh -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px 20px 24px;text-align:center;transition:all 0.3s;position:relative;overflow:hidden;" onmouseover="this.style.background='rgba(99,102,241,0.1)';this.style.borderColor='rgba(99,102,241,0.4)';this.style.transform='translateY(-8px)';this.style.boxShadow='0 20px 50px rgba(99,102,241,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.transform='';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#6366f1,#8b5cf6);"></div>
+        <div style="width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 8px 24px rgba(99,102,241,0.4);position:relative;"><span style="font-size:2rem;font-weight:800;color:#fff;animation:letterPulse 2s ease-in-out infinite;">Y</span><div style="position:absolute;inset:-4px;border-radius:50%;border:2px dashed rgba(99,102,241,0.5);animation:rotateRing 6s linear infinite;"></div></div>
+        <h4 style="font-size:1rem;font-weight:800;color:#fff;margin-bottom:6px;">Yogesh</h4>
+        <p style="color:#FFC107;font-size:0.72rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Commercial Manager</p>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.78rem;line-height:1.6;">Expert in offices, shops &amp; warehouses across Gujarat.</p>
+        <div style="margin-top:16px;display:flex;justify-content:center;gap:8px;">
+          <span style="background:rgba(59,130,246,0.15);color:#60a5fa;font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid rgba(59,130,246,0.3);">Commercial</span>
         </div>
-        <h4 style="font-size:0.95rem;font-weight:700;color:#0D1B2A;margin-bottom:4px;">Yogesh</h4>
-        <p style="color:#E53935;font-size:0.72rem;font-weight:700;margin-bottom:6px;">Commercial Manager</p>
-        <p style="color:#888;font-size:0.78rem;line-height:1.5;">Expert in offices, shops &amp; warehouses across Gujarat.</p>
       </div>
 
     </div>
@@ -510,6 +561,62 @@
           </div>
         </div>
 
+        <!-- Office for Rent - Premium Buildings -->
+        <div class="seo-section">
+          <h4 style="color:#0D1B2A;font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-building" style="color:#E53935;font-size:1rem"></i>Office for Rent – Premium Buildings</h4>
+          <div class="seo-links" style="display:flex;flex-direction:column;gap:4px">
+            <a href="properties.html?status=for-rent&type=office&area=Prahlad Nagar" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Office for Rent in PNTC</a>
+            <a href="properties.html?status=for-rent&type=office&area=Prahlad Nagar" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Office for Rent in Titanium City Centre</a>
+            <a href="properties.html?status=for-rent&type=office&area=Prahlad Nagar" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Office for Rent in Titanium Business Park</a>
+            <a href="properties.html?status=for-rent&type=office&area=Prahlad Nagar" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Office for Rent in TCC</a>
+            <a href="properties.html?status=for-rent&type=office&area=Prahlad Nagar" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Office for Rent in TBP</a>
+            <a href="properties.html?status=for-rent&type=office&area=Prahlad Nagar" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Office for Rent in Zaveri 31Five</a>
+            <a href="properties.html?status=for-rent&type=office&area=Prahlad Nagar" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Office for Rent in 315</a>
+          </div>
+        </div>
+
+        <!-- Office for Rent - More Buildings -->
+        <div class="seo-section">
+          <h4 style="color:#0D1B2A;font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-city" style="color:#E53935;font-size:1rem"></i>Office for Rent – Satellite & Shyamal</h4>
+          <div class="seo-links" style="display:flex;flex-direction:column;gap:4px">
+            <a href="properties.html?status=for-rent&type=office&area=Satellite" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Office for Rent in Sun Gravitas</a>
+            <a href="properties.html?status=for-rent&type=office&area=Prahlad Nagar" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Office for Rent in Prahlad Nagar Trade Centre</a>
+            <a href="properties.html?status=for-rent&type=office&area=Satellite" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Office for Rent in Unicus Shyamal</a>
+            <a href="properties.html?status=for-rent&type=office&area=Satellite" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Office for Rent in Shilp Zaveri</a>
+            <a href="properties.html?status=for-rent&type=office&area=Satellite" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Office for Rent in Iconic Shyamal</a>
+            <a href="properties.html?status=for-rent&type=office&area=Satellite" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Office for Rent in Ratnajali Square</a>
+            <a href="properties.html?status=for-rent&type=office&area=Satellite" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Office for Rent in Ratnajali Soliter</a>
+          </div>
+        </div>
+
+        <!-- Buy Office -->
+        <div class="seo-section">
+          <h4 style="color:#0D1B2A;font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-briefcase" style="color:#E53935;font-size:1rem"></i>Buy Office Space – Ahmedabad</h4>
+          <div class="seo-links" style="display:flex;flex-direction:column;gap:4px">
+            <a href="properties.html?status=for-sale&type=office&area=Prahlad Nagar" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Buy Office in PNTC</a>
+            <a href="properties.html?status=for-sale&type=office&area=Prahlad Nagar" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Buy Office in Titanium City Centre</a>
+            <a href="properties.html?status=for-sale&type=office&area=Prahlad Nagar" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Buy Office in Titanium Business Park</a>
+            <a href="properties.html?status=for-sale&type=office&area=Satellite" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Buy Office in Sun Gravitas</a>
+            <a href="properties.html?status=for-sale&type=office&area=Prahlad Nagar" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Buy Office in Prahlad Nagar Trade Centre</a>
+            <a href="properties.html?status=for-sale&type=office&area=Satellite" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Buy Office in Shilp Zaveri</a>
+            <a href="properties.html?status=for-sale&type=office&area=Satellite" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Buy Office in Ratnajali Square</a>
+          </div>
+        </div>
+
+        <!-- Sell Office -->
+        <div class="seo-section">
+          <h4 style="color:#0D1B2A;font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-tag" style="color:#E53935;font-size:1rem"></i>Sell Office Space – Ahmedabad</h4>
+          <div class="seo-links" style="display:flex;flex-direction:column;gap:4px">
+            <a href="post-property.html" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Sell Office in PNTC</a>
+            <a href="post-property.html" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Sell Office in Titanium City Centre</a>
+            <a href="post-property.html" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Sell Office in Titanium Business Park</a>
+            <a href="post-property.html" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Sell Office in Sun Gravitas</a>
+            <a href="post-property.html" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Sell Office in Prahlad Nagar Trade Centre</a>
+            <a href="post-property.html" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Sell Office in Shilp Zaveri</a>
+            <a href="post-property.html" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Sell Office in Ratnajali Square</a>
+          </div>
+        </div>
+
       </div>
       
       <!-- Additional SEO Content -->
@@ -534,8 +641,9 @@
   <div class="footer-top">
     <div class="container footer-grid">
       <div class="footer-col">
-        <a href="index.html" class="logo footer-logo">
-          <img src="images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;filter:brightness(0) invert(1);"/>
+        <a href="index.html" class="footer-logo" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
+          <img src="images/logo.jpeg" alt="City Real Space" style="height:52px;width:52px;object-fit:contain;border-radius:10px;background:#fff;padding:4px;"/>
+          <span style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1.2;">City <span style="color:#FFC107;">Real</span> Space</span>
         </a>
         <p class="footer-about">Ahmedabad's most trusted real estate platform. We connect buyers, sellers and investors with verified properties across Gujarat.</p>
         <div class="social-links">
@@ -1010,7 +1118,9 @@
 <div class="live-chat-widget" id="liveChatWidget">
   <div class="lcw-header">
     <div class="lcw-agent">
-      <div class="lcw-avatar"><i class="fa-solid fa-headset"></i></div>
+      <div class="lcw-avatar" style="background:rgba(255,255,255,0.15);overflow:hidden;padding:0;">
+        <img src="images/logo.jpeg" alt="CRS" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>
+      </div>
       <div>
         <strong>City Real Space</strong>
         <span><span class="lcw-dot"></span> Online Now</span>
@@ -1171,6 +1281,121 @@ async function saveProfile() {
 <script src="cursor.js"></script>
 <script src="bg-animation.js"></script>
 <script src="script.js?v=3"></script>
+
+<!-- POST REQUIREMENT MODAL -->
+<div id="reqOverlay" style="position:fixed;inset:0;z-index:5000;background:rgba(13,27,42,0.7);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s">
+  <div style="background:#0D1B2A;border-radius:20px;width:100%;max-width:460px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.4);position:relative">
+    <div style="background:linear-gradient(135deg,#E53935,#c62828);padding:22px 28px 18px">
+      <button onclick="closeReqModal()" style="position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,0.2);color:#fff;font-size:0.9rem;cursor:pointer"><i class="fa-solid fa-xmark"></i></button>
+      <div style="display:flex;align-items:center;gap:10px">
+        <i class="fa-solid fa-bell" style="font-size:1.4rem;color:#fff"></i>
+        <div>
+          <h3 style="color:#fff;font-size:1.05rem;font-weight:800;margin:0">Post Your Requirement</h3>
+          <p style="color:rgba(255,255,255,0.75);font-size:0.78rem;margin:2px 0 0">Can't find what you need? We'll find it for you!</p>
+        </div>
+      </div>
+    </div>
+    <div style="padding:24px 28px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
+        <i class="fa-solid fa-user" style="color:#E53935;font-size:0.85rem"></i>
+        <input id="hReqName" type="text" placeholder="Your Full Name *" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#fff;background:transparent"/>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
+        <i class="fa-solid fa-phone" style="color:#E53935;font-size:0.85rem"></i>
+        <span style="font-size:0.85rem;font-weight:600;color:rgba(255,255,255,0.5);border-right:1px solid rgba(255,255,255,0.15);padding-right:10px">+91</span>
+        <input id="hReqPhone" type="tel" placeholder="Mobile Number *" maxlength="10" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#fff;background:transparent"/>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
+        <i class="fa-solid fa-building" style="color:#E53935;font-size:0.85rem"></i>
+        <select id="hReqType" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:rgba(255,255,255,0.8);background:transparent;cursor:pointer">
+          <option value="" style="background:#0D1B2A">Property Type (Optional)</option>
+          <option style="background:#0D1B2A">Apartment / Flat</option>
+          <option style="background:#0D1B2A">Villa</option>
+          <option style="background:#0D1B2A">Bungalow</option>
+          <option style="background:#0D1B2A">Row House</option>
+          <option style="background:#0D1B2A">Plot / Land</option>
+          <option style="background:#0D1B2A">Office Space</option>
+          <option style="background:#0D1B2A">Shop / Showroom</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
+        <i class="fa-solid fa-indian-rupee-sign" style="color:#E53935;font-size:0.85rem"></i>
+        <select id="hReqBudget" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:rgba(255,255,255,0.8);background:transparent;cursor:pointer">
+          <option value="" style="background:#0D1B2A">Budget Range (Optional)</option>
+          <option style="background:#0D1B2A">Under ₹30 Lakh</option>
+          <option style="background:#0D1B2A">₹30L – ₹60L</option>
+          <option style="background:#0D1B2A">₹60L – ₹1 Cr</option>
+          <option style="background:#0D1B2A">₹1Cr – ₹2Cr</option>
+          <option style="background:#0D1B2A">₹2Cr – ₹5Cr</option>
+          <option style="background:#0D1B2A">Above ₹5Cr</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
+        <i class="fa-solid fa-comment" style="color:#E53935;font-size:0.85rem"></i>
+        <input id="hReqMsg" type="text" placeholder="Any specific requirement? (Optional)" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#fff;background:transparent"/>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:4px">
+        <button onclick="submitReq()" style="flex:1;background:#E53935;color:#fff;border:none;padding:13px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px" id="hReqSubmitBtn">
+          <i class="fa-solid fa-paper-plane"></i> Submit Requirement
+        </button>
+        <button onclick="submitReqWA()" style="flex:1;background:#25D366;color:#fff;border:none;padding:13px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
+          <i class="fa-brands fa-whatsapp"></i> WhatsApp
+        </button>
+      </div>
+      <p style="text-align:center;font-size:0.72rem;color:rgba(255,255,255,0.35);margin:0">🔒 Your details are safe. No spam calls.</p>
+    </div>
+  </div>
+</div>
+<script>
+function openReqModal() {
+  const u = JSON.parse(localStorage.getItem('user') || '{}');
+  if (u.firstName) document.getElementById('hReqName').value = (u.firstName + ' ' + (u.lastName||'')).trim();
+  if (u.phone) document.getElementById('hReqPhone').value = u.phone.replace('+91','').trim();
+  const o = document.getElementById('reqOverlay');
+  o.style.opacity = '1'; o.style.pointerEvents = 'all';
+}
+function closeReqModal() {
+  const o = document.getElementById('reqOverlay');
+  o.style.opacity = '0'; o.style.pointerEvents = 'none';
+}
+document.getElementById('reqOverlay').addEventListener('click', function(e) { if(e.target===this) closeReqModal(); });
+async function submitReq() {
+  const name  = document.getElementById('hReqName').value.trim();
+  const phone = document.getElementById('hReqPhone').value.trim();
+  if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
+  const btn = document.getElementById('hReqSubmitBtn');
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+  btn.disabled = true;
+  const type   = document.getElementById('hReqType').value;
+  const budget = document.getElementById('hReqBudget').value;
+  const msg    = document.getElementById('hReqMsg').value.trim();
+  const API = window.location.hostname === 'localhost' ? 'http://localhost:5000/api' : '/api';
+  try {
+    await fetch(API + '/inquiry', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name, phone, lookingFor:'Post Requirement', propertyType: type||'Any', budget, message: (type||'Any') + (budget?' | Budget: '+budget:'') + (msg?' | Note: '+msg:'') })
+    });
+  } catch(e) {}
+  btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Requirement';
+  btn.disabled = false;
+  closeReqModal();
+  let t = document.querySelector('.auth-toast');
+  if (!t) { t = document.createElement('div'); t.className = 'auth-toast'; document.body.appendChild(t); }
+  t.innerHTML = '<i class="fa-solid fa-circle-check"></i> Requirement submitted! We\'ll contact you soon.';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+function submitReqWA() {
+  const name  = document.getElementById('hReqName').value.trim();
+  const phone = document.getElementById('hReqPhone').value.trim();
+  if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
+  const type   = document.getElementById('hReqType').value;
+  const budget = document.getElementById('hReqBudget').value;
+  const msg    = document.getElementById('hReqMsg').value.trim();
+  const text = 'Hi, I am ' + name + ' (+91 ' + phone + '). Looking for: ' + (type||'Property') + (budget?' | Budget: '+budget:'') + (msg?' | Note: '+msg:'') + '.';
+  window.open('https://wa.me/919377531247?text=' + encodeURIComponent(text), '_blank');
+  closeReqModal();
+}
+</script>
 
 <script>
 // ===== HERO TEXT ANIMATION =====

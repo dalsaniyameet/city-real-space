@@ -3,12 +3,35 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- ===== SEO — dynamically updated by JS ===== -->
   <title>Blog – City Real Space</title>
+  <meta name="description" content="Real estate tips, market insights and property guides from City Real Space — Ahmedabad's most trusted platform."/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="" id="canonicalTag"/>
+
+  <!-- Open Graph (Facebook / WhatsApp share preview) -->
+  <meta property="og:type"        content="article"/>
+  <meta property="og:site_name"   content="City Real Space"/>
+  <meta property="og:title"       content="Blog – City Real Space" id="ogTitle"/>
+  <meta property="og:description" content="" id="ogDesc"/>
+  <meta property="og:image"       content="" id="ogImage"/>
+  <meta property="og:url"         content="" id="ogUrl"/>
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image"/>
+  <meta name="twitter:title"       content="" id="twTitle"/>
+  <meta name="twitter:description" content="" id="twDesc"/>
+  <meta name="twitter:image"       content="" id="twImage"/>
+
+  <!-- Article Schema (JSON-LD) — filled by JS -->
+  <script type="application/ld+json" id="articleSchema">{}</script>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="responsive.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    .bd-wrap { max-width: 900px; margin: 90px auto 60px; padding: 0 20px; }
+    .bd-wrap { max-width: 900px; margin: 60px auto 60px; padding: 0 20px; }
     .bd-hero { position: relative; height: 420px; border-radius: 20px; overflow: hidden; margin-bottom: 32px; }
     .bd-hero img { width: 100%; height: 100%; object-fit: cover; }
     .bd-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(13,27,42,0.7) 0%, transparent 60%); }
@@ -46,6 +69,15 @@
 </head>
 <body>
 <script src="splash.js"></script>
+
+<!-- NTC REG BAR -->
+<div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;">
+  <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
+  &nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;
+  <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
+</div>
+<div style="height:33px;"></div>
+
 <header class="header" id="header">
   <div class="container header-inner">
     <a href="index.html" class="logo">
@@ -120,8 +152,9 @@
   <div class="footer-top">
     <div class="container footer-grid">
       <div class="footer-col">
-        <a href="index.html" class="logo footer-logo">
-          <img src="images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;filter:brightness(0) invert(1);"/>
+        <a href="index.html" class="footer-logo" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
+          <img src="images/logo.jpeg" alt="City Real Space" style="height:52px;width:52px;object-fit:contain;border-radius:10px;background:#fff;padding:4px;"/>
+          <span style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1.2;">City <span style="color:#FFC107;">Real</span> Space</span>
         </a>
         <p class="footer-about">Ahmedabad's most trusted real estate platform.</p>
         <div class="social-links">
@@ -161,7 +194,9 @@
 <script src="cursor.js"></script>
 <script src="bg-animation.js"></script>
 <script>
-const API = 'https://city-real-space.onrender.com/api';
+const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:5000/api'
+  : '/api';
 const slug = new URLSearchParams(window.location.search).get('slug');
 
 // Auth
@@ -175,16 +210,63 @@ if (user) {
 async function loadBlog() {
   if (!slug) { showError('Blog post not found.'); return; }
   try {
-    const res = await fetch(`${API}/blogs/${slug}`);
+    // sessionStorage check — same session mein sirf ek baar view count
+    const viewKey = 'viewed_' + slug;
+    const alreadyViewed = sessionStorage.getItem(viewKey);
+    const url = `${API}/blogs/${slug}` + (alreadyViewed ? '' : '?countView=1');
+    const res = await fetch(url);
     const data = await res.json();
-    if (data.success && data.blog) { renderBlog(data.blog); return; }
+    if (data.success && data.blog) {
+      if (!alreadyViewed) sessionStorage.setItem(viewKey, '1');
+      renderBlog(data.blog);
+      return;
+    }
   } catch(e) {}
   showError('Blog post not found. <a href="blog.html" style="color:#E53935;font-weight:700;">← Back to Blog</a>');
 }
 
 function renderBlog(b) {
-  document.title = b.title + ' – City Real Space';
-  const date = new Date(b.createdAt).toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' });
+  const pageTitle = (b.metaTitle || b.title) + ' – City Real Space';
+  const pageDesc  = b.metaDescription || b.excerpt || 'Read the latest real estate insights from City Real Space.';
+  const pageUrl   = window.location.href;
+  const pageImg   = b.image || 'https://cityrealspace.com/images/logo.jpeg';
+  const date      = new Date(b.createdAt).toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' });
+
+  // ===== Title & Meta =====
+  document.title = pageTitle;
+  document.querySelector('meta[name="description"]').content = pageDesc;
+
+  // ===== Canonical =====
+  document.getElementById('canonicalTag').href = pageUrl;
+
+  // ===== Open Graph =====
+  document.getElementById('ogTitle').content  = pageTitle;
+  document.getElementById('ogDesc').content   = pageDesc;
+  document.getElementById('ogImage').content  = pageImg;
+  document.getElementById('ogUrl').content    = pageUrl;
+
+  // ===== Twitter =====
+  document.getElementById('twTitle').content  = pageTitle;
+  document.getElementById('twDesc').content   = pageDesc;
+  document.getElementById('twImage').content  = pageImg;
+
+  // ===== Article Schema (JSON-LD) =====
+  document.getElementById('articleSchema').textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    'headline': b.title,
+    'description': pageDesc,
+    'image': pageImg,
+    'author': { '@type': 'Organization', 'name': b.author || 'CRS Team' },
+    'publisher': {
+      '@type': 'Organization',
+      'name': 'City Real Space',
+      'logo': { '@type': 'ImageObject', 'url': 'https://cityrealspace.com/images/logo.jpeg' }
+    },
+    'datePublished': b.createdAt,
+    'dateModified':  b.updatedAt || b.createdAt,
+    'mainEntityOfPage': { '@type': 'WebPage', '@id': pageUrl }
+  });
 
   // Hero image
   if (b.image) {
@@ -204,10 +286,10 @@ function renderBlog(b) {
 
   // Share buttons
   document.getElementById('bdShareWa').onclick = () => {
-    window.open(`https://wa.me/?text=${encodeURIComponent(b.title + ' - ' + window.location.href)}`, '_blank');
+    window.open(`https://wa.me/?text=${encodeURIComponent(b.title + ' - ' + pageUrl)}`, '_blank');
   };
   document.getElementById('bdShareCopy').onclick = function() {
-    navigator.clipboard.writeText(window.location.href);
+    navigator.clipboard.writeText(pageUrl);
     this.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
     setTimeout(() => { this.innerHTML = '<i class="fa-solid fa-link"></i> Copy Link'; }, 2000);
   };

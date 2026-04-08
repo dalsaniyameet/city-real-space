@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Property Detail – City Real Space</title>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="responsive.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <style>
-    .pd-wrap { max-width: 1200px; margin: 90px auto 60px; padding: 0 20px; }
+    .pd-wrap { max-width: 1200px; margin: 40px auto 60px; padding: 0 20px; }
     .pd-grid { display: grid; grid-template-columns: 1fr 380px; gap: 32px; align-items: start; }
 
     /* Gallery */
@@ -77,12 +79,65 @@
     .pd-loading { text-align: center; padding: 100px 20px; color: #aaa; }
     .pd-loading i { font-size: 2.5rem; color: #E53935; margin-bottom: 16px; display: block; }
 
+    /* EMI Calculator */
+    .emi-box { background:#fff; border-radius:16px; padding:24px; box-shadow:0 4px 24px rgba(0,0,0,0.08); border:1px solid #e8e8e8; margin-bottom:20px; }
+    .emi-box h4 { font-size:1rem; font-weight:700; color:#0D1B2A; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+    .emi-box h4 i { color:#E53935; }
+    .emi-slider-wrap { margin-bottom:14px; }
+    .emi-slider-wrap label { font-size:0.78rem; font-weight:600; color:#555; display:flex; justify-content:space-between; margin-bottom:6px; }
+    .emi-slider-wrap label span { color:#E53935; font-weight:700; }
+    .emi-slider-wrap input[type=range] { width:100%; accent-color:#E53935; cursor:pointer; }
+    .emi-result { background:linear-gradient(135deg,#0D1B2A,#1a3a5c); border-radius:12px; padding:16px; text-align:center; margin-top:14px; }
+    .emi-result p { color:rgba(255,255,255,0.6); font-size:0.75rem; margin:0 0 4px; }
+    .emi-result strong { color:#FFC107; font-size:1.6rem; font-weight:800; display:block; }
+    .emi-result small { color:rgba(255,255,255,0.4); font-size:0.7rem; }
+    .emi-breakdown { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+    .emi-bd { background:rgba(255,255,255,0.06); border-radius:8px; padding:8px; text-align:center; }
+    .emi-bd span { display:block; font-size:0.65rem; color:rgba(255,255,255,0.4); margin-bottom:2px; }
+    .emi-bd strong { color:#fff; font-size:0.82rem; font-weight:700; }
+
+    /* Site Visit */
+    .visit-box { background:#fff; border-radius:16px; padding:24px; box-shadow:0 4px 24px rgba(0,0,0,0.08); border:1px solid #e8e8e8; margin-bottom:20px; }
+    .visit-box h4 { font-size:1rem; font-weight:700; color:#0D1B2A; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+    .visit-box h4 i { color:#25D366; }
+    .visit-slots { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+    .visit-slot { border:1.5px solid #e8e8e8; border-radius:8px; padding:8px 10px; font-size:0.78rem; font-weight:600; color:#555; cursor:pointer; text-align:center; transition:all 0.2s; background:#fafafa; }
+    .visit-slot:hover, .visit-slot.selected { border-color:#E53935; background:#fff5f5; color:#E53935; }
+    .btn-visit { width:100%; background:#25D366; color:#fff; border:none; padding:12px; border-radius:10px; font-size:0.88rem; font-weight:700; cursor:pointer; font-family:Poppins,sans-serif; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s; }
+    .btn-visit:hover { background:#1ebe5d; }
+
+    /* Similar Properties */
+    .similar-section { margin-top:32px; }
+    .similar-section h4 { font-size:1.1rem; font-weight:800; color:#0D1B2A; margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+    .similar-section h4 i { color:#E53935; }
+    .similar-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; }
+
+    /* Map */
+    .pd-map-box { background:#fff; border-radius:16px; padding:28px; box-shadow:0 4px 24px rgba(0,0,0,0.08); border:1px solid #e8e8e8; margin-bottom:20px; }
+    .pd-map-box h4 { font-size:1rem; font-weight:700; color:#0D1B2A; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+    .pd-map-box h4 i { color:#E53935; }
+    #pdMap { width:100%; height:320px; border-radius:12px; z-index:1; }
+    .map-open-btn { display:inline-flex; align-items:center; gap:6px; margin-top:12px; background:#f0f4ff; color:#1565c0; border:none; padding:8px 16px; border-radius:8px; font-size:0.8rem; font-weight:700; cursor:pointer; font-family:Poppins,sans-serif; transition:all 0.2s; text-decoration:none; }
+    .map-open-btn:hover { background:#1565c0; color:#fff; }
+    .leaflet-control-zoom { border:none !important; box-shadow:0 2px 10px rgba(0,0,0,0.15) !important; border-radius:10px !important; overflow:hidden; }
+    .leaflet-control-zoom-in, .leaflet-control-zoom-out { width:36px !important; height:36px !important; line-height:36px !important; font-size:1.1rem !important; font-weight:700 !important; color:#E53935 !important; background:#fff !important; border:none !important; }
+    .leaflet-control-zoom-in:hover, .leaflet-control-zoom-out:hover { background:#E53935 !important; color:#fff !important; }
+    @keyframes pulse { 0%,100%{transform:scale(1);opacity:0.4} 50%{transform:scale(1.6);opacity:0} }
+
+    /* Views badge */
+    .pd-views { display:inline-flex; align-items:center; gap:5px; background:#f0f4ff; color:#1565c0; font-size:0.75rem; font-weight:600; padding:4px 10px; border-radius:50px; margin-left:8px; }
     @media(max-width: 900px) { .pd-grid { grid-template-columns: 1fr; } .pd-sidebar { position: static; } .pd-main-img { height: 280px; } }
-    @media(max-width: 480px) { .pd-specs { gap: 12px; } .pd-details-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 <script src="splash.js"></script>
+<!-- NTC REG BAR -->
+<div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;">
+  <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
+  &nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;
+  <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
+</div>
+<div style="height:33px;"></div>
 <header class="header" id="header">
   <div class="container header-inner">
     <a href="index.html" class="logo">
@@ -164,6 +219,15 @@
           <h4>Amenities</h4>
           <div class="pd-amenities-list" id="pdAmenitiesList"></div>
         </div>
+
+        <!-- MAP -->
+        <div class="pd-map-box" id="pdMapBox">
+          <h4><i class="fa-solid fa-location-dot"></i> Property Location</h4>
+          <div id="pdMap"></div>
+          <a id="pdMapLink" href="#" target="_blank" class="map-open-btn">
+            <i class="fa-solid fa-map"></i> Open in Google Maps
+          </a>
+        </div>
       </div>
 
       <!-- RIGHT SIDEBAR -->
@@ -177,7 +241,52 @@
             <button class="btn-pd-call" id="pdCallBtn"><i class="fa-solid fa-phone"></i> Request Callback</button>
           </div>
           <p style="text-align:center;font-size:0.72rem;color:#aaa;margin-top:10px">🔒 Your details are safe. No spam calls.</p>
+          <button id="pdSaveBtn" onclick="toggleSaveProperty()" style="width:100%;margin-top:8px;background:#f5f5f5;color:#555;border:1.5px solid #e8e8e8;padding:10px;border-radius:10px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s">
+            <i class="fa-regular fa-heart" id="pdSaveIcon"></i> <span id="pdSaveText">Save Property</span>
+          </button>
         </div>
+
+        <!-- SITE VISIT BOOKING -->
+        <div class="visit-box">
+          <h4><i class="fa-solid fa-calendar-check"></i> Book Free Site Visit</h4>
+          <p style="font-size:0.8rem;color:#888;margin-bottom:12px;">Select a time slot — our agent will confirm within 30 mins</p>
+          <div class="visit-slots" id="visitSlots">
+            <div class="visit-slot" onclick="selectSlot(this)">Today Morning<br/><span style="font-size:0.7rem;color:#aaa">9AM – 12PM</span></div>
+            <div class="visit-slot" onclick="selectSlot(this)">Today Evening<br/><span style="font-size:0.7rem;color:#aaa">4PM – 7PM</span></div>
+            <div class="visit-slot" onclick="selectSlot(this)">Tomorrow Morning<br/><span style="font-size:0.7rem;color:#aaa">9AM – 12PM</span></div>
+            <div class="visit-slot" onclick="selectSlot(this)">Tomorrow Evening<br/><span style="font-size:0.7rem;color:#aaa">4PM – 7PM</span></div>
+          </div>
+          <button class="btn-visit" id="visitBtn" onclick="bookVisit()">
+            <i class="fa-brands fa-whatsapp"></i> Confirm Free Visit
+          </button>
+        </div>
+
+        <!-- EMI CALCULATOR -->
+        <div class="emi-box">
+          <h4><i class="fa-solid fa-calculator"></i> EMI Calculator</h4>
+          <div class="emi-slider-wrap">
+            <label>Loan Amount <span id="emiLoanVal">₹50 L</span></label>
+            <input type="range" id="emiLoan" min="500000" max="50000000" step="100000" value="5000000" oninput="calcEMI()"/>
+          </div>
+          <div class="emi-slider-wrap">
+            <label>Interest Rate <span id="emiRateVal">8.5%</span></label>
+            <input type="range" id="emiRate" min="6" max="15" step="0.1" value="8.5" oninput="calcEMI()"/>
+          </div>
+          <div class="emi-slider-wrap">
+            <label>Loan Tenure <span id="emiTenureVal">20 yrs</span></label>
+            <input type="range" id="emiTenure" min="1" max="30" step="1" value="20" oninput="calcEMI()"/>
+          </div>
+          <div class="emi-result">
+            <p>Monthly EMI</p>
+            <strong id="emiResult">₹43,391</strong>
+            <small>per month</small>
+            <div class="emi-breakdown">
+              <div class="emi-bd"><span>Total Interest</span><strong id="emiInterest">₹1.04 Cr</strong></div>
+              <div class="emi-bd"><span>Total Amount</span><strong id="emiTotal">₹1.54 Cr</strong></div>
+            </div>
+          </div>
+        </div>
+
         <div class="pd-share">
           <h5>Share This Property</h5>
           <div class="pd-share-btns">
@@ -187,6 +296,15 @@
         </div>
       </div>
     </div>
+
+    <!-- SIMILAR PROPERTIES -->
+    <div class="similar-section">
+      <h4><i class="fa-solid fa-building"></i> Similar Properties</h4>
+      <div class="similar-grid" id="similarGrid">
+        <div style="grid-column:1/-1;text-align:center;padding:30px;color:#aaa"><i class="fa-solid fa-spinner fa-spin"></i></div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -195,8 +313,9 @@
   <div class="footer-top">
     <div class="container footer-grid">
       <div class="footer-col">
-        <a href="index.html" class="logo footer-logo">
-          <img src="images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;filter:brightness(0) invert(1);"/>
+        <a href="index.html" class="footer-logo" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
+          <img src="images/logo.jpeg" alt="City Real Space" style="height:52px;width:52px;object-fit:contain;border-radius:10px;background:#fff;padding:4px;"/>
+          <span style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1.2;">City <span style="color:#FFC107;">Real</span> Space</span>
         </a>
         <p class="footer-about">Ahmedabad's most trusted real estate platform.</p>
         <div class="social-links">
@@ -244,11 +363,15 @@
 
 <script src="cursor.js"></script>
 <script src="bg-animation.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const API = 'https://city-real-space.onrender.com/api';
+const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:5000/api'
+  : '/api';
 
 // Auth
-const user = JSON.parse(localStorage.getItem('user') || 'null');
+let user = null;
+try { user = JSON.parse(localStorage.getItem('user') || 'null'); } catch(e) { localStorage.removeItem('user'); }
 if (user) {
   document.getElementById('loginBtn').style.display = 'none';
   document.getElementById('userMenu').style.display = 'block';
@@ -263,10 +386,10 @@ const propId = urlParams.get('id');
 
 // Static fallback data - saare cards ka data
 const staticProps = {
-  's1': { _id:'s1', title:'3BHK Luxury Apartment', status:'for-sale', type:'apartment', category:'residential', price:12000000, priceLabel:'\u20b91.2 Cr', description:'Beautiful 3BHK luxury apartment in the heart of Prahlad Nagar. Features modern amenities, spacious rooms, and excellent connectivity to SG Highway and major business hubs.', images:['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80','https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80','https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80'], location:{area:'Prahlad Nagar',city:'Ahmedabad'}, specs:{beds:3,baths:2,sqft:1850}, amenities:['Gym','Swimming Pool','Parking','Security','Elevator','Power Backup'], extraDetails:{floor:'5',totalFloors:'12',furnished:'Semi-Furnished',possession:'Ready to Move',project:'Shivalik Sharda'}, agent:{name:'Rahul Kapoor',initials:'RK',phone:'9825012824'} },
-  's2': { _id:'s2', title:'2BHK Smart Apartment', status:'new-launch', type:'apartment', category:'residential', price:8500000, priceLabel:'\u20b985 L', description:'Premium 2BHK smart apartment in GIFT City with modern amenities and excellent investment potential.', images:['https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&q=80','https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80'], location:{area:'Giftcity',city:'Gandhinagar'}, specs:{beds:2,baths:2,sqft:1200}, amenities:['Gym','Parking','Security','Elevator','WiFi'], extraDetails:{floor:'8',totalFloors:'20',furnished:'Unfurnished',possession:'New Launch',project:'GIFT One'}, agent:{name:'Priya Shah',initials:'PS',phone:'9825012824'} },
-  's3': { _id:'s3', title:'4BHK Ultra-Modern Penthouse', status:'for-sale', type:'apartment', category:'residential', price:25000000, priceLabel:'\u20b92.5 Cr', description:'Stunning 4BHK penthouse with panoramic city views in Prahlad Nagar. Premium finishes throughout.', images:['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80','https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80'], location:{area:'Prahlad Nagar',city:'Ahmedabad'}, specs:{beds:4,baths:3,sqft:3200}, amenities:['Gym','Swimming Pool','Parking','Security','Elevator','Terrace','Club House'], extraDetails:{floor:'20',totalFloors:'20',furnished:'Furnished',possession:'Ready to Move',project:'Adani Shantigram'}, agent:{name:'Amit Mehta',initials:'AM',phone:'9825012824'} },
-  's4': { _id:'s4', title:'3BHK Semi-Furnished Flat', status:'for-rent', type:'apartment', category:'residential', price:35000, priceLabel:'\u20b935K/mo', description:'Spacious 3BHK semi-furnished flat available for rent in prime Satellite location.', images:['https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&q=80','https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80'], location:{area:'Satellite',city:'Ahmedabad'}, specs:{beds:3,baths:2,sqft:1650}, amenities:['Parking','Security','Elevator'], extraDetails:{floor:'3',totalFloors:'8',furnished:'Semi-Furnished',possession:'Ready to Move'}, agent:{name:'Neha Kapoor',initials:'NK',phone:'9825012824'} },
+  's1': { _id:'s1', title:'3BHK Luxury Apartment', status:'for-sale', type:'apartment', category:'residential', price:12000000, priceLabel:'\u20b91.2 Cr', description:'Beautiful 3BHK luxury apartment in the heart of Prahlad Nagar. Features modern amenities, spacious rooms, and excellent connectivity to SG Highway and major business hubs.', images:['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80','https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80','https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80'], location:{area:'Prahlad Nagar',city:'Ahmedabad',lat:23.0204,lng:72.5082}, specs:{beds:3,baths:2,sqft:1850}, amenities:['Gym','Swimming Pool','Parking','Security','Elevator','Power Backup'], extraDetails:{floor:'5',totalFloors:'12',furnished:'Semi-Furnished',possession:'Ready to Move',project:'Shivalik Sharda'}, agent:{name:'Rahul Kapoor',initials:'RK',phone:'9825012824'} },
+  's2': { _id:'s2', title:'2BHK Smart Apartment', status:'new-launch', type:'apartment', category:'residential', price:8500000, priceLabel:'\u20b985 L', description:'Premium 2BHK smart apartment in GIFT City with modern amenities and excellent investment potential.', images:['https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&q=80','https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80'], location:{area:'Giftcity',city:'Gandhinagar',lat:23.1535,lng:72.6800}, specs:{beds:2,baths:2,sqft:1200}, amenities:['Gym','Parking','Security','Elevator','WiFi'], extraDetails:{floor:'8',totalFloors:'20',furnished:'Unfurnished',possession:'New Launch',project:'GIFT One'}, agent:{name:'Priya Shah',initials:'PS',phone:'9825012824'} },
+  's3': { _id:'s3', title:'4BHK Ultra-Modern Penthouse', status:'for-sale', type:'apartment', category:'residential', price:25000000, priceLabel:'\u20b92.5 Cr', description:'Stunning 4BHK penthouse with panoramic city views in Prahlad Nagar. Premium finishes throughout.', images:['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80','https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80'], location:{area:'Prahlad Nagar',city:'Ahmedabad',lat:23.0210,lng:72.5090}, specs:{beds:4,baths:3,sqft:3200}, amenities:['Gym','Swimming Pool','Parking','Security','Elevator','Terrace','Club House'], extraDetails:{floor:'20',totalFloors:'20',furnished:'Furnished',possession:'Ready to Move',project:'Adani Shantigram'}, agent:{name:'Amit Mehta',initials:'AM',phone:'9825012824'} },
+  's4': { _id:'s4', title:'3BHK Semi-Furnished Flat', status:'for-rent', type:'apartment', category:'residential', price:35000, priceLabel:'\u20b935K/mo', description:'Spacious 3BHK semi-furnished flat available for rent in prime Satellite location.', images:['https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&q=80','https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80'], location:{area:'Satellite',city:'Ahmedabad',lat:23.0300,lng:72.5100}, specs:{beds:3,baths:2,sqft:1650}, amenities:['Parking','Security','Elevator'], extraDetails:{floor:'3',totalFloors:'8',furnished:'Semi-Furnished',possession:'Ready to Move'}, agent:{name:'Neha Kapoor',initials:'NK',phone:'9825012824'} },
   's5': { _id:'s5', title:'3BHK Elegant Row House', status:'for-sale', type:'rowhouse', category:'residential', price:18000000, priceLabel:'\u20b91.8 Cr', description:'Elegant 3BHK row house in Thaltej with private garden and modern interiors.', images:['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80','https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=800&q=80'], location:{area:'Thaltej',city:'Ahmedabad'}, specs:{beds:3,baths:3,sqft:2100}, amenities:['Parking','Security','Garden','Power Backup'], extraDetails:{floor:'Ground',totalFloors:'2',furnished:'Semi-Furnished',possession:'Ready to Move'}, agent:{name:'Vijay Desai',initials:'VD',phone:'9825012824'} },
   's6': { _id:'s6', title:'2BHK Affordable Apartment', status:'new-launch', type:'apartment', category:'residential', price:6500000, priceLabel:'\u20b965 L', description:'Affordable 2BHK apartment in Memnagar with all basic amenities at a great price.', images:['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80'], location:{area:'Memnagar',city:'Ahmedabad'}, specs:{beds:2,baths:1,sqft:980}, amenities:['Parking','Security'], extraDetails:{floor:'2',totalFloors:'6',furnished:'Unfurnished',possession:'New Launch'}, agent:{name:'Sonal Joshi',initials:'SJ',phone:'9825012824'} },
   's7': { _id:'s7', title:'3BHK Modern Apartment', status:'for-sale', type:'apartment', category:'residential', price:9500000, priceLabel:'\u20b995 L', description:'Modern 3BHK apartment in Shela with contemporary design and great connectivity.', images:['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80'], location:{area:'Shela',city:'Ahmedabad'}, specs:{beds:3,baths:2,sqft:1550}, amenities:['Gym','Parking','Security','Elevator'], extraDetails:{floor:'4',totalFloors:'10',furnished:'Unfurnished',possession:'Ready to Move'}, agent:{name:'Ankit Kumar',initials:'AK',phone:'9825012824'} },
@@ -292,14 +415,40 @@ async function loadProperty() {
   const p = staticProps[propId];
   if (p) { renderProperty(p); return; }
 
-  // Phir backend try karo (MongoDB ObjectId ke liye)
-  try {
-    const res = await fetch(`${API}/properties/${propId}`);
-    const data = await res.json();
-    if (data.success && data.property) { renderProperty(data.property); return; }
-  } catch(e) {}
+  // Backend se fetch karo — 2 retries with loading message
+  document.getElementById('pdLoading').innerHTML = `
+    <i class="fa-solid fa-spinner fa-spin" style="color:#E53935"></i>
+    <p style="color:#555;margin-top:12px">Loading property details...</p>
+    <p style="color:#aaa;font-size:0.8rem">Server waking up, please wait...</p>`;
 
-  showError('Property not found. <br><small style="color:#aaa">ID: ' + propId + '</small>');
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+      // sessionStorage check — ek session mein sirf 1 view count
+      const viewKey = 'viewed_' + propId;
+      const alreadyViewed = sessionStorage.getItem(viewKey);
+      const countView = alreadyViewed ? '0' : '1';
+      const res = await fetch(`${API}/properties/${propId}?countView=${countView}`, { signal: controller.signal });
+      clearTimeout(timeout);
+      const data = await res.json();
+      if (data.success && data.property) {
+        if (!alreadyViewed) sessionStorage.setItem(viewKey, '1');
+        renderProperty(data.property);
+        return;
+      }
+      break;
+    } catch(e) {
+      if (attempt < 3) {
+        document.getElementById('pdLoading').innerHTML = `
+          <i class="fa-solid fa-spinner fa-spin" style="color:#E53935"></i>
+          <p style="color:#555;margin-top:12px">Retrying... (${attempt}/3)</p>`;
+        await new Promise(r => setTimeout(r, 3000));
+      }
+    }
+  }
+
+  showError('Property not found or server is unavailable.<br><small style="color:#aaa">Please try again in a moment.</small>');
 }
 
 function renderProperty(p) {
@@ -327,6 +476,26 @@ function renderProperty(p) {
   document.getElementById('pdLoc').textContent = (p.location?.area || '') + ', ' + (p.location?.city || '');
   document.getElementById('pdPrice').textContent = p.priceLabel || ('\u20b9' + (p.price || 0).toLocaleString('en-IN'));
   if (p.description) document.getElementById('pdDesc').textContent = p.description;
+
+  // Views badge
+  if (p.views > 0) {
+    const locEl = document.getElementById('pdLoc');
+    locEl.insertAdjacentHTML('afterend', `<span class="pd-views"><i class="fa-solid fa-eye"></i> ${p.views} views</span>`);
+  }
+
+  // EMI Calculator — sirf sale/new-launch pe dikhao, rent pe hide karo
+  const emiBox = document.querySelector('.emi-box');
+  if (p.status === 'for-rent') {
+    if (emiBox) emiBox.style.display = 'none';
+  } else if (p.price && p.price > 100000) {
+    const loanAmt = Math.round(p.price * 0.8);
+    const slider = document.getElementById('emiLoan');
+    if (slider) {
+      slider.max = Math.max(p.price, 50000000);
+      slider.value = Math.min(loanAmt, 50000000);
+      calcEMI();
+    }
+  }
 
   // Specs
   const sqft = p.specs?.sqft || 0;
@@ -409,6 +578,12 @@ function renderProperty(p) {
 
   document.getElementById('pdLoading').style.display = 'none';
   document.getElementById('pdContent').style.display = 'block';
+
+  // Similar properties load karo
+  loadSimilar(p);
+
+  // Map — content visible hone ke baad load karo
+  setTimeout(() => loadMap(p), 100);
 }
 
 function switchImg(src, el) {
@@ -418,7 +593,13 @@ function switchImg(src, el) {
 }
 
 function showError(msg) {
-  document.getElementById('pdLoading').innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#E53935"></i><p>${msg}</p><a href="properties.html" style="color:#E53935;font-weight:600">← Back to Properties</a>`;
+  document.getElementById('pdLoading').innerHTML = `
+    <i class="fa-solid fa-triangle-exclamation" style="color:#E53935;font-size:2.5rem;display:block;margin-bottom:16px"></i>
+    <p style="color:#333;font-size:1rem;font-weight:600;margin-bottom:8px">${msg}</p>
+    <div style="display:flex;gap:12px;justify-content:center;margin-top:20px;flex-wrap:wrap">
+      <a href="properties.html" style="background:#E53935;color:#fff;padding:10px 20px;border-radius:8px;font-weight:700;text-decoration:none;font-size:0.88rem">← Back to Properties</a>
+      <button onclick="window.location.reload()" style="background:#f5f5f5;color:#333;padding:10px 20px;border-radius:8px;font-weight:700;border:none;cursor:pointer;font-size:0.88rem;font-family:Poppins,sans-serif"><i class="fa-solid fa-rotate-right"></i> Retry</button>
+    </div>`;
 }
 
 // Scroll & nav
@@ -433,6 +614,227 @@ document.querySelectorAll('.nav-drop-btn').forEach(btn => {
 });
 
 loadProperty();
+
+// ===== EMI CALCULATOR =====
+function fmtINR(n) {
+  if (n >= 10000000) return '\u20b9' + (n/10000000).toFixed(2) + ' Cr';
+  if (n >= 100000)   return '\u20b9' + (n/100000).toFixed(1) + ' L';
+  return '\u20b9' + n.toLocaleString('en-IN');
+}
+function calcEMI() {
+  const P = Number(document.getElementById('emiLoan').value);
+  const r = Number(document.getElementById('emiRate').value) / 12 / 100;
+  const n = Number(document.getElementById('emiTenure').value) * 12;
+  const emi = P * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+  const total = emi * n;
+  const interest = total - P;
+  document.getElementById('emiLoanVal').textContent    = fmtINR(P);
+  document.getElementById('emiRateVal').textContent    = Number(document.getElementById('emiRate').value).toFixed(1) + '%';
+  document.getElementById('emiTenureVal').textContent  = document.getElementById('emiTenure').value + ' yrs';
+  document.getElementById('emiResult').textContent     = '\u20b9' + Math.round(emi).toLocaleString('en-IN');
+  document.getElementById('emiInterest').textContent   = fmtINR(Math.round(interest));
+  document.getElementById('emiTotal').textContent      = fmtINR(Math.round(total));
+}
+calcEMI();
+
+// ===== SITE VISIT BOOKING =====
+let selectedSlot = '';
+function selectSlot(el) {
+  document.querySelectorAll('.visit-slot').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedSlot = el.innerText.replace('\n', ' - ');
+}
+function bookVisit() {
+  const name  = document.getElementById('pdName').value.trim();
+  const phone = document.getElementById('pdPhone').value.trim();
+  const title = document.getElementById('pdTitle')?.textContent || 'Property';
+  const loc   = document.getElementById('pdLoc')?.textContent || '';
+  if (!name || !phone) { alert('Please enter your name and phone number first.'); return; }
+  const slot = selectedSlot || 'Any convenient time';
+  const msg  = encodeURIComponent(`Hi! I want to book a FREE Site Visit.\n\nProperty: ${title}\nLocation: ${loc}\nPreferred Time: ${slot}\n\nMy Name: ${name}\nMy Phone: +91 ${phone}`);
+  window.open('https://wa.me/919377531247?text=' + msg, '_blank');
+}
+
+// ===== SAVE PROPERTY =====
+async function toggleSaveProperty() {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    sessionStorage.setItem('redirectAfterLogin', window.location.href);
+    window.location.href = 'login.html';
+    return;
+  }
+  const btn  = document.getElementById('pdSaveBtn');
+  const icon = document.getElementById('pdSaveIcon');
+  const text = document.getElementById('pdSaveText');
+  const saved = icon.classList.contains('fa-solid');
+  btn.disabled = true;
+  try {
+    const res  = await fetch(`${API}/properties/${propId}/save`, {
+      method: 'POST', headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await res.json();
+    if (data.saved) {
+      icon.className = 'fa-solid fa-heart'; icon.style.color = '#E53935';
+      text.textContent = 'Saved!';
+      btn.style.background = '#ffebee'; btn.style.borderColor = '#E53935'; btn.style.color = '#E53935';
+    } else {
+      icon.className = 'fa-regular fa-heart'; icon.style.color = '';
+      text.textContent = 'Save Property';
+      btn.style.background = ''; btn.style.borderColor = ''; btn.style.color = '';
+    }
+  } catch(e) {}
+  btn.disabled = false;
+}
+
+// ===== MAP =====
+let _mapInstance = null;
+async function loadMap(p) {
+  const area = p.location?.area || '';
+  const city = p.location?.city || 'Ahmedabad';
+  const title = p.title;
+
+  let lat = p.location?.lat;
+  let lng = p.location?.lng;
+
+  if (!lat || !lng) {
+    try {
+      const q = encodeURIComponent(`${area}, ${city}, Gujarat, India`);
+      const geo = await fetch(`https://nominatim.openstreetmap.org/search?q=${q}&format=json&limit=1`);
+      const gd  = await geo.json();
+      if (gd && gd[0]) { lat = parseFloat(gd[0].lat); lng = parseFloat(gd[0].lon); }
+    } catch(e) {}
+  }
+
+  if (!lat || !lng) {
+    const cityCoords = {
+      'Ahmedabad':  [23.0225, 72.5714],
+      'Gandhinagar':[23.2156, 72.6369],
+      'Surat':      [21.1702, 72.8311],
+      'Vadodara':   [22.3072, 73.1812],
+      'Rajkot':     [22.3039, 70.8022]
+    };
+    [lat, lng] = cityCoords[city] || [23.0225, 72.5714];
+  }
+
+  document.getElementById('pdMapLink').href =
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(area + ', ' + city + ', Gujarat')}`;
+
+  if (_mapInstance) { _mapInstance.remove(); _mapInstance = null; }
+  const L = window.L;
+  if (!L) return;
+
+  _mapInstance = L.map('pdMap', {
+    zoomControl: false,
+    scrollWheelZoom: false,
+    doubleClickZoom: false,
+    touchZoom: false,
+    boxZoom: false,
+    keyboard: false,
+    dragging: true
+  }).setView([lat, lng], 14);
+
+  L.control.zoom({ position: 'bottomright' }).addTo(_mapInstance);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '\u00a9 OpenStreetMap'
+  }).addTo(_mapInstance);
+
+  // Property marker — red
+  const propIcon = L.divIcon({
+    html: `<div style="background:#E53935;width:36px;height:36px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,0.3)"></div>`,
+    iconSize: [36, 36], iconAnchor: [18, 36], className: ''
+  });
+  const propMarker = L.marker([lat, lng], { icon: propIcon })
+    .addTo(_mapInstance)
+    .bindPopup(`<div style="font-family:Poppins,sans-serif;min-width:160px">
+      <strong style="font-size:0.85rem;color:#0D1B2A">${title}</strong><br>
+      <span style="color:#E53935;font-size:0.75rem">\ud83c\udfe0 ${area}, ${city}</span>
+    </div>`);
+  propMarker.openPopup();
+
+  // User current location
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function(pos) {
+        const uLat = pos.coords.latitude;
+        const uLng = pos.coords.longitude;
+
+        // User marker — blue
+        const userIcon = L.divIcon({
+          html: `<div style="width:18px;height:18px;background:#1565c0;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 8px rgba(21,101,192,0.5)"></div>
+                 <div style="width:40px;height:40px;background:rgba(21,101,192,0.15);border-radius:50%;position:absolute;top:-11px;left:-11px;animation:pulse 1.5s infinite"></div>`,
+          iconSize: [18, 18], iconAnchor: [9, 9], className: ''
+        });
+        L.marker([uLat, uLng], { icon: userIcon })
+          .addTo(_mapInstance)
+          .bindPopup(`<div style="font-family:Poppins,sans-serif"><strong style="color:#1565c0">\ud83d\udccd Aap Yahan Hain</strong></div>`);
+
+        // Distance calculate karo (Haversine formula)
+        const R = 6371;
+        const dLat = (lat - uLat) * Math.PI / 180;
+        const dLng = (lng - uLng) * Math.PI / 180;
+        const a = Math.sin(dLat/2)*Math.sin(dLat/2) +
+                  Math.cos(uLat*Math.PI/180)*Math.cos(lat*Math.PI/180)*
+                  Math.sin(dLng/2)*Math.sin(dLng/2);
+        const dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        const distStr = dist < 1 ? (dist*1000).toFixed(0)+' m' : dist.toFixed(1)+' km';
+
+        // Distance badge map pe dikhao
+        const distControl = L.control({ position: 'topleft' });
+        distControl.onAdd = function() {
+          const d = L.DomUtil.create('div');
+          d.innerHTML = `<div style="background:#fff;border-radius:10px;padding:8px 14px;box-shadow:0 2px 10px rgba(0,0,0,0.15);font-family:Poppins,sans-serif;font-size:0.78rem;font-weight:700;color:#0D1B2A;display:flex;align-items:center;gap:6px">
+            <span style="color:#E53935">\ud83d\udccd</span> Aapse <span style="color:#E53935">${distStr}</span> door
+          </div>`;
+          return d;
+        };
+        distControl.addTo(_mapInstance);
+
+        // Dono markers fit karo view mein
+        const bounds = L.latLngBounds([[uLat, uLng], [lat, lng]]);
+        _mapInstance.fitBounds(bounds, { padding: [50, 50] });
+
+        // Line draw karo user se property tak
+        L.polyline([[uLat, uLng], [lat, lng]], {
+          color: '#E53935', weight: 2, dashArray: '6,8', opacity: 0.7
+        }).addTo(_mapInstance);
+
+        // Google Maps directions link update karo
+        document.getElementById('pdMapLink').href =
+          `https://www.google.com/maps/dir/${uLat},${uLng}/${lat},${lng}`;
+        document.getElementById('pdMapLink').innerHTML =
+          '<i class="fa-solid fa-route"></i> Get Directions (' + distStr + ')';
+      },
+      function() {} // Permission denied — silently ignore
+    );
+  }
+}
+
+// ===== SIMILAR PROPERTIES =====
+async function loadSimilar(p) {
+  const grid = document.getElementById('similarGrid');
+  if (!grid) return;
+  try {
+    const url = `${API}/properties?type=${p.type || ''}&city=${p.location?.city || ''}&limit=4`;
+    const res  = await fetch(url);
+    const data = await res.json();
+    const list = (data.properties || []).filter(x => x._id !== p._id).slice(0, 3);
+    if (!list.length) { grid.closest('.similar-section').style.display = 'none'; return; }
+    grid.innerHTML = list.map(x => {
+      const img   = x.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80';
+      const price = x.priceLabel || ('\u20b9' + x.price);
+      const loc   = (x.location?.area || '') + ', ' + (x.location?.city || '');
+      return `<div class="prop-card" onclick="window.location.href='property-detail.html?id=${x._id}'" style="cursor:pointer">
+        <div class="card-img"><img src="${img}" alt="${x.title}" loading="lazy"/>
+          <div class="card-price"><span>${price}</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-loc"><i class="fa-solid fa-location-dot"></i>${loc}</div>
+          <div class="card-title">${x.title}</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch { grid.closest('.similar-section').style.display = 'none'; }
+}
 </script>
 </body>
 </html>

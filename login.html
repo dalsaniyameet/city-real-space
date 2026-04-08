@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login – City Real Space</title>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="responsive.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
@@ -108,7 +109,7 @@
     <div class="page-left-bg"></div>
     <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
     <div class="pl-brand">
-      <span class="logo-icon"><i class="fa-solid fa-building-columns"></i></span>
+      <img src="images/logo.jpeg" alt="City Real Space" style="height:42px;width:42px;object-fit:contain;border-radius:10px;flex-shrink:0;"/>
       <span class="logo-text">City <span>Real</span> Space</span>
     </div>
     <h2>Gujarat's Most Trusted<br/>Real Estate Platform</h2>
@@ -164,23 +165,32 @@
     </div>
 
     <!-- LOGIN OTP VERIFY -->
-    <div id="loginOtpWrap" style="display:none">
-      <div style="text-align:center;margin-bottom:24px">
-        <div style="width:72px;height:72px;background:linear-gradient(135deg,#1565c0,#0d47a1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.8rem;color:#fff"><i class="fa-solid fa-shield-halved"></i></div>
-        <h3 style="font-size:1.4rem;font-weight:800;color:#0D1B2A;margin:0 0 6px">Verify Your Login</h3>
-        <p style="font-size:0.85rem;color:#888">OTP sent to <strong id="loginOtpEmailDisplay" style="color:#E53935"></strong></p>
-      </div>
-      <div class="form-grp">
-        <label>Enter 6-Digit OTP</label>
-        <div class="finput">
-          <i class="fa-solid fa-key"></i>
-          <input type="text" id="loginOtpInput" placeholder="● ● ● ● ● ●" maxlength="6" style="text-align:center;font-size:1.5rem;font-weight:800;letter-spacing:12px"/>
+    <div id="loginOtpWrap" style="display:none;padding:10px 0">
+      <div style="text-align:center;margin-bottom:28px">
+        <div style="width:76px;height:76px;background:linear-gradient(135deg,#1565c0,#0d47a1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:2rem;color:#fff;box-shadow:0 8px 24px rgba(21,101,192,0.3)">
+          <i class="fa-solid fa-shield-halved"></i>
         </div>
+        <h3 style="font-size:1.5rem;font-weight:800;color:#0D1B2A;margin:0 0 8px">Check Your Email</h3>
+        <p style="font-size:0.85rem;color:#888;margin:0">We sent a 6-digit OTP to</p>
+        <p style="font-size:0.95rem;font-weight:700;color:#E53935;margin:4px 0 0" id="loginOtpEmailDisplay"></p>
       </div>
-      <p id="loginOtpMsg" style="font-size:0.82rem;margin:6px 0 12px;text-align:center"></p>
-      <button id="loginOtpVerifyBtn" onclick="verifyLoginPageOTP()" class="btn-submit">Verify & Login <i class="fa-solid fa-arrow-right"></i></button>
-      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px">Didn't get OTP? <a href="javascript:void(0)" onclick="resendLoginOTP()" style="color:#E53935;font-weight:600">Resend</a></p>
-      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:8px"><a href="javascript:void(0)" onclick="document.getElementById('loginFormWrap').style.display='';document.getElementById('loginOtpWrap').style.display='none'" style="color:#555"><i class="fa-solid fa-arrow-left"></i> Back to Login</a></p>
+
+      <div class="form-grp">
+        <label style="font-size:0.8rem;font-weight:600;color:#555">Enter 6-Digit OTP</label>
+        <div class="finput" style="justify-content:center">
+          <i class="fa-solid fa-key"></i>
+          <input type="text" id="loginOtpInput" placeholder="● ● ● ● ● ●" maxlength="6" style="text-align:center;font-size:1.6rem;font-weight:800;letter-spacing:14px;width:100%"/>
+        </div>
+        <small style="color:#aaa;font-size:0.75rem;margin-top:4px">OTP is valid for 10 minutes</small>
+      </div>
+
+      <p id="loginOtpMsg" style="font-size:0.82rem;margin:4px 0 12px;text-align:center"></p>
+      <button id="loginOtpVerifyBtn" onclick="verifyLoginPageOTP()" class="btn-submit">Verify &amp; Login <i class="fa-solid fa-arrow-right"></i></button>
+
+      <div style="text-align:center;margin-top:12px">
+        <a href="javascript:void(0)" onclick="resendLoginOTP()" style="font-size:0.8rem;color:#E53935;font-weight:700;text-decoration:none;margin-right:16px"><i class="fa-solid fa-rotate-right" style="margin-right:4px"></i>Resend OTP</a>
+        <a href="javascript:void(0)" onclick="document.getElementById('loginFormWrap').style.display='';document.getElementById('loginOtpWrap').style.display='none'" style="font-size:0.8rem;color:#555;font-weight:600;text-decoration:none"><i class="fa-solid fa-pen" style="margin-right:4px"></i>Change Email</a>
+      </div>
     </div>
   </div>
 
@@ -254,7 +264,7 @@ const API = (function() {
   if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     return 'http://localhost:5000/api';
   }
-  return 'https://city-real-space.onrender.com/api';
+  return '/api';
 })();
 let fpEmailVal = '', fpOTPVal = '';
 
@@ -475,39 +485,136 @@ async function submitVerifyOTP() {
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
-function googleLogin() {
-  google.accounts.oauth2.initTokenClient({
-    client_id: 'YOUR_GOOGLE_CLIENT_ID',
-    scope: 'email profile',
-    callback: async (resp) => {
-      if (resp.error) return;
-      try {
-        const info = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-          headers: { Authorization: 'Bearer ' + resp.access_token }
-        }).then(r => r.json());
+const GOOGLE_CLIENT_ID = '938888295105-0dum7btst785tagbctohg8a3k99osvid.apps.googleusercontent.com';
 
-        const res  = await fetch(`${API}/auth/google`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            firstName: info.given_name || info.name.split(' ')[0],
-            lastName:  info.family_name || info.name.split(' ')[1] || '',
-            email:     info.email,
-            googleId:  info.sub,
-            avatar:    info.picture
-          })
-        });
-        const data = await res.json();
-        if (data.success) {
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('user', JSON.stringify(data.user));
-          window.location.href = 'index.html';
-        } else {
-          alert(data.message || 'Google login failed');
-        }
-      } catch { alert('Google login error. Try again.'); }
+// Google One Tap — ID token (credential) backend ko bhejta hai
+// Pehle wala access_token approach insecure tha — koi bhi fake data bhej sakta tha
+window.addEventListener('load', () => {
+  if (!window.google) return;
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleCredential,
+    auto_select: false
+  });
+});
+
+async function handleGoogleCredential(response) {
+  try {
+    const res = await fetch(`${API}/auth/google`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credential: response.credential })
+    });
+    const data = await res.json();
+    if (data.success) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      if (data.needsProfile) {
+        showCompleteProfile(data.token);
+      } else {
+        localStorage.setItem('showWelcome', data.isNew ? 'register' : 'login');
+        window.location.href = 'index.html';
+      }
+    } else {
+      alert(data.message || 'Google login failed');
     }
-  }).requestAccessToken();
+  } catch { alert('Google login error. Try again.'); }
+}
+
+function googleLogin() {
+  if (!window.google) {
+    alert('Google login is loading. Please try again in a moment.');
+    return;
+  }
+  google.accounts.id.prompt();
+}
+</script>
+<!-- COMPLETE PROFILE OVERLAY (Google Login) -->
+<div id="completeProfileOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:99999;align-items:center;justify-content:center;font-family:Poppins,sans-serif">
+  <div style="background:#fff;border-radius:20px;padding:36px;width:100%;max-width:420px;margin:20px;position:relative">
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="width:64px;height:64px;background:linear-gradient(135deg,#E53935,#c62828);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.6rem;color:#fff"><i class="fa-brands fa-google"></i></div>
+      <h3 style="font-size:1.3rem;font-weight:800;color:#0D1B2A;margin:0 0 6px">Complete Your Profile</h3>
+      <p style="color:#888;font-size:0.83rem">Just 2 more details to finish setup</p>
+    </div>
+    <div class="form-grp">
+      <label style="font-size:0.8rem;font-weight:600;color:#555">Mobile Number</label>
+      <div class="finput"><i class="fa-solid fa-phone" style="color:#E53935;font-size:0.85rem"></i><span style="font-size:0.85rem;font-weight:600;color:#555;border-right:1px solid #e8e8e8;padding-right:10px;flex-shrink:0">+91</span><input type="tel" id="cpPhone" placeholder="10-digit mobile number" maxlength="10" style="flex:1;border:none;outline:none;font-size:0.87rem;color:#333;font-family:Poppins,sans-serif"/></div>
+    </div>
+    <div class="form-grp" style="margin-bottom:8px">
+      <label style="font-size:0.8rem;font-weight:600;color:#555">I am a</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px">
+        <div id="cpRoleUser" onclick="cpSelectRole('buyer')" style="border:2px solid #e8e8e8;border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all 0.2s">
+          <i class="fa-solid fa-user" style="font-size:1.2rem;color:#bbb"></i>
+          <div style="font-size:0.82rem;font-weight:700;color:#333;margin-top:4px">User</div>
+          <div style="font-size:0.7rem;color:#999">Buyer / Tenant</div>
+        </div>
+        <div id="cpRoleOwner" onclick="cpSelectRole('seller')" style="border:2px solid #e8e8e8;border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all 0.2s">
+          <i class="fa-solid fa-building" style="font-size:1.2rem;color:#bbb"></i>
+          <div style="font-size:0.82rem;font-weight:700;color:#333;margin-top:4px">Owner / Agent</div>
+          <div style="font-size:0.7rem;color:#999">Seller / Builder</div>
+        </div>
+      </div>
+      <input type="hidden" id="cpRole" value="buyer"/>
+    </div>
+    <div class="form-grp">
+      <label style="font-size:0.8rem;font-weight:600;color:#555">City</label>
+      <div class="finput"><i class="fa-solid fa-location-dot" style="color:#E53935;font-size:0.85rem"></i>
+        <select id="cpCity" style="flex:1;border:none;outline:none;font-size:0.87rem;color:#333;font-family:Poppins,sans-serif;background:transparent;cursor:pointer">
+          <option value="">Select City</option>
+          <option>Ahmedabad</option><option>Gandhinagar</option><option>Surat</option><option>Vadodara</option><option>Rajkot</option>
+        </select>
+      </div>
+    </div>
+    <p id="cpMsg" style="font-size:0.82rem;color:#E53935;text-align:center;margin:8px 0"></p>
+    <button onclick="submitCompleteProfile()" class="btn-submit" style="margin-top:4px">Save & Continue <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</div>
+<script>
+let _cpToken = '';
+function cpSelectRole(role) {
+  document.getElementById('cpRole').value = role;
+  const userCard  = document.getElementById('cpRoleUser');
+  const ownerCard = document.getElementById('cpRoleOwner');
+  const sel = 'border:2px solid #E53935;border-radius:10px;padding:12px;text-align:center;cursor:pointer;background:#fff5f5';
+  const unsel = 'border:2px solid #e8e8e8;border-radius:10px;padding:12px;text-align:center;cursor:pointer';
+  userCard.style.cssText  = role === 'buyer'  ? sel : unsel;
+  ownerCard.style.cssText = role === 'seller' ? sel : unsel;
+  userCard.querySelector('i').style.color  = role === 'buyer'  ? '#E53935' : '#bbb';
+  ownerCard.querySelector('i').style.color = role === 'seller' ? '#E53935' : '#bbb';
+}
+function showCompleteProfile(token) {
+  _cpToken = token;
+  cpSelectRole('buyer');
+  document.getElementById('completeProfileOverlay').style.display = 'flex';
+}
+async function submitCompleteProfile() {
+  const phone = document.getElementById('cpPhone').value.trim();
+  const role  = document.getElementById('cpRole').value;
+  const city  = document.getElementById('cpCity').value;
+  const msg   = document.getElementById('cpMsg');
+  if (!phone || phone.length !== 10) { msg.textContent = 'Enter valid 10-digit mobile number'; return; }
+  if (!city) { msg.textContent = 'Please select your city'; return; }
+  msg.textContent = '';
+  try {
+    const res  = await fetch(API + '/auth/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + _cpToken },
+      body: JSON.stringify({ phone, city,
+        firstName: JSON.parse(localStorage.getItem('user') || '{}').firstName,
+        lastName:  JSON.parse(localStorage.getItem('user') || '{}').lastName,
+        role })
+    });
+    const data = await res.json();
+    if (data.success) {
+      const u = JSON.parse(localStorage.getItem('user') || '{}');
+      u.phone = phone; u.city = city; u.role = role;
+      localStorage.setItem('user', JSON.stringify(u));
+      document.getElementById('completeProfileOverlay').style.display = 'none';
+      localStorage.setItem('showWelcome', 'register');
+      window.location.href = 'index.html';
+    } else { msg.textContent = data.message || 'Error saving profile'; }
+  } catch { msg.textContent = 'Server error. Try again.'; }
 }
 </script>
 </body>

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Post Your Property – City Real Space</title>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="responsive.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
@@ -544,7 +545,9 @@
 </div><!-- end pp-outer -->
 
 <script>
-const API = 'https://city-real-space.onrender.com/api';
+const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:5000/api'
+  : '/api';
 const uploadedFiles = [];
 
 // ===== CITY → LOCALITY → SUBAREA → PROJECT DATA =====
@@ -643,6 +646,38 @@ if (userMenuBtn) {
 }
 
 checkAuthState();
+
+// ===== EDIT MODE — URL mein ?edit=id ho toh prefill karo =====
+(async function checkEditMode() {
+  const editId = new URLSearchParams(window.location.search).get('edit');
+  if (!editId) return;
+  document.querySelector('.page-header h1').textContent = 'Edit Your Property';
+  document.querySelector('.badge').innerHTML = '<i class="fas fa-pen"></i> Edit Listing';
+  document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i> Save Changes';
+  try {
+    const token = localStorage.getItem('token');
+    const res   = await fetch('https://city-real-space.onrender.com/api/properties/' + editId);
+    const data  = await res.json();
+    if (!data.success) return;
+    const p = data.property;
+    // Fill form
+    document.getElementById('title').value       = p.title || '';
+    document.getElementById('description').value = p.description || '';
+    document.getElementById('price').value        = p.price || '';
+    document.getElementById('superArea').value    = p.specs?.sqft || '';
+    if (p.location?.city)     { document.getElementById('city').value = p.location.city; document.getElementById('city').dispatchEvent(new Event('change')); }
+    setTimeout(() => {
+      if (p.location?.area)   document.getElementById('locality').value = p.location.area;
+      if (p.type)             document.getElementById('propType').value = p.type;
+      if (p.category)         document.getElementById('category').value = p.category;
+      if (p.specs?.furnished) document.getElementById('furnished').value = p.specs.furnished;
+      updateFeatureVisibility();
+      updateScore();
+    }, 300);
+    // Override submit to use PUT /owner
+    document.getElementById('mainForm').dataset.editId = editId;
+  } catch(e) { console.error('Edit load error:', e); }
+})();
 
 // ===== HAMBURGER =====
 document.getElementById('hamburger').addEventListener('click', () => {
@@ -1039,7 +1074,7 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
           body: fd
         });
         const data = await res.json();
-        if (data.success) imageUrls.push('http://localhost:5000' + data.url);
+        if (data.success) imageUrls.push(data.fullUrl || ('https://city-real-space.onrender.com' + data.url));
       } catch(e) {}
     }
   }
@@ -1079,26 +1114,34 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
     }
   };
 
-  // Try backend first
+  // Submit to backend
   try {
     const token = localStorage.getItem('token');
-    const headers = { 'Content-Type': 'application/json' };
-    if (token) headers['Authorization'] = 'Bearer ' + token;
-    const endpoint = token ? `${API}/properties/user-post` : `${API}/properties`;
-    const res = await fetch(endpoint, { method: 'POST', headers, body: JSON.stringify(payload) });
+    if (!token) {
+      sessionStorage.setItem('redirectAfterLogin', window.location.href);
+      window.location.href = 'login.html?msg=login-required';
+      return;
+    }
+    const editId = document.getElementById('mainForm').dataset.editId;
+    const url    = editId
+      ? `${API}/properties/${editId}/owner`
+      : `${API}/properties/user-post`;
+    const method = editId ? 'PUT' : 'POST';
+    const res = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify(payload)
+    });
     const data = await res.json();
     if (data.success || res.ok) {
       showSuccess();
       return;
+    } else {
+      alert(data.message || 'Submission failed. Please try again.');
     }
   } catch(err) {
-    // Backend not available — save locally and show success
-    const pending = JSON.parse(localStorage.getItem('pendingProperties') || '[]');
-    pending.push({ ...payload, submittedAt: new Date().toISOString() });
-    localStorage.setItem('pendingProperties', JSON.stringify(pending));
+    alert('Server error. Please try again.');
   }
-
-  showSuccess();
 });
 
 function showSuccess() {
@@ -1152,9 +1195,9 @@ function showSuccess() {
   <div class="footer-top">
     <div class="container footer-grid">
       <div class="footer-col">
-        <a href="index.html" class="logo footer-logo">
-          <span class="logo-icon"><i class="fa-solid fa-building-columns"></i></span>
-          <span class="logo-text">City <span class="yellow">Real</span> Space</span>
+        <a href="index.html" class="footer-logo" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
+          <img src="images/logo.jpeg" alt="City Real Space" style="height:52px;width:52px;object-fit:contain;border-radius:10px;background:#fff;padding:4px;"/>
+          <span style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1.2;">City <span style="color:#FFC107;">Real</span> Space</span>
         </a>
         <p class="footer-about">Ahmedabad's most trusted real estate platform. We connect buyers, sellers and investors with verified properties across Gujarat.</p>
         <div class="social-links">

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Register – City Real Space</title>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="responsive.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
@@ -127,7 +128,7 @@
     <div class="page-left-bg"></div>
     <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
     <div class="pl-brand">
-      <span class="logo-icon"><i class="fa-solid fa-building-columns"></i></span>
+      <img src="images/logo.jpeg" alt="City Real Space" style="height:42px;width:42px;object-fit:contain;border-radius:10px;flex-shrink:0;"/>
       <span class="logo-text">City <span>Real</span> Space</span>
     </div>
     <h2>Start Your Property<br/>Journey Today</h2>
@@ -182,10 +183,11 @@
           <label>Email Address</label>
           <div class="finput" id="emailInputWrap">
             <i class="fa-solid fa-envelope"></i>
-            <input type="email" id="regEmail" placeholder="Email Address" required oninput="validateEmail(this.value)" onblur="validateEmail(this.value)"/>
+            <input type="email" id="regEmail" placeholder="Email Address" required oninput="validateEmail(this.value);document.getElementById('emailExistsMsg').style.display='none';document.getElementById('emailInputWrap').style.borderColor=''" onblur="validateEmail(this.value)"/>
             <i id="emailIcon" style="font-size:0.85rem;display:none"></i>
           </div>
           <small id="emailMsg" style="font-size:0.75rem;margin-top:4px;display:none"></small>
+          <small id="emailExistsMsg" style="font-size:0.78rem;margin-top:5px;display:none;color:#E53935;font-weight:600"><i class="fa-solid fa-circle-exclamation"></i> <span id="emailExistsText"></span></small>
         </div>
         <div class="form-grp">
           <label>I am a <span style="color:#E53935">*</span></label>
@@ -234,32 +236,49 @@
         <button type="submit" class="btn-submit">Create Free Account <i class="fa-solid fa-arrow-right"></i></button>
       </form>
 
-      <div class="divider"><span>or continue with</span></div>
-      <div class="social-row">
-        <button class="soc-btn" onclick="googleLogin()"><i class="fa-brands fa-google"></i> Google</button>
-        <button class="soc-btn"><i class="fa-brands fa-facebook-f"></i> Facebook</button>
-      </div>
       <p class="switch-link">Already have an account? <a href="login.html">Login Here</a></p>
     </div>
 
     <!-- OTP SCREEN -->
-    <div id="regOtpWrap" style="display:none">
-      <div style="text-align:center;margin-bottom:24px">
-        <div style="width:72px;height:72px;background:linear-gradient(135deg,#E53935,#c62828);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.8rem;color:#fff"><i class="fa-solid fa-envelope-open-text"></i></div>
-        <h3 style="font-size:1.4rem;font-weight:800;color:#0D1B2A;margin:0 0 6px">Verify Your Email</h3>
-        <p style="font-size:0.85rem;color:#888">OTP sent to <strong id="regOtpEmailDisplay" style="color:#E53935"></strong></p>
-      </div>
-      <div class="form-grp">
-        <label>Enter 6-Digit OTP</label>
-        <div class="finput">
-          <i class="fa-solid fa-key"></i>
-          <input type="text" id="regOtpInput" placeholder="● ● ● ● ● ●" maxlength="6" style="text-align:center;font-size:1.5rem;font-weight:800;letter-spacing:12px"/>
+    <div id="regOtpWrap" style="display:none;padding:10px 0">
+      <div style="text-align:center;margin-bottom:28px">
+        <div style="width:76px;height:76px;background:linear-gradient(135deg,#E53935,#c62828);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:2rem;color:#fff;box-shadow:0 8px 24px rgba(229,57,53,0.3)">
+          <i class="fa-solid fa-envelope-open-text"></i>
         </div>
+        <h3 style="font-size:1.5rem;font-weight:800;color:#0D1B2A;margin:0 0 8px">Check Your Email</h3>
+        <p style="font-size:0.85rem;color:#888;margin:0">We sent a 6-digit OTP to</p>
+        <p style="font-size:0.95rem;font-weight:700;color:#E53935;margin:4px 0 0" id="regOtpEmailDisplay"></p>
       </div>
-      <p id="regOtpMsg" style="font-size:0.82rem;margin:6px 0 12px;text-align:center"></p>
-      <button id="regOtpVerifyBtn" onclick="verifyRegOTP()" class="btn-submit">Verify & Create Account <i class="fa-solid fa-check"></i></button>
-      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:14px">Didn't get OTP? <a href="#" onclick="resendRegOTP()" style="color:#E53935;font-weight:600">Resend</a></p>
-      <p style="text-align:center;font-size:0.82rem;color:#888;margin-top:8px"><a href="#" onclick="document.getElementById('regFormWrap').style.display='';document.getElementById('regOtpWrap').style.display='none'" style="color:#555"><i class="fa-solid fa-arrow-left"></i> Back</a></p>
+
+      <div class="form-grp">
+        <label style="font-size:0.8rem;font-weight:600;color:#555">Enter 6-Digit OTP</label>
+        <div class="finput" style="justify-content:center">
+          <i class="fa-solid fa-key"></i>
+          <input type="text" id="regOtpInput" placeholder="● ● ● ● ● ●" maxlength="6" style="text-align:center;font-size:1.6rem;font-weight:800;letter-spacing:14px;width:100%"/>
+        </div>
+        <small style="color:#aaa;font-size:0.75rem;margin-top:4px">OTP is valid for 10 minutes</small>
+      </div>
+
+      <p id="regOtpMsg" style="font-size:0.82rem;margin:4px 0 8px;text-align:center"></p>
+      <div style="text-align:center;margin-bottom:14px">
+        <span style="font-size:0.82rem;color:#888">OTP expires in: </span>
+        <span id="otpTimerDisplay" style="font-size:0.9rem;font-weight:800;color:#E53935">1:00</span>
+      </div>
+      <button id="regOtpVerifyBtn" onclick="verifyRegOTP()" class="btn-submit">Verify &amp; Create Account <i class="fa-solid fa-check"></i></button>
+
+      <div style="text-align:center;margin-top:8px">
+        <a href="#" onclick="resendRegOTP()" style="font-size:0.8rem;color:#E53935;font-weight:700;text-decoration:none;margin-right:16px"><i class="fa-solid fa-rotate-right" style="margin-right:4px"></i>Resend OTP</a>
+        <a href="#" onclick="document.getElementById('regFormWrap').style.display='';document.getElementById('regOtpWrap').style.display='none'" style="font-size:0.8rem;color:#555;font-weight:600;text-decoration:none"><i class="fa-solid fa-pen" style="margin-right:4px"></i>Change Email</a>
+      </div>
+
+      <div id="regOtpHelpBox" style="display:none;background:#f8faff;border:1.5px solid #dce8ff;border-radius:12px;padding:14px 16px;margin-top:14px">
+        <p style="font-size:0.82rem;font-weight:700;color:#1a3a6c;margin:0 0 8px"><i class="fa-solid fa-circle-info" style="color:#3b82f6;margin-right:6px"></i>Didn't receive the OTP?</p>
+        <ul style="margin:0;padding-left:18px;font-size:0.79rem;color:#555;line-height:1.9">
+          <li>Check your <strong>Spam</strong> or <strong>Junk</strong> folder</li>
+          <li>Make sure the email address above is correct</li>
+          <li>Wait up to 1–2 minutes before requesting again</li>
+        </ul>
+      </div>
     </div>
 
     <!-- SUCCESS SCREEN -->
@@ -372,16 +391,22 @@ async function handleRegister(e) {
     console.log('📨 Backend response:', data);
     
     if (data.success) {
-      console.log('✅ OTP needed - showing OTP screen');
       document.getElementById('regFormWrap').style.display = 'none';
       document.getElementById('regOtpWrap').style.display = 'block';
       document.getElementById('regOtpEmailDisplay').textContent = email;
       document.getElementById('regOtpWrap').dataset.email = email;
       document.getElementById('regOtpInput').value = '';
       document.getElementById('regOtpInput').focus();
+      startOtpTimer();
     } else {
-      console.error('❌ Registration failed:', data.message);
-      alert(data.message || 'Registration failed');
+      // Show error inline below email field
+      const existsMsg = document.getElementById('emailExistsMsg');
+      const existsText = document.getElementById('emailExistsText');
+      const wrap = document.getElementById('emailInputWrap');
+      existsText.textContent = data.message || 'Registration failed';
+      existsMsg.style.display = 'block';
+      wrap.style.borderColor = '#E53935';
+      document.getElementById('regEmail').focus();
     }
   } catch(err) {
     console.error('🚨 Fetch error:', err);
@@ -433,37 +458,66 @@ async function verifyRegOTP() {
 async function resendRegOTP() {
   const email = document.getElementById('regOtpWrap').dataset.email;
   if (!email) return;
+  document.getElementById('regOtpHelpBox').style.display = 'block';
   try {
-    console.log('🔄 Resend OTP:', { email });
     const res  = await fetch(`${API}/auth/resend-otp`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
     const data = await res.json();
-    console.log('📨 Resend response:', data);
-    
     const msg  = document.getElementById('regOtpMsg');
     msg.style.color = data.success ? '#27ae60' : '#E53935';
     msg.textContent = data.success ? 'OTP resent to ' + email : (data.message || 'Error');
-  } catch(err) { 
-    console.error('🚨 Resend error:', err);
-    document.getElementById('regOtpMsg').textContent = 'Server error'; 
+    if (data.success) startOtpTimer();
+  } catch(err) {
+    document.getElementById('regOtpMsg').textContent = 'Server error';
   }
+}
+
+let _otpTimerInterval = null;
+function startOtpTimer() {
+  clearInterval(_otpTimerInterval);
+  let secs = 60;
+  const display = document.getElementById('otpTimerDisplay');
+  const btn = document.getElementById('regOtpVerifyBtn');
+  display.style.color = '#E53935';
+  display.textContent = '1:00';
+  btn.disabled = false;
+  _otpTimerInterval = setInterval(function() {
+    secs--;
+    const m = Math.floor(secs / 60);
+    const s = secs % 60;
+    display.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    if (secs <= 10) display.style.color = '#c62828';
+    if (secs <= 0) {
+      clearInterval(_otpTimerInterval);
+      display.textContent = 'Expired';
+      display.style.color = '#999';
+      btn.disabled = true;
+      btn.innerHTML = 'OTP Expired — Resend';
+      const msg = document.getElementById('regOtpMsg');
+      msg.style.color = '#E53935';
+      msg.textContent = 'OTP expired. Click Resend OTP to get a new one.';
+    }
+  }, 1000);
 }
 </script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
+const GOOGLE_CLIENT_ID = '938888295105-0dum7btst785tagbctohg8a3k99osvid.apps.googleusercontent.com';
+
 function googleLogin() {
+  if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === 'PASTE_YOUR_CLIENT_ID_HERE') {
+    alert('Google login is being configured. Please use email/password login for now.');
+    return;
+  }
   google.accounts.oauth2.initTokenClient({
-    client_id: 'YOUR_GOOGLE_CLIENT_ID',
+    client_id: GOOGLE_CLIENT_ID,
     scope: 'email profile',
     callback: async (resp) => {
       if (resp.error) return;
       try {
-        // Get user info from Google
         const info = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
           headers: { Authorization: 'Bearer ' + resp.access_token }
         }).then(r => r.json());
-
-        // Auto-register or login via backend
-        const res  = await fetch(`${API}/auth/google`, {
+        const res = await fetch(`${API}/auth/google`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -478,14 +532,106 @@ function googleLogin() {
         if (data.success) {
           localStorage.setItem('token', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
-          localStorage.setItem('showWelcome', 'register');
-          window.location.href = 'index.html';
+          if (data.needsProfile) {
+            showCompleteProfile(data.token);
+          } else {
+            localStorage.setItem('showWelcome', 'register');
+            window.location.href = 'index.html';
+          }
         } else {
           alert(data.message || 'Google login failed');
         }
       } catch { alert('Google login error. Try again.'); }
     }
   }).requestAccessToken();
+}
+</script>
+<!-- COMPLETE PROFILE OVERLAY (Google Login) -->
+<div id="completeProfileOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:99999;align-items:center;justify-content:center;font-family:Poppins,sans-serif">
+  <div style="background:#fff;border-radius:20px;padding:36px;width:100%;max-width:420px;margin:20px;position:relative">
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="width:64px;height:64px;background:linear-gradient(135deg,#E53935,#c62828);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.6rem;color:#fff"><i class="fa-brands fa-google"></i></div>
+      <h3 style="font-size:1.3rem;font-weight:800;color:#0D1B2A;margin:0 0 6px">Complete Your Profile</h3>
+      <p style="color:#888;font-size:0.83rem">Just 2 more details to finish setup</p>
+    </div>
+    <div class="form-grp">
+      <label style="font-size:0.8rem;font-weight:600;color:#555">Mobile Number</label>
+      <div class="finput"><i class="fa-solid fa-phone" style="color:#E53935;font-size:0.85rem"></i><span style="font-size:0.85rem;font-weight:600;color:#555;border-right:1px solid #e8e8e8;padding-right:10px;flex-shrink:0">+91</span><input type="tel" id="cpPhone" placeholder="10-digit mobile number" maxlength="10" style="flex:1;border:none;outline:none;font-size:0.87rem;color:#333;font-family:Poppins,sans-serif"/></div>
+    </div>
+    <div class="form-grp" style="margin-bottom:8px">
+      <label style="font-size:0.8rem;font-weight:600;color:#555">I am a</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px">
+        <div id="cpRoleUser" onclick="cpSelectRole('buyer')" style="border:2px solid #e8e8e8;border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all 0.2s">
+          <i class="fa-solid fa-user" style="font-size:1.2rem;color:#bbb"></i>
+          <div style="font-size:0.82rem;font-weight:700;color:#333;margin-top:4px">User</div>
+          <div style="font-size:0.7rem;color:#999">Buyer / Tenant</div>
+        </div>
+        <div id="cpRoleOwner" onclick="cpSelectRole('seller')" style="border:2px solid #e8e8e8;border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all 0.2s">
+          <i class="fa-solid fa-building" style="font-size:1.2rem;color:#bbb"></i>
+          <div style="font-size:0.82rem;font-weight:700;color:#333;margin-top:4px">Owner / Agent</div>
+          <div style="font-size:0.7rem;color:#999">Seller / Builder</div>
+        </div>
+      </div>
+      <input type="hidden" id="cpRole" value="buyer"/>
+    </div>
+    <div class="form-grp">
+      <label style="font-size:0.8rem;font-weight:600;color:#555">City</label>
+      <div class="finput"><i class="fa-solid fa-location-dot" style="color:#E53935;font-size:0.85rem"></i>
+        <select id="cpCity" style="flex:1;border:none;outline:none;font-size:0.87rem;color:#333;font-family:Poppins,sans-serif;background:transparent;cursor:pointer">
+          <option value="">Select City</option>
+          <option>Ahmedabad</option><option>Gandhinagar</option><option>Surat</option><option>Vadodara</option><option>Rajkot</option>
+        </select>
+      </div>
+    </div>
+    <p id="cpMsg" style="font-size:0.82rem;color:#E53935;text-align:center;margin:8px 0"></p>
+    <button onclick="submitCompleteProfile()" class="btn-submit" style="margin-top:4px">Save & Continue <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</div>
+<script>
+let _cpToken = '';
+function cpSelectRole(role) {
+  document.getElementById('cpRole').value = role;
+  const userCard  = document.getElementById('cpRoleUser');
+  const ownerCard = document.getElementById('cpRoleOwner');
+  const sel = 'border:2px solid #E53935;border-radius:10px;padding:12px;text-align:center;cursor:pointer;background:#fff5f5';
+  const unsel = 'border:2px solid #e8e8e8;border-radius:10px;padding:12px;text-align:center;cursor:pointer';
+  userCard.style.cssText  = role === 'buyer'  ? sel : unsel;
+  ownerCard.style.cssText = role === 'seller' ? sel : unsel;
+  userCard.querySelector('i').style.color  = role === 'buyer'  ? '#E53935' : '#bbb';
+  ownerCard.querySelector('i').style.color = role === 'seller' ? '#E53935' : '#bbb';
+}
+function showCompleteProfile(token) {
+  _cpToken = token;
+  cpSelectRole('buyer');
+  document.getElementById('completeProfileOverlay').style.display = 'flex';
+}
+async function submitCompleteProfile() {
+  const phone = document.getElementById('cpPhone').value.trim();
+  const role  = document.getElementById('cpRole').value;
+  const city  = document.getElementById('cpCity').value;
+  const msg   = document.getElementById('cpMsg');
+  if (!phone || phone.length !== 10) { msg.textContent = 'Enter valid 10-digit mobile number'; return; }
+  if (!city) { msg.textContent = 'Please select your city'; return; }
+  msg.textContent = '';
+  try {
+    const res  = await fetch(API + '/auth/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + _cpToken },
+      body: JSON.stringify({ phone, city,
+        firstName: JSON.parse(localStorage.getItem('user') || '{}').firstName,
+        lastName:  JSON.parse(localStorage.getItem('user') || '{}').lastName,
+        role })
+    });
+    const data = await res.json();
+    if (data.success) {
+      const u = JSON.parse(localStorage.getItem('user') || '{}');
+      u.phone = phone; u.city = city; u.role = role;
+      localStorage.setItem('user', JSON.stringify(u));
+      document.getElementById('completeProfileOverlay').style.display = 'none';
+      localStorage.setItem('showWelcome', 'register');
+      window.location.href = 'index.html';
+    } else { msg.textContent = data.message || 'Error saving profile'; }
+  } catch { msg.textContent = 'Server error. Try again.'; }
 }
 </script>
 </body>

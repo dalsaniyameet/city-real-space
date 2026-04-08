@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Properties – City Real Space</title>
   <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="responsive.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    .prop-page-wrap { max-width: 1280px; margin: 100px auto 60px; padding: 0 20px; }
+    .prop-page-wrap { max-width: 1280px; margin: 40px auto 60px; padding: 0 20px; }
     .prop-page-head { margin-bottom: 24px; }
     .prop-page-head h1 { font-size: 1.6rem; font-weight: 800; color: #0D1B2A; }
     .prop-page-head p { color: #888; font-size: 0.85rem; margin-top: 4px; }
@@ -41,9 +42,75 @@
     .pg-btn:hover:not(.active) { border-color: #E53935; color: #E53935; }
     @media(max-width:600px) { .prop-page-wrap { margin-top: 80px; } .fp-grp { min-width: 100%; } .req-img-panel { display: none !important; } }
     #reqBox input::placeholder { color: rgba(255,255,255,0.35); }
+    /* Compare Button */
+    .btn-compare { width:32px;height:32px;border-radius:8px;border:1.5px solid #e8e8e8;background:#fff;color:#888;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.82rem;transition:all 0.2s;flex-shrink:0; }
+    .btn-compare:hover { border-color:#1565c0;color:#1565c0;background:#e3f2fd; }
+    .btn-compare.active { border-color:#1565c0;color:#fff;background:#1565c0; }
+
+    /* Compare Drawer */
+    #cmpDrawer { position:fixed;bottom:0;left:0;right:0;z-index:2000;background:#0D1B2A;border-top:2px solid rgba(255,193,7,0.4);transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);box-shadow:0 -8px 40px rgba(0,0,0,0.4); }
+    #cmpDrawer.open { transform:translateY(0); }
+    .cmp-bar { display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.08);flex-wrap:wrap; }
+    .cmp-bar-title { color:#FFC107;font-size:0.82rem;font-weight:700;letter-spacing:0.5px;white-space:nowrap; }
+    .cmp-slots { display:flex;gap:10px;flex:1;flex-wrap:wrap; }
+    .cmp-slot { display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border:1.5px dashed rgba(255,255,255,0.2);border-radius:10px;padding:7px 12px;min-width:160px;flex:1;max-width:220px; }
+    .cmp-slot.filled { border-style:solid;border-color:rgba(255,193,7,0.4);background:rgba(255,193,7,0.08); }
+    .cmp-slot-name { color:#fff;font-size:0.78rem;font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .cmp-slot-empty { color:rgba(255,255,255,0.3);font-size:0.75rem;flex:1; }
+    .cmp-slot-remove { background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:0.75rem;padding:0;flex-shrink:0; }
+    .cmp-slot-remove:hover { color:#f87171; }
+    .btn-cmp-compare { background:linear-gradient(135deg,#FFC107,#ff8f00);color:#0D1B2A;border:none;padding:9px 22px;border-radius:10px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:Poppins,sans-serif;white-space:nowrap;transition:all 0.2s; }
+    .btn-cmp-compare:hover { transform:translateY(-1px);box-shadow:0 4px 14px rgba(255,193,7,0.4); }
+    .btn-cmp-compare:disabled { opacity:0.4;cursor:not-allowed;transform:none; }
+    .btn-cmp-clear { background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.12);padding:9px 16px;border-radius:10px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:Poppins,sans-serif;white-space:nowrap; }
+    .btn-cmp-clear:hover { background:rgba(239,68,68,0.15);color:#f87171;border-color:rgba(239,68,68,0.3); }
+
+    /* Compare Modal */
+    #cmpModal { position:fixed;inset:0;z-index:3000;background:rgba(13,27,42,0.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s; }
+    #cmpModal.open { opacity:1;pointer-events:all; }
+    #cmpModalBox { background:#fff;border-radius:20px;width:100%;max-width:900px;max-height:90vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,0.4); }
+    .cmp-modal-head { background:linear-gradient(135deg,#0D1B2A,#1a3a5c);padding:20px 28px;border-radius:20px 20px 0 0;display:flex;align-items:center;justify-content:space-between; }
+    .cmp-modal-head h3 { color:#fff;font-size:1.1rem;font-weight:800;margin:0;display:flex;align-items:center;gap:10px; }
+    .cmp-modal-head h3 i { color:#FFC107; }
+    .btn-cmp-close { background:rgba(255,255,255,0.12);border:none;color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s; }
+    .btn-cmp-close:hover { background:rgba(255,255,255,0.25);transform:rotate(90deg); }
+    .cmp-table-wrap { overflow-x:auto;padding:24px; }
+    .cmp-table { width:100%;border-collapse:collapse;font-family:Poppins,sans-serif; }
+    .cmp-table th { background:#f8f9fa;padding:14px 16px;text-align:left;font-size:0.78rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid #e8e8e8; }
+    .cmp-table th:first-child { width:140px;background:#fff; }
+    .cmp-table td { padding:13px 16px;border-bottom:1px solid #f0f0f0;font-size:0.85rem;color:#333;vertical-align:top; }
+    .cmp-table td:first-child { font-size:0.78rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.3px;background:#fafafa; }
+    .cmp-table tr:hover td { background:#fffbf0; }
+    .cmp-table tr:hover td:first-child { background:#fafafa; }
+    .cmp-prop-img { width:100%;height:120px;object-fit:cover;border-radius:10px;margin-bottom:8px; }
+    .cmp-prop-name { font-size:0.88rem;font-weight:700;color:#0D1B2A;margin-bottom:4px;line-height:1.3; }
+    .cmp-prop-loc { font-size:0.75rem;color:#888;display:flex;align-items:center;gap:4px; }
+    .cmp-prop-loc i { color:#E53935;font-size:0.7rem; }
+    .cmp-price { font-size:1rem;font-weight:800;color:#E53935; }
+    .cmp-badge { display:inline-block;padding:3px 10px;border-radius:50px;font-size:0.7rem;font-weight:700; }
+    .cmp-badge.sale { background:#ffebee;color:#c62828; }
+    .cmp-badge.rent { background:#e3f2fd;color:#1565c0; }
+    .cmp-badge.new { background:#e8f5e9;color:#2e7d32; }
+    .cmp-win { background:#fff9e6 !important;font-weight:700;color:#b8860b !important; }
+    .cmp-actions { display:flex;gap:10px;padding:0 24px 24px;flex-wrap:wrap; }
+    .btn-cmp-view { flex:1;background:#E53935;color:#fff;border:none;padding:12px;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;transition:all 0.2s; }
+    .btn-cmp-view:hover { background:#c62828; }
+    @media(max-width:600px) { .cmp-slot { min-width:120px; } #cmpModalBox { border-radius:14px; } }
+    @keyframes cmpPulse { 0%,100%{box-shadow:0 0 0 0 rgba(21,101,192,0.4)} 50%{box-shadow:0 0 0 6px rgba(21,101,192,0)} }
+    .btn-compare.active { animation:cmpPulse 1.5s infinite; }
+    @media(max-width:480px) { .btn-compare { display:none; } }
+    #cmpDrawer { padding-bottom: env(safe-area-inset-bottom); }
+    @media(max-width:480px) { .cmp-slot { max-width:100%; } }
   </style>
 </head>
 <body>
+
+<!-- NTC REG BAR -->
+<div style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);">
+  <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
+  &nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;
+  <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
+</div>
 
 <header class="header" id="header">
   <div class="container header-inner">
@@ -76,7 +143,11 @@
     </nav>
     <div class="header-actions">
       <div id="userMenu" style="display:none;position:relative">
-        <button class="btn-login" id="userMenuBtn"><i class="fa-solid fa-user"></i> <span id="userNameDisplay"></span></button>
+        <button class="btn-login" id="userMenuBtn"><i class="fa-solid fa-user"></i> <span id="userNameDisplay"></span> <i class="fa-solid fa-chevron-down" style="font-size:0.7rem"></i></button>
+        <div id="userDropdown" style="display:none;position:absolute;right:0;top:110%;background:#fff;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.15);min-width:180px;z-index:999;overflow:hidden;border:1px solid #f0f0f0">
+          <a href="dashboard.html" style="display:flex;align-items:center;gap:8px;padding:12px 16px;font-size:0.85rem;color:#333;font-weight:600;border-bottom:1px solid #f5f5f5;"><i class="fa-solid fa-gauge" style="color:#E53935"></i> My Dashboard</a>
+          <button onclick="handleLogout()" style="width:100%;padding:12px 16px;border:none;background:none;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.85rem;color:#E53935;font-weight:600;text-align:left;display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
       </div>
       <a href="login.html" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> Login</a>
       <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
@@ -222,8 +293,30 @@
 </div>
 
 <script>
-const API = 'https://city-real-space.onrender.com/api';
+const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:5000/api' : '/api';
 
+// Auth state
+const user = JSON.parse(localStorage.getItem('user') || 'null');
+const token = localStorage.getItem('token');
+if (user && token) {
+  document.getElementById('loginBtn').style.display = 'none';
+  document.getElementById('userMenu').style.display = 'block';
+  document.getElementById('userNameDisplay').textContent = user.firstName || '';
+}
+function handleLogout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  window.location.reload();
+}
+document.getElementById('userMenuBtn').addEventListener('click', function() {
+  const d = document.getElementById('userDropdown');
+  d.style.display = d.style.display === 'none' ? 'block' : 'none';
+});
+document.addEventListener('click', function(e) {
+  const btn = document.getElementById('userMenuBtn');
+  if (btn && !btn.contains(e.target)) document.getElementById('userDropdown').style.display = 'none';
+});
 const cityLocalities = {
   'Ahmedabad': ['Prahlad Nagar','Satellite','Bopal','Thaltej','Memnagar','Vastrapur','Bodakdev','Navrangpura','Chandkheda','Shela','SG Highway','CG Road','Iscon','Giftcity'],
   'Gandhinagar': ['Giftcity','Sector 1','Sector 5','Sector 11','Sector 21','Infocity'],
@@ -275,14 +368,6 @@ const localitySubAreas = {
 };
 
 let currentPage = 1;
-
-// Auth
-const user = JSON.parse(localStorage.getItem('user') || 'null');
-if (user) {
-  document.getElementById('loginBtn').style.display = 'none';
-  document.getElementById('userMenu').style.display = 'block';
-  document.getElementById('userNameDisplay').textContent = user.firstName || '';
-}
 
 // City → Locality
 document.getElementById('fCity').addEventListener('change', function() {
@@ -416,7 +501,10 @@ function createCard(p) {
     '<div class="card-title">' + p.title + '</div>' +
     '<div class="card-specs">' + specs + '</div>' +
     '<div class="card-footer"><div class="card-agent"><div class="agent-av">' + initials + '</div><span class="agent-name">' + agentName + '</span></div>' +
-    '<button class="btn-offer" onclick="requireLoginForOffer(event,\'' + p.title.replace(/'/g,"\\'") + '\',\'' + loc.replace(/'/g,"\\'") + '\')" >Get Offer</button></div></div></div>';
+    '<div style="display:flex;gap:6px;align-items:center;">' +
+    '<button class="btn-compare" title="Compare" onclick="toggleCompare(event,\'' + p._id + '\')" id="cmpBtn_' + p._id + '"><i class="fa-solid fa-code-compare"></i></button>' +
+    '<button class="btn-offer" onclick="requireLoginForOffer(event,\'' + p.title.replace(/'/g,"\\'") + '\',\'' + loc.replace(/'/g,"\\'") + '\')" >Get Offer</button>' +
+    '</div></div></div></div>';
 }
 
 // Card image slider functions
@@ -857,7 +945,7 @@ function showFromStatic(f, grid) {
     const loc=document.getElementById('offerPropLoc').querySelector('span').textContent;
     if(!name||!phone){alert('Please enter your name and phone number.');return;}
     try{
-      await fetch('http://localhost:5000/api/inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone,propertyName:title,propertyType:title,lookingFor:'Get Offer',city:loc,message:'Get Offer: '+title+' ('+loc+')'})});
+      await fetch(API+'/inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone,propertyName:title,propertyType:title,lookingFor:'Get Offer',city:loc,message:'Get Offer: '+title+' ('+loc+')'})});
     }catch(e){}
     closeOffer();
     let t=document.querySelector('.auth-toast');
@@ -889,10 +977,6 @@ loadProperties(1);
 
 function requireLoginForOffer(e, title, loc) {
   e.stopPropagation();
-  if (!localStorage.getItem('token')) {
-    showLoginToast('Login karo to get the best offer!');
-    return;
-  }
   openOfferModal(title, loc);
 }
 
@@ -911,9 +995,9 @@ function showLoginToast(msg) {
   <div class="footer-top">
     <div class="container footer-grid">
       <div class="footer-col">
-        <a href="index.html" class="logo footer-logo">
-          <span class="logo-icon"><i class="fa-solid fa-building-columns"></i></span>
-          <span class="logo-text">City <span class="yellow">Real</span> Space</span>
+        <a href="index.html" class="footer-logo" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
+          <img src="images/logo.jpeg" alt="City Real Space" style="height:52px;width:52px;object-fit:contain;border-radius:10px;background:#fff;padding:4px;"/>
+          <span style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1.2;">City <span style="color:#FFC107;">Real</span> Space</span>
         </a>
         <p class="footer-about">Ahmedabad's most trusted real estate platform. We connect buyers, sellers and investors with verified properties across Gujarat.</p>
         <div class="social-links">
@@ -972,6 +1056,202 @@ function showLoginToast(msg) {
 <a href="https://wa.me/919377531247" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
 <button class="back-top" id="backTop"><i class="fa-solid fa-chevron-up"></i></button>
 
+<!-- ===== COMPARE DRAWER ===== -->
+<div id="cmpDrawer">
+  <div class="cmp-bar">
+    <span class="cmp-bar-title"><i class="fa-solid fa-code-compare" style="margin-right:6px"></i>Compare Properties</span>
+    <div class="cmp-slots" id="cmpSlots">
+      <div class="cmp-slot" id="cmpSlot0"><span class="cmp-slot-empty">+ Add property</span></div>
+      <div class="cmp-slot" id="cmpSlot1"><span class="cmp-slot-empty">+ Add property</span></div>
+      <div class="cmp-slot" id="cmpSlot2"><span class="cmp-slot-empty">+ Add property</span></div>
+    </div>
+    <button class="btn-cmp-compare" id="btnDoCompare" disabled onclick="openCompareModal()"><i class="fa-solid fa-table-columns"></i> Compare Now</button>
+    <button class="btn-cmp-clear" onclick="clearCompare()"><i class="fa-solid fa-xmark"></i> Clear</button>
+  </div>
+</div>
+
+<!-- ===== COMPARE MODAL ===== -->
+<div id="cmpModal">
+  <div id="cmpModalBox">
+    <div class="cmp-modal-head">
+      <h3><i class="fa-solid fa-table-columns"></i> Property Comparison</h3>
+      <button class="btn-cmp-close" onclick="closeCompareModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="cmp-table-wrap">
+      <table class="cmp-table" id="cmpTable"></table>
+    </div>
+    <div class="cmp-actions" id="cmpModalActions"></div>
+  </div>
+</div>
+
 <script src="cursor.js"></script>
+<script>
+// ===== PROPERTY COMPARISON =====
+const MAX_COMPARE = 3;
+let compareList = []; // [{id, title, price, priceLabel, loc, img, specs, status, type, amenities, extraDetails}]
+
+function toggleCompare(e, id) {
+  e.stopPropagation();
+  const existing = compareList.findIndex(p => p.id === id);
+  if (existing !== -1) {
+    // Remove
+    compareList.splice(existing, 1);
+    const btn = document.getElementById('cmpBtn_' + id);
+    if (btn) btn.classList.remove('active');
+  } else {
+    if (compareList.length >= MAX_COMPARE) {
+      showCmpToast('Maximum 3 properties can be compared at once.');
+      return;
+    }
+    // Find property data from static or rendered cards
+    const prop = findPropData(id);
+    if (!prop) return;
+    compareList.push(prop);
+    const btn = document.getElementById('cmpBtn_' + id);
+    if (btn) btn.classList.add('active');
+  }
+  updateDrawer();
+}
+
+function findPropData(id) {
+  // Try static list first
+  const s = staticAllProps.find(p => p._id === id);
+  if (s) return {
+    id: s._id, title: s.title,
+    price: s.price, priceLabel: s.priceLabel,
+    loc: (s.location?.area || '') + ', ' + (s.location?.city || ''),
+    img: s.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&q=80',
+    specs: s.specs || {}, status: s.status, type: s.type,
+    amenities: s.amenities || [], extraDetails: s.extraDetails || {}
+  };
+  // Try from rendered card DOM
+  const card = document.querySelector('[id^="cs_"]');
+  return null;
+}
+
+function updateDrawer() {
+  const drawer = document.getElementById('cmpDrawer');
+  const btn = document.getElementById('btnDoCompare');
+
+  // Update slots
+  for (let i = 0; i < MAX_COMPARE; i++) {
+    const slot = document.getElementById('cmpSlot' + i);
+    if (compareList[i]) {
+      slot.className = 'cmp-slot filled';
+      slot.innerHTML =
+        '<span class="cmp-slot-name">' + compareList[i].title + '</span>' +
+        '<button class="cmp-slot-remove" onclick="toggleCompare(event,\'' + compareList[i].id + '\')" title="Remove"><i class="fa-solid fa-xmark"></i></button>';
+    } else {
+      slot.className = 'cmp-slot';
+      slot.innerHTML = '<span class="cmp-slot-empty">+ Add property</span>';
+    }
+  }
+
+  // Show/hide drawer
+  if (compareList.length > 0) {
+    drawer.classList.add('open');
+    // Push page content up so drawer doesn't overlap
+    document.querySelector('.prop-page-wrap').style.paddingBottom = '90px';
+  } else {
+    drawer.classList.remove('open');
+    document.querySelector('.prop-page-wrap').style.paddingBottom = '';
+  }
+
+  // Enable compare button only if 2+
+  btn.disabled = compareList.length < 2;
+}
+
+function clearCompare() {
+  compareList.forEach(p => {
+    const btn = document.getElementById('cmpBtn_' + p.id);
+    if (btn) btn.classList.remove('active');
+  });
+  compareList = [];
+  updateDrawer();
+}
+
+function openCompareModal() {
+  if (compareList.length < 2) return;
+  buildCompareTable();
+  document.getElementById('cmpModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCompareModal() {
+  document.getElementById('cmpModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('cmpModal').addEventListener('click', function(e) {
+  if (e.target === this) closeCompareModal();
+});
+
+function buildCompareTable() {
+  const props = compareList;
+  const statusMap = {'for-sale':'For Sale','for-rent':'For Rent','new-launch':'New Launch'};
+  const badgeClass = s => s === 'for-rent' ? 'rent' : s === 'new-launch' ? 'new' : 'sale';
+
+  // Find best values for highlighting
+  const prices  = props.map(p => p.price);
+  const sqfts   = props.map(p => p.specs?.sqft || 0);
+  const beds    = props.map(p => p.specs?.beds || 0);
+  const minPrice = Math.min(...prices);
+  const maxSqft  = Math.max(...sqfts);
+  const maxBeds  = Math.max(...beds);
+
+  // Header row — property cards
+  let thead = '<thead><tr><th>Feature</th>';
+  props.forEach(p => {
+    thead += '<th><img src="' + p.img + '" class="cmp-prop-img" alt=""/>' +
+      '<div class="cmp-prop-name">' + p.title + '</div>' +
+      '<div class="cmp-prop-loc"><i class="fa-solid fa-location-dot"></i>' + p.loc + '</div></th>';
+  });
+  thead += '</tr></thead>';
+
+  // Rows
+  const rows = [
+    { label: 'Price', fn: p => '<span class="cmp-price">' + (p.priceLabel || '₹'+p.price) + '</span>', win: (p,i) => prices[i] === minPrice },
+    { label: 'Status', fn: p => '<span class="cmp-badge ' + badgeClass(p.status) + '">' + (statusMap[p.status]||p.status) + '</span>' },
+    { label: 'Type', fn: p => p.type ? p.type.charAt(0).toUpperCase()+p.type.slice(1) : '—' },
+    { label: 'Bedrooms', fn: p => p.specs?.beds ? p.specs.beds + ' BHK' : '—', win: (p,i) => beds[i] === maxBeds && maxBeds > 0 },
+    { label: 'Bathrooms', fn: p => p.specs?.baths ? p.specs.baths : '—' },
+    { label: 'Area (sqft)', fn: p => p.specs?.sqft ? p.specs.sqft.toLocaleString('en-IN') + ' sqft' : '—', win: (p,i) => sqfts[i] === maxSqft && maxSqft > 0 },
+    { label: 'Floor', fn: p => p.extraDetails?.floor || '—' },
+    { label: 'Furnished', fn: p => p.extraDetails?.furnished || '—' },
+    { label: 'Possession', fn: p => p.extraDetails?.possession || '—' },
+    { label: 'Amenities', fn: p => p.amenities?.length ? p.amenities.slice(0,4).join(', ') + (p.amenities.length > 4 ? ' +' + (p.amenities.length-4) + ' more' : '') : '—' },
+  ];
+
+  let tbody = '<tbody>';
+  rows.forEach(row => {
+    tbody += '<tr><td>' + row.label + '</td>';
+    props.forEach((p, i) => {
+      const isWin = row.win ? row.win(p, i) : false;
+      tbody += '<td class="' + (isWin ? 'cmp-win' : '') + '">' + row.fn(p) + '</td>';
+    });
+    tbody += '</tr>';
+  });
+  tbody += '</tbody>';
+
+  document.getElementById('cmpTable').innerHTML = thead + tbody;
+
+  // Action buttons
+  let actions = '';
+  props.forEach(p => {
+    actions += '<button class="btn-cmp-view" onclick="window.location.href=\'property-detail.html?id=' + p.id + '\'">' +
+      '<i class="fa-solid fa-eye"></i> View ' + p.title.split(' ').slice(0,3).join(' ') + '...</button>';
+  });
+  document.getElementById('cmpModalActions').innerHTML = actions;
+}
+
+function showCmpToast(msg) {
+  let t = document.querySelector('.auth-toast');
+  if (!t) { t = document.createElement('div'); t.className = 'auth-toast'; document.body.appendChild(t); }
+  t.style.background = '#1565c0';
+  t.innerHTML = '<i class="fa-solid fa-code-compare"></i> ' + msg;
+  t.classList.add('show');
+  setTimeout(() => { t.classList.remove('show'); t.style.background = ''; }, 3000);
+}
+</script>
 </body>
 </html>

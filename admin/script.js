@@ -105,7 +105,7 @@ if (!adminToken || !adminUser || adminUser.role !== 'admin') {
 }
 
 // ===== SESSION TIMEOUT — 10 min inactivity =====
-const SESSION_TIMEOUT = 10 * 60 * 1000; // 10 minutes
+const SESSION_TIMEOUT = 10 * 60 * 1000;
 let _sessionTimer;
 
 function resetSessionTimer() {
@@ -115,7 +115,7 @@ function resetSessionTimer() {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminUser');
     localStorage.removeItem('adminLastActive');
-    alert('Session expired due to inactivity. Please login again.');
+    alert('⏰ Session expired due to inactivity. Please login again.');
     window.location.replace('login.html');
   }, SESSION_TIMEOUT);
 }
@@ -130,7 +130,20 @@ if (lastActive && (Date.now() - lastActive) > SESSION_TIMEOUT) {
   throw new Error('Session expired');
 }
 
-// Reset timer on any user activity
+// Also verify token with backend on load
+(async function verifyAdminSession() {
+  try {
+    const res = await fetch(API + '/auth/me', { headers: { Authorization: 'Bearer ' + adminToken } });
+    const data = await res.json();
+    if (!res.ok || !data.user || data.user.role !== 'admin') {
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminUser');
+      localStorage.removeItem('adminLastActive');
+      window.location.replace('login.html');
+    }
+  } catch(e) { /* network error — keep session */ }
+})();
+
 ['mousemove','keydown','click','scroll','touchstart'].forEach(function(evt) {
   document.addEventListener(evt, resetSessionTimer, { passive: true });
 });
@@ -258,6 +271,14 @@ async function loadStats() {
       document.getElementById('reqBadge').textContent = reqCount;
       document.getElementById('st-reqs').textContent = reqData.inquiries.length;
     }
+    // Trending / Residential / Commercial counts
+    const allProps = await api('GET', '/properties');
+    if (allProps.success && allProps.properties) {
+      const props = allProps.properties;
+      document.getElementById('st-trending').textContent    = props.filter(function(p){ return p.isFeatured; }).length;
+      document.getElementById('st-residential').textContent = props.filter(function(p){ return p.category === 'residential'; }).length;
+      document.getElementById('st-commercial').textContent  = props.filter(function(p){ return p.category === 'commercial'; }).length;
+    }
   } catch(e) { console.log('Stats error', e); }
 }
 
@@ -313,37 +334,47 @@ function listingBadgeHtml(p) {
 let currentPropFilter = 'all';
 let propsCache = {};
 
+function renderPropRow(p) {
+  const isCommercial = p.category === 'commercial' || ['office','shop','warehouse'].includes(p.type);
+  const typeLabel = { apartment:'Apartment', villa:'Villa', bungalow:'Bungalow', rowhouse:'Row House', plot:'Plot', office:'Office', shop:'Shop', warehouse:'Warehouse' };
+  const catBadge = isCommercial
+    ? '<span style="color:#60a5fa;font-weight:700;font-size:0.78rem;">Commercial</span><br><small style="color:var(--text3);font-size:0.68rem;">' + (typeLabel[p.type] || p.type) + '</small>'
+    : '<span style="color:#34d399;font-weight:700;font-size:0.78rem;">Residential</span><br><small style="color:var(--text3);font-size:0.68rem;">' + (typeLabel[p.type] || p.type) + '</small>';
+  const trendBtn = '<button class="act-btn trending' + (p.isFeatured ? ' active' : '') + '" title="' + (p.isFeatured ? 'Remove Trending' : 'Mark Trending') + '" onclick="toggleTrending(\'' + p._id + '\', ' + (p.isFeatured ? 'true' : 'false') + ')" style="' + (p.isFeatured ? 'background:rgba(245,158,11,0.25);color:#f59e0b;box-shadow:0 0 8px rgba(245,158,11,0.3);' : '') + '"><i class="fa-solid fa-fire"></i></button>';
+  return '<tr>' +
+    '<td><div style="display:flex;align-items:center;gap:10px">' +
+    (p.images && p.images[0] ? '<img src="' + p.images[0] + '" class="prop-thumb" alt=""/>' : '<div style="width:48px;height:36px;background:rgba(255,255,255,0.05);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#555"><i class="fa-solid fa-image"></i></div>') +
+    '<div class="prop-info"><strong>' + p.title + '</strong><span>' + (p.isFeatured ? '🔥 ' : '') + (p.agent && p.agent.name ? p.agent.name : '') + '</span></div></div></td>' +
+    '<td style="white-space:normal">' + catBadge + '</td>' +
+    '<td>' + (p.location ? p.location.area + ', ' + p.location.city : '—') + '</td>' +
+    '<td><strong>' + (p.priceLabel || '₹' + p.price) + '</strong></td>' +
+    '<td><span class="badge ' + (p.status === 'for-sale' ? 'badge-green' : p.status === 'for-rent' ? 'badge-blue' : 'badge-orange') + '">' + p.status + '</span></td>' +
+    '<td><span class="badge ' + (p.isApproved ? 'badge-green' : 'badge-orange') + '">' + (p.isApproved ? 'Approved' : 'Pending') + '</span></td>' +
+    '<td><div class="act-btns">' +
+    (!p.isApproved ? '<button class="act-btn approve" title="Approve" onclick="approveProperty(\'' + p._id + '\')"><i class="fa-solid fa-check"></i></button>' : '') +
+    trendBtn +
+    '<button class="act-btn edit" title="Edit" onclick="editPropertyById(\'' + p._id + '\')" ><i class="fa-solid fa-pen"></i></button>' +
+    '<button class="act-btn del" title="Delete" onclick="deleteProperty(\'' + p._id + '\')"><i class="fa-solid fa-trash"></i></button>' +
+    '</div></td></tr>';
+}
+
+
 async function loadProperties(filter) {
   currentPropFilter = filter;
-  document.querySelectorAll('.fbtn').forEach(function(b) {
+  document.querySelectorAll('.fbtn[data-filter]').forEach(function(b) {
     b.classList.toggle('active', b.dataset.filter === filter);
   });
-  const param = filter !== 'all' ? '?status=' + filter : '';
+  let param = '';
+  if (filter === 'pending')  param = '?approved=false';
+  if (filter === 'approved') param = '?approved=true';
   const data = await api('GET', '/properties' + param);
   const tbody = document.getElementById('propTbody');
   if (!data.success || !data.properties.length) {
     tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fa-solid fa-building"></i><p>No properties found.</p></div></td></tr>';
     return;
   }
-  // Cache properties by id
   data.properties.forEach(function(p) { propsCache[p._id] = p; });
-  tbody.innerHTML = data.properties.map(function(p) {
-    return '<tr>' +
-      '<td><div style="display:flex;align-items:center;gap:10px">' +
-      (p.images && p.images[0] ? '<img src="' + p.images[0] + '" class="prop-thumb" alt=""/>' : '<div style="width:48px;height:36px;background:#f0f0f0;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#ccc"><i class="fa-solid fa-image"></i></div>') +
-      '<div class="prop-info"><strong>' + p.title + '</strong><span>' + (p.agent && p.agent.name ? p.agent.name : '') + '</span></div></div></td>' +
-      '<td><span class="badge badge-blue">' + p.type + '</span></td>' +
-      '<td>' + (p.location ? p.location.area + ', ' + p.location.city : '') + '</td>' +
-      '<td><strong>' + (p.priceLabel || '₹' + p.price) + '</strong></td>' +
-      '<td>' + listingBadgeHtml(p) + '</td>' +
-      '<td><span class="badge ' + (p.status === 'for-sale' ? 'badge-green' : p.status === 'for-rent' ? 'badge-blue' : 'badge-orange') + '">' + p.status + '</span></td>' +
-      '<td><span class="badge ' + (p.isApproved ? 'badge-green' : 'badge-orange') + '">' + (p.isApproved ? 'Approved' : 'Pending') + '</span></td>' +
-      '<td><div class="act-btns">' +
-      (!p.isApproved ? '<button class="act-btn approve" title="Approve" onclick="approveProperty(\'' + p._id + '\')"><i class="fa-solid fa-check"></i></button>' : '') +
-      '<button class="act-btn edit" title="Edit" onclick="editPropertyById(\'' + p._id + '\')" ><i class="fa-solid fa-pen"></i></button>' +
-      '<button class="act-btn del" title="Delete" onclick="deleteProperty(\'' + p._id + '\')"><i class="fa-solid fa-trash"></i></button>' +
-      '</div></td></tr>';
-  }).join('');
+  tbody.innerHTML = data.properties.map(function(p) { return renderPropRow(p); }).join('');
 }
 
 function editPropertyById(id) {
@@ -352,8 +383,39 @@ function editPropertyById(id) {
   editProperty(p);
 }
 
-document.querySelectorAll('.fbtn').forEach(function(b) {
+document.querySelectorAll('.fbtn[data-filter]').forEach(function(b) {
   b.addEventListener('click', function() { loadProperties(b.dataset.filter); });
+});
+
+// Category + Trending filter buttons
+function setPropFilterActive(btn) {
+  document.querySelectorAll('#page-properties .fbtn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+function applyPropFilter(cat) {
+  const tbody = document.getElementById('propTbody');
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px"><i class="fa-solid fa-spinner fa-spin" style="color:var(--accent);font-size:1.5rem"></i></td></tr>';
+  const paramMap = { residential: '?category=residential', commercial: '?category=commercial', trending: '?featured=true' };
+  const emptyMsg = { residential: 'No residential properties found.', commercial: 'No commercial properties found.', trending: 'No trending properties. Click 🔥 on any property to mark it trending.' };
+  api('GET', '/properties' + (paramMap[cat] || '')).then(function(data) {
+    if (!data.success || !data.properties || !data.properties.length) {
+      tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="fa-solid fa-building"></i><p>' + (emptyMsg[cat] || 'No properties found.') + '</p></div></td></tr>';
+      return;
+    }
+    data.properties.forEach(function(p) { propsCache[p._id] = p; });
+    tbody.innerHTML = data.properties.map(function(p) { return renderPropRow(p); }).join('');
+  });
+}
+
+['btnResidential','btnCommercial','btnTrending'].forEach(function(id) {
+  const btn = document.getElementById(id);
+  if (!btn) return;
+  btn.addEventListener('click', function() {
+    setPropFilterActive(this);
+    const catMap = { btnResidential:'residential', btnCommercial:'commercial', btnTrending:'trending' };
+    applyPropFilter(catMap[id]);
+  });
 });
 
 document.getElementById('addPropBtn').addEventListener('click', function() {
@@ -493,6 +555,56 @@ async function approveProperty(id) {
   const data = await api('PUT', '/properties/' + id + '/approve');
   if (data.success) { toast('Property approved!'); loadProperties(currentPropFilter); loadStats(); }
   else toast(data.message || 'Error', 'error');
+}
+
+async function toggleTrending(id, isFeatured) {
+  const data = await api('PUT', '/properties/' + id, { isFeatured: !isFeatured });
+  if (data.success) {
+    toast(isFeatured ? 'Removed from Trending!' : '🔥 Added to Trending!');
+    loadProperties(currentPropFilter);
+    loadStats();
+  } else toast(data.message || 'Error', 'error');
+}
+
+let currentCategoryFilter = '';
+function filterByCategory(cat) {
+  currentCategoryFilter = cat;
+  // Switch to properties page WITHOUT triggering loadProperties
+  document.querySelectorAll('.sb-link').forEach(function(l) {
+    l.classList.toggle('active', l.dataset.page === 'properties');
+  });
+  document.querySelectorAll('.page').forEach(function(p) {
+    p.classList.toggle('active', p.id === 'page-properties');
+  });
+  document.getElementById('topbarTitle').textContent = 'Properties';
+
+  if (cat === 'trending') {
+    loadTrendingProperties();
+  } else {
+    loadPropertiesByCategory(cat);
+  }
+}
+
+async function loadTrendingProperties() {
+  const data = await api('GET', '/properties?featured=true');
+  const tbody = document.getElementById('propTbody');
+  if (!data.success || !data.properties.length) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fa-solid fa-fire"></i><p>No trending properties yet.<br><small>Click 🔥 fire button on any property to mark it trending.</small></p></div></td></tr>';
+    return;
+  }
+  data.properties.forEach(function(p) { propsCache[p._id] = p; });
+  tbody.innerHTML = data.properties.map(function(p) { return renderPropRow(p); }).join('');
+}
+
+async function loadPropertiesByCategory(cat) {
+  const data = await api('GET', '/properties?category=' + cat);
+  const tbody = document.getElementById('propTbody');
+  if (!data.success || !data.properties.length) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fa-solid fa-building"></i><p>No ' + cat + ' properties found.</p></div></td></tr>';
+    return;
+  }
+  data.properties.forEach(function(p) { propsCache[p._id] = p; });
+  tbody.innerHTML = data.properties.map(function(p) { return renderPropRow(p); }).join('');
 }
 
 async function deleteProperty(id) {

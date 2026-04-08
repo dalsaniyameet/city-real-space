@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>404 – Page Not Found | City Real Space</title>
+  <title>429 – Too Many Requests | City Real Space</title>
   <link rel="stylesheet" href="style.css"/>
   <link rel="stylesheet" href="responsive.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
@@ -30,7 +30,6 @@
       opacity: 0.05;
     }
 
-    /* Floating particles */
     .particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
     .particle {
       position: absolute; width: 6px; height: 6px; border-radius: 50%;
@@ -53,37 +52,26 @@
 
     .err-content { position: relative; z-index: 2; max-width: 600px; }
 
-    /* Big animated circle with 404 */
-    .err-circle-wrap {
-      position: relative; width: 220px; height: 220px;
-      margin: 0 auto 40px;
-    }
+    .err-circle-wrap { position: relative; width: 220px; height: 220px; margin: 0 auto 40px; }
 
-    /* Rotating outer ring */
     .err-ring {
       position: absolute; inset: 0; border-radius: 50%;
       border: 4px solid transparent;
-      border-top-color: #FFC107;
-      border-right-color: #00E5FF;
-      border-bottom-color: #E53935;
-      border-left-color: #9C27B0;
+      border-top-color: #FFC107; border-right-color: #00E5FF;
+      border-bottom-color: #E53935; border-left-color: #9C27B0;
       animation: spinRing 3s linear infinite;
     }
     .err-ring-2 {
       position: absolute; inset: 12px; border-radius: 50%;
       border: 3px solid transparent;
-      border-top-color: #4CAF50;
-      border-right-color: #FF5722;
-      border-bottom-color: #2196F3;
-      border-left-color: #FFEB3B;
+      border-top-color: #4CAF50; border-right-color: #FF5722;
+      border-bottom-color: #2196F3; border-left-color: #FFEB3B;
       animation: spinRing 2s linear infinite reverse;
     }
     @keyframes spinRing { to { transform: rotate(360deg); } }
 
-    /* Pulsing rings */
     .err-pulse { position: absolute; inset: 0; border-radius: 50%; }
-    .err-pulse::before,
-    .err-pulse::after {
+    .err-pulse::before, .err-pulse::after {
       content: ''; position: absolute; inset: -20px; border-radius: 50%;
       border: 1px solid rgba(0,229,255,0.4);
       animation: pulseRing 2.5s ease-out infinite;
@@ -94,7 +82,6 @@
       100% { transform: scale(1.4); opacity: 0; }
     }
 
-    /* Inner circle */
     .err-inner {
       position: absolute; inset: 24px; border-radius: 50%;
       background: linear-gradient(135deg, rgba(255,193,7,0.2), rgba(0,229,255,0.1), rgba(156,39,176,0.15));
@@ -115,7 +102,6 @@
     }
     .err-icon { font-size: 1rem; color: rgba(255,255,255,0.5); margin-top: 4px; }
 
-    /* Text */
     .err-tag {
       display: inline-block;
       background: linear-gradient(90deg, #E53935, #9C27B0);
@@ -127,7 +113,14 @@
     .err-content h1 span { color: #FFC107; }
     .err-content p { color: rgba(255,255,255,0.6); font-size: 0.92rem; line-height: 1.7; margin-bottom: 32px; max-width: 420px; margin-left: auto; margin-right: auto; }
 
-    /* Buttons */
+    /* Countdown timer */
+    .countdown-box {
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,193,7,0.3);
+      border-radius: 12px; padding: 14px 28px; display: inline-block; margin-bottom: 28px;
+    }
+    .countdown-box span { color: #FFC107; font-size: 1.4rem; font-weight: 800; }
+    .countdown-box p { color: rgba(255,255,255,0.5); font-size: 0.78rem; margin: 4px 0 0; }
+
     .err-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
     .btn-home {
       background: linear-gradient(135deg, #FFC107, #FF5722); color: #fff; padding: 13px 28px; border-radius: 10px;
@@ -143,7 +136,6 @@
     }
     .btn-contact:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(33,150,243,0.6); }
 
-    /* Quick links */
     .err-links { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
     .err-link {
       background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
@@ -155,10 +147,8 @@
     .err-link:nth-child(2):hover { background: rgba(0,229,255,0.15); border-color: #00E5FF; color: #00E5FF; }
     .err-link:nth-child(3):hover { background: rgba(76,175,80,0.15); border-color: #4CAF50; color: #4CAF50; }
     .err-link:nth-child(4):hover { background: rgba(255,87,34,0.15); border-color: #FF5722; color: #FF5722; }
-    .err-link:nth-child(5):hover { background: rgba(156,39,176,0.15);border-color: #9C27B0; color: #CE93D8; }
     .err-link i { font-size: 0.75rem; }
 
-    /* Building animation bottom */
     .err-building {
       position: absolute; bottom: 0; left: 0; right: 0;
       display: flex; align-items: flex-end; justify-content: center; gap: 6px;
@@ -167,14 +157,10 @@
     .bld { border-radius: 4px 4px 0 0; }
     .bld:nth-child(odd)  { background: linear-gradient(to top, #FFC107, #FF5722); }
     .bld:nth-child(even) { background: linear-gradient(to top, #2196F3, #9C27B0); }
-    .bld-1 { width: 40px; height: 120px; }
-    .bld-2 { width: 60px; height: 180px; }
-    .bld-3 { width: 80px; height: 240px; }
-    .bld-4 { width: 50px; height: 160px; }
-    .bld-5 { width: 90px; height: 200px; }
-    .bld-6 { width: 45px; height: 140px; }
-    .bld-7 { width: 70px; height: 190px; }
-    .bld-8 { width: 55px; height: 150px; }
+    .bld-1 { width: 40px; height: 120px; } .bld-2 { width: 60px; height: 180px; }
+    .bld-3 { width: 80px; height: 240px; } .bld-4 { width: 50px; height: 160px; }
+    .bld-5 { width: 90px; height: 200px; } .bld-6 { width: 45px; height: 140px; }
+    .bld-7 { width: 70px; height: 190px; } .bld-8 { width: 55px; height: 150px; }
   </style>
 </head>
 <body>
@@ -188,38 +174,12 @@
     </a>
     <nav class="nav" id="nav">
       <a href="index.html">Home</a>
-      <div class="nav-dropdown">
-        <a href="#" class="nav-drop-btn">Buy <i class="fa-solid fa-chevron-down"></i></a>
-        <div class="nav-drop-menu">
-          <a href="#">All</a>
-          <a href="#">Rent</a>
-          <a href="#">Resale</a>
-          <a href="#">Land</a>
-        </div>
-      </div>
-      <div class="nav-dropdown">
-        <a href="#" class="nav-drop-btn">Sell <i class="fa-solid fa-chevron-down"></i></a>
-        <div class="nav-drop-menu">
-          <a href="#">List Property</a>
-          <a href="#">List Project</a>
-        </div>
-      </div>
-      <a href="#">New Launch</a>
-      <a href="#">Prelease</a>
       <a href="about.html">About</a>
       <a href="blog.html">Blog</a>
       <a href="contact.html">Contact</a>
     </nav>
     <div class="header-actions">
-      <button class="fav-btn" title="Favorites"><i class="fa-regular fa-heart"></i><span class="fav-count">0</span></button>
-      <div id="userMenu" style="display:none;position:relative">
-        <button class="btn-login" id="userMenuBtn"><i class="fa-solid fa-user"></i> <span id="userNameDisplay"></span> <i class="fa-solid fa-chevron-down" style="font-size:0.7rem"></i></button>
-        <div id="userDropdown" style="display:none;position:absolute;right:0;top:110%;background:#fff;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.15);min-width:160px;z-index:999;overflow:hidden">
-          <button onclick="handleLogout()" style="width:100%;padding:12px 16px;border:none;background:none;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.85rem;color:#E53935;font-weight:600;text-align:left"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-        </div>
-      </div>
-      <a href="login.html" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> Login / Register</a>
-      <button class="btn-inquiry">Inquiry <i class="fa-solid fa-arrow-right"></i></button>
+      <a href="index.html" class="btn-login"><i class="fa-solid fa-home"></i> Go Home</a>
       <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
     </div>
   </div>
@@ -227,8 +187,6 @@
 
 <!-- ERROR PAGE -->
 <div class="err-page">
-
-  <!-- Particles -->
   <div class="particles">
     <div class="particle"></div><div class="particle"></div>
     <div class="particle"></div><div class="particle"></div>
@@ -236,7 +194,6 @@
     <div class="particle"></div><div class="particle"></div>
   </div>
 
-  <!-- City skyline silhouette -->
   <div class="err-building">
     <div class="bld bld-1"></div><div class="bld bld-2"></div>
     <div class="bld bld-3"></div><div class="bld bld-4"></div>
@@ -247,21 +204,24 @@
   </div>
 
   <div class="err-content">
-
-    <!-- Animated Circle -->
     <div class="err-circle-wrap">
       <div class="err-pulse"></div>
       <div class="err-ring"></div>
       <div class="err-ring-2"></div>
       <div class="err-inner">
-        <div class="err-num">404</div>
-        <div class="err-icon"><i class="fa-solid fa-building-columns"></i></div>
+        <div class="err-num">429</div>
+        <div class="err-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
       </div>
     </div>
 
-    <div class="err-tag">Page Not Found</div>
-    <h1>Oops! This Property<br/><span>Doesn't Exist</span></h1>
-    <p>The page you're looking for has been moved, deleted or never existed. Let us help you find your perfect property instead!</p>
+    <div class="err-tag">Too Many Requests</div>
+    <h1>Slow Down! You're<br/><span>Moving Too Fast</span></h1>
+    <p>You've made too many requests in a short time. Please wait a few minutes and try again.</p>
+
+    <div class="countdown-box">
+      <span id="countdown">15:00</span>
+      <p>Try again after this time</p>
+    </div>
 
     <div class="err-btns">
       <a href="index.html" class="btn-home"><i class="fa-solid fa-home"></i> Back to Home</a>
@@ -269,70 +229,16 @@
     </div>
 
     <div class="err-links">
-      <a href="#" class="err-link"><i class="fa-solid fa-building"></i> Buy Property</a>
-      <a href="#" class="err-link"><i class="fa-solid fa-key"></i> Rent Property</a>
-      <a href="#" class="err-link"><i class="fa-solid fa-star"></i> New Launch</a>
+      <a href="index.html" class="err-link"><i class="fa-solid fa-building"></i> Properties</a>
       <a href="blog.html" class="err-link"><i class="fa-solid fa-newspaper"></i> Blog</a>
       <a href="about.html" class="err-link"><i class="fa-solid fa-users"></i> About Us</a>
+      <a href="contact.html" class="err-link"><i class="fa-solid fa-envelope"></i> Contact</a>
     </div>
-
   </div>
 </div>
 
 <!-- FOOTER -->
 <footer class="footer">
-  <div class="footer-top">
-    <div class="container footer-grid">
-      <div class="footer-col">
-        <a href="index.html" class="footer-logo" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
-          <img src="images/logo.jpeg" alt="City Real Space" style="height:52px;width:52px;object-fit:contain;border-radius:10px;background:#fff;padding:4px;"/>
-          <span style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1.2;">City <span style="color:#FFC107;">Real</span> Space</span>
-        </a>
-        <p class="footer-about">Ahmedabad's most trusted real estate platform. We connect buyers, sellers and investors with verified properties across Gujarat.</p>
-        <div class="social-links">
-          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="https://wa.me/919377531247" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
-        </div>
-      </div>
-      <div class="footer-col">
-        <h4>Our Services</h4>
-        <ul>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Buy Property</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Sell Property</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Rent Property</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> New Launch Projects</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Pre-Lease Properties</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Property Valuation</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Home Loans</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="faq.html"><i class="fa-solid fa-chevron-right"></i> FAQ</a></li>
-          <li><a href="privacy.html"><i class="fa-solid fa-chevron-right"></i> Privacy Policy</a></li>
-          <li><a href="blog.html"><i class="fa-solid fa-chevron-right"></i> Blog</a></li>
-          <li><a href="about.html"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
-          <li><a href="contact.html"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Contact Us</h4>
-        <div class="contact-info">
-          <div class="ci"><i class="fa-solid fa-location-dot"></i><span>A-708, Prahlad Nagar Trade Centre, Satellite, Ahmedabad</span></div>
-          <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 98250 12824</span></div>
-          <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 84600 14000</span></div>
-          <div class="ci"><i class="fa-solid fa-envelope"></i><span>admin@cityestate.co.in</span></div>
-        </div>
-        <div class="working-hours">
-          <h5><i class="fa-regular fa-clock"></i> Working Hours</h5>
-          <p>Mon – Sat: 9:00 AM – 7:00 PM</p>
-          <p>Sunday: 10:00 AM – 4:00 PM</p>
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="footer-bottom">
     <div class="container">
       <p>© 2025 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p>
@@ -349,18 +255,23 @@
 <script src="bg-animation.js"></script>
 <script src="script.js"></script>
 <script>
+  // Countdown timer — 15 minutes
+  let secs = 15 * 60;
+  const el = document.getElementById('countdown');
+  const timer = setInterval(() => {
+    secs--;
+    if (secs <= 0) { clearInterval(timer); el.textContent = '00:00'; return; }
+    const m = String(Math.floor(secs / 60)).padStart(2, '0');
+    const s = String(secs % 60).padStart(2, '0');
+    el.textContent = `${m}:${s}`;
+  }, 1000);
+
   window.addEventListener('scroll', () => {
     document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
     document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
   });
   document.getElementById('backTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
-  document.querySelectorAll('.nav-drop-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.preventDefault();
-      btn.closest('.nav-dropdown').classList.toggle('open');
-    });
-  });
 </script>
 </body>
 </html>

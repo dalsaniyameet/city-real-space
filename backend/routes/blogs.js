@@ -20,13 +20,33 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /sitemap-blogs.xml — dynamic blog sitemap for Google
+router.get('/sitemap', async (req, res) => {
+  try {
+    const blogs = await Blog.find({ isPublished: true }).select('slug createdAt').sort({ createdAt: -1 });
+    const base = 'https://cityrealspace.com';
+    const urls = blogs.map(b =>
+      `  <url><loc>${base}/blog-detail.html?slug=${b.slug}</loc><lastmod>${new Date(b.createdAt).toISOString().split('T')[0]}</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>`
+    ).join('\n');
+    res.setHeader('Content-Type', 'application/xml');
+    res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>`);
+  } catch (err) {
+    res.status(500).send('');
+  }
+});
+
 // GET /api/blogs/:slug — single blog
 router.get('/:slug', async (req, res) => {
   try {
     const blog = await Blog.findOne({ slug: req.params.slug, isPublished: true });
     if (!blog) return res.status(404).json({ success: false, message: 'Blog not found' });
-    blog.views += 1;
-    await blog.save();
+    if (req.query.countView === '1') {
+      await Blog.findByIdAndUpdate(blog._id, { $inc: { views: 1 } });
+      blog.views += 1;
+    }
     res.json({ success: true, blog });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
