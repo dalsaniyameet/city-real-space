@@ -1,7 +1,7 @@
 const express    = require('express');
 const router     = express.Router();
 const jwt        = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const User       = require('../models/User');
 const { protect } = require('../middleware/auth');
 const { otpLimiter } = require('../middleware/limiters');
@@ -117,22 +117,7 @@ _City Real Space – Gujarat's Most Trusted Real Estate Platform_ 🏆`;
   }
 }
 
-// ===== EMAIL TRANSPORTER =====
-function getTransporter() {
-  return nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: Number(process.env.EMAIL_PORT),
-    secure: false,
-    auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 15000,
-    tls: { rejectUnauthorized: false }
-  });
-}
-
-// ===== SEND OTP EMAIL =====
-// ===== SEND OTP EMAIL =====
+// ===== EMAIL — Resend (Gmail SMTP Vercel pe block hota hai) =====
 async function sendOTPEmail(email, otp, name, type) {
   const isRegister = type === 'register';
   const isLogin    = type === 'login';
@@ -143,83 +128,60 @@ async function sendOTPEmail(email, otp, name, type) {
     ? 'Login OTP – City Real Space'
     : 'Password Reset OTP – City Real Space';
 
-  // Per-type config
   const config = isRegister ? {
-    headerBg:   'linear-gradient(135deg,#1b5e20,#2e7d32)',
-    icon:       '&#127968;',
-    heading:    'Activate Your Account',
-    subheading: 'Email Verification',
-    otpColor:   '#69f0ae',
-    otpBorder:  'rgba(105,240,174,0.35)',
-    msg:        'Welcome to City Real Space! Use the OTP below to verify your email and activate your account.'
+    headerBg: 'linear-gradient(135deg,#1b5e20,#2e7d32)',
+    icon: '&#127968;', heading: 'Activate Your Account',
+    subheading: 'Email Verification', otpColor: '#69f0ae',
+    otpBorder: 'rgba(105,240,174,0.35)',
+    msg: 'Welcome to City Real Space! Use the OTP below to verify your email and activate your account.'
   } : isLogin ? {
-    headerBg:   'linear-gradient(135deg,#0d47a1,#1565c0)',
-    icon:       '&#128274;',
-    heading:    'Verify Your Login',
-    subheading: 'Secure Login OTP',
-    otpColor:   '#82b1ff',
-    otpBorder:  'rgba(130,177,255,0.35)',
-    msg:        'Use the OTP below to complete your login. Valid for 10 minutes. Do not share it with anyone.'
+    headerBg: 'linear-gradient(135deg,#0d47a1,#1565c0)',
+    icon: '&#128274;', heading: 'Verify Your Login',
+    subheading: 'Secure Login OTP', otpColor: '#82b1ff',
+    otpBorder: 'rgba(130,177,255,0.35)',
+    msg: 'Use the OTP below to complete your login. Valid for 10 minutes. Do not share it with anyone.'
   } : {
-    headerBg:   'linear-gradient(135deg,#e65100,#bf360c)',
-    icon:       '&#128273;',
-    heading:    'Reset Your Password',
-    subheading: 'Password Reset OTP',
-    otpColor:   '#ffab40',
-    otpBorder:  'rgba(255,171,64,0.35)',
-    msg:        'Use the OTP below to reset your password. Do not share it with anyone.'
+    headerBg: 'linear-gradient(135deg,#e65100,#bf360c)',
+    icon: '&#128273;', heading: 'Reset Your Password',
+    subheading: 'Password Reset OTP', otpColor: '#ffab40',
+    otpBorder: 'rgba(255,171,64,0.35)',
+    msg: 'Use the OTP below to reset your password. Do not share it with anyone.'
   };
 
-  try {
-    const transporter = getTransporter();
-    console.log(`📧 Sending ${type} OTP email to ${email}`);
+  const html = `
+  <div style="font-family:Arial,sans-serif;max-width:520px;margin:auto;background:#0a1628;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.4)">
+    <div style="background:${config.headerBg};padding:32px;text-align:center">
+      <div style="font-size:2.4rem;margin-bottom:10px">${config.icon}</div>
+      <h1 style="color:#fff;margin:0;font-size:1.6rem;font-weight:800">City Real Space</h1>
+      <p style="color:rgba(255,255,255,0.75);margin:6px 0 0;font-size:0.82rem">Gujarat's #1 Real Estate Platform</p>
+    </div>
+    <div style="padding:36px 32px">
+      <p style="color:rgba(255,255,255,0.45);font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;margin:0 0 4px">${config.subheading}</p>
+      <h2 style="color:#fff;margin:0 0 20px;font-size:1.3rem;font-weight:800">${config.heading}</h2>
+      <p style="color:rgba(255,255,255,0.65);font-size:0.88rem;line-height:1.7;margin:0 0 8px">Hi <strong style="color:#fff">${name}</strong>,</p>
+      <p style="color:rgba(255,255,255,0.65);font-size:0.88rem;line-height:1.7;margin:0 0 28px">${config.msg}</p>
+      <div style="background:rgba(255,255,255,0.05);border:2px solid ${config.otpBorder};border-radius:16px;padding:28px;text-align:center;margin-bottom:28px">
+        <p style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin:0 0 12px;letter-spacing:3px;text-transform:uppercase">Your One-Time Password</p>
+        <div style="font-size:3rem;font-weight:900;letter-spacing:16px;color:${config.otpColor};font-family:monospace">${otp}</div>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.72rem;margin:14px 0 0">Valid for <strong style="color:#fff">10 minutes</strong> only</p>
+      </div>
+      <p style="color:rgba(255,255,255,0.35);font-size:0.78rem;margin:0;line-height:1.6">&#128274; City Real Space will never ask for your OTP. If you did not request this, please ignore this email.</p>
+    </div>
+    <div style="background:rgba(0,0,0,0.35);padding:18px 32px;text-align:center;border-top:1px solid rgba(255,255,255,0.06)">
+      <p style="color:rgba(255,255,255,0.25);font-size:0.72rem;margin:0">&copy; 2025 City Real Space &middot; Ahmedabad, Gujarat</p>
+    </div>
+  </div>`;
 
-    await transporter.sendMail({
-      from: `"City Real Space" <${process.env.EMAIL_USER}>`,
+  try {
+    console.log(`📧 Sending ${type} OTP email to ${email}`);
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const { error } = await resend.emails.send({
+      from: 'City Real Space <onboarding@resend.dev>',
       to: email,
       subject,
-      html: `
-      <div style="font-family:Arial,sans-serif;max-width:520px;margin:auto;background:#0a1628;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.4)">
-
-        <!-- HEADER -->
-        <div style="background:${config.headerBg};padding:32px;text-align:center;position:relative">
-          <div style="font-size:2.4rem;margin-bottom:10px">${config.icon}</div>
-          <h1 style="color:#fff;margin:0;font-size:1.6rem;font-weight:800;letter-spacing:-0.5px">City Real Space</h1>
-          <p style="color:rgba(255,255,255,0.75);margin:6px 0 0;font-size:0.82rem;letter-spacing:0.5px">Gujarat's #1 Real Estate Platform &mdash; Ahmedabad West</p>
-        </div>
-
-        <!-- BODY -->
-        <div style="padding:36px 32px">
-          <div style="margin-bottom:24px">
-            <p style="color:rgba(255,255,255,0.45);font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;margin:0 0 4px">${config.subheading}</p>
-            <h2 style="color:#fff;margin:0;font-size:1.3rem;font-weight:800">${config.heading}</h2>
-          </div>
-
-          <p style="color:rgba(255,255,255,0.65);font-size:0.88rem;line-height:1.7;margin:0 0 8px">Hi <strong style="color:#fff">${name}</strong>,</p>
-          <p style="color:rgba(255,255,255,0.65);font-size:0.88rem;line-height:1.7;margin:0 0 28px">${config.msg}</p>
-
-          <!-- OTP BOX -->
-          <div style="background:rgba(255,255,255,0.05);border:2px solid ${config.otpBorder};border-radius:16px;padding:28px;text-align:center;margin-bottom:28px">
-            <p style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin:0 0 12px;letter-spacing:3px;text-transform:uppercase">Your One-Time Password</p>
-            <div style="font-size:3rem;font-weight:900;letter-spacing:16px;color:${config.otpColor};font-family:monospace">${otp}</div>
-            <div style="margin-top:14px;display:inline-block;background:rgba(255,255,255,0.07);border-radius:20px;padding:5px 16px">
-              <p style="color:rgba(255,255,255,0.5);font-size:0.72rem;margin:0">&#9201; Valid for <strong style="color:#fff">10 minutes</strong> only</p>
-            </div>
-          </div>
-
-          <!-- SECURITY NOTE -->
-          <div style="background:rgba(255,255,255,0.04);border-left:3px solid rgba(255,255,255,0.15);border-radius:0 8px 8px 0;padding:12px 16px">
-            <p style="color:rgba(255,255,255,0.35);font-size:0.78rem;margin:0;line-height:1.6">&#128274; <strong style="color:rgba(255,255,255,0.5)">Security tip:</strong> City Real Space will never ask for your OTP. If you did not request this, please ignore this email.</p>
-          </div>
-        </div>
-
-        <!-- FOOTER -->
-        <div style="background:rgba(0,0,0,0.35);padding:18px 32px;text-align:center;border-top:1px solid rgba(255,255,255,0.06)">
-          <p style="color:rgba(255,255,255,0.25);font-size:0.72rem;margin:0">&copy; 2026 City Real Space &middot; Ahmedabad West, Gujarat</p>
-        </div>
-
-      </div>`
+      html
     });
+    if (error) throw new Error(error.message);
     console.log(`✅ Email sent successfully to ${email}`);
   } catch (error) {
     console.error(`❌ Email send failed for ${email}:`, error.message);
