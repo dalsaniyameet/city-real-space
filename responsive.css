@@ -11,9 +11,26 @@ img { max-width: 100%; height: auto; }
 table { width: 100%; overflow-x: auto; display: block; }
 
 /* ===== NTC BAR MOBILE ===== */
+#ntcBar {
+  z-index: 1001 !important;
+}
 @media (max-width: 480px) {
   #ntcBar { font-size: 0.65rem !important; padding: 5px 8px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   #ntcBar span { font-size: 0.65rem !important; }
+}
+
+/* ===== ALL MODALS ABOVE NTC BAR ===== */
+.auth-overlay,
+.inq-overlay,
+#offerOverlay,
+#reqOverlay,
+#profileOverlay,
+#completeProfileOverlay,
+#forgotOverlay,
+#verifyOverlay,
+#welcomeScreen,
+#logoSplash {
+  z-index: 9999999 !important;
 }
 
 /* ===== CONTAINER ===== */
@@ -166,14 +183,29 @@ table { width: 100%; overflow-x: auto; display: block; }
 
 /* ===== AUTH MODAL ===== */
 @media (max-width: 768px) {
-  .auth-modal { flex-direction: column; max-height: 95vh; border-radius: 16px; }
+  .auth-overlay {
+    z-index: 999999 !important;
+    padding: 12px !important;
+    align-items: flex-start !important;
+    padding-top: 60px !important;
+  }
+  .auth-modal {
+    flex-direction: column;
+    max-height: 88vh;
+    border-radius: 16px;
+    margin-top: 0;
+  }
   .auth-left { display: none; }
-  .auth-right { padding: 24px 18px; overflow-y: auto; }
+  .auth-right { padding: 20px 16px; overflow-y: auto; }
   .form-row-2 { grid-template-columns: 1fr; }
-  .auth-overlay { padding: 12px; }
+  .auth-close {
+    top: 10px !important;
+    right: 10px !important;
+    z-index: 10 !important;
+  }
 }
 @media (max-width: 400px) {
-  .auth-right { padding: 20px 14px; }
+  .auth-right { padding: 16px 12px; }
 }
 
 /* ===== INQUIRY MODAL ===== */

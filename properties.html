@@ -106,7 +106,7 @@
 <body>
 
 <!-- NTC REG BAR -->
-<div style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);">
+<div style="position:fixed;top:0;left:0;right:0;z-index:1001;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);">
   <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
   &nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;
   <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
@@ -647,7 +647,23 @@ document.getElementById('clearBtn').addEventListener('click', function() {
 });
 
 document.getElementById('hamburger').addEventListener('click', function() {
-  document.getElementById('nav').classList.toggle('open');
+  const nav = document.getElementById('nav');
+  const isOpen = nav.classList.toggle('open');
+  this.innerHTML = isOpen ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
+});
+document.querySelectorAll('.nav-drop-btn').forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    this.closest('.nav-dropdown').classList.toggle('open');
+  });
+});
+document.addEventListener('click', function(e) {
+  const nav = document.getElementById('nav');
+  const hb = document.getElementById('hamburger');
+  if (nav && hb && !nav.contains(e.target) && !hb.contains(e.target)) {
+    nav.classList.remove('open');
+    hb.innerHTML = '<i class="fa-solid fa-bars"></i>';
+  }
 });
 
 window.addEventListener('scroll', function() {
