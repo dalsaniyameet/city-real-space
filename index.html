@@ -92,9 +92,9 @@
 <script src="splash.js"></script>
 
 <!-- NTC REG BAR -->
-<div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;">
+<div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
   <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
-  &nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;
+  <span class="ntc-mid">&nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;</span>
   <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
 </div>
 <div style="height:33px;"></div>
@@ -130,7 +130,7 @@
     </nav>
     <div class="header-actions">
       <button class="fav-btn" title="Favorites"><i class="fa-regular fa-heart"></i><span class="fav-count">0</span></button>
-      <button id="postReqBtn" onclick="window.openReqModal && window.openReqModal()" style="background:#E53935;color:#fff;border:none;padding:9px 16px;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:6px;white-space:nowrap;animation:reqPulse 2s ease-in-out infinite;"><i class="fa-solid fa-bell"></i> Post Requirement</button>
+      <button id="postReqBtn" onclick="window.openReqModal && window.openReqModal()" style="background:#E53935;color:#fff;border:none;padding:9px 16px;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:6px;white-space:nowrap;animation:reqPulse 2s ease-in-out infinite;flex-shrink:0;"><i class="fa-solid fa-bell"></i><span class="req-btn-text"> Post Requirement</span></button>
       <style>@keyframes reqPulse{0%,100%{box-shadow:0 0 0 0 rgba(229,57,53,0.5)}50%{box-shadow:0 0 0 8px rgba(229,57,53,0)}}</style>
       <a href="post-property.html" class="btn-post-prop" id="postPropBtn" style="display:none"><i class="fa-solid fa-plus"></i> Post Property</a>
       <div id="userMenu" style="display:none;position:relative">

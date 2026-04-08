@@ -501,3 +501,124 @@ table { width: 100%; overflow-x: auto; display: block; }
   .snum { font-size: 1.1rem; }
   .gift-popup, .live-chat-widget { width: calc(100vw - 12px) !important; right: 6px !important; }
 }
+
+/* ===== MOBILE SPECIFIC FIXES ===== */
+
+/* NTC Top Bar — mobile pe overflow fix */
+@media (max-width: 600px) {
+  #ntcBar { font-size: 0.68rem !important; padding: 5px 8px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #ntcBar span { font-size: 0.68rem !important; }
+  .ntc-mid { display: none; }
+}
+@media (max-width: 400px) {
+  #ntcBar { font-size: 0.62rem !important; }
+}
+
+/* Header Actions — Post Requirement button mobile fix */
+@media (max-width: 768px) {
+  #postReqBtn { padding: 8px 10px !important; font-size: 0.75rem !important; }
+  #postReqBtn i { margin: 0 !important; }
+}
+@media (max-width: 480px) {
+  #postReqBtn { padding: 7px 8px !important; width: 36px; height: 36px; justify-content: center; border-radius: 50% !important; }
+  #postReqBtn .req-btn-text { display: none; }
+  .btn-inquiry { padding: 7px 10px !important; }
+  .btn-inquiry i { display: inline !important; }
+  .btn-inquiry span { display: none; }
+}
+@media (max-width: 360px) {
+  #postReqBtn { display: none !important; }
+}
+
+/* Floating Buttons Stack Fix — mobile pe overlap nahi hoga */
+@media (max-width: 768px) {
+  .whatsapp-float  { bottom: 16px !important; right: 14px !important; width: 46px !important; height: 46px !important; font-size: 1.2rem !important; }
+  .back-top        { bottom: 72px !important; right: 14px !important; width: 36px !important; height: 36px !important; }
+  .live-chat-btn   { bottom: 118px !important; right: 14px !important; }
+  .live-chat-btn i { width: 44px !important; height: 44px !important; font-size: 1.1rem !important; }
+  .gift-btn        { bottom: 174px !important; right: 14px !important; }
+  .gift-icon       { width: 44px !important; height: 44px !important; font-size: 1.2rem !important; }
+  .live-chat-widget { bottom: 170px !important; right: 8px !important; width: calc(100vw - 16px) !important; max-width: 340px !important; }
+  .gift-popup      { bottom: 228px !important; right: 8px !important; width: calc(100vw - 16px) !important; max-width: 320px !important; }
+}
+@media (max-width: 380px) {
+  .whatsapp-float  { right: 10px !important; }
+  .back-top        { right: 10px !important; }
+  .live-chat-btn   { right: 10px !important; }
+  .gift-btn        { right: 10px !important; }
+}
+
+/* Hero Slide Label — mobile pe proper position */
+@media (max-width: 480px) {
+  .slide-label { left: 10px !important; bottom: 10px !important; right: 10px !important; padding: 10px 12px; background: rgba(13,27,42,0.75); border-radius: 10px; }
+  .slide-label h2 { font-size: 0.88rem !important; margin-bottom: 4px; }
+  .slide-label p  { font-size: 0.72rem !important; }
+}
+
+/* Profile Modal — mobile grid fix */
+@media (max-width: 500px) {
+  #profileOverlay > div { border-radius: 14px !important; margin: 0 8px; }
+  #profileOverlay > div > div:last-child { padding: 18px 16px !important; }
+  #profileOverlay [style*="grid-template-columns:1fr 1fr"],
+  #profileOverlay [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+}
+
+/* Post Requirement Modal — mobile fix */
+@media (max-width: 500px) {
+  #reqOverlay > div { border-radius: 14px !important; margin: 0 8px; }
+  #reqOverlay > div > div:last-child { padding: 18px 16px !important; }
+  #reqOverlay [style*="display:flex"][style*="gap:10px"] { flex-direction: column; }
+}
+
+/* Search Box — sf fields mobile */
+@media (max-width: 480px) {
+  .sf { min-width: 100% !important; }
+  .search-fields { gap: 6px !important; padding: 8px !important; }
+}
+
+/* Testimonials — mobile single column */
+@media (max-width: 600px) {
+  .testi-grid { grid-template-columns: 1fr !important; }
+}
+
+/* Team Section inline grid — mobile fix */
+@media (max-width: 600px) {
+  section [style*="grid-template-columns:repeat(auto-fill,minmax(200px"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+}
+@media (max-width: 400px) {
+  section [style*="grid-template-columns:repeat(auto-fill,minmax(200px"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* SEO Grid — mobile */
+@media (max-width: 480px) {
+  .seo-grid { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .seo-header h2 { font-size: 1.3rem !important; }
+  .seo-description { padding: 14px !important; }
+}
+
+/* Footer bottom text — center on mobile */
+@media (max-width: 480px) {
+  .footer-bottom { text-align: center; }
+  .footer-bottom p { font-size: 0.72rem !important; line-height: 1.6; }
+}
+
+/* Inquiry & Auth modal — full width on very small screens */
+@media (max-width: 360px) {
+  .auth-overlay, .inq-overlay { padding: 10px !important; }
+  .auth-right, .inq-right { padding: 16px 12px !important; }
+}
+
+/* Live chat widget — landscape fix */
+@media (max-width: 768px) and (orientation: landscape) {
+  .live-chat-widget { max-height: 65vh !important; overflow-y: auto; }
+  .lcw-body { max-height: 120px !important; }
+}
+
+/* Prevent horizontal scroll globally */
+body, html { max-width: 100vw; overflow-x: hidden; }
+.hero, .cta-banner, .section, footer, header { overflow-x: hidden; }
