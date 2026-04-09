@@ -427,14 +427,18 @@ select, input { font-family: 'Poppins', sans-serif; border: none; outline: none;
   .fav-btn { display: none; }
 }
 @media (max-width: 768px) {
-  .nav { display: none; position: fixed; top: 105px; left: 0; right: 0; background: #fff; flex-direction: column; padding: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); gap: 4px; z-index: 999; max-height: calc(100vh - 105px); overflow-y: auto; }
+  .nav { display: none; position: fixed; top: 105px; left: 0; right: 0; background: #fff; flex-direction: column; padding: 12px 16px 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); gap: 2px; z-index: 999; max-height: calc(100vh - 105px); overflow-y: auto; width: 100%; }
   .nav.open { display: flex; }
+  .nav a { padding: 12px 16px; border-radius: 8px; font-size: 0.92rem; font-weight: 600; color: #333; display: flex; align-items: center; width: 100%; border-bottom: 1px solid #f5f5f5; }
+  .nav a:last-child { border-bottom: none; }
   .nav a { padding: 12px 16px; border-radius: 8px; }
   .nav-dropdown { width: 100%; }
-  .nav-drop-btn { width: 100%; padding: 12px 16px; }
-  .nav-drop-menu { position: static; opacity: 1; pointer-events: all; transform: none; box-shadow: none; border: none; border-left: 3px solid rgba(229,57,53,0.2); border-radius: 0; margin-left: 16px; display: none; padding-top: 0; background: transparent; min-width: unset; }
+  .nav-drop-btn { width: 100%; padding: 12px 16px; font-size: 0.92rem; font-weight: 600; color: #333; border-bottom: 1px solid #f5f5f5; justify-content: space-between; }
+  .nav-drop-menu { position: static; opacity: 1; pointer-events: all; transform: none; box-shadow: none; border: none; border-left: 3px solid rgba(229,57,53,0.3); border-radius: 0; margin-left: 20px; display: none; padding-top: 4px; background: transparent; min-width: unset; }
+  .nav-drop-menu a { border-bottom: none; font-size: 0.85rem; color: #666; padding: 9px 14px; }
   .nav-dropdown.open .nav-drop-menu { display: block; }
   .nav-dropdown.open .nav-drop-btn i { transform: rotate(180deg); }
+  .nav-dropdown.open .nav-drop-btn { color: var(--red); }
   .hamburger { display: flex; }
   .btn-inquiry span { display: none; }
   .search-fields { flex-direction: column; }
