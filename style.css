@@ -39,7 +39,7 @@ body.cursor-click .cursor-ring {
 
 /* ===== RESET & BASE ===== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body { font-family: 'Poppins', sans-serif; color: #333; background: #fff; overflow-x: hidden; padding-top: 105px; }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
