@@ -551,14 +551,14 @@ select, input { font-family: 'Poppins', sans-serif; border: none; outline: none;
   .posts-grid { grid-template-columns: 1fr; }
   .post-card.featured { grid-row: span 1; }
 }
-.auth-overlay { position: fixed; inset: 0; z-index: 2000; background: rgba(13,27,42,0.75); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.15s; }
+.auth-overlay { position: fixed; inset: 0; z-index: 2000; background: rgba(13,27,42,0.75); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity 0.15s; overflow-y: auto; }
 .auth-overlay.open { opacity: 1; pointer-events: all; }
-.auth-modal { background: #fff; border-radius: 20px; overflow: hidden; display: flex; width: 100%; max-width: 900px; max-height: 92vh; box-shadow: 0 32px 80px rgba(0,0,0,0.35); transform: translateY(30px) scale(0.97); transition: transform 0.15s ease; position: relative; }
+.auth-modal { background: #fff; border-radius: 20px; overflow: hidden; display: flex; width: 100%; max-width: 900px; max-height: 90vh; box-shadow: 0 32px 80px rgba(0,0,0,0.35); transform: translateY(30px) scale(0.97); transition: transform 0.15s ease; position: relative; }
 .auth-overlay.open .auth-modal { transform: translateY(0) scale(1); }
 /* Auto popup entrance — thodi delay sathe animate thay */
 .auth-overlay.open { animation: fadeInOverlay 0.3s ease forwards; }
 @keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
-.auth-close { position: absolute; top: 16px; right: 16px; z-index: 10; width: 36px; height: 36px; border-radius: 50%; border: none; background: #fff; color: #333; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.auth-close { position: absolute; top: 12px; right: 12px; z-index: 50; width: 36px; height: 36px; border-radius: 50%; border: none; background: #fff; color: #333; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 .auth-close:hover { background: #f0f0f0; transform: rotate(90deg); }
 
 .auth-left { width: 42%; background: linear-gradient(160deg, #0D1B2A 0%, #1a3a5c 60%, #0d2137 100%); padding: 44px 36px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; flex-shrink: 0; }
@@ -619,9 +619,11 @@ select, input { font-family: 'Poppins', sans-serif; border: none; outline: none;
 .auth-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 @media (max-width: 700px) {
   .auth-left { display: none; }
-  .auth-right { padding: 28px 24px; }
+  .auth-right { padding: 20px 18px; overflow-y: auto; flex: 1; min-height: 0; }
+  .auth-modal { max-height: 88vh; border-radius: 16px; overflow: hidden; flex-direction: column; }
+  .auth-overlay { align-items: flex-start; padding: 10px; }
+  .auth-close { top: 10px; right: 10px; z-index: 100; }
   .form-row-2 { grid-template-columns: 1fr; }
-  .auth-modal { max-height: 95vh; }
 }
 
 /* ===== INQUIRY MODAL ===== */
@@ -865,8 +867,9 @@ select, input { font-family: 'Poppins', sans-serif; border: none; outline: none;
 
   /* Modals */
   .auth-left { display: none; }
-  .auth-right { padding: 24px 20px; }
-  .auth-modal { max-height: 95vh; border-radius: 16px; }
+  .auth-right { padding: 20px 18px; overflow-y: auto; flex: 1; min-height: 0; }
+  .auth-modal { max-height: 88vh; border-radius: 16px; }
+  .auth-close { top: 10px; right: 10px; z-index: 100; }
   .inq-left { display: none; }
   .inq-right { padding: 24px 20px; }
   .form-row-2 { grid-template-columns: 1fr; }
