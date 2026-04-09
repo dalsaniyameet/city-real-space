@@ -38,9 +38,9 @@ body.cursor-click .cursor-ring {
 }
 
 /* ===== RESET & BASE ===== */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; max-width: 100%; }
 html { scroll-behavior: smooth; overflow-x: hidden; }
-body { font-family: 'Poppins', sans-serif; color: #333; background: #fff; overflow-x: hidden; padding-top: 105px; }
+body { font-family: 'Poppins', sans-serif; color: #333; background: #fff; overflow-x: hidden; padding-top: 105px; width: 100%; }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 img { max-width: 100%; display: block; }
@@ -71,9 +71,12 @@ select, input { font-family: 'Poppins', sans-serif; border: none; outline: none;
   backdrop-filter: blur(12px);
   box-shadow: 0 2px 20px rgba(0,0,0,0.08);
   transition: all 0.3s ease;
+  overflow: visible;
+  width: 100%;
+  max-width: 100vw;
 }
 .header.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.15); }
-.header-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 8px; overflow: visible; }
+.header-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 8px; overflow: visible; min-width: 0; width: 100%; }
 
 .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.35rem; color: var(--dark); white-space: nowrap; }
 .logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--yellow), #ff8f00); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(255,193,7,0.4); }
