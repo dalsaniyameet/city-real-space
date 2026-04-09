@@ -9,8 +9,12 @@ const API = (function() {
 console.log('🌐 Main Site - API Endpoint:', API);
 
 async function checkAuthState() {
-  const user  = JSON.parse(localStorage.getItem('user') || 'null');
+  const raw   = localStorage.getItem('user');
   const token = localStorage.getItem('token');
+  // Guard: agar 'undefined' string ya invalid JSON ho toh clear karo
+  let user = null;
+  try { user = raw && raw !== 'undefined' ? JSON.parse(raw) : null; }
+  catch { localStorage.removeItem('user'); localStorage.removeItem('token'); }
   const loginBtn       = document.getElementById('loginBtn');
   const userMenu       = document.getElementById('userMenu');
   const userNameDisplay = document.getElementById('userNameDisplay');
@@ -747,7 +751,14 @@ if (document.getElementById('loginForm')) {
   try {
     const res  = await fetch(`${API}/auth/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, password}) });
     const data = await res.json();
-    if (data.success) {
+    if (data.success && data.needsOTP) {
+      document.getElementById('loginForm').classList.add('hidden');
+      document.getElementById('loginOtpForm').classList.remove('hidden');
+      document.getElementById('loginOtpForm').dataset.email = email;
+      document.getElementById('loginOtpEmailDisplay').textContent = email;
+      document.getElementById('loginOtpInput').value = '';
+      showToast('OTP sent to ' + email);
+    } else if (data.success) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       window.location.reload();
