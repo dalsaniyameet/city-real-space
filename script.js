@@ -357,7 +357,13 @@ if (document.getElementById('backTop')) document.getElementById('backTop').addEv
 
 // ===== HAMBURGER =====
 if (document.getElementById('hamburger')) document.getElementById('hamburger').addEventListener('click', () => {
-  document.getElementById('nav').classList.toggle('open');
+  const nav = document.getElementById('nav');
+  const btn = document.getElementById('hamburger');
+  const isOpen = nav.classList.toggle('open');
+  btn.classList.toggle('active', isOpen);
+  btn.innerHTML = isOpen
+    ? '<i class="fa-solid fa-xmark"></i>'
+    : '<i class="fa-solid fa-bars"></i>';
 });
 
 // ===== SEARCH TABS =====
@@ -1014,7 +1020,11 @@ document.querySelectorAll('.nav-drop-btn').forEach(btn => {
 
 // ===== NAV CLOSE ON LINK CLICK =====
 document.querySelectorAll('.nav a').forEach(a => {
-  a.addEventListener('click', () => document.getElementById('nav').classList.remove('open'));
+  a.addEventListener('click', () => {
+    document.getElementById('nav').classList.remove('open');
+    const btn = document.getElementById('hamburger');
+    if (btn) { btn.classList.remove('active'); btn.innerHTML = '<i class="fa-solid fa-bars"></i>'; }
+  });
 });
 
 // ===== LIVE CHAT WIDGET =====
