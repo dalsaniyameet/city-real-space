@@ -93,13 +93,19 @@
     }
 
     @media (max-width: 700px) {
+      body { padding: 0; align-items: flex-start; min-height: 100vh; }
       .page-left { display: none; }
-      .page-right { padding: 36px 24px; }
-      .page-card { max-height: none; }
+      .page-card { border-radius: 0; min-height: 100vh; box-shadow: none; }
+      .page-right { padding: 32px 20px 40px; justify-content: flex-start; }
+    }
+    @media (max-width: 400px) {
+      .page-right { padding: 28px 16px 32px; }
+      .page-right h3 { font-size: 1.3rem; }
+      .social-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
-<body>
+<body class="login-page">
 <script src="splash.js"></script>
 
 <div class="page-card">
@@ -260,12 +266,9 @@ function togglePass(id, btn) {
   inp.type = isText ? 'password' : 'text';
   btn.querySelector('i').className = isText ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
 }
-const API = (function() {
-  if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    return 'http://localhost:5000/api';
-  }
-  return '/api';
-})();
+const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:5000/api'
+  : 'https://city-real-space.vercel.app/api';
 let fpEmailVal = '', fpOTPVal = '';
 
 function showForgot(e) {

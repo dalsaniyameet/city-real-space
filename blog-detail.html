@@ -196,7 +196,7 @@
 <script>
 const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:5000/api'
-  : '/api';
+  : 'https://city-real-space.vercel.app/api';
 const slug = new URLSearchParams(window.location.search).get('slug');
 
 // Auth

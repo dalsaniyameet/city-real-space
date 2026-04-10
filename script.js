@@ -3,7 +3,7 @@ const API = (function() {
   if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     return 'http://localhost:5000/api';
   }
-  return '/api';
+  return 'https://city-real-space.vercel.app/api';
 })();
 
 console.log('🌐 Main Site - API Endpoint:', API);
