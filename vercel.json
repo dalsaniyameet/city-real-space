@@ -1,87 +1,38 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "backend/server.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "*.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.css",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.js",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "images/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "admin/**",
-      "use": "@vercel/static"
-    }
+    { "src": "backend/server.js", "use": "@vercel/node" },
+    { "src": "*.html",            "use": "@vercel/static" },
+    { "src": "*.css",             "use": "@vercel/static" },
+    { "src": "*.js",              "use": "@vercel/static" },
+    { "src": "images/**",         "use": "@vercel/static" },
+    { "src": "admin/**",          "use": "@vercel/static" }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "backend/server.js"
-    },
-    {
-      "src": "/images/(.*)",
-      "dest": "/images/$1"
-    },
-    {
-      "src": "/admin/(.*\\.html)",
-      "dest": "/admin/$1"
-    },
-    {
-      "src": "/admin/(.*\\.css)",
-      "dest": "/admin/$1"
-    },
-    {
-      "src": "/admin/(.*\\.js)",
-      "dest": "/admin/$1"
-    },
-    {
-      "src": "/(.*\\.css)",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*\\.js)",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*\\.html)",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*\\.json)",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*\\.xml)",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*\\.txt)",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*\\.(jpg|jpeg|png|gif|svg|ico|webp))",
-      "dest": "/$1"
-    },
-    {
-      "src": "/",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "backend/server.js"
-    }
+    { "src": "/api/(.*)", "dest": "backend/server.js" },
+    { "src": "/images/(.*)",          "dest": "/images/$1" },
+    { "src": "/admin/(.*\\.html)",    "dest": "/admin/$1" },
+    { "src": "/admin/(.*\\.css)",     "dest": "/admin/$1" },
+    { "src": "/admin/(.*\\.js)",      "dest": "/admin/$1" },
+    { "src": "/(.*\\.css)",           "dest": "/$1" },
+    { "src": "/(.*\\.js)",            "dest": "/$1" },
+    { "src": "/(.*\\.html)",          "dest": "/$1" },
+    { "src": "/(.*\\.json)",          "dest": "/$1" },
+    { "src": "/(.*\\.xml)",           "dest": "/$1" },
+    { "src": "/(.*\\.txt)",           "dest": "/$1" },
+    { "src": "/(.*\\.(jpg|jpeg|png|gif|svg|ico|webp))", "dest": "/$1" },
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/(.*)", "dest": "backend/server.js" }
+  ],
+  "errorHandling": [
+    { "statusCode": 400, "destination": "/404.html" },
+    { "statusCode": 401, "destination": "/401.html" },
+    { "statusCode": 403, "destination": "/403.html" },
+    { "statusCode": 404, "destination": "/404.html" },
+    { "statusCode": 429, "destination": "/429.html" },
+    { "statusCode": 500, "destination": "/500.html" },
+    { "statusCode": 502, "destination": "/500.html" },
+    { "statusCode": 503, "destination": "/503.html" },
+    { "statusCode": 504, "destination": "/503.html" }
   ]
 }
