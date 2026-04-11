@@ -65,14 +65,13 @@ const allowedOrigins = [
   'https://cityrealspace.com',
   'https://www.cityrealspace.com',
   'https://city-real-space.onrender.com',
-  'https://city-real-space.vercel.app'
+  'https://city-real-space.vercel.app',
+  'https://www.city-real-space.vercel.app'
 ];
 app.use(cors({
   origin: function(origin, callback) {
-    // No origin = same-origin / server-to-server / curl — allow karo
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) return callback(null, true);
-    // CORS block — 403 JSON, 500 nahi
     return callback(null, false);
   },
   credentials: true
