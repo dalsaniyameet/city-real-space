@@ -45,5 +45,5 @@
     { "src": "/maintenance",    "dest": "/maintenance.html" },
     { "src": "/(.*)", "dest": "/404.html" }
   ],
-  "cleanUrls": true
+  "cleanUrls": false
 }
