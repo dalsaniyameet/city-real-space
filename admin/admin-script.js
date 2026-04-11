@@ -2,7 +2,7 @@ const API = (function() {
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     return 'http://localhost:5000/api';
   }
-  return 'https://city-real-space.onrender.com/api';
+  return 'https://city-real-space.vercel.app/api';
 })();
 
 // ===== AUTH GUARD =====
@@ -205,7 +205,7 @@ async function uploadToCloudinary(file) {
   });
   const data = await res.json();
   if (!data.url) throw new Error('Upload failed');
-  return 'https://city-real-space.onrender.com' + data.url;
+  return 'https://city-real-space.vercel.app' + data.url;
 }
 
 async function handleBlogImage(input) {
