@@ -11,6 +11,7 @@
   "routes": [
     { "src": "/api/(.*)", "dest": "backend/server.js" },
     { "src": "/images/(.*)",          "dest": "/images/$1" },
+    { "src": "/admin/images/(.*)",    "dest": "/images/$1" },
     { "src": "/admin/(.*\\.html)",    "dest": "/admin/$1" },
     { "src": "/admin/(.*\\.css)",     "dest": "/admin/$1" },
     { "src": "/admin/style.css",       "dest": "/admin/style.css" },
@@ -20,6 +21,7 @@
     { "src": "/admin/splash.js",       "dest": "/splash.js" },
     { "src": "/admin/bg-animation.js", "dest": "/bg-animation.js" },
     { "src": "/admin/responsive.css",  "dest": "/responsive.css" },
+    { "src": "/admin/script.js",       "dest": "/script.js" },
     { "src": "/admin/(.*\\.js)",       "dest": "/admin/$1" },
     { "src": "/(.*\\.css)",           "dest": "/$1" },
     { "src": "/(.*\\.js)",            "dest": "/$1" },

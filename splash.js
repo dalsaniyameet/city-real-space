@@ -4,7 +4,7 @@
   splash.id = 'logoSplash';
   splash.innerHTML = `
     <div id="splashBg"></div>
-    <img src="images/logo.jpeg" alt="City Real Space" id="splashLogo"/>
+    <img src="/images/logo.jpeg" alt="City Real Space" id="splashLogo"/>
     <style>
       #logoSplash {
         position: fixed; inset: 0; z-index: 9999999;
