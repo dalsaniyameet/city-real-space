@@ -3,16 +3,10 @@ const router       = express.Router();
 const Contact      = require('../models/Contact');
 const { protect, adminOnly } = require('../middleware/auth');
 const twilio       = require('twilio');
-const nodemailer   = require('nodemailer');
+const { Resend }   = require('resend');
 
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: Number(process.env.EMAIL_PORT),
-  secure: false,
-  auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
-});
+const resend       = new Resend(process.env.RESEND_API_KEY);
 
 async function sendWA(to, body) {
   try {
@@ -24,7 +18,12 @@ async function sendWA(to, body) {
 
 async function sendEmail(to, subject, text) {
   try {
-    await transporter.sendMail({ from: `"City Real Space" <${process.env.EMAIL_USER}>`, to, subject, text });
+    await resend.emails.send({
+      from: 'City Real Space <noreply@cityrealspace.com>',
+      to,
+      subject,
+      text
+    });
   } catch (e) {
     console.error('Email error:', e.message);
   }
