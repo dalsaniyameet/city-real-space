@@ -2,7 +2,7 @@ const API = (function() {
   if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     return 'http://localhost:5000/api';
   }
-  return 'https://city-real-space.onrender.com/api';
+  return 'https://city-real-space.vercel.app/api';
 })();
 
 console.log('🔒 Admin Panel Script - API Endpoint:', API);
@@ -1265,7 +1265,7 @@ pImgObserver.observe(document.getElementById('pImagePreview'), { childList: true
 // ===== CONTACTS =====
 async function loadContacts() {
   try {
-    const res = await fetch('https://city-real-space.onrender.com/api/contact', {
+    const res = await fetch(API + '/contact', {
       headers: { 'Authorization': 'Bearer ' + adminToken }
     });
     const data = await res.json();
@@ -1299,7 +1299,7 @@ async function loadContacts() {
 }
 
 async function updateContactStatus(id, status) {
-  const res = await fetch('https://city-real-space.onrender.com/api/contact/' + id + '/status', {
+  const res = await fetch(API + '/contact/' + id + '/status', {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken },
     body: JSON.stringify({ status })
@@ -1310,7 +1310,7 @@ async function updateContactStatus(id, status) {
 }
 
 async function deleteContact(id) {
-  const res = await fetch('https://city-real-space.onrender.com/api/contact/' + id, {
+  const res = await fetch(API + '/contact/' + id, {
     method: 'DELETE',
     headers: { 'Authorization': 'Bearer ' + adminToken }
   });
@@ -1326,7 +1326,7 @@ loadStats();
 // ===== CONTACTS =====
 async function loadContacts() {
   try {
-    const res  = await fetch('https://city-real-space.onrender.com/api/contact', {
+    const res  = await fetch(API + '/contact', {
       headers: { 'Authorization': 'Bearer ' + adminToken }
     });
     const data = await res.json();
@@ -1362,7 +1362,7 @@ async function loadContacts() {
 }
 
 async function updateContactStatus(id, status) {
-  await fetch('https://city-real-space.onrender.com/api/contact/' + id + '/status', {
+  await fetch(API + '/contact/' + id + '/status', {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken },
     body: JSON.stringify({ status })
@@ -1373,7 +1373,7 @@ async function updateContactStatus(id, status) {
 
 async function deleteContact(id) {
   if (!confirm('Delete this message?')) return;
-  await fetch('https://city-real-space.onrender.com/api/contact/' + id, {
+  await fetch(API + '/contact/' + id, {
     method: 'DELETE',
     headers: { 'Authorization': 'Bearer ' + adminToken }
   });
