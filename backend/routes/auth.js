@@ -180,7 +180,7 @@ async function sendOTPEmail(email, otp, name, type) {
   try {
     console.log(`📧 Sending ${type} OTP to ${email} via Resend`);
     const response = await axios.post('https://api.resend.com/emails', {
-      from: 'City Real Space <dalsaniyameet2006@gmail.com>',
+      from: 'City Real Space <noreply@cityrealspace.com>',
       to: [email],
       subject,
       html
