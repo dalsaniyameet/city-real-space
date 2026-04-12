@@ -1,5 +1,19 @@
 // ===== AUTH STATE ===== v2
 const API = (function() {
+// ===== PRICE FORMAT FUNCTION (global) =====
+function formatPrice(price, status) {
+  if (!price) return 'Price on Request';
+  if (status === 'for-rent') {
+    if (price >= 100000) return '₹' + (price/100000).toFixed(price%100000===0?0:1)+'L/mo';
+    if (price >= 1000)   return '₹' + Math.round(price/1000)+'K/mo';
+    return '₹' + price.toLocaleString('en-IN')+'/mo';
+  }
+  if (price >= 10000000) return '₹' + (price/10000000).toFixed(price%10000000===0?0:2).replace(/\.?0+$/,'')+' Cr';
+  if (price >= 100000)   return '₹' + (price/100000).toFixed(price%100000===0?0:2).replace(/\.?0+$/,'')+' L';
+  if (price >= 1000)     return '₹' + Math.round(price/1000)+'K';
+  return '₹' + price.toLocaleString('en-IN');
+}
+const API = (function() {
   if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     return 'http://localhost:5000/api';
   }
@@ -87,7 +101,7 @@ function dbToCard(p) {
     images: p.images || [],
     badge: statusMap[p.status] || p.status,
     badgeClass: badgeClassMap[p.status] || '',
-    price: p.priceLabel || '\u20b9' + p.price,
+    price: formatPrice(p.price, p.status),
     loc: `${p.location?.area}, ${p.location?.city}`,
     title: p.title,
     beds: p.category === 'commercial' ? null : (p.specs?.beds || 0),

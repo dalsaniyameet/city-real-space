@@ -296,6 +296,22 @@
 const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? 'http://localhost:5000/api' : '/api';
 
+// ===== PRICE FORMAT FUNCTION =====
+function formatPrice(price, status) {
+  if (!price) return 'Price on Request';
+  if (status === 'for-rent') {
+    // Monthly rent format
+    if (price >= 100000) return '\u20b9' + (price / 100000).toFixed(price % 100000 === 0 ? 0 : 1) + 'L/mo';
+    if (price >= 1000)   return '\u20b9' + Math.round(price / 1000) + 'K/mo';
+    return '\u20b9' + price.toLocaleString('en-IN') + '/mo';
+  }
+  // Sale / New Launch format
+  if (price >= 10000000) return '\u20b9' + (price / 10000000).toFixed(price % 10000000 === 0 ? 0 : 2).replace(/\.?0+$/, '') + ' Cr';
+  if (price >= 100000)   return '\u20b9' + (price / 100000).toFixed(price % 100000 === 0 ? 0 : 2).replace(/\.?0+$/, '') + ' L';
+  if (price >= 1000)     return '\u20b9' + Math.round(price / 1000) + 'K';
+  return '\u20b9' + price.toLocaleString('en-IN');
+}
+
 // Auth state
 const user = JSON.parse(localStorage.getItem('user') || 'null');
 const token = localStorage.getItem('token');
@@ -460,7 +476,7 @@ function createCard(p) {
   const statusMap = { 'for-sale': 'For Sale', 'for-rent': 'For Rent', 'new-launch': 'New Launch' };
   const badgeClass = p.status === 'for-rent' ? 'rent' : p.status === 'new-launch' ? 'new' : '';
   const badge = statusMap[p.status] || p.status;
-  const price = p.priceLabel || '₹' + p.price;
+  const price = formatPrice(p.price, p.status);
   const loc = (p.location?.area || '') + ', ' + (p.location?.city || '');
   const initials = p.agent?.initials || 'CRS';
   const agentName = p.agent?.name || 'CRS Agent';
@@ -1118,7 +1134,7 @@ function findPropData(id) {
   const s = staticAllProps.find(p => p._id === id);
   if (s) return {
     id: s._id, title: s.title,
-    price: s.price, priceLabel: s.priceLabel,
+    price: s.price, priceLabel: formatPrice(s.price, s.status),
     loc: (s.location?.area || '') + ', ' + (s.location?.city || ''),
     img: s.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&q=80',
     specs: s.specs || {}, status: s.status, type: s.type,
@@ -1210,7 +1226,7 @@ function buildCompareTable() {
 
   // Rows
   const rows = [
-    { label: 'Price', fn: p => '<span class="cmp-price">' + (p.priceLabel || '₹'+p.price) + '</span>', win: (p,i) => prices[i] === minPrice },
+    { label: 'Price', fn: p => '<span class="cmp-price">' + formatPrice(p.price, p.status) + '</span>', win: (p,i) => prices[i] === minPrice },
     { label: 'Status', fn: p => '<span class="cmp-badge ' + badgeClass(p.status) + '">' + (statusMap[p.status]||p.status) + '</span>' },
     { label: 'Type', fn: p => p.type ? p.type.charAt(0).toUpperCase()+p.type.slice(1) : '—' },
     { label: 'Bedrooms', fn: p => p.specs?.beds ? p.specs.beds + ' BHK' : '—', win: (p,i) => beds[i] === maxBeds && maxBeds > 0 },

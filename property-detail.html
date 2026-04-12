@@ -365,7 +365,19 @@
 <script src="bg-animation.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+// ===== PRICE FORMAT FUNCTION =====
+function formatPrice(price, status) {
+  if (!price) return 'Price on Request';
+  if (status === 'for-rent') {
+    if (price >= 100000) return '₹' + (price/100000).toFixed(price%100000===0?0:1)+'L/mo';
+    if (price >= 1000)   return '₹' + Math.round(price/1000)+'K/mo';
+    return '₹' + price.toLocaleString('en-IN')+'/mo';
+  }
+  if (price >= 10000000) return '₹' + (price/10000000).toFixed(price%10000000===0?0:2).replace(/\.?0+$/,'')+' Cr';
+  if (price >= 100000)   return '₹' + (price/100000).toFixed(price%100000===0?0:2).replace(/\.?0+$/,'')+' L';
+  if (price >= 1000)     return '₹' + Math.round(price/1000)+'K';
+  return '₹' + price.toLocaleString('en-IN');
+} = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? 'http://localhost:5000/api'
   : '/api';
 
@@ -474,7 +486,7 @@ function renderProperty(p) {
 
   document.getElementById('pdTitle').textContent = p.title;
   document.getElementById('pdLoc').textContent = (p.location?.area || '') + ', ' + (p.location?.city || '');
-  document.getElementById('pdPrice').textContent = p.priceLabel || ('\u20b9' + (p.price || 0).toLocaleString('en-IN'));
+  document.getElementById('pdPrice').innerHTML = formatPrice(p.price, p.status) + (p.status === 'for-rent' ? '<span style="font-size:1rem;font-weight:500;color:#888;margin-left:6px">/ month</span>' : '');
   if (p.description) document.getElementById('pdDesc').textContent = p.description;
 
   // Views badge
@@ -821,7 +833,7 @@ async function loadSimilar(p) {
     if (!list.length) { grid.closest('.similar-section').style.display = 'none'; return; }
     grid.innerHTML = list.map(x => {
       const img   = x.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80';
-      const price = x.priceLabel || ('\u20b9' + x.price);
+      const price = formatPrice(x.price, x.status);
       const loc   = (x.location?.area || '') + ', ' + (x.location?.city || '');
       return `<div class="prop-card" onclick="window.location.href='property-detail.html?id=${x._id}'" style="cursor:pointer">
         <div class="card-img"><img src="${img}" alt="${x.title}" loading="lazy"/>
