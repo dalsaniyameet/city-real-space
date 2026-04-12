@@ -220,7 +220,7 @@
 
     <!-- Budget -->
     <div class="fp-grp">
-      <label>Budget</label>
+      <label id="budgetLabel">Budget</label>
       <select id="fBudget">
         <option value="">Any Budget</option>
         <option value="0-3000000">Under ₹30L</option>
@@ -433,13 +433,46 @@ if (initCity) {
 if (initType) document.getElementById('fType').value = initType;
 if (initMinPrice && initMaxPrice) document.getElementById('fBudget').value = initMinPrice + '-' + initMaxPrice;
 
+// Budget options
+const BUDGET_SALE = [
+  ['', 'Any Budget'],
+  ['0-3000000', 'Under ₹30L'],
+  ['3000000-6000000', '₹30L – ₹60L'],
+  ['6000000-10000000', '₹60L – ₹1Cr'],
+  ['10000000-20000000', '₹1Cr – ₹2Cr'],
+  ['20000000-50000000', '₹2Cr – ₹5Cr'],
+  ['50000000-999999999', 'Above ₹5Cr']
+];
+const BUDGET_RENT = [
+  ['', 'Any Budget'],
+  ['0-10000', 'Under ₹10K/mo'],
+  ['10000-20000', '₹10K – ₹20K/mo'],
+  ['20000-35000', '₹20K – ₹35K/mo'],
+  ['35000-60000', '₹35K – ₹60K/mo'],
+  ['60000-100000', '₹60K – ₹1L/mo'],
+  ['100000-999999999', 'Above ₹1L/mo']
+];
+
+function updateBudgetOptions(status) {
+  const opts = status === 'for-rent' ? BUDGET_RENT : BUDGET_SALE;
+  const sel = document.getElementById('fBudget');
+  const cur = sel.value;
+  sel.innerHTML = opts.map(([v, t]) => '<option value="' + v + '">' + t + '</option>').join('');
+  // Try to keep current value if still valid
+  if ([...sel.options].some(o => o.value === cur)) sel.value = cur;
+}
+
 // Status tabs click
 document.querySelectorAll('.fp-tab').forEach(t => {
   t.addEventListener('click', function() {
     document.querySelectorAll('.fp-tab').forEach(x => x.classList.remove('active'));
     this.classList.add('active');
+    updateBudgetOptions(this.dataset.val);
   });
 });
+
+// Init budget on page load based on initStatus
+updateBudgetOptions(initStatus);
 
 // Commercial filter toggle
 const commercialTypes = ['office','shop','warehouse'];
@@ -655,8 +688,8 @@ document.getElementById('clearBtn').addEventListener('click', function() {
   document.getElementById('fLocality').innerHTML = '<option value="">Select City First</option>';
   document.getElementById('fSubLocality').innerHTML = '<option value="">All Sub-Areas</option>';
   document.getElementById('fType').value = '';
-  document.getElementById('fBudget').value = '';
   document.getElementById('fBeds').value = '';
+  updateBudgetOptions('');
   toggleFilters();
   history.replaceState(null, '', 'properties.html');
   loadProperties(1);
