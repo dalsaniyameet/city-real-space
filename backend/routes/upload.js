@@ -28,7 +28,7 @@ router.post('/', protect, upload.single('file'), function(req, res) {
   if (!req.file) return res.status(400).json({ success: false, message: 'No file uploaded' });
   const url = '/images/' + req.file.filename;
   const baseUrl = (process.env.NODE_ENV === 'production')
-    ? 'https://city-real-space.onrender.com'
+    ? 'https://city-real-space.vercel.app'
     : 'http://localhost:5000';
   res.json({ success: true, url, fullUrl: baseUrl + url });
 });

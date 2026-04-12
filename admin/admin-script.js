@@ -205,7 +205,8 @@ async function uploadToCloudinary(file) {
   });
   const data = await res.json();
   if (!data.url) throw new Error('Upload failed');
-  return 'https://city-real-space.vercel.app' + data.url;
+  // Return full URL — production pe Vercel URL, local pe localhost
+  return data.fullUrl || (window.location.origin + data.url);
 }
 
 async function handleBlogImage(input) {
@@ -219,12 +220,13 @@ async function handleBlogImage(input) {
   };
   reader.readAsDataURL(file);
   try {
-    toast('Uploading...');
+    toast('Uploading image...');
     const url = await uploadToCloudinary(file);
     document.getElementById('bImage').value = url;
+    document.getElementById('bImgPreview').src = url;
     toast('Image uploaded! ✅');
   } catch(e) {
-    toast('Upload failed', 'error');
+    toast('Upload failed: ' + e.message, 'error');
   }
 }
 
@@ -563,13 +565,18 @@ document.getElementById('propForm').addEventListener('submit', async function(e)
   btn.textContent = 'Saving...'; btn.disabled = true;
   const previewItems = document.querySelectorAll('#pImagePreview div');
   const imageUrls = [];
+  btn.innerHTML = 'Uploading images...';
   for (const item of previewItems) {
     if (item._file) {
-      try { imageUrls.push(await uploadToCloudinary(item._file)); } catch(e) {}
+      try {
+        toast('Uploading image ' + (imageUrls.length + 1) + '...');
+        imageUrls.push(await uploadToCloudinary(item._file));
+      } catch(e) { toast('Image upload failed: ' + e.message, 'error'); }
     } else if (item._existingUrl) {
       imageUrls.push(item._existingUrl);
     }
   }
+  btn.innerHTML = 'Saving...';
   const body = {
     title: document.getElementById('pTitle').value,
     priceLabel: document.getElementById('pPriceLabel').value,
