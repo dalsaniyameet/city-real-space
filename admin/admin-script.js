@@ -1435,22 +1435,22 @@ function aiAutoFill() {
   const category = document.getElementById('pCategory').value;
 
   if (!type || !city) {
-    toast('⚠️ Pehle Type aur City select karo, phir AI Auto-Fill karo!', 'error');
+    toast('⚠️ Please select Type and City first, then use AI Auto-Fill!', 'error');
     return;
   }
 
   const btn = document.getElementById('aiAutoFillBtn');
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> AI Fill ho raha hai...';
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> AI is filling fields...';
   btn.disabled = true;
 
   setTimeout(() => {
     try {
       _aiGenerateFields({ type, city, area, beds, sqft, status, price, category });
-      toast('✨ AI ne sab fields fill kar diye! Check karo aur save karo.');
+      toast('✨ AI has filled all fields! Review and save.');
     } catch(e) {
       toast('AI fill error: ' + e.message, 'error');
     }
-    btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> ✨ AI Auto-Fill — Sab Fields Automatically Bharo <span style="background:rgba(255,255,255,0.2);font-size:0.68rem;padding:2px 8px;border-radius:20px;font-weight:600;">Smart Fill</span>';
+    btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> ✨ AI Auto-Fill — Fill All Fields Automatically <span style="background:rgba(255,255,255,0.2);font-size:0.68rem;padding:2px 8px;border-radius:20px;font-weight:600;">Smart Fill</span>';
     btn.disabled = false;
   }, 900);
 }
