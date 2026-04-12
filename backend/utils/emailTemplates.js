@@ -1,4 +1,16 @@
 // ===== CITY REAL SPACE — SHARED EMAIL TEMPLATES =====
+const fs   = require('fs');
+const path = require('path');
+
+// Logo Base64 embed — works in all email clients without external URL
+let LOGO_SRC;
+try {
+  const logoPath = path.join(__dirname, '../../images/logo.jpeg');
+  const logoB64  = fs.readFileSync(logoPath).toString('base64');
+  LOGO_SRC = `data:image/jpeg;base64,${logoB64}`;
+} catch {
+  LOGO_SRC = 'https://cityrealspace.com/images/logo.jpeg'; // fallback
+}
 
 const BRAND = {
   name:    'City Real Space',
@@ -7,8 +19,8 @@ const BRAND = {
   phone:   '+91 97235 50764',
   email:   'info@cityrealspace.com',
   address: 'Ahmedabad, Gujarat, India',
-  logo:    'https://cityrealspace.com/images/logo.jpeg',
-  primary: '#C62828',   // deep red — real estate feel
+  logo:    LOGO_SRC,
+  primary: '#C62828',
   dark:    '#0a1628',
   card:    '#111d35',
 };
