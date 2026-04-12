@@ -1,5 +1,4 @@
 // ===== AUTH STATE ===== v2
-const API = (function() {
 // ===== PRICE FORMAT FUNCTION (global) =====
 function formatPrice(price, status) {
   if (!price) return 'Price on Request';
