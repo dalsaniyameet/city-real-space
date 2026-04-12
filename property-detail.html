@@ -377,9 +377,9 @@ function formatPrice(price, status) {
   if (price >= 100000)   return '₹' + (price/100000).toFixed(price%100000===0?0:2).replace(/\.?0+$/,'')+' L';
   if (price >= 1000)     return '₹' + Math.round(price/1000)+'K';
   return '₹' + price.toLocaleString('en-IN');
-} = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-  ? 'http://localhost:5000/api'
-  : '/api';
+}
+const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:5000/api' : '/api';
 
 // Auth
 let user = null;
