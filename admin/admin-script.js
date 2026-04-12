@@ -1422,3 +1422,153 @@ document.getElementById('pAreaSelect').addEventListener('change', function() {
   updateAdminListingScore();
 });
 document.getElementById('pSubAreaSelect').addEventListener('change', handleSubAreaSelect);
+
+// ===== AI AUTO-FILL FUNCTION =====
+function aiAutoFill() {
+  const type     = document.getElementById('pType').value;
+  const city     = document.getElementById('pCitySelect').value;
+  const area     = document.getElementById('pAreaSelect').value || document.getElementById('pSubArea').value;
+  const beds     = parseInt(document.getElementById('pBeds').value) || 0;
+  const sqft     = parseInt(document.getElementById('pSqft').value) || 0;
+  const status   = document.getElementById('pStatus').value;
+  const price    = parseInt(document.getElementById('pPrice').value) || 0;
+  const category = document.getElementById('pCategory').value;
+
+  if (!type || !city) {
+    toast('⚠️ Pehle Type aur City select karo, phir AI Auto-Fill karo!', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('aiAutoFillBtn');
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> AI Fill ho raha hai...';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    try {
+      _aiGenerateFields({ type, city, area, beds, sqft, status, price, category });
+      toast('✨ AI ne sab fields fill kar diye! Check karo aur save karo.');
+    } catch(e) {
+      toast('AI fill error: ' + e.message, 'error');
+    }
+    btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> ✨ AI Auto-Fill — Sab Fields Automatically Bharo <span style="background:rgba(255,255,255,0.2);font-size:0.68rem;padding:2px 8px;border-radius:20px;font-weight:600;">Smart Fill</span>';
+    btn.disabled = false;
+  }, 900);
+}
+
+function _aiGenerateFields({ type, city, area, beds, sqft, status, price, category }) {
+  const typeLabels = {
+    apartment: 'Apartment', villa: 'Villa', bungalow: 'Bungalow',
+    rowhouse: 'Row House', plot: 'Plot', office: 'Office Space',
+    shop: 'Shop / Showroom', warehouse: 'Warehouse'
+  };
+  const statusLabels = { 'for-sale': 'For Sale', 'for-rent': 'For Rent', 'new-launch': 'New Launch' };
+  const tl = typeLabels[type] || type;
+  const sl = statusLabels[status] || status;
+  const loc = area ? `${area}, ${city}` : city;
+  const yr = new Date().getFullYear();
+
+  // ===== SEO TITLE =====
+  let title = '';
+  if (type === 'apartment' || type === 'villa' || type === 'bungalow' || type === 'rowhouse') {
+    const bhk = beds > 0 ? `${beds} BHK ` : '';
+    const sqftStr = sqft > 0 ? ` – ${sqft} sqft` : '';
+    if (status === 'for-rent') title = `${bhk}${tl} for Rent in ${loc}${sqftStr}`;
+    else if (status === 'new-launch') title = `New Launch: ${bhk}${tl} in ${loc}${sqftStr}`;
+    else title = `${bhk}${tl} for Sale in ${loc}${sqftStr}`;
+  } else if (type === 'plot') {
+    const sqftStr = sqft > 0 ? ` – ${sqft} sqft` : '';
+    title = `Residential Plot for Sale in ${loc}${sqftStr}`;
+  } else if (type === 'office') {
+    const sqftStr = sqft > 0 ? ` – ${sqft} sqft` : '';
+    if (status === 'for-rent') title = `Office Space for Rent in ${loc}${sqftStr}`;
+    else title = `Premium Office Space for Sale in ${loc}${sqftStr}`;
+  } else if (type === 'shop') {
+    const sqftStr = sqft > 0 ? ` – ${sqft} sqft` : '';
+    if (status === 'for-rent') title = `Shop / Showroom for Rent in ${loc}${sqftStr}`;
+    else title = `Shop / Showroom for Sale in ${loc}${sqftStr}`;
+  } else if (type === 'warehouse') {
+    const sqftStr = sqft > 0 ? ` – ${sqft} sqft` : '';
+    title = `Warehouse / Godown for ${status === 'for-rent' ? 'Rent' : 'Sale'} in ${loc}${sqftStr}`;
+  }
+  document.getElementById('pTitle').value = title;
+
+  // ===== PRICE LABEL =====
+  if (price > 0) {
+    let label = '';
+    if (status === 'for-rent') {
+      if (price >= 100000) label = `₹${(price/100000).toFixed(price%100000===0?0:1)}L/mo`;
+      else if (price >= 1000) label = `₹${Math.round(price/1000)}K/mo`;
+      else label = `₹${price}/mo`;
+    } else {
+      if (price >= 10000000) label = `₹${(price/10000000).toFixed(price%10000000===0?0:2).replace(/\.?0+$/,'')} Cr`;
+      else if (price >= 100000) label = `₹${(price/100000).toFixed(price%100000===0?0:2).replace(/\.?0+$/,'')} L`;
+      else label = `₹${price.toLocaleString('en-IN')}`;
+    }
+    document.getElementById('pPriceLabel').value = label;
+  }
+
+  // ===== DESCRIPTION =====
+  let desc = '';
+  if (type === 'apartment' || type === 'villa' || type === 'bungalow' || type === 'rowhouse') {
+    const bhk = beds > 0 ? `${beds} BHK ` : '';
+    const sqftStr = sqft > 0 ? ` with ${sqft} sq.ft of living space` : '';
+    const furnishOptions = ['fully furnished', 'semi-furnished', 'unfurnished'];
+    const furnish = furnishOptions[Math.floor(Math.random()*2)];
+    const amenities = type === 'apartment'
+      ? 'modular kitchen, vitrified flooring, 24/7 security, power backup, covered parking, clubhouse, swimming pool, and gymnasium'
+      : 'private garden, modular kitchen, premium flooring, 24/7 security, covered parking, and all modern amenities';
+    if (status === 'for-rent') {
+      desc = `Spacious ${bhk}${tl} available for rent in the prime location of ${loc}${sqftStr}. This ${furnish} property features ${amenities}. Ideal for families looking for a comfortable and modern lifestyle in ${city}.\n\nKey Highlights:\n• ${beds > 0 ? beds + ' Bedrooms' : 'Spacious layout'}\n• Prime location in ${loc}\n• ${furnish.charAt(0).toUpperCase() + furnish.slice(1)}\n• Ready to move in\n• Close to schools, hospitals, and shopping centers\n\nContact City Real Space for a free site visit. RERA Registered. NTC Reg No: 12376.`;
+    } else if (status === 'new-launch') {
+      desc = `Introducing a brand new ${bhk}${tl} in the heart of ${loc}${sqftStr}. This new launch project offers ${amenities}. Pre-launch prices available — book now to get the best deal!\n\nKey Highlights:\n• ${beds > 0 ? beds + ' Bedrooms, ' + Math.max(beds-1,1) + ' Bathrooms' : 'Spacious layout'}\n• New launch — pre-launch pricing\n• Prime location in ${loc}, ${city}\n• World-class amenities\n• RERA Registered project\n• Easy home loan assistance available\n\nLimited units available. Contact City Real Space today for exclusive pre-launch offers. NTC Reg No: 12376.`;
+    } else {
+      desc = `Premium ${bhk}${tl} for sale in the sought-after locality of ${loc}${sqftStr}. This well-maintained property features ${amenities}. Perfect for families seeking a modern home in ${city}.\n\nKey Highlights:\n• ${beds > 0 ? beds + ' Bedrooms, ' + Math.max(beds-1,1) + ' Bathrooms' : 'Spacious layout'}\n• Prime location — ${loc}\n• ${furnish.charAt(0).toUpperCase() + furnish.slice(1)}\n• Ready to move in\n• Vastu compliant\n• Close to schools, hospitals & malls\n• Easy home loan available\n\nContact City Real Space for a free site visit. RERA Registered. NTC Reg No: 12376.`;
+    }
+  } else if (type === 'plot') {
+    const sqftStr = sqft > 0 ? `${sqft} sq.ft ` : '';
+    desc = `Prime ${sqftStr}residential plot available for sale in ${loc}. Excellent investment opportunity in one of ${city}'s fastest growing areas.\n\nKey Highlights:\n• ${sqft > 0 ? sqft + ' sq.ft plot area' : 'Spacious plot'}\n• Prime location — ${loc}, ${city}\n• Clear title & legal documentation\n• Vastu compliant layout\n• Close to main road\n• Ideal for residential construction\n• NA / TP approved\n\nContact City Real Space for site visit and legal verification. NTC Reg No: 12376.`;
+  } else if (type === 'office') {
+    const sqftStr = sqft > 0 ? `${sqft} sq.ft ` : '';
+    const rentSale = status === 'for-rent' ? 'rent' : 'sale';
+    desc = `Premium ${sqftStr}office space available for ${rentSale} in ${loc}. Ideal for corporates, startups, and businesses looking for a professional workspace in ${city}.\n\nKey Highlights:\n• ${sqft > 0 ? sqft + ' sq.ft carpet area' : 'Spacious office'}\n• Prime commercial location — ${loc}\n• ${status === 'for-rent' ? 'Flexible lease terms' : 'Clear title, ready possession'}\n• 24/7 security & power backup\n• Ample parking\n• High-speed internet ready\n• Close to metro & main roads\n\nContact City Real Space for a free site visit. NTC Reg No: 12376.`;
+  } else if (type === 'shop') {
+    const sqftStr = sqft > 0 ? `${sqft} sq.ft ` : '';
+    const rentSale = status === 'for-rent' ? 'rent' : 'sale';
+    desc = `Prime ${sqftStr}shop / showroom available for ${rentSale} in ${loc}. High footfall area, ideal for retail, showroom, or commercial use in ${city}.\n\nKey Highlights:\n• ${sqft > 0 ? sqft + ' sq.ft area' : 'Spacious shop'}\n• High footfall location — ${loc}\n• Ground floor / prime visibility\n• ${status === 'for-rent' ? 'Flexible lease terms' : 'Clear title'}\n• Power backup & parking\n• Suitable for all retail businesses\n\nContact City Real Space today. NTC Reg No: 12376.`;
+  } else if (type === 'warehouse') {
+    const sqftStr = sqft > 0 ? `${sqft} sq.ft ` : '';
+    const rentSale = status === 'for-rent' ? 'rent' : 'sale';
+    desc = `Industrial ${sqftStr}warehouse / godown available for ${rentSale} in ${loc}. Strategically located near GIDC / industrial area in ${city}.\n\nKey Highlights:\n• ${sqft > 0 ? sqft + ' sq.ft area' : 'Large warehouse'}\n• Industrial zone — ${loc}\n• High ceiling height\n• Loading / unloading dock\n• 3-phase power supply\n• 24/7 security\n• Easy highway access\n\nContact City Real Space. NTC Reg No: 12376.`;
+  }
+  document.getElementById('pDesc').value = desc;
+
+  // ===== SPECS AUTO-FILL =====
+  if (type === 'apartment' || type === 'villa' || type === 'bungalow' || type === 'rowhouse') {
+    if (!document.getElementById('pBaths').value || document.getElementById('pBaths').value === '0') {
+      document.getElementById('pBaths').value = Math.max(beds - 1, 1) || 1;
+    }
+    if (!document.getElementById('pBalconies').value || document.getElementById('pBalconies').value === '0') {
+      document.getElementById('pBalconies').value = beds > 0 ? Math.min(beds, 2) : 1;
+    }
+    if (sqft > 0 && (!document.getElementById('pCarpetArea').value || document.getElementById('pCarpetArea').value === '0')) {
+      document.getElementById('pCarpetArea').value = Math.round(sqft * 0.75);
+    }
+    if (sqft > 0 && (!document.getElementById('pBuiltArea').value || document.getElementById('pBuiltArea').value === '0')) {
+      document.getElementById('pBuiltArea').value = Math.round(sqft * 0.88);
+    }
+  }
+
+  // ===== POSSESSION =====
+  if (status === 'new-launch') document.getElementById('pPossession').value = 'New Launch';
+  else if (status === 'for-rent') document.getElementById('pPossession').value = 'Ready to Move';
+  else document.getElementById('pPossession').value = 'Ready to Move';
+
+  // ===== AGENT (default CRS agent) =====
+  if (!document.getElementById('pAgentName').value) {
+    document.getElementById('pAgentName').value = 'Amit Parmani';
+    document.getElementById('pAgentPhone').value = '9825012824';
+  }
+
+  // Update listing score
+  updateAdminListingScore();
+}
