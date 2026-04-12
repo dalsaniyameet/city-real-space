@@ -624,50 +624,7 @@ function startAutoScroll() {
   });
 }
 
-// ===== STATIC FALLBACK DATA =====
-const staticAllProps = [
-  { _id:'s1', title:'3BHK Luxury Apartment', status:'for-sale', type:'apartment', category:'residential', price:12000000, priceLabel:'₹1.2 Cr', images:['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80','https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80','https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80'], location:{area:'Prahlad Nagar',city:'Ahmedabad'}, specs:{beds:3,baths:2,sqft:1850}, agent:{name:'Rahul K.',initials:'RK'} },
-  { _id:'s2', title:'2BHK Smart Apartment', status:'new-launch', type:'apartment', category:'residential', price:8500000, priceLabel:'₹85 L', images:['https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80','https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80','https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=80'], location:{area:'Giftcity',city:'Gandhinagar'}, specs:{beds:2,baths:2,sqft:1200}, agent:{name:'Priya S.',initials:'PS'} },
-  { _id:'s3', title:'4BHK Ultra-Modern Penthouse', status:'for-sale', type:'apartment', category:'residential', price:25000000, priceLabel:'₹2.5 Cr', images:['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80','https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600&q=80','https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80'], location:{area:'Prahlad Nagar',city:'Ahmedabad'}, specs:{beds:4,baths:3,sqft:3200}, agent:{name:'Amit M.',initials:'AM'} },
-  { _id:'s4', title:'3BHK Semi-Furnished Flat', status:'for-rent', type:'apartment', category:'residential', price:35000, priceLabel:'₹35K/mo', images:['https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80','https://images.unsplash.com/photo-1576941089067-2de3c901e126?w=600&q=80','https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80'], location:{area:'Satellite',city:'Ahmedabad'}, specs:{beds:3,baths:2,sqft:1650}, agent:{name:'Neha K.',initials:'NK'} },
-  { _id:'s5', title:'3BHK Elegant Row House', status:'for-sale', type:'rowhouse', category:'residential', price:18000000, priceLabel:'₹1.8 Cr', images:['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80','https://images.unsplash.com/photo-1598228723793-52759bba239c?w=600&q=80','https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80'], location:{area:'Thaltej',city:'Ahmedabad'}, specs:{beds:3,baths:3,sqft:2100}, agent:{name:'Vijay D.',initials:'VD'} },
-  { _id:'s6', title:'2BHK Affordable Apartment', status:'new-launch', type:'apartment', category:'residential', price:6500000, priceLabel:'₹65 L', images:['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=80','https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80','https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80'], location:{area:'Memnagar',city:'Ahmedabad'}, specs:{beds:2,baths:1,sqft:980}, agent:{name:'Sonal J.',initials:'SJ'} },
-  { _id:'s7', title:'3BHK Modern Apartment', status:'for-sale', type:'apartment', category:'residential', price:9500000, priceLabel:'₹95 L', images:['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80','https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80','https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80'], location:{area:'Shela',city:'Ahmedabad'}, specs:{beds:3,baths:2,sqft:1550}, agent:{name:'Ankit K.',initials:'AK'} },
-  { _id:'s8', title:'4BHK Luxury Duplex Villa', status:'for-sale', type:'villa', category:'residential', price:14000000, priceLabel:'₹1.4 Cr', images:['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600&q=80','https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80','https://images.unsplash.com/photo-1598228723793-52759bba239c?w=600&q=80'], location:{area:'Vastrapur',city:'Ahmedabad'}, specs:{beds:4,baths:4,sqft:2800}, agent:{name:'Meera R.',initials:'MR'} },
-  { _id:'s9', title:'2BHK Furnished Apartment', status:'for-rent', type:'apartment', category:'residential', price:22000, priceLabel:'₹22K/mo', images:['https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80','https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=80','https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80'], location:{area:'Navrangpura',city:'Ahmedabad'}, specs:{beds:2,baths:1,sqft:1050}, agent:{name:'Dhruv P.',initials:'DP'} },
-  { _id:'s10', title:'2BHK Gated Society', status:'new-launch', type:'apartment', category:'residential', price:7200000, priceLabel:'₹72 L', images:['https://images.unsplash.com/photo-1576941089067-2de3c901e126?w=600&q=80','https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80','https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80'], location:{area:'Chandkheda',city:'Ahmedabad'}, specs:{beds:2,baths:2,sqft:1100}, agent:{name:'Hiral B.',initials:'HB'} },
-  { _id:'s11', title:'5BHK Premium Bungalow', status:'for-sale', type:'bungalow', category:'residential', price:32000000, priceLabel:'₹3.2 Cr', images:['https://images.unsplash.com/photo-1598228723793-52759bba239c?w=600&q=80','https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600&q=80','https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80'], location:{area:'Bodakdev',city:'Ahmedabad'}, specs:{beds:5,baths:5,sqft:4500}, agent:{name:'Jay M.',initials:'JM'} },
-  { _id:'s12', title:'3BHK Villa with Garden', status:'for-sale', type:'villa', category:'residential', price:16000000, priceLabel:'₹1.6 Cr', images:['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80','https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80','https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80'], location:{area:'Bopal',city:'Ahmedabad'}, specs:{beds:3,baths:3,sqft:2200}, agent:{name:'Raj S.',initials:'RS'} },
-  { _id:'s13', title:'Premium Office Space 3500 sqft', status:'for-sale', type:'office', category:'commercial', price:28000000, priceLabel:'₹2.8 Cr', images:['https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80','https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80','https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80'], location:{area:'Prahlad Nagar',city:'Ahmedabad'}, specs:{beds:null,baths:null,sqft:3500}, agent:{name:'Raj S.',initials:'RS'} },
-  { _id:'s14', title:'Corporate Office Floor 5000 sqft', status:'for-rent', type:'office', category:'commercial', price:120000, priceLabel:'₹1.2L/mo', images:['https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80','https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80','https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80'], location:{area:'SG Highway',city:'Ahmedabad'}, specs:{beds:null,baths:null,sqft:5000}, agent:{name:'Kiran P.',initials:'KP'} },
-  { _id:'s15', title:'Retail Shop Prime Location', status:'for-sale', type:'shop', category:'commercial', price:8500000, priceLabel:'₹85 L', images:['https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80','https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80','https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80'], location:{area:'CG Road',city:'Ahmedabad'}, specs:{beds:null,baths:null,sqft:650}, agent:{name:'Bhavesh T.',initials:'BT'} },
-  { _id:'s16', title:'GIFT City Office Suite 2200 sqft', status:'new-launch', type:'office', category:'commercial', price:15000000, priceLabel:'₹1.5 Cr', images:['https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80','https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80','https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80'], location:{area:'Giftcity',city:'Gandhinagar'}, specs:{beds:null,baths:null,sqft:2200}, agent:{name:'Neel V.',initials:'NV'} },
-  { _id:'s17', title:'2BHK Apartment Adajan', status:'for-sale', type:'apartment', category:'residential', price:5500000, priceLabel:'₹55 L', images:['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=80','https://images.unsplash.com/photo-1576941089067-2de3c901e126?w=600&q=80','https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80'], location:{area:'Adajan',city:'Surat'}, specs:{beds:2,baths:2,sqft:1050}, agent:{name:'Surat Agent',initials:'SA'} },
-  { _id:'s18', title:'3BHK Villa Vesu', status:'for-sale', type:'villa', category:'residential', price:11000000, priceLabel:'₹1.1 Cr', images:['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80','https://images.unsplash.com/photo-1598228723793-52759bba239c?w=600&q=80','https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600&q=80'], location:{area:'Vesu',city:'Surat'}, specs:{beds:3,baths:3,sqft:1900}, agent:{name:'Surat Agent',initials:'SA'} },
-  { _id:'s19', title:'2BHK Apartment Alkapuri', status:'for-sale', type:'apartment', category:'residential', price:6000000, priceLabel:'₹60 L', images:['https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80','https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80','https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80'], location:{area:'Alkapuri',city:'Vadodara'}, specs:{beds:2,baths:2,sqft:1100}, agent:{name:'Vadodara Agent',initials:'VA'} },
-  { _id:'s20', title:'3BHK Apartment Kalawad Road', status:'for-sale', type:'apartment', category:'residential', price:7500000, priceLabel:'₹75 L', images:['https://images.unsplash.com/photo-1576941089067-2de3c901e126?w=600&q=80','https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=80','https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80'], location:{area:'Kalawad Road',city:'Rajkot'}, specs:{beds:3,baths:2,sqft:1400}, agent:{name:'Rajkot Agent',initials:'RA'} }
-];
-
-function filterStatic(params) {
-  let list = [...staticAllProps];
-  const status   = params.get('status');
-  const city     = params.get('city');
-  const area     = params.get('area');
-  const type     = params.get('type');
-  const category = params.get('category');
-  const beds     = params.get('beds');
-  const minPrice = params.get('minPrice');
-  const maxPrice = params.get('maxPrice');
-  if (status)   list = list.filter(p => p.status === status);
-  if (city)     list = list.filter(p => p.location.city.toLowerCase() === city.toLowerCase());
-  if (area)     list = list.filter(p => p.location.area.toLowerCase().includes(area.toLowerCase()));
-  if (type)     list = list.filter(p => p.type === type);
-  if (category) list = list.filter(p => p.category === category);
-  if (beds)     list = list.filter(p => p.specs.beds >= parseInt(beds));
-  if (minPrice) list = list.filter(p => p.price >= parseInt(minPrice));
-  if (maxPrice) list = list.filter(p => p.price <= parseInt(maxPrice));
-  return list;
-}
+// No static fallback — only real DB data
 
 // Pagination
 function renderPagination(totalPages, current) {
@@ -747,40 +704,19 @@ function loadProperties(page) {
         bindCardHover();
         startAutoScroll();
       } else {
-        showFromStatic(f, grid);
+        showEmptyState(grid);
       }
     })
     .catch(function() {
-      showFromStatic(f, grid);
+      showEmptyState(grid);
     });
 }
 
-function showFromStatic(f, grid) {
-  var list = staticAllProps.slice();
-  if (f.status) list = list.filter(function(p) { return p.status === f.status; });
-  if (f.city)   list = list.filter(function(p) { return p.location.city.toLowerCase() === f.city.toLowerCase(); });
-  if (f.area)   list = list.filter(function(p) { return p.location.area.toLowerCase().indexOf(f.area.toLowerCase()) !== -1; });
-  if (f.type)   list = list.filter(function(p) { return p.type === f.type; });
-  if (f.beds)   list = list.filter(function(p) { return p.specs.beds && p.specs.beds >= parseInt(f.beds); });
-  if (f.budget) {
-    var bp = f.budget.split('-');
-    list = list.filter(function(p) { return p.price >= parseInt(bp[0]) && p.price <= parseInt(bp[1]); });
-  }
-  if (!list.length) {
-    grid.innerHTML = '<div class="empty-res"><i class="fa-solid fa-building"></i><p>No properties found.<br/>Try different filters.</p><p style="font-size:0.82rem;color:#bbb;margin-top:8px">Can\'t find what you need? We\'ll find it for you!</p><button onclick="window.openReqModal && window.openReqModal()" class="btn-req-pulse" style="margin-top:16px;background:#E53935;color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:inline-flex;align-items:center;gap:8px"><i class="fa-solid fa-bell"></i> Post Your Requirement</button></div>';
-    document.getElementById('resultsCount').innerHTML = '<strong>0</strong> properties found';
-    document.getElementById('pagination').innerHTML = '';
-    showReqModal();
-    return;
-  }
-  var perPage = 12;
-  var totalPages = Math.ceil(list.length / perPage);
-  var paginated = list.slice((currentPage - 1) * perPage, currentPage * perPage);
-  grid.innerHTML = paginated.map(createCard).join('');
-  document.getElementById('resultsCount').innerHTML = '<strong>' + list.length + '</strong> properties found';
-  renderPagination(totalPages, currentPage);
-  bindCardHover();
-  startAutoScroll();
+function showEmptyState(grid) {
+  grid.innerHTML = '<div class="empty-res"><i class="fa-solid fa-building"></i><p>No properties found.<br/>Try different filters or check back soon.</p><p style="font-size:0.82rem;color:#bbb;margin-top:8px">Can\'t find what you need? We\'ll find it for you!</p><button onclick="window.openReqModal && window.openReqModal()" class="btn-req-pulse" style="margin-top:16px;background:#E53935;color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:inline-flex;align-items:center;gap:8px"><i class="fa-solid fa-bell"></i> Post Your Requirement</button></div>';
+  document.getElementById('resultsCount').innerHTML = '<strong>0</strong> properties found';
+  document.getElementById('pagination').innerHTML = '';
+  showReqModal();
 }
 
 // ===== POST REQUIREMENT MODAL =====
@@ -1163,18 +1099,7 @@ function toggleCompare(e, id) {
 }
 
 function findPropData(id) {
-  // Try static list first
-  const s = staticAllProps.find(p => p._id === id);
-  if (s) return {
-    id: s._id, title: s.title,
-    price: s.price, priceLabel: formatPrice(s.price, s.status),
-    loc: (s.location?.area || '') + ', ' + (s.location?.city || ''),
-    img: s.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&q=80',
-    specs: s.specs || {}, status: s.status, type: s.type,
-    amenities: s.amenities || [], extraDetails: s.extraDetails || {}
-  };
-  // Try from rendered card DOM
-  const card = document.querySelector('[id^="cs_"]');
+  // Only from rendered card DOM — no static fallback
   return null;
 }
 
