@@ -237,9 +237,8 @@ router.post('/register', async (req, res) => {
       });
     }
 
+    await sendOTP(email, phone, otp, firstName, 'register');
     res.status(201).json({ success: true, message: 'OTP sent to your email/WhatsApp. Please verify.' });
-    sendOTP(email, phone, otp, firstName, 'register')
-      .catch(e => console.error(`⚠️ OTP send failed:`, e.message));
   } catch (err) {
     console.error('Registration error:', err);
     res.status(500).json({ success: false, message: err.message });
@@ -305,9 +304,8 @@ router.post('/login', async (req, res) => {
       user.resetOTP = otp;
       user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
       await user.save();
+      await sendOTP(user.email, user.phone, otp, user.firstName, 'login');
       res.json({ success: true, needsOTP: true, email: user.email, isAdmin: true });
-      sendOTP(user.email, user.phone, otp, user.firstName, 'login')
-        .catch(e => console.error(`❌ Admin OTP failed:`, e.message));
       return;
     }
 
@@ -317,9 +315,8 @@ router.post('/login', async (req, res) => {
     user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
     await user.save();
     
+    await sendOTP(email, user.phone, otp, user.firstName, 'login');
     res.json({ success: true, needsOTP: true, email, isAdmin: false });
-    sendOTP(email, user.phone, otp, user.firstName, 'login')
-      .catch(e => console.error(`❌ OTP send failed:`, e.message));
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ success: false, message: err.message });
@@ -375,9 +372,8 @@ router.post('/resend-otp', async (req, res) => {
     user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
     await user.save();
     
+    await sendOTP(email, user.phone, otp, user.firstName, user.isVerified ? 'login' : 'register');
     res.json({ success: true, message: 'OTP resent successfully' });
-    sendOTP(email, user.phone, otp, user.firstName, user.isVerified ? 'login' : 'register')
-      .catch(e => console.error(`⚠️ OTP resend failed:`, e.message));
   } catch (err) {
     console.error('Resend OTP error:', err);
     res.status(500).json({ success: false, message: err.message });
@@ -399,9 +395,8 @@ router.post('/forgot-password', async (req, res) => {
     user.resetOTPExpire = Date.now() + 10 * 60 * 1000;
     await user.save();
     
+    await sendOTP(email, user.phone, otp, user.firstName, 'forgot');
     res.json({ success: true, message: 'OTP sent to your email/WhatsApp' });
-    sendOTP(email, user.phone, otp, user.firstName, 'forgot')
-      .catch(e => console.error(`⚠️ Forgot OTP failed:`, e.message));
   } catch (err) {
     console.error('Forgot password error:', err);
     res.status(500).json({ success: false, message: 'Failed to send OTP. Check email config.' });
