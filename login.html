@@ -139,7 +139,7 @@
     <h3>Welcome Back 👋</h3>
     <p class="sub">Login to your City Real Space account</p>
 
-    <form id="loginForm" onsubmit="handleLogin(event)">
+    <form id="loginForm" onsubmit="handleLogin(event)" autocomplete="off">
       <div class="form-grp">
         <label>Email Address</label>
         <div class="finput">
@@ -181,16 +181,37 @@
         <p style="font-size:0.95rem;font-weight:700;color:#E53935;margin:4px 0 0" id="loginOtpEmailDisplay"></p>
       </div>
 
-      <div class="form-grp">
-        <label style="font-size:0.8rem;font-weight:600;color:#555">Enter 6-Digit OTP</label>
-        <div class="finput" style="justify-content:center">
-          <i class="fa-solid fa-key"></i>
-          <input type="text" id="loginOtpInput" placeholder="● ● ● ● ● ●" maxlength="6" style="text-align:center;font-size:1.6rem;font-weight:800;letter-spacing:14px;width:100%"/>
+      <!-- 6 OTP Boxes -->
+      <div style="display:flex;gap:10px;justify-content:center;margin:20px 0 6px">
+        <input class="login-otp-box" id="lob0" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"
+          style="width:46px;height:54px;border:2px solid #e8e8e8;border-radius:12px;text-align:center;font-size:1.5rem;font-weight:800;color:#0D1B2A;outline:none;transition:all 0.2s;font-family:Poppins,sans-serif"/>
+        <input class="login-otp-box" id="lob1" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"
+          style="width:46px;height:54px;border:2px solid #e8e8e8;border-radius:12px;text-align:center;font-size:1.5rem;font-weight:800;color:#0D1B2A;outline:none;transition:all 0.2s;font-family:Poppins,sans-serif"/>
+        <input class="login-otp-box" id="lob2" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"
+          style="width:46px;height:54px;border:2px solid #e8e8e8;border-radius:12px;text-align:center;font-size:1.5rem;font-weight:800;color:#0D1B2A;outline:none;transition:all 0.2s;font-family:Poppins,sans-serif"/>
+        <input class="login-otp-box" id="lob3" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"
+          style="width:46px;height:54px;border:2px solid #e8e8e8;border-radius:12px;text-align:center;font-size:1.5rem;font-weight:800;color:#0D1B2A;outline:none;transition:all 0.2s;font-family:Poppins,sans-serif"/>
+        <input class="login-otp-box" id="lob4" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"
+          style="width:46px;height:54px;border:2px solid #e8e8e8;border-radius:12px;text-align:center;font-size:1.5rem;font-weight:800;color:#0D1B2A;outline:none;transition:all 0.2s;font-family:Poppins,sans-serif"/>
+        <input class="login-otp-box" id="lob5" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"
+          style="width:46px;height:54px;border:2px solid #e8e8e8;border-radius:12px;text-align:center;font-size:1.5rem;font-weight:800;color:#0D1B2A;outline:none;transition:all 0.2s;font-family:Poppins,sans-serif"/>
+      </div>
+      <input type="hidden" id="loginOtpInput"/>
+      <small style="color:#aaa;font-size:0.75rem;display:block;text-align:center;margin-bottom:4px">Enter the 6-digit OTP sent to your email</small>
+
+      <p id="loginOtpMsg" style="font-size:0.82rem;margin:4px 0 8px;text-align:center"></p>
+
+      <!-- Timer with progress bar -->
+      <div style="margin:0 0 16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:0.8rem;color:#888">OTP expires in</span>
+          <span id="loginOtpTimerDisplay" style="font-size:0.95rem;font-weight:800;color:#1565c0">0:50</span>
         </div>
-        <small style="color:#aaa;font-size:0.75rem;margin-top:4px">OTP is valid for 10 minutes</small>
+        <div style="background:#f0f0f0;border-radius:50px;height:5px;overflow:hidden">
+          <div id="loginOtpTimerBar" style="height:100%;width:100%;background:linear-gradient(90deg,#1565c0,#42a5f5);border-radius:50px;transition:width 1s linear"></div>
+        </div>
       </div>
 
-      <p id="loginOtpMsg" style="font-size:0.82rem;margin:4px 0 12px;text-align:center"></p>
       <button id="loginOtpVerifyBtn" onclick="verifyLoginPageOTP()" class="btn-submit">Verify &amp; Login <i class="fa-solid fa-arrow-right"></i></button>
 
       <div style="text-align:center;margin-top:12px">
@@ -354,7 +375,10 @@ async function handleLogin(e) {
       document.getElementById('loginOtpEmailDisplay').textContent = email;
       document.getElementById('loginOtpWrap').dataset.email = email;
       document.getElementById('loginOtpInput').value = '';
-      document.getElementById('loginOtpInput').focus();
+      // Clear & focus login OTP boxes
+      document.querySelectorAll('.login-otp-box').forEach(b => { b.value=''; b.style.borderColor='#e8e8e8'; b.style.background='#fff'; });
+      document.getElementById('lob0').focus();
+      startLoginOtpTimer();
     } else if (data.success && data.token) {
       console.log('🔑 Token received - logging in');
       const role = data.user && data.user.role;
@@ -391,7 +415,12 @@ async function verifyLoginPageOTP() {
   const email = document.getElementById('loginOtpWrap').dataset.email;
   const otp   = document.getElementById('loginOtpInput').value.trim();
   const msg   = document.getElementById('loginOtpMsg');
-  if (!otp || otp.length < 6) { msg.style.color='#E53935'; msg.textContent='Enter 6-digit OTP'; return; }
+  if (!otp || otp.length < 6) {
+    msg.style.color='#E53935';
+    msg.textContent='Please enter all 6 digits';
+    document.getElementById('lob0').focus();
+    return;
+  }
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
   btn.disabled = true;
   try {
@@ -427,6 +456,10 @@ async function resendLoginOTP() {
   const email = document.getElementById('loginOtpWrap').dataset.email;
   const msg = document.getElementById('loginOtpMsg');
   if (!email) return;
+  // Clear OTP boxes
+  document.querySelectorAll('.login-otp-box').forEach(b => { b.value=''; b.style.borderColor='#e8e8e8'; b.style.background='#fff'; });
+  document.getElementById('loginOtpInput').value = '';
+  document.getElementById('lob0').focus();
   msg.style.color = '#888';
   msg.textContent = 'Resending OTP...';
   try {
@@ -438,11 +471,70 @@ async function resendLoginOTP() {
     const data = await res.json();
     msg.style.color = data.success ? '#27ae60' : '#E53935';
     msg.textContent = data.message || (data.success ? 'OTP resent!' : 'Unable to resend OTP');
+    if (data.success) startLoginOtpTimer();
   } catch {
     msg.style.color = '#E53935';
     msg.textContent = 'Server error.';
   }
 }
+
+let _loginOtpTimer = null;
+function startLoginOtpTimer() {
+  clearInterval(_loginOtpTimer);
+  let secs = 50;
+  const display = document.getElementById('loginOtpTimerDisplay');
+  const bar     = document.getElementById('loginOtpTimerBar');
+  const btn     = document.getElementById('loginOtpVerifyBtn');
+  display.style.color = '#1565c0';
+  display.textContent = '0:50';
+  bar.style.width = '100%';
+  bar.style.background = 'linear-gradient(90deg,#1565c0,#42a5f5)';
+  btn.disabled = false;
+  _loginOtpTimer = setInterval(function() {
+    secs--;
+    const m = Math.floor(secs / 60);
+    const s = secs % 60;
+    display.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    bar.style.width = (secs / 50 * 100) + '%';
+    if (secs <= 15) { display.style.color = '#c62828'; bar.style.background = '#c62828'; }
+    if (secs <= 0) {
+      clearInterval(_loginOtpTimer);
+      display.textContent = 'Expired';
+      display.style.color = '#999';
+      bar.style.width = '0%';
+      btn.disabled = true;
+      btn.innerHTML = 'OTP Expired — Resend';
+      document.getElementById('loginOtpMsg').style.color = '#E53935';
+      document.getElementById('loginOtpMsg').textContent = 'OTP expired. Click Resend OTP.';
+    }
+  }, 1000);
+}
+
+// Login OTP Boxes logic
+document.addEventListener('DOMContentLoaded', function() {
+  const boxes = document.querySelectorAll('.login-otp-box');
+  boxes.forEach((box, i) => {
+    box.addEventListener('input', function() {
+      this.value = this.value.replace(/[^0-9]/g, '');
+      if (this.value && i < 5) boxes[i + 1].focus();
+      document.getElementById('loginOtpInput').value = Array.from(boxes).map(b => b.value).join('');
+      this.style.borderColor = this.value ? '#1565c0' : '#e8e8e8';
+      this.style.background  = this.value ? '#eff6ff' : '#fff';
+    });
+    box.addEventListener('keydown', function(e) {
+      if (e.key === 'Backspace' && !this.value && i > 0) boxes[i - 1].focus();
+    });
+    box.addEventListener('paste', function(e) {
+      e.preventDefault();
+      const text = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '').slice(0, 6);
+      text.split('').forEach((ch, idx) => { if (boxes[idx]) { boxes[idx].value = ch; boxes[idx].style.borderColor='#1565c0'; boxes[idx].style.background='#eff6ff'; } });
+      document.getElementById('loginOtpInput').value = text;
+      if (boxes[text.length]) boxes[text.length].focus();
+    });
+    box.addEventListener('focus', function() { this.style.borderColor = '#1565c0'; this.style.boxShadow = '0 0 0 3px rgba(21,101,192,0.12)'; });
+    box.addEventListener('blur',  function() { if (!this.value) { this.style.borderColor = '#e8e8e8'; this.style.boxShadow = 'none'; } });
+  });
+});
 let verifyEmailVal = '';
 function showVerifyOverlay(email) {
   verifyEmailVal = email;

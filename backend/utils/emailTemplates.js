@@ -8,7 +8,7 @@ const BRAND = {
   phone:   '+91 97235 50764',
   email:   'info@cityrealspace.com',
   address: 'Ahmedabad, Gujarat, India',
-  logo:    'https://cityrealspace.com/images/logo.jpeg',
+  logo:    'https://city-real-space.vercel.app/images/logo.jpeg',
   year:    new Date().getFullYear(),
 };
 

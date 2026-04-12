@@ -161,7 +161,7 @@
       <h3>Create Free Account 🏠</h3>
       <p class="sub">Join 8,200+ happy clients on City Real Space</p>
 
-      <form id="registerForm" onsubmit="handleRegister(event)">
+  <form id="registerForm" onsubmit="handleRegister(event)" autocomplete="off">
         <div class="form-row-2">
           <div class="form-grp">
             <label>First Name</label>
@@ -257,20 +257,37 @@
         <p style="font-size:0.95rem;font-weight:700;color:#E53935;margin:4px 0 0" id="regOtpEmailDisplay"></p>
       </div>
 
-      <div class="form-grp">
-        <label style="font-size:0.8rem;font-weight:600;color:#555">Enter 6-Digit OTP</label>
-        <div class="finput" style="justify-content:center">
-          <i class="fa-solid fa-key"></i>
-          <input type="text" id="regOtpInput" placeholder="● ● ● ● ● ●" maxlength="6" style="text-align:center;font-size:1.6rem;font-weight:800;letter-spacing:14px;width:100%"/>
-        </div>
-        <small style="color:#aaa;font-size:0.75rem;margin-top:4px">OTP is valid for 10 minutes</small>
+      <!-- 6 OTP Boxes -->
+      <div style="display:flex;gap:10px;justify-content:center;margin:20px 0 6px">
+        <input class="otp-box" id="ob0" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"
+          style="width:46px;height:54px;border:2px solid #e8e8e8;border-radius:12px;text-align:center;font-size:1.5rem;font-weight:800;color:#0D1B2A;outline:none;transition:all 0.2s;font-family:Poppins,sans-serif"/>
+        <input class="otp-box" id="ob1" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"
+          style="width:46px;height:54px;border:2px solid #e8e8e8;border-radius:12px;text-align:center;font-size:1.5rem;font-weight:800;color:#0D1B2A;outline:none;transition:all 0.2s;font-family:Poppins,sans-serif"/>
+        <input class="otp-box" id="ob2" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"
+          style="width:46px;height:54px;border:2px solid #e8e8e8;border-radius:12px;text-align:center;font-size:1.5rem;font-weight:800;color:#0D1B2A;outline:none;transition:all 0.2s;font-family:Poppins,sans-serif"/>
+        <input class="otp-box" id="ob3" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"
+          style="width:46px;height:54px;border:2px solid #e8e8e8;border-radius:12px;text-align:center;font-size:1.5rem;font-weight:800;color:#0D1B2A;outline:none;transition:all 0.2s;font-family:Poppins,sans-serif"/>
+        <input class="otp-box" id="ob4" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"
+          style="width:46px;height:54px;border:2px solid #e8e8e8;border-radius:12px;text-align:center;font-size:1.5rem;font-weight:800;color:#0D1B2A;outline:none;transition:all 0.2s;font-family:Poppins,sans-serif"/>
+        <input class="otp-box" id="ob5" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" autocomplete="off"
+          style="width:46px;height:54px;border:2px solid #e8e8e8;border-radius:12px;text-align:center;font-size:1.5rem;font-weight:800;color:#0D1B2A;outline:none;transition:all 0.2s;font-family:Poppins,sans-serif"/>
       </div>
+      <input type="hidden" id="regOtpInput"/>
+      <small style="color:#aaa;font-size:0.75rem;display:block;text-align:center;margin-bottom:4px">Enter the 6-digit OTP sent to your email</small>
 
       <p id="regOtpMsg" style="font-size:0.82rem;margin:4px 0 8px;text-align:center"></p>
-      <div style="text-align:center;margin-bottom:14px">
-        <span style="font-size:0.82rem;color:#888">OTP expires in: </span>
-        <span id="otpTimerDisplay" style="font-size:0.9rem;font-weight:800;color:#E53935">1:00</span>
+
+      <!-- Timer with progress bar -->
+      <div style="margin:0 0 16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:0.8rem;color:#888">OTP expires in</span>
+          <span id="otpTimerDisplay" style="font-size:0.95rem;font-weight:800;color:#E53935">0:50</span>
+        </div>
+        <div style="background:#f0f0f0;border-radius:50px;height:5px;overflow:hidden">
+          <div id="otpTimerBar" style="height:100%;width:100%;background:linear-gradient(90deg,#E53935,#ff7043);border-radius:50px;transition:width 1s linear"></div>
+        </div>
       </div>
+
       <button id="regOtpVerifyBtn" onclick="verifyRegOTP()" class="btn-submit">Verify &amp; Create Account <i class="fa-solid fa-check"></i></button>
 
       <div style="text-align:center;margin-top:8px">
@@ -425,7 +442,12 @@ async function verifyRegOTP() {
   const email = document.getElementById('regOtpWrap').dataset.email;
   const otp   = document.getElementById('regOtpInput').value.trim();
   const msg   = document.getElementById('regOtpMsg');
-  if (!otp || otp.length < 6) { msg.style.color='#E53935'; msg.textContent='Enter 6-digit OTP'; return; }
+  if (!otp || otp.length < 6) {
+    msg.style.color='#E53935';
+    msg.textContent='Please enter all 6 digits';
+    document.getElementById('ob0').focus();
+    return;
+  }
   
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
   btn.disabled = true;
@@ -462,6 +484,10 @@ async function verifyRegOTP() {
 async function resendRegOTP() {
   const email = document.getElementById('regOtpWrap').dataset.email;
   if (!email) return;
+  // Clear OTP boxes
+  document.querySelectorAll('.otp-box').forEach(b => { b.value=''; b.style.borderColor='#e8e8e8'; b.style.background='#fff'; });
+  document.getElementById('regOtpInput').value = '';
+  document.getElementById('ob0').focus();
   document.getElementById('regOtpHelpBox').style.display = 'block';
   try {
     const res  = await fetch(`${API}/auth/resend-otp`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
@@ -478,22 +504,30 @@ async function resendRegOTP() {
 let _otpTimerInterval = null;
 function startOtpTimer() {
   clearInterval(_otpTimerInterval);
-  let secs = 60;
+  let secs = 50;
   const display = document.getElementById('otpTimerDisplay');
-  const btn = document.getElementById('regOtpVerifyBtn');
+  const bar     = document.getElementById('otpTimerBar');
+  const btn     = document.getElementById('regOtpVerifyBtn');
   display.style.color = '#E53935';
-  display.textContent = '1:00';
+  display.textContent = '0:50';
+  bar.style.width = '100%';
+  bar.style.background = 'linear-gradient(90deg,#E53935,#ff7043)';
   btn.disabled = false;
   _otpTimerInterval = setInterval(function() {
     secs--;
     const m = Math.floor(secs / 60);
     const s = secs % 60;
     display.textContent = m + ':' + (s < 10 ? '0' : '') + s;
-    if (secs <= 10) display.style.color = '#c62828';
+    bar.style.width = (secs / 50 * 100) + '%';
+    if (secs <= 15) {
+      display.style.color = '#c62828';
+      bar.style.background = '#c62828';
+    }
     if (secs <= 0) {
       clearInterval(_otpTimerInterval);
       display.textContent = 'Expired';
       display.style.color = '#999';
+      bar.style.width = '0%';
       btn.disabled = true;
       btn.innerHTML = 'OTP Expired — Resend';
       const msg = document.getElementById('regOtpMsg');
@@ -502,6 +536,34 @@ function startOtpTimer() {
     }
   }, 1000);
 }
+
+// OTP Boxes logic
+document.addEventListener('DOMContentLoaded', function() {
+  const boxes = document.querySelectorAll('.otp-box');
+  boxes.forEach((box, i) => {
+    box.addEventListener('input', function() {
+      this.value = this.value.replace(/[^0-9]/g, '');
+      if (this.value && i < 5) boxes[i + 1].focus();
+      // Sync hidden input
+      document.getElementById('regOtpInput').value = Array.from(boxes).map(b => b.value).join('');
+      // Color filled boxes
+      this.style.borderColor = this.value ? '#E53935' : '#e8e8e8';
+      this.style.background  = this.value ? '#fff5f5' : '#fff';
+    });
+    box.addEventListener('keydown', function(e) {
+      if (e.key === 'Backspace' && !this.value && i > 0) boxes[i - 1].focus();
+    });
+    box.addEventListener('paste', function(e) {
+      e.preventDefault();
+      const text = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '').slice(0, 6);
+      text.split('').forEach((ch, idx) => { if (boxes[idx]) { boxes[idx].value = ch; boxes[idx].style.borderColor='#E53935'; boxes[idx].style.background='#fff5f5'; } });
+      document.getElementById('regOtpInput').value = text;
+      if (boxes[text.length]) boxes[text.length].focus();
+    });
+    box.addEventListener('focus', function() { this.style.borderColor = '#E53935'; this.style.boxShadow = '0 0 0 3px rgba(229,57,53,0.12)'; });
+    box.addEventListener('blur',  function() { if (!this.value) { this.style.borderColor = '#e8e8e8'; this.style.boxShadow = 'none'; } });
+  });
+});
 </script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
