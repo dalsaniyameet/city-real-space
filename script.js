@@ -64,31 +64,9 @@ if (userMenuBtn) {
 
 checkAuthState();
 
-// ===== STATIC FALLBACK DATA =====
-const staticTrending = [
-    { _id:'s1', img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80', badge: 'For Sale', price: '₹1.2 Cr', loc: 'Bopal, Ahmedabad', title: 'Luxurious 3BHK Villa with Garden', beds: 3, baths: 2, sqft: '1850', agent: 'RK', agentName: 'Rahul K.' },
-    { _id:'s2', img: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80', badge: 'New Launch', badgeClass: 'new', price: '₹85 L', loc: 'Giftcity, Gandhinagar', title: 'Premium 2BHK Smart Apartment', beds: 2, baths: 2, sqft: '1200', agent: 'PS', agentName: 'Priya S.' },
-  { _id:'s3', img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80', badge: 'For Sale', price: '₹2.5 Cr', loc: 'Prahlad Nagar, Ahmedabad', title: 'Ultra-Modern 4BHK Penthouse', beds: 4, baths: 3, sqft: '3200', agent: 'AM', agentName: 'Amit M.' },
-  { _id:'s4', img: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80', badge: 'For Rent', badgeClass: 'rent', price: '₹35K/mo', loc: 'Satellite, Ahmedabad', title: 'Spacious 3BHK Semi-Furnished Flat', beds: 3, baths: 2, sqft: '1650', agent: 'NK', agentName: 'Neha K.' },
-  { _id:'s13', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80', badge: 'For Sale', price: '₹2.8 Cr', loc: 'Prahlad Nagar, Ahmedabad', title: 'Premium Office Space – 3500 sqft', beds: null, baths: null, sqft: '3500', agent: 'RS', agentName: 'Raj S.', type: 'office' },
-  { _id:'s5', img: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80', badge: 'For Sale', price: '₹1.8 Cr', loc: 'Thaltej, Ahmedabad', title: 'Elegant 3BHK Row House', beds: 3, baths: 3, sqft: '2100', agent: 'VD', agentName: 'Vijay D.' },
-  { _id:'s16', img: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80', badge: 'New Launch', badgeClass: 'new', price: '₹1.5 Cr', loc: 'Giftcity, Gandhinagar', title: 'GIFT City Office Suite – 2200 sqft', beds: null, baths: null, sqft: '2200', agent: 'NV', agentName: 'Neel V.', type: 'office' },
-  { _id:'s6', img: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=600&q=80', badge: 'New Launch', badgeClass: 'new', price: '₹65 L', loc: 'Memnagar, Ahmedabad', title: 'Affordable 2BHK Apartment', beds: 2, baths: 1, sqft: '980', agent: 'SJ', agentName: 'Sonal J.' }
-];
-const staticResidential = [
-  { _id:'s7', img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80', badge: 'For Sale', price: '₹95 L', loc: 'Shela, Ahmedabad', title: 'Modern 3BHK Apartment Complex', beds: 3, baths: 2, sqft: '1550', agent: 'AK', agentName: 'Ankit K.' },
-  { _id:'s8', img: 'https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=600&q=80', badge: 'For Sale', price: '₹1.4 Cr', loc: 'Vastrapur, Ahmedabad', title: 'Luxury 4BHK Duplex Villa', beds: 4, baths: 4, sqft: '2800', agent: 'MR', agentName: 'Meera R.' },
-  { _id:'s9', img: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80', badge: 'For Rent', badgeClass: 'rent', price: '₹22K/mo', loc: 'Navrangpura, Ahmedabad', title: 'Cozy 2BHK Furnished Apartment', beds: 2, baths: 1, sqft: '1050', agent: 'DP', agentName: 'Dhruv P.' },
-  { _id:'s10', img: 'https://images.unsplash.com/photo-1576941089067-2de3c901e126?w=600&q=80', badge: 'New Launch', badgeClass: 'new', price: '₹72 L', loc: 'Chandkheda, Ahmedabad', title: 'Affordable 2BHK Gated Society', beds: 2, baths: 2, sqft: '1100', agent: 'HB', agentName: 'Hiral B.' },
-  { _id:'s11', img: 'https://images.unsplash.com/photo-1598228723793-52759bba239c?w=600&q=80', badge: 'For Sale', price: '₹3.2 Cr', loc: 'Bodakdev, Ahmedabad', title: 'Premium 5BHK Bungalow', beds: 5, baths: 5, sqft: '4500', agent: 'JM', agentName: 'Jay M.' }
-];
-const staticCommercial = [
-  { _id:'s13', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80', badge: 'For Sale', price: '₹2.8 Cr', loc: 'Prahlad Nagar, Ahmedabad', title: 'Premium Office Space – 3500 sqft', beds: null, baths: null, sqft: '3500', agent: 'RS', agentName: 'Raj S.', type: 'office' },
-  { _id:'s14', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80', badge: 'For Rent', badgeClass: 'rent', price: '₹1.2L/mo', loc: 'SG Highway, Ahmedabad', title: 'Corporate Office Floor – 5000 sqft', beds: null, baths: null, sqft: '5000', agent: 'KP', agentName: 'Kiran P.', type: 'office' },
-  { _id:'s15', img: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80', badge: 'For Sale', price: '₹85 L', loc: 'CG Road, Ahmedabad', title: 'Retail Shop in Prime Location', beds: null, baths: null, sqft: '650', agent: 'BT', agentName: 'Bhavesh T.', type: 'shop' },
-  { _id:'s16', img: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80', badge: 'New Launch', badgeClass: 'new', price: '₹1.5 Cr', loc: 'Giftcity, Gandhinagar', title: 'GIFT City Office Suite – 2200 sqft', beds: null, baths: null, sqft: '2200', agent: 'NV', agentName: 'Neel V.', type: 'office' },
-  { _id:'s12', img: 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=600&q=80', badge: 'For Rent', badgeClass: 'rent', price: '₹45K/mo', loc: 'Iscon, Ahmedabad', title: 'Showroom Space – 1800 sqft', beds: null, baths: null, sqft: '1800', agent: 'SM', agentName: 'Sanjay M.', type: 'shop' }
-];
+// ===== EMPTY STATE HTML =====
+const emptyState = (msg) => `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#aaa;"><i class="fa-solid fa-building" style="font-size:3rem;margin-bottom:16px;display:block;opacity:0.3"></i><p style="font-size:1rem;font-weight:600;color:#bbb;">${msg || 'No properties available right now.'}</p><p style="font-size:0.82rem;margin-top:6px;">Check back soon or <a href="contact.html" style="color:#E53935;font-weight:700;">contact us</a> for latest listings.</p></div>`;
+const emptySlide = (msg) => `<div style="min-width:100%;text-align:center;padding:60px 20px;color:#aaa;"><i class="fa-solid fa-building" style="font-size:3rem;margin-bottom:16px;display:block;opacity:0.3"></i><p style="font-size:1rem;font-weight:600;color:#bbb;">${msg || 'No properties available right now.'}</p></div>`;
 
 // ===== CONVERT DB PROPERTY TO CARD FORMAT =====
 function dbToCard(p) {
@@ -184,45 +162,36 @@ function ciGo(id, idx, e) {
   wrap.querySelectorAll('.ci-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
 }
 
-// ===== LOAD PROPERTIES FROM BACKEND (fallback to static) =====
+// ===== LOAD PROPERTIES FROM BACKEND (no static fallback) =====
 async function loadAllProperties() {
   if (!document.getElementById('trendingGrid')) return;
 
-  // Check URL params for search filters
   const params = new URLSearchParams(window.location.search);
   const hasFilter = params.toString().length > 0;
 
   if (hasFilter) {
-    // Show filtered results in trending section
     const sectionHead = document.querySelector('#trending .section-head h2');
     if (sectionHead) sectionHead.innerHTML = 'Search <span class="yellow">Results</span>';
     try {
       const res = await fetch(`${API}/properties?${params.toString()}&limit=12`);
       const data = await res.json();
       const grid = document.getElementById('trendingGrid');
-      if (data.success && data.properties.length) {
-        grid.innerHTML = data.properties.map(p => createCard(dbToCard(p))).join('');
-      } else {
-        grid.innerHTML = '<div style="text-align:center;padding:40px;color:#888;grid-column:1/-1"><i class="fa-solid fa-building" style="font-size:2rem;margin-bottom:12px;display:block"></i><p>No properties found matching your search.</p></div>';
-      }
+      grid.innerHTML = (data.success && data.properties.length)
+        ? data.properties.map(p => createCard(dbToCard(p))).join('')
+        : emptyState('No properties found matching your search.');
     } catch {
-      document.getElementById('trendingGrid').innerHTML = staticTrending.map(createCard).join('');
+      document.getElementById('trendingGrid').innerHTML = emptyState('Could not load properties. Please try again.');
     }
-    // Still load sliders
     try {
       const [r, c] = await Promise.all([
         fetch(`${API}/properties/residential`).then(r => r.json()),
         fetch(`${API}/properties/commercial`).then(r => r.json())
       ]);
-      const residential = (r.success && r.properties.length) ? r.properties.map(dbToCard) : staticResidential;
-      const commercial  = (c.success && c.properties.length) ? c.properties.map(dbToCard) : staticCommercial;
-      const resPadded = residential.length < 4 ? [...residential, ...staticResidential].slice(0, Math.max(residential.length, 4)) : residential;
-      const comPadded = commercial.length  < 4 ? [...commercial,  ...staticCommercial].slice(0,  Math.max(commercial.length,  4)) : commercial;
-      document.getElementById('resSlider').innerHTML = resPadded.map(createCard).join('');
-      document.getElementById('comSlider').innerHTML = comPadded.map(createCard).join('');
+      document.getElementById('resSlider').innerHTML = (r.success && r.properties.length) ? r.properties.map(p => createCard(dbToCard(p))).join('') : emptySlide('No residential properties available.');
+      document.getElementById('comSlider').innerHTML = (c.success && c.properties.length) ? c.properties.map(p => createCard(dbToCard(p))).join('') : emptySlide('No commercial properties available.');
     } catch {
-      document.getElementById('resSlider').innerHTML = staticResidential.map(createCard).join('');
-      document.getElementById('comSlider').innerHTML = staticCommercial.map(createCard).join('');
+      document.getElementById('resSlider').innerHTML = emptySlide('Could not load properties.');
+      document.getElementById('comSlider').innerHTML = emptySlide('Could not load properties.');
     }
   } else {
     try {
@@ -231,23 +200,18 @@ async function loadAllProperties() {
         fetch(`${API}/properties/residential`).then(r => r.json()),
         fetch(`${API}/properties/commercial`).then(r => r.json())
       ]);
-      const trending    = (t.success && t.properties.length)    ? t.properties.map(dbToCard) : staticTrending;
-      const residential = (r.success && r.properties.length)    ? r.properties.map(dbToCard) : staticResidential;
-      const commercial  = (c.success && c.properties.length)    ? c.properties.map(dbToCard) : staticCommercial;
-      document.getElementById('trendingGrid').innerHTML = trending.map(createCard).join('');
-      // Pad sliders to at least 4 cards for smooth loop
-      const resPadded = residential.length < 4 ? [...residential, ...staticResidential].slice(0, Math.max(residential.length, 4)) : residential;
-      const comPadded = commercial.length < 4  ? [...commercial,  ...staticCommercial].slice(0,  Math.max(commercial.length,  4)) : commercial;
-      document.getElementById('resSlider').innerHTML = resPadded.map(createCard).join('');
-      document.getElementById('comSlider').innerHTML = comPadded.map(createCard).join('');
+      document.getElementById('trendingGrid').innerHTML = (t.success && t.properties.length) ? t.properties.map(p => createCard(dbToCard(p))).join('') : emptyState('No trending properties right now. Check back soon!');
+      document.getElementById('resSlider').innerHTML   = (r.success && r.properties.length) ? r.properties.map(p => createCard(dbToCard(p))).join('') : emptySlide('No residential properties available.');
+      document.getElementById('comSlider').innerHTML   = (c.success && c.properties.length) ? c.properties.map(p => createCard(dbToCard(p))).join('') : emptySlide('No commercial properties available.');
     } catch {
-      document.getElementById('trendingGrid').innerHTML = staticTrending.map(createCard).join('');
-      document.getElementById('resSlider').innerHTML    = staticResidential.map(createCard).join('');
-      document.getElementById('comSlider').innerHTML    = staticCommercial.map(createCard).join('');
+      document.getElementById('trendingGrid').innerHTML = emptyState('Could not load properties. Please try again.');
+      document.getElementById('resSlider').innerHTML    = emptySlide('Could not load properties.');
+      document.getElementById('comSlider').innerHTML    = emptySlide('Could not load properties.');
     }
   }
-  initSlider('resSlider', 'resPrev', 'resNext');
-  initSlider('comSlider', 'comPrev', 'comNext');
+  // Only init slider if cards exist
+  if (document.querySelector('#resSlider .prop-card')) initSlider('resSlider', 'resPrev', 'resNext');
+  if (document.querySelector('#comSlider .prop-card')) initSlider('comSlider', 'comPrev', 'comNext');
 }
 
 // ===== PROPERTY SLIDER (smooth infinite marquee) =====

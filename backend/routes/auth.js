@@ -138,9 +138,22 @@ async function sendOTPWhatsApp(phone, otp, name, type) {
   }
 }
 
-// ===== SEND OTP EMAIL via Resend SDK =====
+// ===== SEND OTP EMAIL via Gmail SMTP (Nodemailer) =====
+const nodemailer = require('nodemailer');
 const { Resend } = require('resend');
 const { otpHtml, registerWelcomeHtml } = require('../utils/emailTemplates');
+
+function getTransporter() {
+  return nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
+}
 
 async function sendOTPEmail(email, otp, name, type) {
   const subjects = {
@@ -149,24 +162,42 @@ async function sendOTPEmail(email, otp, name, type) {
     forgot:   'Password Reset OTP – City Real Space',
   };
   const subject = subjects[type] || subjects.login;
-  const html    = otpHtml({ name, otp, type });
 
-  if (!process.env.RESEND_API_KEY) { console.error('RESEND_API_KEY not set'); return false; }
+  // Simple clean HTML — no domain dependency
+  const html = `
+  <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e8e8e8">
+    <div style="background:linear-gradient(135deg,#0D1B2A,#1a3a5c);padding:28px 32px;text-align:center">
+      <h2 style="color:#FFC107;margin:0;font-size:1.4rem">City Real Space</h2>
+      <p style="color:rgba(255,255,255,0.7);margin:6px 0 0;font-size:0.85rem">Gujarat's Most Trusted Real Estate Platform</p>
+    </div>
+    <div style="padding:32px;text-align:center">
+      <p style="color:#333;font-size:1rem;margin:0 0 8px">Hello <strong>${name}</strong>,</p>
+      <p style="color:#666;font-size:0.9rem;margin:0 0 24px">${type === 'register' ? 'Verify your email to activate your account.' : type === 'forgot' ? 'Use this OTP to reset your password.' : 'Use this OTP to complete your login.'}</p>
+      <div style="background:#f8f9fa;border:2px dashed #E53935;border-radius:12px;padding:20px;margin:0 0 24px">
+        <p style="color:#888;font-size:0.78rem;margin:0 0 8px;text-transform:uppercase;letter-spacing:1px">Your OTP</p>
+        <h1 style="color:#E53935;font-size:2.5rem;font-weight:900;margin:0;letter-spacing:10px">${otp}</h1>
+        <p style="color:#aaa;font-size:0.75rem;margin:8px 0 0">Valid for 10 minutes only</p>
+      </div>
+      <p style="color:#999;font-size:0.78rem;margin:0">Do not share this OTP with anyone.<br/>If you didn't request this, ignore this email.</p>
+    </div>
+    <div style="background:#f8f9fa;padding:16px;text-align:center;border-top:1px solid #e8e8e8">
+      <p style="color:#aaa;font-size:0.75rem;margin:0">© 2025 City Real Space | admin@cityestate.co.in</p>
+    </div>
+  </div>`;
 
   try {
-    console.log(`📧 Sending ${type} OTP to ${email} via Resend SDK`);
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const { error } = await resend.emails.send({
-      from: 'City Real Space <noreply@cityrealspace.com>',
-      to:   [email],
+    console.log(`📧 Sending ${type} OTP to ${email} via Gmail SMTP`);
+    const transporter = getTransporter();
+    await transporter.sendMail({
+      from: `"City Real Space" <${process.env.EMAIL_USER}>`,
+      to: email,
       subject,
       html
     });
-    if (error) { console.error(`❌ Resend error for ${email}:`, error); return false; }
     console.log(`✅ OTP email sent to ${email}`);
     return true;
   } catch (err) {
-    console.error(`❌ Resend email failed for ${email}:`, err.message);
+    console.error(`❌ Gmail SMTP failed for ${email}:`, err.message);
     return false;
   }
 }
@@ -263,12 +294,12 @@ router.post('/verify-register', otpLimiter, async (req, res) => {
 
     // Welcome email after account activation
     try {
-      const resend = new Resend(process.env.RESEND_API_KEY);
-      await resend.emails.send({
-        from: 'City Real Space <noreply@cityrealspace.com>',
-        to:   [user.email],
+      const transporter = getTransporter();
+      await transporter.sendMail({
+        from: `"City Real Space" <${process.env.EMAIL_USER}>`,
+        to: user.email,
         subject: 'Welcome to City Real Space! 🏠',
-        html: registerWelcomeHtml({ name: user.firstName, email: user.email })
+        html: `<div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto"><div style="background:linear-gradient(135deg,#0D1B2A,#1a3a5c);padding:28px;text-align:center"><h2 style="color:#FFC107;margin:0">Welcome, ${user.firstName}! 🎉</h2></div><div style="padding:28px;text-align:center"><p style="color:#333">Your City Real Space account is now active.</p><p style="color:#666;font-size:0.88rem">Start exploring 12,500+ verified properties across Gujarat.</p><a href="https://cityrealspace.com" style="display:inline-block;background:#E53935;color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700;margin-top:16px">Explore Properties</a></div></div>`
       });
     } catch(e) { console.error('Welcome email failed:', e.message); }
 
