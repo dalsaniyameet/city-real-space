@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    .pp-outer { max-width: 1200px; margin: 100px auto 60px; padding: 0 20px; display: flex; gap: 28px; align-items: flex-start; }
+    .pp-outer { max-width: 1200px; margin: 120px auto 60px; padding: 0 20px; display: flex; gap: 28px; align-items: flex-start; }
     .pp-wrap { flex: 1; min-width: 0; }
     /* ---- Score Panel ---- */
     .score-panel { width: 300px; flex-shrink: 0; position: sticky; top: 90px; }
@@ -118,13 +118,43 @@
     .progress-bar-fill { height:100%; background:linear-gradient(90deg,#E53935,#ff7043); border-radius:20px; transition:width 0.5s ease; }
     @media(max-width:1024px) { .pp-outer { flex-direction: column; } .score-panel { width: 100%; position: static; max-height: none; } }
     @media(max-width:768px) {
+      .pp-outer { margin-top: 100px; padding: 0 14px; }
       .form-row, .form-row.three { grid-template-columns: 1fr; }
       .page-header h1 { font-size: 1.6rem; }
       .card { padding: 18px; }
+      .chip-group { gap: 8px; }
+      .chip { padding: 8px 12px; font-size: 0.82rem; }
+      .radio-group { gap: 8px; }
+      .radio-option { padding: 8px 12px; font-size: 0.85rem; }
+      .submit-btn { font-size: 0.95rem; padding: 13px 16px; }
+      .score-card { padding: 20px 16px; }
+      .score-ring { width: 120px; height: 120px; }
+      .score-ring svg { width: 120px; height: 120px; }
+      .score-ring .score-num span { font-size: 1.9rem; }
+    }
+    @media(max-width:480px) {
+      .pp-outer { margin-top: 96px; padding: 0 12px; }
+      .page-header h1 { font-size: 1.35rem; }
+      .page-header p { font-size: 0.82rem; }
+      .card h2 { font-size: 1rem; }
+      .form-group label { font-size: 0.82rem; }
+      .form-group input, .form-group select, .form-group textarea { font-size: 0.82rem; padding: 10px 12px; }
+      .upload-box { padding: 24px 14px; }
+      .upload-box i { font-size: 2rem; }
+      .image-preview { gap: 8px; }
+      .preview-item { width: 80px; height: 65px; }
+      .score-checklist li { font-size: 0.76rem; }
     }
   </style>
 </head>
 <body>
+
+<!-- NTC REG BAR -->
+<div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;overflow:hidden;white-space:nowrap;width:100%;max-width:100%;">
+  <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
+  <span class="ntc-mid">&nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;</span>
+  <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
+</div>
 
 <!-- ===== NAVBAR (same as index.html) ===== -->
 <header class="header" id="header">

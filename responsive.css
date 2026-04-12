@@ -769,3 +769,15 @@ body, html { max-width: 100vw; overflow-x: hidden; }
     max-width: 100% !important;
   }
 }
+
+/* Login / Register page — NTC bar spacing fix */
+body.login-page,
+body.register-page {
+  padding-top: 32px !important;
+}
+@media (max-width: 700px) {
+  body.login-page .page-card,
+  body.register-page .page-card {
+    margin-top: 30px !important;
+  }
+}
