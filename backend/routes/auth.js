@@ -140,7 +140,7 @@ async function sendOTPWhatsApp(phone, otp, name, type) {
 }
 
 // ===== SEND OTP EMAIL via Resend API =====
-const { otpHtml } = require('../utils/emailTemplates');
+const { otpHtml, registerWelcomeHtml } = require('../utils/emailTemplates');
 
 async function sendOTPEmail(email, otp, name, type) {
   const subjects = {
@@ -266,6 +266,19 @@ router.post('/verify-register', otpLimiter, async (req, res) => {
     await user.save();
 
     try { notifyWhatsApp(user); } catch(e) {}
+
+    // Welcome email after account activation
+    try {
+      await axios.post('https://api.resend.com/emails', {
+        from: 'City Real Space <noreply@cityrealspace.com>',
+        to: [user.email],
+        subject: 'Welcome to City Real Space! 🏠',
+        html: registerWelcomeHtml({ name: user.firstName, email: user.email })
+      }, {
+        headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        timeout: 10000
+      });
+    } catch(e) { console.error('Welcome email failed:', e.message); }
 
     res.json({
       success: true,
