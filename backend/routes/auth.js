@@ -140,42 +140,18 @@ async function sendOTPWhatsApp(phone, otp, name, type) {
 }
 
 // ===== SEND OTP EMAIL via Resend API =====
+const { otpHtml } = require('../utils/emailTemplates');
+
 async function sendOTPEmail(email, otp, name, type) {
-  const isRegister = type === 'register';
-  const isLogin    = type === 'login';
-  const subject    = isRegister ? 'Verify Your Email – City Real Space'
-                   : isLogin    ? 'Login OTP – City Real Space'
-                   :              'Password Reset OTP – City Real Space';
-  const color   = isRegister ? '#69f0ae' : isLogin ? '#82b1ff' : '#ffab40';
-  const heading = isRegister ? 'Activate Your Account' : isLogin ? 'Verify Your Login' : 'Reset Your Password';
-  const msg     = isRegister ? 'Use the OTP below to verify your email.'
-                : isLogin    ? 'Use the OTP below to complete your login. Valid for 10 minutes.'
-                :               'Use the OTP below to reset your password.';
+  const subjects = {
+    register: 'Verify Your Email – City Real Space',
+    login:    'Login OTP – City Real Space',
+    forgot:   'Password Reset OTP – City Real Space',
+  };
+  const subject = subjects[type] || subjects.login;
+  const html    = otpHtml({ name, otp, type });
 
-  const html = `<div style="font-family:Arial,sans-serif;max-width:500px;margin:auto;background:#0a1628;border-radius:16px;overflow:hidden">
-    <div style="background:#E53935;padding:28px;text-align:center">
-      <h1 style="color:#fff;margin:0;font-size:1.4rem">City Real Space</h1>
-      <p style="color:rgba(255,255,255,0.8);margin:4px 0 0;font-size:0.8rem">Gujarat's #1 Real Estate Platform</p>
-    </div>
-    <div style="padding:32px">
-      <h2 style="color:#fff;margin:0 0 12px">${heading}</h2>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.88rem;margin:0 0 8px">Hi <strong style="color:#fff">${name}</strong>,</p>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.88rem;margin:0 0 24px">${msg}</p>
-      <div style="background:rgba(255,255,255,0.06);border-radius:12px;padding:24px;text-align:center">
-        <p style="color:rgba(255,255,255,0.4);font-size:0.7rem;margin:0 0 10px;letter-spacing:3px;text-transform:uppercase">Your OTP</p>
-        <div style="font-size:2.8rem;font-weight:900;letter-spacing:14px;color:${color};font-family:monospace">${otp}</div>
-        <p style="color:rgba(255,255,255,0.4);font-size:0.72rem;margin:12px 0 0">Valid for 10 minutes only</p>
-      </div>
-    </div>
-    <div style="background:rgba(0,0,0,0.3);padding:16px;text-align:center">
-      <p style="color:rgba(255,255,255,0.25);font-size:0.7rem;margin:0">&copy; 2025 City Real Space &middot; Ahmedabad, Gujarat</p>
-    </div>
-  </div>`;
-
-  // Resend API key check
-  if (!process.env.RESEND_API_KEY) {
-    throw new Error('RESEND_API_KEY not configured');
-  }
+  if (!process.env.RESEND_API_KEY) throw new Error('RESEND_API_KEY not configured');
 
   try {
     console.log(`📧 Sending ${type} OTP to ${email} via Resend`);

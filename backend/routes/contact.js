@@ -4,6 +4,7 @@ const Contact      = require('../models/Contact');
 const { protect, adminOnly } = require('../middleware/auth');
 const twilio       = require('twilio');
 const { Resend }   = require('resend');
+const { contactConfirmHtml } = require('../utils/emailTemplates');
 
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const resend       = new Resend(process.env.RESEND_API_KEY);
@@ -16,13 +17,13 @@ async function sendWA(to, body) {
   }
 }
 
-async function sendEmail(to, subject, text) {
+async function sendEmail(to, subject, html) {
   try {
     await resend.emails.send({
       from: 'City Real Space <noreply@cityrealspace.com>',
       to,
       subject,
-      text
+      html
     });
   } catch (e) {
     console.error('Email error:', e.message);
@@ -42,8 +43,8 @@ router.post('/', async (req, res) => {
       `Hello ${name}! ✅ We received your message. Our team will contact you within 30 minutes.\n\n- City Real Space`);
 
     // Email to user
-    if (email) await sendEmail(email, 'We received your message - City Real Space',
-      `Hello ${name},\n\nThank you for contacting us! ✅\nWe have received your message and our team will contact you within 30 minutes.\n\nSubject: ${subject || 'N/A'}\nMessage: ${message}\n\n- City Real Space Team`);
+    if (email) await sendEmail(email, 'We received your message – City Real Space',
+      contactConfirmHtml({ name, subject, message }));
 
     // WhatsApp to owner
     await sendWA(process.env.CITY_WA_NUMBER,

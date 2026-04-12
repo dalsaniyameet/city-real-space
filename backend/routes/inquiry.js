@@ -4,6 +4,7 @@ const Inquiry      = require('../models/Inquiry');
 const { protect, adminOnly } = require('../middleware/auth');
 const twilio       = require('twilio');
 const { Resend }   = require('resend');
+const { inquiryConfirmHtml } = require('../utils/emailTemplates');
 
 const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 const resend       = new Resend(process.env.RESEND_API_KEY);
@@ -16,13 +17,13 @@ async function sendWA(to, body) {
   }
 }
 
-async function sendEmail(to, subject, text) {
+async function sendEmail(to, subject, html) {
   try {
     await resend.emails.send({
       from: 'City Real Space <noreply@cityrealspace.com>',
       to,
       subject,
-      text
+      html
     });
   } catch (e) {
     console.error('Email error:', e.message);
@@ -42,8 +43,8 @@ router.post('/', async (req, res) => {
       `Hello ${name}! ✅ Your inquiry for *${propertyName || 'property'}* has been received. Our team will contact you shortly.\n\n- City Real Space`);
 
     // Email to user
-    if (email) await sendEmail(email, 'Inquiry Received - City Real Space',
-      `Hello ${name},\n\nThank you for your inquiry! ✅\nWe have received your inquiry for *${propertyName || 'property'}* and our team will contact you shortly.\n\nProperty: ${propertyName || 'N/A'}\nType: ${propertyType || 'N/A'}\nBudget: ${budget || 'N/A'}\nCity: ${city || 'N/A'}\n\n- City Real Space Team`);
+    if (email) await sendEmail(email, 'Inquiry Received – City Real Space',
+      inquiryConfirmHtml({ name, propertyName, propertyType, budget, city, lookingFor, message }));
 
     // WhatsApp to owner
     await sendWA(process.env.CITY_WA_NUMBER,
