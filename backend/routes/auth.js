@@ -1,7 +1,6 @@
 const express    = require('express');
 const router     = require('express').Router();
 const jwt        = require('jsonwebtoken');
-const axios      = require('axios');
 const User       = require('../models/User');
 const { protect } = require('../middleware/auth');
 const { otpLimiter } = require('../middleware/limiters');
@@ -139,7 +138,8 @@ async function sendOTPWhatsApp(phone, otp, name, type) {
   }
 }
 
-// ===== SEND OTP EMAIL via Resend API =====
+// ===== SEND OTP EMAIL via Resend SDK =====
+const { Resend } = require('resend');
 const { otpHtml, registerWelcomeHtml } = require('../utils/emailTemplates');
 
 async function sendOTPEmail(email, otp, name, type) {
@@ -151,27 +151,22 @@ async function sendOTPEmail(email, otp, name, type) {
   const subject = subjects[type] || subjects.login;
   const html    = otpHtml({ name, otp, type });
 
-  if (!process.env.RESEND_API_KEY) throw new Error('RESEND_API_KEY not configured');
+  if (!process.env.RESEND_API_KEY) { console.error('RESEND_API_KEY not set'); return false; }
 
   try {
-    console.log(`📧 Sending ${type} OTP to ${email} via Resend`);
-    const response = await axios.post('https://api.resend.com/emails', {
+    console.log(`📧 Sending ${type} OTP to ${email} via Resend SDK`);
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const { error } = await resend.emails.send({
       from: 'City Real Space <noreply@cityrealspace.com>',
-      to: [email],
+      to:   [email],
       subject,
       html
-    }, {
-      headers: {
-        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      timeout: 15000
     });
-    console.log(`✅ Email sent to ${email}`, response.data);
+    if (error) { console.error(`❌ Resend error for ${email}:`, error); return false; }
+    console.log(`✅ OTP email sent to ${email}`);
     return true;
   } catch (err) {
-    const errMsg = err.response?.data?.message || err.message;
-    console.error(`❌ Resend email failed for ${email}:`, errMsg);
+    console.error(`❌ Resend email failed for ${email}:`, err.message);
     return false;
   }
 }
@@ -269,14 +264,12 @@ router.post('/verify-register', otpLimiter, async (req, res) => {
 
     // Welcome email after account activation
     try {
-      await axios.post('https://api.resend.com/emails', {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      await resend.emails.send({
         from: 'City Real Space <noreply@cityrealspace.com>',
-        to: [user.email],
+        to:   [user.email],
         subject: 'Welcome to City Real Space! 🏠',
         html: registerWelcomeHtml({ name: user.firstName, email: user.email })
-      }, {
-        headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-        timeout: 10000
       });
     } catch(e) { console.error('Welcome email failed:', e.message); }
 
