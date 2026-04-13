@@ -198,15 +198,11 @@ function handleAdminImages(input) {
 async function uploadToCloudinary(file) {
   const fd = new FormData();
   fd.append('file', file);
-  const res = await fetch(API + '/upload', {
-    method: 'POST',
-    headers: { 'Authorization': 'Bearer ' + adminToken },
-    body: fd
-  });
+  fd.append('upload_preset', CLOUDINARY_PRESET);
+  const res = await fetch('https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/image/upload', { method: 'POST', body: fd });
   const data = await res.json();
-  if (!data.url) throw new Error('Upload failed');
-  // Return full URL — production pe Vercel URL, local pe localhost
-  return data.fullUrl || (window.location.origin + data.url);
+  if (!data.secure_url) throw new Error('Upload failed: ' + (data.error && data.error.message || 'Unknown error'));
+  return data.secure_url;
 }
 
 async function handleBlogImage(input) {
