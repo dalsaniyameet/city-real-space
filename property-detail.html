@@ -171,6 +171,14 @@
     .pd-video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;}
     .pd-video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:10px;}
     @media(max-width:900px){.pd-grid{grid-template-columns:1fr;}.pd-sidebar{position:static;}.pd-main-img{height:280px;}}
+
+    /* Section Tabs */
+    .pd-tabs-bar { position:sticky; top:33px; z-index:900; background:#fff; border-bottom:2px solid #f0f0f0; margin-bottom:0; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+    .pd-tabs-inner { max-width:1200px; margin:0 auto; padding:0 20px; display:flex; gap:0; overflow-x:auto; scrollbar-width:none; }
+    .pd-tabs-inner::-webkit-scrollbar { display:none; }
+    .pd-tab-link { padding:14px 18px; font-size:0.82rem; font-weight:600; color:#666; border-bottom:3px solid transparent; cursor:pointer; white-space:nowrap; transition:all 0.2s; background:none; border-top:none; border-left:none; border-right:none; font-family:Poppins,sans-serif; text-decoration:none; display:block; }
+    .pd-tab-link:hover { color:#E53935; }
+    .pd-tab-link.active { color:#E53935; border-bottom-color:#E53935; }
   </style>
 </head>
 <body>
@@ -222,6 +230,19 @@
   </div>
 </header>
 
+<!-- SECTION TABS BAR -->
+<div class="pd-tabs-bar" id="pdTabsBar" style="display:none">
+  <div class="pd-tabs-inner">
+    <a class="pd-tab-link active" href="#sec-overview" onclick="scrollToSec('sec-overview',this)">Overview</a>
+    <a class="pd-tab-link" href="#sec-owner" onclick="scrollToSec('sec-owner',this)">Owner Details</a>
+    <a class="pd-tab-link" href="#sec-price-trends" onclick="scrollToSec('sec-price-trends',this)">Price Trends</a>
+    <a class="pd-tab-link" href="#sec-locality" onclick="scrollToSec('sec-locality',this)">Explore Locality</a>
+    <a class="pd-tab-link" href="#sec-dealers" onclick="scrollToSec('sec-dealers',this)">Featured Dealers</a>
+    <a class="pd-tab-link" href="#sec-similar" onclick="scrollToSec('sec-similar',this)">Recommendations</a>
+    <a class="pd-tab-link" href="#sec-articles" onclick="scrollToSec('sec-articles',this)">Articles</a>
+  </div>
+</div>
+
 <div class="pd-wrap">
   <div id="pdLoading" class="pd-loading">
     <i class="fa-solid fa-spinner fa-spin"></i>
@@ -231,6 +252,8 @@
     <div class="pd-grid">
       <!-- LEFT -->
       <div>
+        <!-- Overview -->
+        <div id="sec-overview"></div>
         <!-- Gallery -->
         <div class="pd-gallery">
           <div class="pd-main-img">
@@ -252,6 +275,8 @@
           </div>
         </div>
 
+        <!-- Owner Details -->
+        <div id="sec-owner"></div>
         <!-- Extra Details -->
         <div class="pd-details" id="pdDetailsBox" style="display:none">
           <h4>Property Details</h4>
@@ -264,7 +289,8 @@
           <div class="pd-amenities-list" id="pdAmenitiesList"></div>
         </div>
 
-        <!-- PRICE TRENDS -->
+        <!-- Price Trends -->
+        <div id="sec-price-trends"></div>
         <div class="price-trend-box" id="pdPriceTrendBox">
           <h4><i class="fa-solid fa-chart-line"></i> Price Trends
             <span style="margin-left:auto;font-size:0.72rem;font-weight:600;color:#888">Last 12 Months</span>
@@ -281,7 +307,10 @@
           </p>
         </div>
 
+        <!-- Explore Locality -->
+        <div id="sec-locality"></div>
         <!-- FEATURED DEALERS -->
+        <div id="sec-dealers"></div>
         <div class="dealers-box">
           <h4><i class="fa-solid fa-user-tie"></i> Featured Dealers
             <span style="margin-left:auto;font-size:0.72rem;font-weight:600;color:#888">Top Agents in Area</span>
@@ -392,7 +421,13 @@
       </div>
     </div>
 
-    <!-- SIMILAR PROPERTIES -->
+    <!-- Similar / Recommendations -->
+    <div id="sec-similar"></div>
+    <div id="sec-articles"></div>
+    <div class="similar-section" id="articlesSection" style="display:none">
+      <h4><i class="fa-solid fa-newspaper"></i> Related Articles</h4>
+      <div id="articlesList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px"></div>
+    </div>
     <div class="similar-section">
       <h4><i class="fa-solid fa-building"></i> Similar Properties</h4>
       <div class="similar-grid" id="similarGrid">
@@ -460,6 +495,34 @@
 <script src="bg-animation.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
+// ===== SECTION TABS SCROLL =====
+function scrollToSec(id, el) {
+  event.preventDefault();
+  const target = document.getElementById(id);
+  if (!target) return;
+  const offset = 90; // header + tabs bar height
+  const top = target.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({ top, behavior: 'smooth' });
+  document.querySelectorAll('.pd-tab-link').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Update active tab on scroll
+const _tabSections = ['sec-overview','sec-owner','sec-price-trends','sec-locality','sec-dealers','sec-similar','sec-articles'];
+window.addEventListener('scroll', () => {
+  document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+  document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
+  // Active tab
+  let current = _tabSections[0];
+  for (const id of _tabSections) {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 100) current = id;
+  }
+  document.querySelectorAll('.pd-tab-link').forEach(t => {
+    t.classList.toggle('active', t.getAttribute('href') === '#' + current);
+  });
+}, { passive: true });
+
 // ===== PRICE FORMAT FUNCTION =====
 function formatPrice(price, status) {
   if (!price) return 'Price on Request';
@@ -681,9 +744,11 @@ function renderProperty(p) {
 
   document.getElementById('pdLoading').style.display = 'none';
   document.getElementById('pdContent').style.display = 'block';
+  document.getElementById('pdTabsBar').style.display = 'block';
 
   // Similar properties load karo
   loadSimilar(p);
+  loadArticles();
 
   // Map — content visible hone ke baad load karo
   setTimeout(() => loadMap(p), 100);
@@ -705,11 +770,6 @@ function showError(msg) {
     </div>`;
 }
 
-// Scroll & nav
-window.addEventListener('scroll', () => {
-  document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
-  document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
-});
 document.getElementById('backTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
 document.querySelectorAll('.nav-drop-btn').forEach(btn => {
@@ -1131,6 +1191,25 @@ function renderDealers(p) {
         <i class="fa-brands fa-whatsapp"></i> Chat
       </button>
     </div>`).join('');
+}
+
+// ===== ARTICLES =====
+async function loadArticles() {
+  try {
+    const res = await fetch(`${API}/blogs?limit=3`);
+    const data = await res.json();
+    const blogs = data.blogs || data.data || [];
+    if (!blogs.length) return;
+    document.getElementById('articlesSection').style.display = 'block';
+    document.getElementById('articlesList').innerHTML = blogs.map(b => `
+      <div class="prop-card" onclick="window.location.href='blog-detail.html?id=${b._id}'" style="cursor:pointer">
+        <div class="card-img"><img src="${b.image||'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80'}" alt="${b.title}" loading="lazy" style="width:100%;height:160px;object-fit:cover"/></div>
+        <div class="card-body">
+          <div class="card-title" style="font-size:0.88rem">${b.title}</div>
+          <div style="font-size:0.75rem;color:#aaa;margin-top:6px">${b.category||'Real Estate'}</div>
+        </div>
+      </div>`).join('');
+  } catch {}
 }
 
 // ===== SIMILAR PROPERTIES =====
