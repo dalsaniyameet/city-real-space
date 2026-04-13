@@ -56,6 +56,23 @@ router.post('/', async (req, res) => {
   }
 });
 
+// GET /api/inquiry/mine — user: apni inquiries dekho (phone se match)
+router.get('/mine', protect, async (req, res) => {
+  try {
+    const phone = req.user.phone ? req.user.phone.replace('+91', '').trim() : '';
+    const inquiries = await Inquiry.find({
+      $or: [
+        { phone: phone },
+        { phone: '+91' + phone },
+        { email: req.user.email }
+      ]
+    }).sort({ createdAt: -1 }).limit(50);
+    res.json({ success: true, inquiries });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // GET /api/inquiry — admin: get all inquiries
 router.get('/', protect, adminOnly, async (req, res) => {
   try {
