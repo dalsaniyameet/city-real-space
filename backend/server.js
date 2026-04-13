@@ -154,6 +154,11 @@ app.use('/api/admin',      require('./routes/admin'));
 app.use('/api/blogs',      require('./routes/blogs'));
 app.use('/api/upload',     require('./routes/upload'));
 
+// Google Search Console verification
+app.get('/google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html', (req, res) => {
+  res.send('google-site-verification: google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html');
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'City Real Space API is running', time: new Date() });
