@@ -212,6 +212,28 @@ async function loadAllProperties() {
   // Only init slider if cards exist
   if (document.querySelector('#resSlider .prop-card')) initSlider('resSlider', 'resPrev', 'resNext');
   if (document.querySelector('#comSlider .prop-card')) initSlider('comSlider', 'comPrev', 'comNext');
+  // Auto scroll images inside each card
+  startCardImageAutoScroll();
+}
+
+function startCardImageAutoScroll() {
+  document.querySelectorAll('#resSlider .prop-card, #comSlider .prop-card, #trendingGrid .prop-card').forEach(function(card) {
+    if (card.dataset.imgAuto) return;
+    card.dataset.imgAuto = '1';
+    const el = card.querySelector('.card-img');
+    if (!el) return;
+    const slides = el.querySelectorAll('.ci-slide');
+    if (slides.length < 2) return;
+    setInterval(function() {
+      const dots = el.querySelectorAll('.ci-dot');
+      let cur = [...slides].findIndex(s => s.classList.contains('active'));
+      slides[cur].classList.remove('active');
+      if (dots[cur]) dots[cur].classList.remove('active');
+      cur = (cur + 1) % slides.length;
+      slides[cur].classList.add('active');
+      if (dots[cur]) dots[cur].classList.add('active');
+    }, 2000);
+  });
 }
 
 // ===== PROPERTY SLIDER (smooth infinite marquee) =====
