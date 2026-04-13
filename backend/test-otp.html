@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>City Real Space</title>
+<style>
+  @keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn    { from{opacity:0} to{opacity:1} }
+  @keyframes popUp     { from{opacity:0;transform:scale(0.85)} to{opacity:1;transform:scale(1)} }
+  .card  { animation: slideDown 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+  .body  { animation: fadeIn 0.5s 0.15s ease both; }
+  .otpbox{ animation: popUp 0.4s 0.25s cubic-bezier(0.22,1,0.36,1) both; }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#dde3ec;font-family:'Segoe UI',Arial,sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#dde3ec;padding:28px 12px;">
+<tr><td align="center">
+
+  <table class="card" width="100%" cellpadding="0" cellspacing="0" border="0"
+    style="max-width:520px;width:100%;border-radius:20px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.18);">
+
+    <!-- ══ HEADER ══ -->
+    <tr>
+      <td align="center" style="background:linear-gradient(150deg,#7f0000 0%,#C62828 50%,#8B0000 100%);padding:28px 24px 22px;">
+        <!-- Logo circle -->
+        <div style="width:72px;height:72px;border-radius:50%;background:#fff;border:3px solid rgba(255,255,255,0.4);box-shadow:0 0 0 6px rgba(255,255,255,0.12);overflow:hidden;margin:0 auto 12px;display:block;">
+          <img src="https://city-real-space.vercel.app/images/logo.jpeg" alt="CRS" width="72" height="72"
+            style="display:block;width:72px;height:72px;border-radius:50%;object-fit:cover;"/>
+        </div>
+        <div style="color:#fff;font-size:18px;font-weight:800;letter-spacing:0.3px;margin:0 0 3px;font-family:'Segoe UI',Arial,sans-serif;">City Real Space</div>
+        <div style="color:rgba(255,255,255,0.65);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;font-family:'Segoe UI',Arial,sans-serif;">Premium Real Estate Platform</div>
+      </td>
+    </tr>
+
+    <!-- ══ BODY ══ -->
+    <tr>
+      <td class="body" style="background:#ffffff;padding:28px 32px 24px;">
+        
+    <!-- Badge -->
+    <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 16px;">
+      <tr><td style="background:#2563eb;color:#fff;font-size:9px;font-weight:800;letter-spacing:2px;padding:4px 12px;border-radius:50px;font-family:'Segoe UI',Arial,sans-serif;">LOGIN</td></tr>
+    </table>
+
+    <!-- Icon -->
+    <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 12px;">
+      <tr><td align="center" style="background:#eff6ff;border:2px solid #93c5fd;border-radius:50%;width:60px;height:60px;font-size:26px;line-height:60px;text-align:center;">&#128274;</td></tr>
+    </table>
+
+    <h2 style="margin:0 0 6px;color:#1e293b;font-size:19px;font-weight:800;text-align:center;font-family:'Segoe UI',Arial,sans-serif;">Verify Your Login</h2>
+    <p style="margin:0 0 18px;color:#64748b;font-size:13px;text-align:center;line-height:1.6;font-family:'Segoe UI',Arial,sans-serif;">Hi <strong style="color:#1e293b;">Meet</strong>, Enter the OTP below to complete your login.</p>
+
+    <!-- OTP Box -->
+    <table class="otpbox" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin:0 0 16px;">
+      <tr>
+        <td align="center" style="background:#eff6ff;border:2px dashed #93c5fd;border-radius:14px;padding:20px 16px;">
+          <div style="color:#94a3b8;font-size:9px;letter-spacing:4px;text-transform:uppercase;font-weight:700;margin:0 0 8px;font-family:'Segoe UI',Arial,sans-serif;">YOUR OTP CODE</div>
+          <div style="font-size:44px;font-weight:900;letter-spacing:18px;color:#2563eb;font-family:'Courier New',monospace;line-height:1;">905979</div>
+          <div style="color:#94a3b8;font-size:11px;margin:8px 0 0;font-family:'Segoe UI',Arial,sans-serif;">&#9201; Valid for <strong>10 minutes</strong> only</div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Warning -->
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+      <tr><td style="background:#fff8f0;border-left:3px solid #f59e0b;border-radius:0 7px 7px 0;padding:10px 14px;">
+        <span style="color:#92400e;font-size:11px;font-family:'Segoe UI',Arial,sans-serif;">&#9888;&#65039; <strong>Never share this OTP</strong> with anyone. City Real Space will never ask for your OTP.</span>
+      </td></tr>
+    </table>
+      </td>
+    </tr>
+
+    <!-- ══ FOOTER with real estate bg ══ -->
+    <tr>
+      <td style="position:relative;background:#0d1b2e;padding:0;overflow:hidden;">
+        <!-- Real estate background image -->
+        <div style="position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=60') center/cover no-repeat;opacity:0.08;"></div>
+        <div style="position:relative;padding:20px 28px;text-align:center;">
+          <div style="color:#fff;font-size:13px;font-weight:700;margin:0 0 2px;font-family:'Segoe UI',Arial,sans-serif;">City Real Space</div>
+          <div style="color:rgba(255,255,255,0.4);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin:0 0 14px;font-family:'Segoe UI',Arial,sans-serif;">Ahmedabad, Gujarat</div>
+          <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 12px;">
+            <tr>
+              <td style="padding:0 10px;border-right:1px solid rgba(255,255,255,0.1);">
+                <a href="tel:+91 97235 50764" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:11px;font-family:'Segoe UI',Arial,sans-serif;">&#128222; +91 97235 50764</a>
+              </td>
+              <td style="padding:0 10px;border-right:1px solid rgba(255,255,255,0.1);">
+                <a href="mailto:info@cityrealspace.com" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:11px;font-family:'Segoe UI',Arial,sans-serif;">&#128231; info@cityrealspace.com</a>
+              </td>
+              <td style="padding:0 10px;">
+                <a href="https://cityrealspace.com" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:11px;font-family:'Segoe UI',Arial,sans-serif;">&#127760; cityrealspace.com</a>
+              </td>
+            </tr>
+          </table>
+          <div style="color:rgba(255,255,255,0.2);font-size:10px;font-family:'Segoe UI',Arial,sans-serif;">&copy; 2026 City Real Space. All rights reserved.</div>
+        </div>
+      </td>
+    </tr>
+
+  </table>
+</td></tr>
+</table>
+</body>
+</html>

@@ -1569,7 +1569,7 @@ function _aiGenerateFields({ type, city, area, beds, sqft, status, price, catego
   // ===== AGENT (default CRS agent) =====
   if (!document.getElementById('pAgentName').value) {
     document.getElementById('pAgentName').value = 'Amit Parmani';
-    document.getElementById('pAgentPhone').value = '9825012824';
+    document.getElementById('pAgentPhone').value = '9825031247';
   }
 
   // Update listing score

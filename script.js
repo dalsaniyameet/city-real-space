@@ -1072,7 +1072,7 @@ const lcwQA = [
   },
   {
     q: ['loan', 'home loan', 'finance', 'emi', 'bank', 'interest'],
-    a: '🏦 Free Home Loan guidance dete hain hum! 15+ banks ke saath kaam karte hain — SBI, HDFC, ICICI, Axis.\n\nBest interest rate ke liye abhi call karein: +91 98250 12824'
+    a: '🏦 Free Home Loan guidance dete hain hum! 15+ banks ke saath kaam karte hain — SBI, HDFC, ICICI, Axis.\n\nBest interest rate ke liye abhi call karein: +91 98250 31247'
   },
   {
     q: ['visit', 'site visit', 'dekhna', 'show', 'dikhao', 'visit book', 'free visit'],
@@ -1080,7 +1080,7 @@ const lcwQA = [
   },
   {
     q: ['contact', 'call', 'phone', 'number', 'agent', 'baat', 'expert'],
-    a: '📞 Hamare experts se baat karein:\n• +91 98250 12824\n• +91 84600 14000\n• admin@cityestate.co.in\n\nMon–Sat: 9AM – 7PM | Sun: 10AM – 4PM'
+    a: '📞 Hamare experts se baat karein:\n• +91 98250 31247\n• +91 84600 14000\n• info@cityrealspace.com\n\nMon–Sat: 9AM – 7PM | Sun: 10AM – 4PM'
   },
   {
     q: ['new launch', 'new project', 'upcoming', 'naya', 'launch'],
@@ -1108,7 +1108,7 @@ const lcwQA = [
   },
 ];
 
-const lcwFinalMsg = '🙏 Thank you for chatting with us! Our property expert will contact you within 30 minutes. You can also call us directly at 📞 +91 98250 12824. Have a great day! 😊';
+const lcwFinalMsg = '🙏 Thank you for chatting with us! Our property expert will contact you within 30 minutes. You can also call us directly at 📞 +91 98250 31247. Have a great day! 😊';
 
 let lcwMsgCount = 0;
 
@@ -1118,7 +1118,7 @@ function lcwGetReply(text) {
     if (item.q.some(k => lower.includes(k))) return item.a;
   }
   // Default smart fallback
-  return '😊 Samajh gaya! Hamare property expert aapko 30 minutes mein call karenge.\n\nYa abhi call karein: 📞 +91 98250 12824';
+  return '😊 Samajh gaya! Hamare property expert aapko 30 minutes mein call karenge.\n\nYa abhi call karein: 📞 +91 98250 31247';
 }
 
 function lcwAddMsg(text, type) {
@@ -1154,7 +1154,7 @@ function lcwBotReply(userText) {
     if (isLast) {
       const inp = document.getElementById('lcwInput');
       const snd = document.getElementById('lcwSend');
-      if (inp) { inp.disabled = true; inp.placeholder = 'Call us: +91 98250 12824'; }
+      if (inp) { inp.disabled = true; inp.placeholder = 'Call us: +91 98250 31247'; }
       if (snd) snd.disabled = true;
     }
   }, 1200);
