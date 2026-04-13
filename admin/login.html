@@ -108,6 +108,13 @@ function showErr(msg) {
 }
 function hideErr() { document.getElementById('errMsg').style.display = 'none'; }
 
+const OTP_VALID_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+function isOtpSessionValid(email) {
+  const saved = localStorage.getItem('adminOtpVerified_' + email);
+  return saved && (Date.now() - parseInt(saved)) < OTP_VALID_MS;
+}
+
 // STEP 1 — Login
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -120,17 +127,14 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
   btn.disabled = true;
   
   try {
-    console.log('🔐 Admin login request:', { email, API });
     const res = await fetch(API + '/auth/login', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ email, password })
     });
     const data = await res.json();
-    console.log('📨 Backend response:', data);
     
     if (data.success && data.needsOTP) {
-      // Check admin role via isAdmin flag
       if (!data.isAdmin) {
         showErr('Access denied. Admin only.');
         btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login to Admin Panel';
@@ -138,6 +142,24 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         return;
       }
       _adminEmail = data.email;
+
+      // ✅ OTP already verified within 24 hours — skip OTP, go directly
+      if (isOtpSessionValid(_adminEmail)) {
+        // Re-fetch token by doing a silent OTP-bypass verify
+        // We need a valid token — request backend with stored session
+        // Since backend requires OTP, we store token from last OTP verify
+        const storedToken = localStorage.getItem('adminOtpToken_' + _adminEmail);
+        const storedUser  = localStorage.getItem('adminOtpUser_'  + _adminEmail);
+        if (storedToken && storedUser) {
+          localStorage.setItem('adminToken', storedToken);
+          localStorage.setItem('adminUser',  storedUser);
+          localStorage.setItem('adminLastActive', Date.now().toString());
+          window.location.href = 'index.html';
+          return;
+        }
+      }
+
+      // OTP session expired or not found — show OTP step
       document.getElementById('otpEmailShow').textContent = _adminEmail;
       document.getElementById('loginForm').classList.add('hidden');
       document.getElementById('otpStep').classList.remove('hidden');
@@ -147,13 +169,11 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
       btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login to Admin Panel';
       btn.disabled = false;
     } else {
-      console.error('❌ Login failed:', data.message);
       showErr(data.message || 'Invalid credentials');
       btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login to Admin Panel';
       btn.disabled = false;
     }
   } catch(err) {
-    console.error('🚨 Fetch error:', err);
     showErr('Server error. Make sure backend is running on ' + API);
     btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login to Admin Panel';
     btn.disabled = false;
@@ -181,10 +201,13 @@ async function verifyOTP() {
     console.log('📨 Verify response:', data);
     
     if (data.success && data.user && data.user.role === 'admin') {
-      console.log('✅ Admin verified - redirecting to dashboard');
       localStorage.setItem('adminToken', data.token);
       localStorage.setItem('adminUser', JSON.stringify(data.user));
       localStorage.setItem('adminLastActive', Date.now().toString());
+      // Save OTP session for 24 hours
+      localStorage.setItem('adminOtpVerified_' + _adminEmail, Date.now().toString());
+      localStorage.setItem('adminOtpToken_'    + _adminEmail, data.token);
+      localStorage.setItem('adminOtpUser_'     + _adminEmail, JSON.stringify(data.user));
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = 'index.html';

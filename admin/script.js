@@ -104,8 +104,8 @@ if (!adminToken || !adminUser || adminUser.role !== 'admin') {
   throw new Error('Unauthorized');
 }
 
-// ===== SESSION TIMEOUT — 10 min inactivity =====
-const SESSION_TIMEOUT = 10 * 60 * 1000;
+// ===== SESSION TIMEOUT — 24 hours =====
+const SESSION_TIMEOUT = 24 * 60 * 60 * 1000;
 let _sessionTimer;
 
 function resetSessionTimer() {
@@ -154,6 +154,12 @@ document.getElementById('adminName').textContent = adminUser ? (adminUser.firstN
 document.getElementById('adminLogout').addEventListener('click', function(e) {
   e.preventDefault();
   clearTimeout(_sessionTimer);
+  // Clear OTP session so next login requires OTP again
+  if (adminUser && adminUser.email) {
+    localStorage.removeItem('adminOtpVerified_' + adminUser.email);
+    localStorage.removeItem('adminOtpToken_'    + adminUser.email);
+    localStorage.removeItem('adminOtpUser_'     + adminUser.email);
+  }
   localStorage.removeItem('adminToken');
   localStorage.removeItem('adminUser');
   localStorage.removeItem('adminLastActive');
