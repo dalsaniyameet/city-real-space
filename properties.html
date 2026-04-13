@@ -1101,8 +1101,31 @@ function toggleCompare(e, id) {
 }
 
 function findPropData(id) {
-  // Only from rendered card DOM — no static fallback
-  return null;
+  // Fetch from API and add to compare
+  fetch(API + '/properties/' + id)
+    .then(r => r.json())
+    .then(data => {
+      if (!data.success || !data.property) return;
+      const p = data.property;
+      compareList.push({
+        id: p._id,
+        title: p.title,
+        price: p.price,
+        priceLabel: p.priceLabel,
+        loc: (p.location?.area || '') + ', ' + (p.location?.city || ''),
+        img: p.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
+        specs: p.specs,
+        status: p.status,
+        type: p.type,
+        amenities: p.amenities,
+        extraDetails: p.extraDetails
+      });
+      const btn = document.getElementById('cmpBtn_' + id);
+      if (btn) btn.classList.add('active');
+      updateDrawer();
+    })
+    .catch(() => {});
+  return null; // async fetch — updateDrawer called in then()
 }
 
 function updateDrawer() {

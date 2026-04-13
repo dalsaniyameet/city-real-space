@@ -686,7 +686,7 @@ checkAuthState();
   document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i> Save Changes';
   try {
     const token = localStorage.getItem('token');
-    const res   = await fetch('https://city-real-space.onrender.com/api/properties/' + editId);
+    const res   = await fetch(`${API}/properties/` + editId);
     const data  = await res.json();
     if (!data.success) return;
     const p = data.property;
@@ -1089,22 +1089,18 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
   btn.disabled = true;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
 
-  // Upload images first
+  // Upload images directly to Cloudinary
   let imageUrls = [];
   if (uploadedFiles.length > 0) {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading images...';
-    const token = localStorage.getItem('token');
     for (const file of uploadedFiles) {
       try {
         const fd = new FormData();
         fd.append('file', file);
-        const res = await fetch(`${API}/upload`, {
-          method: 'POST',
-          headers: token ? { 'Authorization': 'Bearer ' + token } : {},
-          body: fd
-        });
+        fd.append('upload_preset', 'crs_upload');
+        const res = await fetch('https://api.cloudinary.com/v1_1/dhqan0w6t/image/upload', { method: 'POST', body: fd });
         const data = await res.json();
-        if (data.success) imageUrls.push(data.fullUrl || ('https://city-real-space.onrender.com' + data.url));
+        if (data.secure_url) imageUrls.push(data.secure_url);
       } catch(e) {}
     }
   }
