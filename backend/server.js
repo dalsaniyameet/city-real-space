@@ -154,6 +154,18 @@ app.use('/api/admin',      require('./routes/admin'));
 app.use('/api/blogs',      require('./routes/blogs'));
 app.use('/api/upload',     require('./routes/upload'));
 
+// Sitemap
+app.get('/sitemap.xml', (req, res) => {
+  res.setHeader('Content-Type', 'application/xml');
+  res.sendFile(path.join(FRONTEND, 'sitemap.xml'));
+});
+
+// Robots.txt
+app.get('/robots.txt', (req, res) => {
+  res.setHeader('Content-Type', 'text/plain');
+  res.sendFile(path.join(FRONTEND, 'robots.txt'));
+});
+
 // Google Search Console verification
 app.get('/google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html', (req, res) => {
   res.send('google-site-verification: google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html');
