@@ -57,5 +57,29 @@
     { "src": "/maintenance",    "dest": "/maintenance.html" },
     { "src": "/(.*)", "dest": "/404.html" }
   ],
-  "cleanUrls": false
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/index.html",          "destination": "/",              "permanent": true },
+    { "source": "/properties.html",     "destination": "/properties",    "permanent": true },
+    { "source": "/property-detail.html","destination": "/property-detail","permanent": true },
+    { "source": "/about.html",          "destination": "/about",          "permanent": true },
+    { "source": "/contact.html",        "destination": "/contact",        "permanent": true },
+    { "source": "/blog.html",           "destination": "/blog",           "permanent": true },
+    { "source": "/blog-detail.html",    "destination": "/blog-detail",    "permanent": true },
+    { "source": "/login.html",          "destination": "/login",          "permanent": true },
+    { "source": "/register.html",       "destination": "/register",       "permanent": true },
+    { "source": "/dashboard.html",      "destination": "/dashboard",      "permanent": true },
+    { "source": "/post-property.html",  "destination": "/post-property",  "permanent": true },
+    { "source": "/buy.html",            "destination": "/buy",            "permanent": true },
+    { "source": "/rent.html",           "destination": "/rent",           "permanent": true },
+    { "source": "/resale.html",         "destination": "/resale",         "permanent": true },
+    { "source": "/land.html",           "destination": "/land",           "permanent": true },
+    { "source": "/new-launch.html",     "destination": "/new-launch",     "permanent": true },
+    { "source": "/prelease.html",       "destination": "/prelease",       "permanent": true },
+    { "source": "/faq.html",            "destination": "/faq",            "permanent": true },
+    { "source": "/privacy.html",        "destination": "/privacy",        "permanent": true },
+    { "source": "/terms.html",          "destination": "/terms",          "permanent": true },
+    { "source": "/careers.html",        "destination": "/careers",        "permanent": true }
+  ]
 }
