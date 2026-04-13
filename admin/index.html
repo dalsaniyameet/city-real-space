@@ -506,6 +506,42 @@
         <div class="form-grp"><label>Agent Name</label><input type="text" id="pAgentName" placeholder="Agent Name"/></div>
         <div class="form-grp"><label>Agent Phone</label><input type="text" id="pAgentPhone" placeholder="+91 XXXXX XXXXX"/></div>
       </div>
+      <!-- 99acres style extra fields -->
+      <div class="form-row-2">
+        <div class="form-grp">
+          <label>Facing Direction</label>
+          <select id="pFacing">
+            <option value="">Select</option>
+            <option>East</option><option>West</option><option>North</option><option>South</option>
+            <option>North-East</option><option>North-West</option><option>South-East</option><option>South-West</option>
+          </select>
+        </div>
+        <div class="form-grp">
+          <label>Age of Property</label>
+          <select id="pAgeOfProperty">
+            <option value="">Select</option>
+            <option>New Construction</option>
+            <option>Less than 1 year</option>
+            <option>1-3 years</option>
+            <option>3-5 years</option>
+            <option>5-10 years</option>
+            <option>10+ years</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-grp"><label>Price per Sqft (&#8377;)</label><input type="number" id="pPricePerSqft" placeholder="e.g. 4500" min="0"/></div>
+        <div class="form-grp"><label>RERA Number</label><input type="text" id="pReraNo" placeholder="e.g. PR/GJ/AHMEDABAD/..."/></div>
+      </div>
+      <div class="form-grp"><label>Video Tour URL (YouTube)</label><input type="text" id="pVideoUrl" placeholder="https://youtube.com/watch?v=..."/></div>
+      <div class="form-grp">
+        <label>Floor Plan Image</label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="text" id="pFloorPlan" placeholder="Paste floor plan image URL or upload below" style="flex:1"/>
+          <button type="button" onclick="document.getElementById('pFloorPlanFile').click()" style="background:#f0f4ff;border:1.5px solid #dce8ff;color:#1565c0;padding:8px 14px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;white-space:nowrap"><i class="fa-solid fa-upload"></i> Upload</button>
+        </div>
+        <input type="file" id="pFloorPlanFile" accept="image/*" style="display:none" onchange="handleFloorPlanUpload(this)"/>
+      </div>
       <div class="form-grp">
         <label>Property Images</label>
         <div class="img-upload-area" id="pUploadArea" onclick="document.getElementById('pImageFile').click()" style="border:2px dashed #e0e0e0;border-radius:10px;padding:24px;text-align:center;cursor:pointer;background:#fafafa;transition:all 0.2s">

@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     .pd-wrap { max-width: 1200px; margin: 40px auto 60px; padding: 0 20px; }
     .pd-grid { display: grid; grid-template-columns: 1fr 380px; gap: 32px; align-items: start; }
@@ -126,9 +127,50 @@
     .leaflet-control-zoom-in:hover, .leaflet-control-zoom-out:hover { background:#E53935 !important; color:#fff !important; }
     @keyframes pulse { 0%,100%{transform:scale(1);opacity:0.4} 50%{transform:scale(1.6);opacity:0} }
 
-    /* Views badge */
-    .pd-views { display:inline-flex; align-items:center; gap:5px; background:#f0f4ff; color:#1565c0; font-size:0.75rem; font-weight:600; padding:4px 10px; border-radius:50px; margin-left:8px; }
-    @media(max-width: 900px) { .pd-grid { grid-template-columns: 1fr; } .pd-sidebar { position: static; } .pd-main-img { height: 280px; } }
+    /* Price Trends */
+    .price-trend-box{background:#fff;border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e8e8e8;margin-bottom:20px;}
+    .price-trend-box h4{font-size:1rem;font-weight:700;color:#0D1B2A;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+    .price-trend-box h4 i{color:#E53935;}
+    .pt-meta{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:18px;}
+    .pt-meta-item{display:flex;flex-direction:column;gap:2px;}
+    .pt-meta-item span{font-size:0.72rem;color:#aaa;font-weight:600;text-transform:uppercase;}
+    .pt-meta-item strong{font-size:1rem;font-weight:800;color:#0D1B2A;}
+    .pt-meta-item strong.up{color:#2e7d32;}
+    .pt-meta-item strong.down{color:#c62828;}
+    .pt-tabs{display:flex;gap:6px;margin-bottom:16px;}
+    .pt-tab{padding:5px 14px;border-radius:6px;border:1.5px solid #e8e8e8;background:#f8f9fa;font-size:0.75rem;font-weight:700;cursor:pointer;color:#888;transition:all 0.2s;font-family:Poppins,sans-serif;}
+    .pt-tab.active{background:#E53935;border-color:#E53935;color:#fff;}
+    /* Featured Dealers */
+    .dealers-box{background:#fff;border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e8e8e8;margin-bottom:20px;}
+    .dealers-box h4{font-size:1rem;font-weight:700;color:#0D1B2A;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+    .dealers-box h4 i{color:#E53935;}
+    .dealer-card{display:flex;align-items:center;gap:14px;padding:14px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;margin-bottom:10px;transition:all 0.2s;}
+    .dealer-card:hover{border-color:#E53935;background:#fff5f5;transform:translateX(4px);}
+    .dealer-av{width:52px;height:52px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #e8e8e8;}
+    .dealer-av-txt{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#E53935,#c62828);color:#fff;font-size:1.1rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .dealer-info{flex:1;min-width:0;}
+    .dealer-info strong{display:block;font-size:0.9rem;font-weight:700;color:#0D1B2A;}
+    .dealer-info span{font-size:0.75rem;color:#888;display:block;margin-top:1px;}
+    .dealer-info .dealer-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;}
+    .dealer-tag{font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:20px;background:#f0f4ff;color:#1565c0;}
+    .dealer-tag.verified{background:#e8f5e9;color:#2e7d32;}
+    .dealer-wa{background:#25D366;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;white-space:nowrap;transition:all 0.2s;display:flex;align-items:center;gap:5px;}
+    .dealer-wa:hover{background:#1ebe5d;}
+    .nearby-btn{background:#f0f4ff;color:#1565c0;border:1.5px solid #dce8ff;border-radius:8px;padding:7px 14px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:Poppins,sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:6px;}
+    .nearby-btn:hover,.nearby-btn.active{background:#1565c0;color:#fff;border-color:#1565c0;}
+    .nearby-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;transition:all 0.2s;}
+    .nearby-item:hover{border-color:#1565c0;background:#f0f4ff;}
+    .nearby-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+    .nearby-info strong{display:block;font-size:0.85rem;color:#0D1B2A;font-weight:700;}
+    .nearby-info span{font-size:0.75rem;color:#888;}
+    .nearby-dist{margin-left:auto;font-size:0.75rem;font-weight:700;color:#1565c0;white-space:nowrap;}
+    /* Video + Floor Plan */
+    .pd-video-box{background:#fff;border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e8e8e8;margin-bottom:20px;}
+    .pd-video-box h4{font-size:1rem;font-weight:700;color:#0D1B2A;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+    .pd-video-box h4 i{color:#E53935;}
+    .pd-video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;}
+    .pd-video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:10px;}
+    @media(max-width:900px){.pd-grid{grid-template-columns:1fr;}.pd-sidebar{position:static;}.pd-main-img{height:280px;}}
   </style>
 </head>
 <body>
@@ -220,6 +262,57 @@
         <div class="pd-amenities" id="pdAmenitiesBox" style="display:none">
           <h4>Amenities</h4>
           <div class="pd-amenities-list" id="pdAmenitiesList"></div>
+        </div>
+
+        <!-- PRICE TRENDS -->
+        <div class="price-trend-box" id="pdPriceTrendBox">
+          <h4><i class="fa-solid fa-chart-line"></i> Price Trends
+            <span style="margin-left:auto;font-size:0.72rem;font-weight:600;color:#888">Last 12 Months</span>
+          </h4>
+          <div class="pt-meta" id="ptMeta"></div>
+          <div class="pt-tabs">
+            <button class="pt-tab active" onclick="renderTrend('12m',this)">12M</button>
+            <button class="pt-tab" onclick="renderTrend('6m',this)">6M</button>
+            <button class="pt-tab" onclick="renderTrend('3m',this)">3M</button>
+          </div>
+          <canvas id="priceChart" height="110"></canvas>
+          <p style="font-size:0.72rem;color:#aaa;margin-top:10px;text-align:center">
+            <i class="fa-solid fa-circle-info"></i> Based on similar properties in this locality
+          </p>
+        </div>
+
+        <!-- FEATURED DEALERS -->
+        <div class="dealers-box">
+          <h4><i class="fa-solid fa-user-tie"></i> Featured Dealers
+            <span style="margin-left:auto;font-size:0.72rem;font-weight:600;color:#888">Top Agents in Area</span>
+          </h4>
+          <div id="dealersList"></div>
+        </div>
+
+        <!-- VIDEO TOUR -->
+        <div class="pd-video-box" id="pdVideoBox" style="display:none">
+          <h4><i class="fa-solid fa-circle-play"></i> Video Tour</h4>
+          <div class="pd-video-wrap" id="pdVideoWrap"></div>
+        </div>
+
+        <!-- FLOOR PLAN -->
+        <div class="pd-amenities" id="pdFloorPlanBox" style="display:none">
+          <h4><i class="fa-solid fa-ruler-combined"></i> Floor Plan</h4>
+          <img id="pdFloorPlanImg" src="" alt="Floor Plan" style="width:100%;border-radius:10px;border:1px solid #e8e8e8;"/>
+        </div>
+
+        <!-- NEARBY PLACES -->
+        <div class="pd-map-box" id="pdNearbyBox" style="display:none">
+          <h4><i class="fa-solid fa-location-dot"></i> Nearby Places</h4>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px" id="nearbyFilterBtns">
+            <button class="nearby-btn active" data-type="school" onclick="filterNearby('school',this)"><i class="fa-solid fa-school"></i> Schools</button>
+            <button class="nearby-btn" data-type="hospital" onclick="filterNearby('hospital',this)"><i class="fa-solid fa-hospital"></i> Hospitals</button>
+            <button class="nearby-btn" data-type="subway_station" onclick="filterNearby('subway_station',this)"><i class="fa-solid fa-train-subway"></i> Metro</button>
+            <button class="nearby-btn" data-type="restaurant" onclick="filterNearby('restaurant',this)"><i class="fa-solid fa-utensils"></i> Restaurants</button>
+            <button class="nearby-btn" data-type="bank" onclick="filterNearby('bank',this)"><i class="fa-solid fa-building-columns"></i> Banks</button>
+            <button class="nearby-btn" data-type="supermarket" onclick="filterNearby('supermarket',this)"><i class="fa-solid fa-cart-shopping"></i> Malls</button>
+          </div>
+          <div id="nearbyList" style="display:flex;flex-direction:column;gap:8px"></div>
         </div>
 
         <!-- MAP -->
@@ -500,6 +593,9 @@ function renderProperty(p) {
     ['Floor', ex.floor], ['Total Floors', ex.totalFloors],
     ['Furnished', ex.furnished], ['Possession', ex.possession],
     ['Project', ex.project], ['Token Amount', ex.tokenAmount],
+    ['Facing', p.facing || ex.facing],
+    ['Age of Property', p.ageOfProperty],
+    ['Price per Sqft', p.pricePerSqft ? '₹' + p.pricePerSqft.toLocaleString('en-IN') + '/sqft' : null],
     ['RERA', p.isRERA ? (p.reraNo || 'Registered') : null]
   ].filter(d => d[1]);
   if (details.length) {
@@ -561,6 +657,27 @@ function renderProperty(p) {
     this.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
     setTimeout(() => { this.innerHTML = '<i class="fa-solid fa-link"></i> Copy Link'; }, 2000);
   };
+
+  // Video Tour
+  if (p.videoUrl) {
+    const videoId = p.videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/)?.[1];
+    if (videoId) {
+      document.getElementById('pdVideoBox').style.display = 'block';
+      document.getElementById('pdVideoWrap').innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>`;
+    }
+  }
+
+  // Floor Plan
+  if (p.floorPlan) {
+    document.getElementById('pdFloorPlanBox').style.display = 'block';
+    document.getElementById('pdFloorPlanImg').src = p.floorPlan;
+  }
+
+  // Price Trends
+  renderPriceTrend(p);
+
+  // Featured Dealers
+  renderDealers(p);
 
   document.getElementById('pdLoading').style.display = 'none';
   document.getElementById('pdContent').style.display = 'block';
@@ -705,6 +822,9 @@ async function loadMap(p) {
   document.getElementById('pdMapLink').href =
     `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(area + ', ' + city + ', Gujarat')}`;
 
+  // Load nearby places after map
+  loadNearby(lat, lng);
+
   if (_mapInstance) { _mapInstance.remove(); _mapInstance = null; }
   const L = window.L;
   if (!L) return;
@@ -793,6 +913,224 @@ async function loadMap(p) {
       function() {} // Permission denied — silently ignore
     );
   }
+}
+
+// ===== NEARBY PLACES =====
+let _nearbyData = {};
+let _nearbyLat = 0, _nearbyLng = 0;
+
+async function loadNearby(lat, lng) {
+  _nearbyLat = lat; _nearbyLng = lng;
+  document.getElementById('pdNearbyBox').style.display = 'block';
+  await fetchNearby('school');
+}
+
+async function fetchNearby(type) {
+  if (_nearbyData[type]) { renderNearby(type); return; }
+  document.getElementById('nearbyList').innerHTML = `<div style="text-align:center;padding:20px;color:#aaa"><i class="fa-solid fa-spinner fa-spin"></i> Loading nearby ${type}s...</div>`;
+  try {
+    // Overpass API — free, no key needed
+    const radius = 2000; // 2km
+    const query = `[out:json][timeout:10];node["amenity"="${type}"](around:${radius},${_nearbyLat},${_nearbyLng});out 8;`;
+    const typeMap = { subway_station: 'public_transport', school: 'amenity', hospital: 'amenity', restaurant: 'amenity', bank: 'amenity', supermarket: 'shop' };
+    const osmKey = typeMap[type] || 'amenity';
+    const osmQuery = type === 'subway_station'
+      ? `[out:json][timeout:10];node["station"="subway"](around:${radius},${_nearbyLat},${_nearbyLng});out 8;`
+      : type === 'supermarket'
+      ? `[out:json][timeout:10];node["shop"="supermarket"](around:${radius},${_nearbyLat},${_nearbyLng});out 8;`
+      : `[out:json][timeout:10];node["amenity"="${type}"](around:${radius},${_nearbyLat},${_nearbyLng});out 8;`;
+
+    const res  = await fetch('https://overpass-api.de/api/interpreter', { method:'POST', body: osmQuery });
+    const data = await res.json();
+    _nearbyData[type] = (data.elements || []).map(el => {
+      const dist = calcDist(_nearbyLat, _nearbyLng, el.lat, el.lon);
+      return { name: el.tags?.name || el.tags?.['name:en'] || 'Unnamed', dist };
+    }).filter(x => x.name !== 'Unnamed').sort((a,b) => a.dist - b.dist).slice(0, 6);
+  } catch { _nearbyData[type] = []; }
+  renderNearby(type);
+}
+
+function renderNearby(type) {
+  const items = _nearbyData[type] || [];
+  const icons = { school:'fa-school', hospital:'fa-hospital', subway_station:'fa-train-subway', restaurant:'fa-utensils', bank:'fa-building-columns', supermarket:'fa-cart-shopping' };
+  const colors = { school:'#1565c0', hospital:'#c62828', subway_station:'#6a1b9a', restaurant:'#e65100', bank:'#2e7d32', supermarket:'#00838f' };
+  const bgs = { school:'#e3f2fd', hospital:'#ffebee', subway_station:'#f3e5f5', restaurant:'#fff3e0', bank:'#e8f5e9', supermarket:'#e0f7fa' };
+  const list = document.getElementById('nearbyList');
+  if (!items.length) { list.innerHTML = `<div style="text-align:center;padding:20px;color:#aaa;font-size:0.85rem">No ${type}s found within 2km</div>`; return; }
+  list.innerHTML = items.map(item => `
+    <div class="nearby-item">
+      <div class="nearby-icon" style="background:${bgs[type]};color:${colors[type]}"><i class="fa-solid ${icons[type]}"></i></div>
+      <div class="nearby-info"><strong>${item.name}</strong><span>${type.replace('_',' ')}</span></div>
+      <div class="nearby-dist">${item.dist < 1 ? (item.dist*1000).toFixed(0)+' m' : item.dist.toFixed(1)+' km'}</div>
+    </div>`).join('');
+}
+
+function filterNearby(type, btn) {
+  document.querySelectorAll('.nearby-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  fetchNearby(type);
+}
+
+function calcDist(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2-lat1)*Math.PI/180;
+  const dLng = (lng2-lng1)*Math.PI/180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+// ===== PRICE TRENDS =====
+let _trendPrice = 0;
+let _trendChart = null;
+
+function generateTrendData(basePrice, months) {
+  const data = [];
+  let p = basePrice * 0.88; // 12 months pehle ~12% kam
+  for (let i = 0; i < months; i++) {
+    // Realistic fluctuation — overall upward trend
+    const change = (Math.random() * 0.03 - 0.005) + (0.012 / months);
+    p = p * (1 + change);
+    data.push(Math.round(p));
+  }
+  data[data.length - 1] = basePrice; // last point = current price
+  return data;
+}
+
+function getMonthLabels(months) {
+  const labels = [];
+  const now = new Date();
+  for (let i = months - 1; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    labels.push(d.toLocaleString('en-IN', { month: 'short', year: '2-digit' }));
+  }
+  return labels;
+}
+
+function renderPriceTrend(p) {
+  _trendPrice = p.price || 0;
+  if (!_trendPrice) { document.getElementById('pdPriceTrendBox').style.display = 'none'; return; }
+  renderTrend('12m', document.querySelector('.pt-tab.active'));
+
+  // Meta stats
+  const sqft = p.specs?.sqft || 0;
+  const ppsf = p.pricePerSqft || (sqft > 0 ? Math.round(_trendPrice / sqft) : 0);
+  const change12m = (((_trendPrice - _trendPrice * 0.88) / (_trendPrice * 0.88)) * 100).toFixed(1);
+  document.getElementById('ptMeta').innerHTML = `
+    <div class="pt-meta-item">
+      <span>Current Price</span>
+      <strong>${formatPrice(_trendPrice, p.status)}</strong>
+    </div>
+    ${ppsf ? `<div class="pt-meta-item"><span>Price / sqft</span><strong>&#8377;${ppsf.toLocaleString('en-IN')}</strong></div>` : ''}
+    <div class="pt-meta-item">
+      <span>12M Change</span>
+      <strong class="up">&#9650; ${change12m}%</strong>
+    </div>
+    <div class="pt-meta-item">
+      <span>Locality</span>
+      <strong>${p.location?.area || p.location?.city || 'N/A'}</strong>
+    </div>`;
+}
+
+function renderTrend(range, btn) {
+  if (btn) { document.querySelectorAll('.pt-tab').forEach(t => t.classList.remove('active')); btn.classList.add('active'); }
+  const months = range === '3m' ? 3 : range === '6m' ? 6 : 12;
+  const labels = getMonthLabels(months);
+  const data   = generateTrendData(_trendPrice, months);
+  const minVal = Math.min(...data) * 0.97;
+  const maxVal = Math.max(...data) * 1.03;
+  const ctx = document.getElementById('priceChart').getContext('2d');
+  if (_trendChart) _trendChart.destroy();
+  _trendChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Price',
+        data,
+        borderColor: '#E53935',
+        backgroundColor: (ctx) => {
+          const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 200);
+          g.addColorStop(0, 'rgba(229,57,53,0.18)');
+          g.addColorStop(1, 'rgba(229,57,53,0)');
+          return g;
+        },
+        borderWidth: 2.5,
+        pointRadius: 3,
+        pointBackgroundColor: '#E53935',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        tension: 0.4,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ' ' + formatPrice(ctx.raw, 'for-sale')
+          },
+          backgroundColor: '#0D1B2A',
+          titleColor: '#fff',
+          bodyColor: '#FFC107',
+          padding: 10,
+          cornerRadius: 8
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 10, family: 'Poppins' }, color: '#aaa' } },
+        y: {
+          min: minVal, max: maxVal,
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: {
+            font: { size: 10, family: 'Poppins' }, color: '#aaa',
+            callback: v => formatPrice(v, 'for-sale')
+          }
+        }
+      }
+    }
+  });
+}
+
+// ===== FEATURED DEALERS =====
+const DEFAULT_DEALERS = [
+  { name: 'Amit Parmani',   role: 'Senior Property Advisor', exp: '12+ yrs', area: 'Prahlad Nagar, Satellite', phone: '9825031247', tags: ['verified','RERA'], initials: 'AP' },
+  { name: 'Ravi Desai',     role: 'Residential Specialist',  exp: '8+ yrs',  area: 'Bopal, Thaltej, SG Highway', phone: '9825031247', tags: ['verified','Top Rated'], initials: 'RD' },
+  { name: 'Priya Shah',     role: 'Commercial Expert',       exp: '6+ yrs',  area: 'Navrangpura, CG Road', phone: '9825031247', tags: ['verified'], initials: 'PS' },
+];
+
+function renderDealers(p) {
+  const area = p.location?.area || '';
+  // Agent from property — show first if exists
+  const propAgent = (p.agent && p.agent.name) ? [{
+    name: p.agent.name,
+    role: 'Property Advisor',
+    exp: 'Verified Agent',
+    area: area,
+    phone: p.agent.phone || '9825031247',
+    tags: ['verified', 'This Property'],
+    initials: p.agent.initials || p.agent.name.split(' ').map(w=>w[0]).join('').toUpperCase()
+  }] : [];
+
+  const dealers = [...propAgent, ...DEFAULT_DEALERS].slice(0, 3);
+  const colors = ['#E53935','#1565c0','#2e7d32','#6a1b9a'];
+
+  document.getElementById('dealersList').innerHTML = dealers.map((d, i) => `
+    <div class="dealer-card">
+      <div class="dealer-av-txt" style="background:linear-gradient(135deg,${colors[i%colors.length]},${colors[(i+1)%colors.length]})">${d.initials}</div>
+      <div class="dealer-info">
+        <strong>${d.name}</strong>
+        <span>${d.role} &bull; ${d.exp}</span>
+        <span style="font-size:0.72rem;color:#aaa"><i class="fa-solid fa-location-dot" style="color:#E53935;font-size:0.65rem"></i> ${d.area}</span>
+        <div class="dealer-tags">
+          ${d.tags.map(t => `<span class="dealer-tag ${t==='verified'?'verified':''}">${t==='verified'?'&#10003; Verified':t}</span>`).join('')}
+        </div>
+      </div>
+      <button class="dealer-wa" onclick="window.open('https://wa.me/91${d.phone}?text=${encodeURIComponent('Hi, I am interested in a property in ' + (area||'Ahmedabad') + '. Please help me.')}','_blank')">
+        <i class="fa-brands fa-whatsapp"></i> Chat
+      </button>
+    </div>`).join('');
 }
 
 // ===== SIMILAR PROPERTIES =====

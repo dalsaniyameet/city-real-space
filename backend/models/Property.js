@@ -34,6 +34,11 @@ const propertySchema = new mongoose.Schema({
     tokenAmount: { type: String, default: '' },
     postedAs:    { type: String, default: '' }
   },
+  videoUrl:  { type: String, default: '' },
+  floorPlan: { type: String, default: '' },
+  facing:    { type: String, default: '' },
+  ageOfProperty: { type: String, default: '' },
+  pricePerSqft:  { type: Number, default: 0 },
   isRERA:    { type: Boolean, default: false },
   reraNo:    { type: String, default: '' },
   isFeatured:{ type: Boolean, default: false },

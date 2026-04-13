@@ -205,6 +205,17 @@ async function uploadToCloudinary(file) {
   return data.secure_url;
 }
 
+async function handleFloorPlanUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  try {
+    toast('Uploading floor plan...');
+    const url = await uploadToCloudinary(file);
+    document.getElementById('pFloorPlan').value = url;
+    toast('Floor plan uploaded! ✅');
+  } catch(e) { toast('Upload failed: ' + e.message, 'error'); }
+}
+
 async function handleBlogImage(input) {
   const file = input.files[0];
   if (!file) return;
@@ -536,6 +547,13 @@ function editProperty(p) {
   document.getElementById('pToken').value = (p.extraDetails && p.extraDetails.tokenAmount) || '';
   document.getElementById('pAgentName').value = p.agent ? p.agent.name : '';
   document.getElementById('pAgentPhone').value = p.agent ? p.agent.phone : '';
+  // New 99acres fields
+  document.getElementById('pFacing').value        = p.facing || '';
+  document.getElementById('pAgeOfProperty').value = p.ageOfProperty || '';
+  document.getElementById('pPricePerSqft').value  = p.pricePerSqft || '';
+  document.getElementById('pReraNo').value         = p.reraNo || '';
+  document.getElementById('pVideoUrl').value       = p.videoUrl || '';
+  document.getElementById('pFloorPlan').value      = p.floorPlan || '';
   document.getElementById('pDesc').value = p.description || '';
   document.getElementById('pFeatured').checked = p.isFeatured || false;
   document.getElementById('pApproved').checked = p.isApproved || false;
@@ -595,7 +613,14 @@ document.getElementById('propForm').addEventListener('submit', async function(e)
       possession: document.getElementById('pPossession').value,
       project: document.getElementById('pProject').value,
       tokenAmount: document.getElementById('pToken').value
-    }
+    },
+    facing:        document.getElementById('pFacing').value,
+    ageOfProperty: document.getElementById('pAgeOfProperty').value,
+    pricePerSqft:  Number(document.getElementById('pPricePerSqft').value) || 0,
+    reraNo:        document.getElementById('pReraNo').value,
+    isRERA:        !!document.getElementById('pReraNo').value,
+    videoUrl:      document.getElementById('pVideoUrl').value,
+    floorPlan:     document.getElementById('pFloorPlan').value,
   };
   const data = id ? await api('PUT', '/properties/' + id, body) : await api('POST', '/properties', body);
   btn.textContent = 'Save Property'; btn.disabled = false;
