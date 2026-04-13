@@ -9,7 +9,9 @@
     { "src": "admin/**",          "use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html", "dest": "/google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html" },
+    { "src": "/sitemap.xml", "dest": "backend/server.js" },
+    { "src": "/robots.txt", "dest": "backend/server.js" },
+    { "src": "/google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html", "dest": "backend/server.js" },
     { "src": "/api/(.*)", "dest": "backend/server.js" },
     { "src": "/images/(.*)",          "dest": "/images/$1" },
     { "src": "/admin/images/(.*)",    "dest": "/images/$1" },
