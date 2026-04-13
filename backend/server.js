@@ -157,13 +157,13 @@ app.use('/api/upload',     require('./routes/upload'));
 // Sitemap
 app.get('/sitemap.xml', (req, res) => {
   res.setHeader('Content-Type', 'application/xml');
-  res.sendFile(path.join(FRONTEND, 'sitemap.xml'));
+  res.sendFile(path.join(__dirname, '../sitemap.xml'));
 });
 
 // Robots.txt
 app.get('/robots.txt', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
-  res.sendFile(path.join(FRONTEND, 'robots.txt'));
+  res.sendFile(path.join(__dirname, '../robots.txt'));
 });
 
 // Google Search Console verification
