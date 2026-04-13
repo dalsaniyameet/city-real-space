@@ -9,6 +9,7 @@
     { "src": "admin/**",          "use": "@vercel/static" }
   ],
   "routes": [
+    { "src": "/google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html", "dest": "/google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html" },
     { "src": "/api/(.*)", "dest": "backend/server.js" },
     { "src": "/images/(.*)",          "dest": "/images/$1" },
     { "src": "/admin/images/(.*)",    "dest": "/images/$1" },
