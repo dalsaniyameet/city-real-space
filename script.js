@@ -125,7 +125,7 @@ function createCard(p) {
         ${slides}${arrows}${dots}
         <span class="card-badge ${p.badgeClass || ''}">${p.badge}</span>
         <button class="card-fav" onclick="toggleFav(this)"><i class="fa-regular fa-heart"></i></button>
-        <div class="card-price"><span>${p.price}</span></div>
+        <div class="card-price"><span>${p.price}</span><span class="verified-tick"><i class="fa-solid fa-check"></i></span></div>
       </div>
       <div class="card-body">
         <div class="card-loc"><i class="fa-solid fa-location-dot"></i>${p.loc}</div>
