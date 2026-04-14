@@ -1237,7 +1237,8 @@ async function loadSimilar(p) {
       const loc   = (x.location?.area || '') + ', ' + (x.location?.city || '');
       return `<div class="prop-card" onclick="window.location.href='property-detail.html?id=${x._id}'" style="cursor:pointer">
         <div class="card-img"><img src="${img}" alt="${x.title}" loading="lazy"/>
-          <div class="card-price"><span>${price}</span><span class="verified-tick"><i class="fa-solid fa-check"></i></span></div>
+          <div class="card-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
+          <div class="card-price"><span>${price}</span></div>
         </div>
         <div class="card-body">
           <div class="card-loc"><i class="fa-solid fa-location-dot"></i>${loc}</div>
