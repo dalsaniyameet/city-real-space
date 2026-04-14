@@ -4,5 +4,7 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /dashboard.html
+Disallow: /login.html
+Disallow: /register.html
 
-Sitemap: https://cityrealspace.com/sitemap.xml
+Sitemap: https://www.cityrealspace.com/sitemap.xml

@@ -2,20 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://www.cityrealspace.com/</loc><priority>1.0</priority><changefreq>daily</changefreq></url>
   <url><loc>https://www.cityrealspace.com/properties.html</loc><priority>0.9</priority><changefreq>daily</changefreq></url>
-  <url><loc>https://www.cityrealspace.com/property-detail.html</loc><priority>0.9</priority><changefreq>daily</changefreq></url>
-  <url><loc>https://www.cityrealspace.com/blog.html</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
-  <url><loc>https://www.cityrealspace.com/blog-detail.html</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://www.cityrealspace.com/about.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://www.cityrealspace.com/contact.html</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://www.cityrealspace.com/new-launch.html</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
-  <url><loc>https://www.cityrealspace.com/buy.html</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
-  <url><loc>https://www.cityrealspace.com/rent.html</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
-  <url><loc>https://www.cityrealspace.com/resale.html</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
-  <url><loc>https://www.cityrealspace.com/land.html</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
-  <url><loc>https://www.cityrealspace.com/prelease.html</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://www.cityrealspace.com/blog.html</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://www.cityrealspace.com/post-property.html</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://www.cityrealspace.com/faq.html</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://www.cityrealspace.com/careers.html</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://www.cityrealspace.com/privacy.html</loc><priority>0.4</priority><changefreq>yearly</changefreq></url>
   <url><loc>https://www.cityrealspace.com/terms.html</loc><priority>0.4</priority><changefreq>yearly</changefreq></url>
-  <url><loc>https://www.cityrealspace.com/careers.html</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
 </urlset>
