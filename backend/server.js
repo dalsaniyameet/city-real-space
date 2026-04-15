@@ -106,6 +106,59 @@ app.use((req, res, next) => {
   next();
 });
 
+// Sitemap — dynamic, includes all approved property URLs
+// NOTE: Must be before express.static to prevent static file from intercepting
+app.get('/sitemap.xml', async (req, res) => {
+  res.setHeader('Content-Type', 'application/xml');
+  try {
+    const Property = require('./models/Property');
+    const properties = await Property.find({ isApproved: true, slug: { $ne: '' } })
+      .select('slug location createdAt')
+      .lean();
+
+    const staticUrls = [
+      { loc: '/', priority: '1.0', changefreq: 'daily' },
+      { loc: '/properties', priority: '0.9', changefreq: 'daily' },
+      { loc: '/blog', priority: '0.8', changefreq: 'weekly' },
+      { loc: '/about', priority: '0.7', changefreq: 'monthly' },
+      { loc: '/contact', priority: '0.7', changefreq: 'monthly' },
+      { loc: '/post-property', priority: '0.8', changefreq: 'monthly' },
+      { loc: '/faq', priority: '0.6', changefreq: 'monthly' },
+      { loc: '/careers', priority: '0.5', changefreq: 'monthly' },
+      { loc: '/privacy', priority: '0.4', changefreq: 'yearly' },
+      { loc: '/terms', priority: '0.4', changefreq: 'yearly' },
+    ];
+
+    const base = 'https://www.cityrealspace.com';
+    const staticXml = staticUrls.map(u =>
+      `  <url><loc>${base}${u.loc}</loc><priority>${u.priority}</priority><changefreq>${u.changefreq}</changefreq></url>`
+    ).join('\n');
+
+    const propXml = properties.map(p => {
+      const city = (p.location?.city || 'ahmedabad').toLowerCase().replace(/\s+/g, '-');
+      const area = (p.location?.area || 'gujarat').toLowerCase().replace(/\s+/g, '-');
+      const lastmod = p.createdAt ? p.createdAt.toISOString().split('T')[0] : '';
+      return `  <url><loc>${base}/property/${city}/${area}/${p.slug}</loc><priority>0.8</priority><changefreq>weekly</changefreq>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`;
+    }).join('\n');
+
+    res.send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticXml}\n${propXml}\n</urlset>`);
+  } catch (err) {
+    console.error('Sitemap error:', err);
+    res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://www.cityrealspace.com/</loc></url></urlset>`);
+  }
+});
+
+// Robots.txt
+app.get('/robots.txt', (req, res) => {
+  res.setHeader('Content-Type', 'text/plain');
+  res.sendFile(path.join(__dirname, '../robots.txt'));
+});
+
+// Google Search Console verification
+app.get('/google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html', (req, res) => {
+  res.send('google-site-verification: google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html');
+});
+
 // Frontend path — Vercel pe __dirname = /var/task/backend, so go up one level
 const FRONTEND = path.join(__dirname, '../');
 
@@ -160,58 +213,6 @@ app.get('/property/:city/:area/:slug', (req, res) => {
 });
 app.get('/property/:slug', (req, res) => {
   res.sendFile(path.join(FRONTEND, 'property-detail.html'));
-});
-
-// Sitemap — dynamic, includes all approved property URLs
-app.get('/sitemap.xml', async (req, res) => {
-  res.setHeader('Content-Type', 'application/xml');
-  try {
-    const Property = require('./models/Property');
-    const properties = await Property.find({ isApproved: true, slug: { $ne: '' } })
-      .select('slug location.city location.area createdAt')
-      .lean();
-
-    const staticUrls = [
-      { loc: '/', priority: '1.0', changefreq: 'daily' },
-      { loc: '/properties', priority: '0.9', changefreq: 'daily' },
-      { loc: '/blog', priority: '0.8', changefreq: 'weekly' },
-      { loc: '/about', priority: '0.7', changefreq: 'monthly' },
-      { loc: '/contact', priority: '0.7', changefreq: 'monthly' },
-      { loc: '/post-property', priority: '0.8', changefreq: 'monthly' },
-      { loc: '/faq', priority: '0.6', changefreq: 'monthly' },
-      { loc: '/careers', priority: '0.5', changefreq: 'monthly' },
-      { loc: '/privacy', priority: '0.4', changefreq: 'yearly' },
-      { loc: '/terms', priority: '0.4', changefreq: 'yearly' },
-    ];
-
-    const base = 'https://www.cityrealspace.com';
-    const staticXml = staticUrls.map(u =>
-      `  <url><loc>${base}${u.loc}</loc><priority>${u.priority}</priority><changefreq>${u.changefreq}</changefreq></url>`
-    ).join('\n');
-
-    const propXml = properties.map(p => {
-      const city = (p.location?.city || 'ahmedabad').toLowerCase().replace(/\s+/g, '-');
-      const area = (p.location?.area || 'gujarat').toLowerCase().replace(/\s+/g, '-');
-      const lastmod = p.createdAt ? p.createdAt.toISOString().split('T')[0] : '';
-      return `  <url><loc>${base}/property/${city}/${area}/${p.slug}</loc><priority>0.8</priority><changefreq>weekly</changefreq>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`;
-    }).join('\n');
-
-    res.send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticXml}\n${propXml}\n</urlset>`);
-  } catch (err) {
-    // Fallback to static sitemap
-    res.sendFile(path.join(__dirname, '../sitemap.xml'));
-  }
-});
-
-// Robots.txt
-app.get('/robots.txt', (req, res) => {
-  res.setHeader('Content-Type', 'text/plain');
-  res.sendFile(path.join(__dirname, '../robots.txt'));
-});
-
-// Google Search Console verification
-app.get('/google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html', (req, res) => {
-  res.send('google-site-verification: google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html');
 });
 
 // Health check
