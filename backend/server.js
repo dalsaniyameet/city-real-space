@@ -154,6 +154,14 @@ app.use('/api/admin',      require('./routes/admin'));
 app.use('/api/blogs',      require('./routes/blogs'));
 app.use('/api/upload',     require('./routes/upload'));
 
+// SEO-friendly property URLs — /property/:city/:area/:slug
+app.get('/property/:city/:area/:slug', (req, res) => {
+  res.sendFile(path.join(FRONTEND, 'property-detail.html'));
+});
+app.get('/property/:slug', (req, res) => {
+  res.sendFile(path.join(FRONTEND, 'property-detail.html'));
+});
+
 // Sitemap
 app.get('/sitemap.xml', (req, res) => {
   res.setHeader('Content-Type', 'application/xml');

@@ -578,7 +578,11 @@ function createCard(p) {
       '<button class="ci-arr ci-next" onclick="ciMove(\'' + id + '\',1,event)"><i class="fa-solid fa-chevron-right"></i></button>'
     : '';
 
-  return '<div class="prop-card" onclick="window.location.href=\'property-detail.html?id=' + p._id + '\'" style="cursor:pointer">' +
+  const city2 = (p.location?.city || 'ahmedabad').toLowerCase().replace(/\s+/g, '-');
+  const area2  = (p.location?.area || 'gujarat').toLowerCase().replace(/\s+/g, '-');
+  const propUrl = p.slug ? '/property/' + city2 + '/' + area2 + '/' + p.slug : 'property-detail.html?id=' + p._id;
+
+  return '<div class="prop-card" onclick="window.location.href=\'' + propUrl + '\'" style="cursor:pointer">' +
     '<div class="card-img" id="' + id + '">' +
     slides + arrows + dots +
     '<span class="card-badge ' + badgeClass + '">' + badge + '</span>' +

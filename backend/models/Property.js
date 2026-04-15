@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const propertySchema = new mongoose.Schema({
   title:       { type: String, required: true, trim: true },
+  slug:        { type: String, default: '' },
   description: { type: String, default: '' },
   price:       { type: Number, required: true },
   priceLabel:  { type: String, default: '' }, // e.g. "₹1.2 Cr"
@@ -57,5 +58,16 @@ const propertySchema = new mongoose.Schema({
 
 // Text search index
 propertySchema.index({ title: 'text', 'location.area': 'text', 'location.city': 'text' });
+propertySchema.index({ slug: 1 });
+
+// Slug generator
+function generateSlug(type, status, id) {
+  const base = (type + '-' + status)
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, '-')
+    .replace(/-+/g, '-');
+  return base + '-' + String(id).slice(-8);
+}
+propertySchema.statics.generateSlug = generateSlug;
 
 module.exports = mongoose.model('Property', propertySchema);

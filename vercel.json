@@ -40,6 +40,8 @@
     { "src": "/register",      "dest": "/register.html" },
     { "src": "/properties",    "dest": "/properties.html" },
     { "src": "/property-detail", "dest": "/property-detail.html" },
+    { "src": "/property/:city/:area/:slug", "dest": "/property-detail.html" },
+    { "src": "/property/:slug", "dest": "/property-detail.html" },
     { "src": "/contact",       "dest": "/contact.html" },
     { "src": "/about",         "dest": "/about.html" },
     { "src": "/blog",          "dest": "/blog.html" },

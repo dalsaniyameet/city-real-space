@@ -42,6 +42,22 @@ router.get('/', async (req, res) => {
   }
 });
 
+// POST /api/properties/generate-slugs — admin: generate slugs for all existing properties
+router.post('/generate-slugs', protect, adminOnly, async (req, res) => {
+  try {
+    const properties = await Property.find({ slug: { $in: ['', null, undefined] } });
+    let count = 0;
+    for (const p of properties) {
+      p.slug = Property.generateSlug(p.type, p.status, p._id);
+      await p.save();
+      count++;
+    }
+    res.json({ success: true, message: `Slugs generated for ${count} properties` });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // GET /api/properties/trending — top 6 featured
 router.get('/trending', async (req, res) => {
   try {
@@ -90,20 +106,28 @@ router.post('/user-post', protect, async (req, res) => {
       isApproved: false,
       postedBy: req.user._id
     });
+    property.slug = Property.generateSlug(property.type, property.status, property._id);
+    await property.save();
     res.status(201).json({ success: true, property });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
 });
 
-// GET /api/properties/:id
+// GET /api/properties/:id — by MongoDB ID or slug
 router.get('/:id', async (req, res) => {
   try {
-    const property = await Property.findById(req.params.id);
+    const param = req.params.id;
+    let property;
+    // Try by MongoDB ID first, else by slug
+    if (param.match(/^[a-f\d]{24}$/i)) {
+      property = await Property.findById(param);
+    } else {
+      property = await Property.findOne({ slug: param });
+    }
     if (!property) return res.status(404).json({ success: false, message: 'Property not found' });
-    // Count view only if requested (frontend sends ?countView=1)
     if (req.query.countView === '1') {
-      await Property.findByIdAndUpdate(req.params.id, { $inc: { views: 1 } });
+      await Property.findByIdAndUpdate(property._id, { $inc: { views: 1 } });
       property.views += 1;
     }
     res.json({ success: true, property });
@@ -116,6 +140,9 @@ router.get('/:id', async (req, res) => {
 router.post('/', protect, adminOnly, async (req, res) => {
   try {
     const property = await Property.create({ ...req.body, postedBy: req.user._id });
+    // Generate slug after creation (need _id)
+    property.slug = Property.generateSlug(property.type, property.status, property._id);
+    await property.save();
     res.status(201).json({ success: true, property });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -127,6 +154,11 @@ router.put('/:id', protect, adminOnly, async (req, res) => {
   try {
     const property = await Property.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!property) return res.status(404).json({ success: false, message: 'Property not found' });
+    // Regenerate slug if title/location changed
+    if (!property.slug) {
+      property.slug = Property.generateSlug(property.type, property.status, property._id);
+      await property.save();
+    }
     res.json({ success: true, property });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

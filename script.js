@@ -72,8 +72,14 @@ const emptySlide = (msg) => `<div style="min-width:100%;text-align:center;paddin
 function dbToCard(p) {
   const statusMap = { 'for-sale': 'For Sale', 'for-rent': 'For Rent', 'new-launch': 'New Launch', 'sold': 'Sold', 'rented': 'Rented' };
   const badgeClassMap = { 'for-rent': 'rent', 'new-launch': 'new' };
+  const city = (p.location?.city || 'ahmedabad').toLowerCase().replace(/\s+/g, '-');
+  const area = (p.location?.area || 'gujarat').toLowerCase().replace(/\s+/g, '-');
+  const propUrl = p.slug
+    ? '/property/' + city + '/' + area + '/' + p.slug
+    : 'property-detail.html?id=' + p._id;
   return {
     _id: p._id,
+    propUrl,
     img: p.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
     images: p.images || [],
     badge: statusMap[p.status] || p.status,
@@ -120,7 +126,7 @@ function createCard(p) {
     `<button class="ci-arr ci-next" onclick="ciMove('${id}',1,event)"><i class="fa-solid fa-chevron-right"></i></button>`;
 
   return `
-    <div class="prop-card" onclick="window.location.href='property-detail.html?id=${p._id}'" style="cursor:pointer">
+    <div class="prop-card" onclick="window.location.href='${p.propUrl || '/property-detail?id=' + p._id}'" style="cursor:pointer">
       <div class="card-img" id="${id}">
         ${slides}${arrows}${dots}
         <span class="card-badge ${p.badgeClass || ''}">${p.badge}</span>
