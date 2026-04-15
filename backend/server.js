@@ -138,7 +138,7 @@ app.get('/sitemap.xml', async (req, res) => {
       const city = (p.location?.city || 'ahmedabad').toLowerCase().replace(/\s+/g, '-');
       const area = (p.location?.area || 'gujarat').toLowerCase().replace(/\s+/g, '-');
       const lastmod = p.createdAt ? p.createdAt.toISOString().split('T')[0] : '';
-      return `  <url><loc>${base}/property/${city}/${area}/${p.slug}</loc><priority>0.8</priority><changefreq>weekly</changefreq>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`;
+      return `  <url><loc>${base}/property/${city}/${area}/${p.slug}</loc><priority>0.8</priority><changefreq>daily</changefreq>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`;
     }).join('\n');
 
     res.send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticXml}\n${propXml}\n</urlset>`);
