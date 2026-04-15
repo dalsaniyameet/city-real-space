@@ -592,20 +592,92 @@ const uploadedFiles = [];
 // ===== CITY → LOCALITY → SUBAREA → PROJECT DATA =====
 const cityData = {
   'Ahmedabad': {
-    'Prahlad Nagar':   { subs: ['Prahlad Nagar Cross Road','Commerce Six Roads','Anand Nagar Cross Road','Satellite Road','100 Feet Road Prahlad Nagar'], projects: ['Shivalik Sharda','Adani Shantigram','Safal Profitaire','Iscon Platinum','Rajpath Rangoli'] },
-    'Satellite':       { subs: ['Satellite Main Road','Jodhpur Cross Road','Ambawadi','Nehru Nagar','Judges Bungalow Road'], projects: ['Goyal Intercity','Shivalik Sharda','Rajpath Rangoli','Safal Parisar','Adani Aangan'] },
-    'Bopal':           { subs: ['Bopal Chokdi','South Bopal','Ambli Bopal Road','Shilaj','Ghuma'], projects: ['Shivalik Satyamev','Goyal Riviera','Adani Samsara','Safal Parisar II','Rajpath Synfonia'] },
-    'Thaltej':         { subs: ['Thaltej Cross Road','SG Highway Thaltej','Sola Road','Science City Road'], projects: ['Shivalik Sharda II','Adani Shantigram II','Safal Profitaire II','Rajpath Rangoli II'] },
-    'Memnagar':        { subs: ['Memnagar Fire Station','Gurukul Road','Drive In Road','Navrangpura'], projects: ['Goyal Intercity II','Shivalik Sharda III','Rajpath Rangoli III'] },
-    'Vastrapur':       { subs: ['Vastrapur Lake','Vastrapur Cross Road','Judges Bungalow','Bodakdev'], projects: ['Adani Aangan II','Safal Parisar III','Goyal Riviera II'] },
-    'Bodakdev':        { subs: ['Bodakdev Cross Road','100 Feet Road Bodakdev','Sindhu Bhavan Road'], projects: ['Shivalik Satyamev II','Rajpath Synfonia II','Adani Samsara II'] },
-    'Navrangpura':     { subs: ['CG Road','Navrangpura Cross Road','Swastik Cross Road','Panchvati'], projects: ['Safal Profitaire III','Goyal Intercity III'] },
-    'Chandkheda':      { subs: ['Chandkheda Gam','Sola Bhagwat','Visat Cross Road','Tragad'], projects: ['Shivalik Sharda IV','Adani Shantigram III'] },
-    'Shela':           { subs: ['Shela Village','Shela Chokdi','Ambli Road Shela'], projects: ['Goyal Riviera III','Rajpath Rangoli IV','Safal Parisar IV'] },
-    'SG Highway':      { subs: ['Sola','Gota','Motera','Ranip','Sabarmati'], projects: ['Adani Aangan III','Shivalik Satyamev III'] },
-    'CG Road':         { subs: ['Navrangpura','Ellisbridge','Paldi','Ambawadi'], projects: ['Safal Profitaire IV','Goyal Intercity IV'] },
-    'Iscon':           { subs: ['Iscon Cross Road','Iscon Ambli Road','Bopal Road'], projects: ['Rajpath Synfonia III','Adani Samsara III'] },
-    'Giftcity':        { subs: ['GIFT City Block 1','GIFT City Block 2','GIFT City SEZ','Infocity Road'], projects: ['GIFT One','GIFT Two','GIFT SEZ Tower','Infocity Square'] }
+    '100 Feet Road':    { subs: ['100 Feet Road Satellite','100 Feet Road Bodakdev','100 Feet Road Prahlad Nagar','100 Feet Road Anand Nagar'], projects: ['Shivalik Sharda','Rajpath Rangoli','Safal Profitaire','Iscon Platinum','Goyal Intercity'] },
+    'Adalaj':           { subs: ['Adalaj Village','Adalaj Chokdi','Adalaj GIDC','Near Adalaj Stepwell'], projects: ['Adani Shantigram','Nirma University Township','Vraj Residency','Shree Siddhi Heights'] },
+    'Ambawadi':         { subs: ['Ambawadi Circle','Ambawadi Society','Judges Bungalow Road','Nehru Nagar Cross Road'], projects: ['Goyal Intercity','Rajpath Rangoli','Safal Parisar','Shivalik Sharda'] },
+    'Ambli':            { subs: ['Ambli Village','Ambli Bopal Road','Ambli Cross Road','Near Ambli Metro'], projects: ['Adani Samsara','Goyal Riviera','Rajpath Synfonia','Shivalik Satyamev','Safal Parisar II'] },
+    'Ashram Road':      { subs: ['Ashram Road Main','Income Tax','Ellis Bridge','Navrangpura'], projects: ['Iscon Platinum','Safal Profitaire','Rajpath Rangoli','Goyal Intercity'] },
+    'Bavla':            { subs: ['Bavla Chokdi','Bavla GIDC','Bavla Village','Near Bavla Highway'], projects: ['Bavla Residency','Shree Siddhi Heights','Vraj Homes'] },
+    'Bhadaj':           { subs: ['Bhadaj Village','Bhadaj Road','Near Bhadaj Lake'], projects: ['Bhadaj Heights','Shree Residency','Vraj Bungalows'] },
+    'Bhat':             { subs: ['Bhat Village','Bhat GIDC','Near Bhat Flyover'], projects: ['Bhat Residency','Shree Heights','Vraj Township'] },
+    'Bhuyangdev':       { subs: ['Bhuyangdev Cross Road','Bhuyangdev Society','Near Bhuyangdev Temple'], projects: ['Bhuyangdev Heights','Shree Siddhi Residency','Vraj Homes'] },
+    'Bodakdev':         { subs: ['Bodakdev Cross Road','100 Feet Road Bodakdev','Sindhu Bhavan Road','Judges Bungalow Road'], projects: ['Shivalik Satyamev','Rajpath Synfonia','Adani Samsara','Goyal Riviera','Safal Parisar III'] },
+    'Bopal':            { subs: ['Bopal Chokdi','South Bopal','Ambli Bopal Road','Shilaj','Ghuma','Near Bopal Metro'], projects: ['Shivalik Satyamev','Goyal Riviera','Adani Samsara','Safal Parisar II','Rajpath Synfonia','Bopal Heights'] },
+    'CG Road':          { subs: ['Navrangpura','Ellisbridge','Paldi','Ambawadi','Swastik Cross Road','Panchvati'], projects: ['Safal Profitaire','Goyal Intercity','Iscon Platinum','Rajpath Rangoli','Shivalik Sharda'] },
+    'Chanakyapuri':     { subs: ['Chanakyapuri Society','Chanakyapuri Cross Road','Near Chanakyapuri Park'], projects: ['Chanakyapuri Heights','Shree Residency','Vraj Homes'] },
+    'Chandkheda':       { subs: ['Chandkheda Gam','Sola Bhagwat','Visat Cross Road','Tragad','Near Chandkheda Metro'], projects: ['Shivalik Sharda','Adani Shantigram','Nirma Township','Vraj Residency','Chandkheda Heights'] },
+    'Chandlodia':       { subs: ['Chandlodia Village','Chandlodia Cross Road','Near Chandlodia Lake'], projects: ['Chandlodia Heights','Shree Siddhi Residency','Vraj Bungalows'] },
+    'Changodar':        { subs: ['Changodar GIDC','Changodar Village','Near Changodar Highway'], projects: ['Changodar Industrial Park','Shree Heights','Vraj Township'] },
+    'Dholera':          { subs: ['Dholera SIR','Dholera Village','Dholera Smart City Zone'], projects: ['Dholera SIR Phase 1','Dholera Smart City','Dholera Industrial Zone'] },
+    'Drive In Road':    { subs: ['Drive In Road Main','Near Drive In Cinema','Memnagar Cross Road'], projects: ['Drive In Heights','Shree Residency','Goyal Intercity'] },
+    'Ellisbridge':      { subs: ['Ellisbridge Main','Ashram Road','Paldi Cross Road','Near Ellisbridge Gymkhana'], projects: ['Iscon Platinum','Safal Profitaire','Rajpath Rangoli','Goyal Intercity'] },
+    'Ghatlodia':        { subs: ['Ghatlodia Cross Road','Ghatlodia Society','Near Ghatlodia Lake','Sola Road'], projects: ['Ghatlodia Heights','Shree Siddhi Residency','Vraj Homes','Rajpath Synfonia'] },
+    'Ghuma':            { subs: ['Ghuma Village','Ghuma Cross Road','Near Ghuma Lake'], projects: ['Ghuma Heights','Shree Residency','Vraj Bungalows','Adani Samsara'] },
+    'Gift City':        { subs: ['GIFT City Block 1','GIFT City Block 2','GIFT City SEZ','Infocity Road','GIFT City Phase 2'], projects: ['GIFT One','GIFT Two','GIFT SEZ Tower','Infocity Square','GIFT City Phase 2'] },
+    'Gota':             { subs: ['Gota Cross Road','Gota Village','Near Gota Flyover','SG Highway Gota'], projects: ['Gota Heights','Shree Siddhi Residency','Vraj Homes','Adani Shantigram'] },
+    'Gulbai Tekra':     { subs: ['Gulbai Tekra Main','Near Gulbai Tekra Market','Paldi Road'], projects: ['Gulbai Tekra Heights','Shree Residency','Iscon Platinum'] },
+    'Gurukul':          { subs: ['Gurukul Road','Gurukul Cross Road','Drive In Road','Near Gurukul School'], projects: ['Gurukul Heights','Shree Siddhi Residency','Goyal Intercity','Rajpath Rangoli'] },
+    'Hebatpur Road':    { subs: ['Hebatpur Village','Hebatpur Cross Road','Near Hebatpur Lake'], projects: ['Hebatpur Heights','Shree Residency','Vraj Bungalows'] },
+    'Income Tax':       { subs: ['Income Tax Circle','Ashram Road','Near Income Tax Office','Ellisbridge'], projects: ['Income Tax Heights','Iscon Platinum','Safal Profitaire'] },
+    'Iscon Ambli Road': { subs: ['Iscon Cross Road','Iscon Ambli Road','Bopal Road','Near Iscon Temple'], projects: ['Rajpath Synfonia','Adani Samsara','Shivalik Satyamev','Goyal Riviera','Iscon Platinum'] },
+    'Jagatpur':         { subs: ['Jagatpur Village','Jagatpur Road','Near Jagatpur GIDC'], projects: ['Jagatpur Heights','Shree Siddhi Residency','Vraj Township'] },
+    'Jivrajpark':       { subs: ['Jivrajpark Cross Road','Jivrajpark Society','Near Jivrajpark Metro'], projects: ['Jivrajpark Heights','Shree Residency','Vraj Homes','Safal Parisar'] },
+    'Jodhpur':          { subs: ['Jodhpur Cross Road','Jodhpur Village','Satellite Road','Near Jodhpur Park'], projects: ['Jodhpur Heights','Shree Siddhi Residency','Rajpath Rangoli','Goyal Intercity'] },
+    'Kalol':            { subs: ['Kalol Town','Kalol GIDC','Near Kalol Highway'], projects: ['Kalol Heights','Shree Residency','Vraj Township'] },
+    'Koba':             { subs: ['Koba Circle','Koba Village','Near Koba Highway','Koba GIDC'], projects: ['Koba Heights','Shree Siddhi Residency','Adani Shantigram','Vraj Homes'] },
+    'Koteshwar':        { subs: ['Koteshwar Village','Koteshwar Road','Near Koteshwar Temple'], projects: ['Koteshwar Heights','Shree Residency','Vraj Bungalows'] },
+    'Kudasan':          { subs: ['Kudasan Village','Kudasan Cross Road','Near Kudasan Highway'], projects: ['Kudasan Heights','Shree Siddhi Residency','Vraj Township'] },
+    'Law Garden':       { subs: ['Law Garden Main','Near Law Garden Market','Ellisbridge','Netaji Road'], projects: ['Law Garden Heights','Iscon Platinum','Safal Profitaire'] },
+    'Makarba':          { subs: ['Makarba Village','Makarba Cross Road','Near Makarba Lake','SG Highway'], projects: ['Makarba Heights','Shree Residency','Vraj Homes','Adani Samsara'] },
+    'Manekbaug':        { subs: ['Manekbaug Society','Manekbaug Cross Road','Near Manekbaug Hall'], projects: ['Manekbaug Heights','Shree Siddhi Residency','Safal Parisar'] },
+    'Manipur':          { subs: ['Manipur Village','Manipur Cross Road','Near Manipur Lake'], projects: ['Manipur Heights','Shree Residency','Vraj Bungalows'] },
+    'Memnagar':         { subs: ['Memnagar Fire Station','Gurukul Road','Drive In Road','Navrangpura','Memnagar Cross Road'], projects: ['Goyal Intercity','Shivalik Sharda','Rajpath Rangoli','Safal Profitaire','Memnagar Heights'] },
+    'Mithakhali':       { subs: ['Mithakhali Cross Road','Mithakhali Six Roads','Near Mithakhali Market'], projects: ['Mithakhali Heights','Iscon Platinum','Safal Profitaire','Goyal Intercity'] },
+    'Motera':           { subs: ['Motera Stadium Road','Motera Village','Near Motera Metro','Sabarmati'], projects: ['Motera Heights','Shree Siddhi Residency','Adani Shantigram','Vraj Homes'] },
+    'Nana Chiloda':     { subs: ['Nana Chiloda Village','Nana Chiloda Road','Near Nana Chiloda GIDC'], projects: ['Nana Chiloda Heights','Shree Residency','Vraj Township'] },
+    'Naranpura':        { subs: ['Naranpura Cross Road','Naranpura Society','Near Naranpura Market'], projects: ['Naranpura Heights','Shree Siddhi Residency','Goyal Intercity','Rajpath Rangoli'] },
+    'Navrangpura':      { subs: ['CG Road','Navrangpura Cross Road','Swastik Cross Road','Panchvati','Near Navrangpura Market'], projects: ['Safal Profitaire','Goyal Intercity','Iscon Platinum','Rajpath Rangoli','Shivalik Sharda'] },
+    'Nehru Nagar':      { subs: ['Nehru Nagar Cross Road','Nehru Nagar Society','Near Nehru Nagar Market'], projects: ['Nehru Nagar Heights','Shree Residency','Goyal Intercity'] },
+    'New CG Road':      { subs: ['New CG Road Main','Near New CG Road Market','Chandkheda'], projects: ['New CG Road Heights','Shree Siddhi Residency','Vraj Homes'] },
+    'New Ranip':        { subs: ['New Ranip Cross Road','New Ranip Society','Near New Ranip Market'], projects: ['New Ranip Heights','Shree Residency','Vraj Township'] },
+    'New Wadaj':        { subs: ['New Wadaj Cross Road','New Wadaj Society','Near New Wadaj Market'], projects: ['New Wadaj Heights','Shree Siddhi Residency','Vraj Homes'] },
+    'Nirnay Nagar':     { subs: ['Nirnay Nagar Cross Road','Nirnay Nagar Society','Near Nirnay Nagar Park'], projects: ['Nirnay Nagar Heights','Shree Residency','Vraj Bungalows'] },
+    'Ognaj':            { subs: ['Ognaj Village','Ognaj Cross Road','Near Ognaj Lake'], projects: ['Ognaj Heights','Shree Siddhi Residency','Vraj Township'] },
+    'Paldi':            { subs: ['Paldi Cross Road','Paldi Society','Near Paldi Market','Ellisbridge'], projects: ['Paldi Heights','Shree Residency','Safal Parisar','Goyal Intercity'] },
+    'Palodia':          { subs: ['Palodia Village','Palodia Cross Road','Near Palodia Lake'], projects: ['Palodia Heights','Shree Siddhi Residency','Vraj Bungalows','Adani Samsara'] },
+    'Pethapur':         { subs: ['Pethapur Village','Pethapur Road','Near Pethapur Highway'], projects: ['Pethapur Heights','Shree Residency','Vraj Township'] },
+    'Prahladnagar':     { subs: ['Prahlad Nagar Cross Road','Commerce Six Roads','Anand Nagar Cross Road','Satellite Road','100 Feet Road Prahlad Nagar'], projects: ['Shivalik Sharda','Adani Shantigram','Safal Profitaire','Iscon Platinum','Rajpath Rangoli','Goyal Intercity'] },
+    'Ramdevnagar':      { subs: ['Ramdevnagar Cross Road','Ramdevnagar Society','Near Ramdevnagar Market'], projects: ['Ramdevnagar Heights','Shree Siddhi Residency','Vraj Homes'] },
+    'Rancharda':        { subs: ['Rancharda Village','Rancharda Cross Road','Near Rancharda Lake'], projects: ['Rancharda Heights','Shree Residency','Vraj Bungalows','Adani Samsara'] },
+    'Randesan':         { subs: ['Randesan Village','Randesan Cross Road','Near Randesan Highway'], projects: ['Randesan Heights','Shree Siddhi Residency','Vraj Township'] },
+    'Randheja':         { subs: ['Randheja Village','Randheja Road','Near Randheja Highway'], projects: ['Randheja Heights','Shree Residency','Vraj Homes'] },
+    'Ranip':            { subs: ['Ranip Cross Road','Ranip Society','Near Ranip Market','New Ranip'], projects: ['Ranip Heights','Shree Siddhi Residency','Vraj Township','Adani Shantigram'] },
+    'Raysan':           { subs: ['Raysan Village','Raysan Cross Road','Near Raysan Lake'], projects: ['Raysan Heights','Shree Residency','Vraj Bungalows'] },
+    'Sabarmati':        { subs: ['Sabarmati Ashram Road','Sabarmati Cross Road','Near Sabarmati River','Motera'], projects: ['Sabarmati Heights','Shree Siddhi Residency','Adani Shantigram','Vraj Homes'] },
+    'Sanand':           { subs: ['Sanand GIDC','Sanand Town','Near Sanand Highway','Sanand Village'], projects: ['Sanand Heights','Shree Residency','Vraj Township','Sanand GIDC Residency'] },
+    'Sanathal':         { subs: ['Sanathal Village','Sanathal Cross Road','Near Sanathal Lake'], projects: ['Sanathal Heights','Shree Siddhi Residency','Vraj Bungalows'] },
+    'Santej':           { subs: ['Santej Village','Santej Cross Road','Near Santej Highway'], projects: ['Santej Heights','Shree Residency','Vraj Township'] },
+    'Sargasan':         { subs: ['Sargasan Cross Road','Sargasan Village','Near Sargasan Highway'], projects: ['Sargasan Heights','Shree Siddhi Residency','Vraj Homes'] },
+    'Sarkhej':          { subs: ['Sarkhej Cross Road','Sarkhej Village','Near Sarkhej Roza','Sarkhej Highway'], projects: ['Sarkhej Heights','Shree Residency','Vraj Bungalows','Adani Samsara'] },
+    'Satellite':        { subs: ['Satellite Main Road','Jodhpur Cross Road','Ambawadi','Nehru Nagar','Judges Bungalow Road','Commerce Six Roads'], projects: ['Goyal Intercity','Shivalik Sharda','Rajpath Rangoli','Safal Parisar','Adani Aangan','Iscon Platinum'] },
+    'Science City':     { subs: ['Science City Road','Near Science City','Sola Road','Thaltej'], projects: ['Science City Heights','Shree Siddhi Residency','Rajpath Synfonia','Adani Shantigram'] },
+    'SG Road':          { subs: ['SG Highway Main','Sola','Gota','Motera','Ranip','Near SG Highway Metro'], projects: ['Adani Aangan','Shivalik Satyamev','Goyal Riviera','Rajpath Synfonia','Safal Parisar'] },
+    'Shahibaug':        { subs: ['Shahibaug Cross Road','Shahibaug Society','Near Shahibaug Zoo'], projects: ['Shahibaug Heights','Shree Residency','Vraj Homes'] },
+    'Shastrinagar':     { subs: ['Shastrinagar Cross Road','Shastrinagar Society','Near Shastrinagar Market'], projects: ['Shastrinagar Heights','Shree Siddhi Residency','Vraj Township'] },
+    'Shela':            { subs: ['Shela Village','Shela Chokdi','Ambli Road Shela','Near Shela Lake'], projects: ['Goyal Riviera','Rajpath Rangoli','Safal Parisar','Adani Samsara','Shela Heights'] },
+    'Shilaj':           { subs: ['Shilaj Village','Shilaj Cross Road','Near Shilaj Lake','Ambli Bopal Road'], projects: ['Shilaj Heights','Shree Residency','Vraj Bungalows','Adani Samsara','Goyal Riviera'] },
+    'Shivranjani':      { subs: ['Shivranjani Cross Road','Shivranjani Society','Near Shivranjani Metro'], projects: ['Shivranjani Heights','Shree Siddhi Residency','Safal Parisar','Goyal Intercity'] },
+    'Shyamal':          { subs: ['Shyamal Cross Road','Shyamal Society','Near Shyamal Market'], projects: ['Shyamal Heights','Shree Residency','Vraj Homes','Safal Parisar'] },
+    'Thaltej':          { subs: ['Thaltej Cross Road','SG Highway Thaltej','Sola Road','Science City Road','Near Thaltej Metro'], projects: ['Shivalik Sharda','Adani Shantigram','Safal Profitaire','Rajpath Rangoli','Thaltej Heights'] },
+    'Thol':             { subs: ['Thol Village','Thol Lake Road','Near Thol Bird Sanctuary'], projects: ['Thol Heights','Shree Residency','Vraj Bungalows'] },
+    'Tragad':           { subs: ['Tragad Village','Tragad Cross Road','Near Tragad Lake'], projects: ['Tragad Heights','Shree Siddhi Residency','Adani Shantigram','Vraj Homes'] },
+    'Usmanpura':        { subs: ['Usmanpura Cross Road','Usmanpura Society','Near Usmanpura Market'], projects: ['Usmanpura Heights','Shree Residency','Vraj Township'] },
+    'Vaishno Devi':     { subs: ['Vaishno Devi Circle','Near Vaishno Devi Temple','SG Highway'], projects: ['Vaishno Devi Heights','Shree Siddhi Residency','Adani Samsara','Vraj Homes'] },
+    'Vasna':            { subs: ['Vasna Cross Road','Vasna Society','Near Vasna Market','Paldi'], projects: ['Vasna Heights','Shree Residency','Safal Parisar','Goyal Intercity'] },
+    'Vastrapur':        { subs: ['Vastrapur Lake','Vastrapur Cross Road','Judges Bungalow','Bodakdev','Near Vastrapur Metro'], projects: ['Adani Aangan','Safal Parisar','Goyal Riviera','Shivalik Satyamev','Vastrapur Heights'] },
+    'Vavol':            { subs: ['Vavol Village','Vavol Cross Road','Near Vavol Lake'], projects: ['Vavol Heights','Shree Siddhi Residency','Vraj Bungalows'] },
+    'Vejalpur':         { subs: ['Vejalpur Cross Road','Vejalpur Society','Near Vejalpur Market'], projects: ['Vejalpur Heights','Shree Residency','Vraj Homes','Safal Parisar'] },
+    'Zundal':           { subs: ['Zundal Village','Zundal Cross Road','Near Zundal Highway'], projects: ['Zundal Heights','Shree Siddhi Residency','Vraj Township'] }
   },
   'Gandhinagar': {
     'Giftcity':  { subs: ['GIFT City Block 1','GIFT City Block 2','GIFT City SEZ'], projects: ['GIFT One','GIFT Two','GIFT SEZ Tower'] },
@@ -686,7 +758,74 @@ if (userMenuBtn) {
 
 checkAuthState();
 
-// ===== EDIT MODE — URL mein ?edit=id ho toh prefill karo =====
+// ===== PRE-FILL FROM REQUIREMENT (URL params) =====
+(function prefillFromRequirement() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('from') !== 'requirement') return;
+
+  // Show info banner
+  const banner = document.createElement('div');
+  banner.style.cssText = 'background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border:1.5px solid #a5d6a7;border-radius:12px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px;';
+  banner.innerHTML = '<i class="fas fa-bell" style="color:#2e7d32;font-size:1.2rem;flex-shrink:0"></i>' +
+    '<div><strong style="color:#1b5e20;font-size:0.92rem">Your requirement has been submitted!</strong>' +
+    '<p style="color:#388e3c;font-size:0.82rem;margin:2px 0 0">Now fill in your property details below to list it for sale. Our team will review and approve within 24 hours.</p></div>';
+  const pageHeader = document.querySelector('.page-header');
+  if (pageHeader) pageHeader.insertAdjacentElement('afterend', banner);
+
+  // Force For Sale — hide Rent & New Launch options
+  const listingGroup = document.getElementById('typeGroup');
+  if (listingGroup) {
+    listingGroup.querySelectorAll('.radio-option').forEach(opt => {
+      const val = opt.querySelector('input').value;
+      if (val === 'for-rent' || val === 'new-launch') {
+        opt.style.display = 'none'; // hide rent & new launch
+      }
+      if (val === 'for-sale') {
+        opt.classList.add('selected');
+        opt.querySelector('input').checked = true;
+      }
+    });
+  }
+
+  // Pre-fill city
+  const reqCity = params.get('reqCity');
+  if (reqCity) {
+    setTimeout(function() {
+      const cityEl = document.getElementById('city');
+      if (cityEl) {
+        cityEl.value = reqCity;
+        cityEl.dispatchEvent(new Event('change'));
+      }
+    }, 300);
+  }
+
+  // Pre-fill property type
+  const reqType = params.get('reqType');
+  if (reqType) {
+    const typeMap = {
+      'Apartment / Flat': 'apartment', 'Villa': 'villa', 'Bungalow': 'bungalow',
+      'Row House': 'rowhouse', 'Plot / Land': 'plot',
+      'Office Space': 'office', 'Shop / Showroom': 'shop', 'Warehouse': 'warehouse'
+    };
+    const pType = typeMap[reqType] || '';
+    if (pType) {
+      setTimeout(function() {
+        const typeEl = document.getElementById('propType');
+        if (typeEl) {
+          typeEl.value = pType;
+          typeEl.dispatchEvent(new Event('change'));
+          updateFeatureVisibility();
+        }
+      }, 400);
+    }
+  }
+
+  // Update page header
+  const h1 = document.querySelector('.page-header h1');
+  const badge = document.querySelector('.badge');
+  if (h1) h1.textContent = 'Post Your Property for Sale';
+  if (badge) badge.innerHTML = '<i class="fas fa-home"></i> From Your Requirement';
+})();
 (async function checkEditMode() {
   const editId = new URLSearchParams(window.location.search).get('edit');
   if (!editId) return;
@@ -1238,6 +1377,7 @@ function showSuccess() {
         <div class="social-links">
           <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
           <a href="https://wa.me/919377531247" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
           <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
       </div>
@@ -1269,9 +1409,8 @@ function showSuccess() {
       <div class="footer-col">
         <h4>Contact Us</h4>
         <div class="contact-info">
-          <div class="ci"><i class="fa-solid fa-location-dot"></i><span>A-708, Prahlad Nagar Trade Centre, Satellite, Ahmedabad</span></div>
+          <div class="ci"><i class="fa-solid fa-location-dot"></i><span>D-102, Prahlad Nagar Trade Centre, Satellite, Ahmedabad-380015</span></div>
           <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 98250 31247</span></div>
-          <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 84600 14000</span></div>
           <div class="ci"><i class="fa-solid fa-envelope"></i><span>info@cityrealspace.com</span></div>
         </div>
         <div class="working-hours">

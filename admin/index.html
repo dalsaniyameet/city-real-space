@@ -30,6 +30,7 @@
     <a href="#" class="sb-link" data-page="contacts"><i class="fa-solid fa-envelope"></i> Contacts <span class="sb-badge" id="contactBadge">0</span></a>
     <a href="#" class="sb-link" data-page="users"><i class="fa-solid fa-users"></i> Users</a>
     <a href="#" class="sb-link" data-page="requirements"><i class="fa-solid fa-bell"></i> Requirements <span class="sb-badge" id="reqBadge">0</span></a>
+    <a href="#" class="sb-link" data-page="drafts"><i class="fa-regular fa-floppy-disk"></i> Saved Drafts <span class="sb-badge" id="draftBadge" style="background:#f59e0b">0</span></a>
   </nav>
   <div class="sb-bottom">
     <a href="../index.html" target="_blank" class="sb-link"><i class="fa-solid fa-globe"></i> View Website</a>
@@ -334,270 +335,488 @@
       </div>
     </div>
 
+    <!-- ===== DRAFTS ===== -->
+    <div class="page" id="page-drafts">
+      <div class="page-head">
+        <div>
+          <h2>Saved Drafts</h2>
+          <p>Your unsaved property listings. Click to continue editing.</p>
+        </div>
+        <button class="btn-add" onclick="clearAllDrafts()" style="background:rgba(239,68,68,0.15);color:#f87171;box-shadow:none;"><i class="fa-solid fa-trash"></i> Clear All</button>
+      </div>
+      <div id="draftsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
+    </div>
+
   </div>
 </div>
 
 <!-- ===== ADD/EDIT PROPERTY MODAL ===== -->
 <div class="modal-overlay" id="propModal">
-  <div class="modal-box large" style="max-width:900px;overflow:hidden;padding:0;">
-    <div class="modal-head" style="padding:20px 24px;border-radius:18px 18px 0 0;">
-      <h3 id="propModalTitle">Add Property</h3>
-      <button class="modal-close" onclick="closeModal('propModal')"><i class="fa-solid fa-xmark"></i></button>
+  <div class="modal-box hs-modal">
+
+    <!-- Modal Header -->
+    <div class="hs-modal-head">
+      <div class="hs-logo">
+        <div class="hs-logo-icon"><i class="fa-solid fa-building"></i></div>
+        <div>
+          <span class="hs-logo-text" id="propModalTitle">Post Property</span>
+          <span class="hs-logo-sub">City Real Space — Admin Panel</span>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('propModal')" style="background:#f5f5f5;color:#555;"><i class="fa-solid fa-xmark"></i></button>
     </div>
+
+    <!-- Body: Stepper + Form -->
     <div class="prop-modal-inner">
-    <div class="prop-modal-form-col" style="max-height:80vh;overflow-y:auto;">
-    <!-- AI AUTO-FILL BUTTON -->
-    <div style="padding:14px 20px 0;">
-      <button type="button" id="aiAutoFillBtn" onclick="aiAutoFill()" style="width:100%;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:12px 20px;border-radius:12px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.2s;box-shadow:0 4px 16px rgba(99,102,241,0.35);">
-        <i class="fa-solid fa-wand-magic-sparkles"></i> ✨ AI Auto-Fill — Fill All Fields Automatically
-        <span style="background:rgba(255,255,255,0.2);font-size:0.68rem;padding:2px 8px;border-radius:20px;font-weight:600;">Smart Fill</span>
-      </button>
-      <p style="font-size:0.72rem;color:#888;text-align:center;margin:6px 0 0;">Select Type, City, Area, Beds, Sqft, Status &mdash; AI will fill the rest</p>
+
+      <!-- Left: Steps -->
+      <aside class="prop-stepper">
+        <div class="stepper-progress-track"><div class="stepper-progress-fill" id="stepProgressFill"></div></div>
+        <div class="stepper-step active" id="step-tab-1"><span class="step-num">1</span> Property Details</div>
+        <div class="stepper-step" id="step-tab-2"><span class="step-num">2</span> Photos Upload</div>
+        <div class="stepper-step" id="step-tab-3"><span class="step-num">3</span> Pricing & Extras</div>
+        <div class="stepper-step" id="step-tab-4"><span class="step-num">4</span> Highlights</div>
+        <div class="stepper-step" id="step-tab-5"><span class="step-num">5</span> Review & Submit</div>
+      </aside>
+
+      <!-- Right: Score Panel -->
+      <div class="admin-score-panel" id="adminScorePanel">
+        <div class="asc-header"><i class="fa-solid fa-chart-line"></i> Listing Score</div>
+        <!-- Score progress bar -->
+        <div style="width:100%;background:rgba(255,255,255,0.06);border-radius:20px;height:5px;margin-bottom:14px;overflow:hidden;">
+          <div id="ascScoreBar" style="height:100%;width:0%;background:linear-gradient(90deg,#f87171,#fbbf24,#34d399);border-radius:20px;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);"></div>
+        </div>
+        <div class="asc-ring" id="ascRing">
+          <svg viewBox="0 0 136 136">
+            <defs>
+              <linearGradient id="ascGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" id="ascGradA" stop-color="#f87171"/>
+                <stop offset="100%" id="ascGradB" stop-color="#dc2626"/>
+              </linearGradient>
+            </defs>
+            <circle class="asc-track" cx="68" cy="68" r="56"/>
+            <circle class="asc-spin" cx="68" cy="68" r="56"/>
+            <circle class="asc-glow" cx="68" cy="68" r="56" stroke="url(#ascGrad)" stroke-dasharray="351.86" stroke-dashoffset="351.86" id="ascGlow"/>
+            <circle class="asc-fill" cx="68" cy="68" r="56" stroke="url(#ascGrad)" stroke-dasharray="351.86" stroke-dashoffset="351.86" id="ascCircle"/>
+          </svg>
+          <div class="asc-num"><span id="ascNum">0</span><small>/100</small></div>
+        </div>
+        <div class="asc-status-badge low" id="ascStatusBadge"><i class="fas fa-arrow-down"></i> Low Listing</div>
+        <div class="asc-divider"></div>
+        <ul class="asc-list">
+          <li id="asc-title"><span class="asi"><i class="fa-solid fa-check"></i></span> Title <span class="apts">+15</span></li>
+          <li id="asc-type"><span class="asi"><i class="fa-solid fa-check"></i></span> Property Type <span class="apts">+10</span></li>
+          <li id="asc-city"><span class="asi"><i class="fa-solid fa-check"></i></span> City &amp; Area <span class="apts">+15</span></li>
+          <li id="asc-price"><span class="asi"><i class="fa-solid fa-check"></i></span> Price <span class="apts">+15</span></li>
+          <li id="asc-area"><span class="asi"><i class="fa-solid fa-check"></i></span> Area (sqft) <span class="apts">+10</span></li>
+          <li id="asc-desc"><span class="asi"><i class="fa-solid fa-check"></i></span> Description <span class="apts">+20</span></li>
+          <li id="asc-images"><span class="asi"><i class="fa-solid fa-check"></i></span> Photos <span class="apts">+15</span></li>
+        </ul>
+        <div class="asc-divider"></div>
+        <button class="asc-publish-btn locked" id="ascPublishBtn" onclick="ascPublishClick()"><i class="fas fa-lock"></i> Fill required fields</button>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="prop-form-area">
+        <form id="propForm">
+          <input type="hidden" id="propId"/>
+
+          <!-- ===== STEP 1: Property Details ===== -->
+          <div class="step-panel active" id="step-1">
+            <div class="step-title">Property Details</div>
+            <div class="step-sub">Basic information about your property</div>
+
+            <div class="hs-row cols-1" style="margin-bottom:16px">
+              <div class="hs-field">
+                <label>Property Category</label>
+                <div class="hs-toggle">
+                  <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pCategory','residential')">🏠 Residential</button>
+                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pCategory','commercial')">🏢 Commercial</button>
+                </div>
+                <input type="hidden" id="pCategory" value="residential"/>
+              </div>
+            </div>
+
+            <div class="hs-row cols-1" style="margin-bottom:16px">
+              <div class="hs-field">
+                <label>Looking To</label>
+                <div class="hs-toggle">
+                  <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pStatus','for-rent')">Rent</button>
+                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pStatus','for-sale')">Sell</button>
+                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pStatus','new-launch')">New Launch</button>
+                </div>
+                <input type="hidden" id="pStatus" value="for-rent"/>
+              </div>
+            </div>
+
+            <div class="hs-row cols-3">
+              <div class="hs-field">
+                <label>City *</label>
+                <select id="pCitySelect">
+                  <option value="">Select City</option>
+                  <option>Ahmedabad</option><option>Gandhinagar</option>
+                  <option>Surat</option><option>Vadodara</option><option>Rajkot</option>
+                </select>
+              </div>
+              <div class="hs-field">
+                <label>Locality *</label>
+                <select id="pAreaSelect">
+                  <option value="">Select City First</option>
+                </select>
+              </div>
+              <div class="hs-field">
+                <label>Building / Society</label>
+                <input type="text" id="pProject" placeholder="e.g. Shivalik Sharda"/>
+              </div>
+            </div>
+            <div class="hs-row cols-3">
+              <div class="hs-field">
+                <label>Sub Area / Locality</label>
+                <select id="pSubAreaSelect">
+                  <option value="">-- Select Locality First --</option>
+                </select>
+              </div>
+              <div class="hs-field">
+                <label>Sub Area (Manual)</label>
+                <input type="text" id="pSubArea" placeholder="Type sub area manually"/>
+              </div>
+              <div class="hs-field">
+                <label id="pProjectLabel">🏗️ Project / Society Name</label>
+                <select id="pProjectSelect" onchange="onProjectSelectChange()">
+                  <option value="">-- Select Locality First --</option>
+                </select>
+                <input type="text" id="pProject" placeholder="Or type manually..." style="margin-top:6px"/>
+              </div>
+            </div>
+
+            <!-- Property Type + Dynamic BHK/Beds row -->
+            <div class="hs-row cols-2">
+              <div class="hs-field">
+                <label>Property Type *</label>
+                <select id="pType" onchange="onAdminTypeChange()">
+                  <option value="">Select Type</option>
+                  <optgroup label="🏠 Residential">
+                    <option value="apartment">🏢 Apartment / Flat</option>
+                    <option value="villa">🏡 Villa</option>
+                    <option value="bungalow">🏠 Bungalow / Independent House</option>
+                    <option value="rowhouse">🏘️ Row House / Duplex</option>
+                    <option value="plot">🌿 Residential Plot</option>
+                  </optgroup>
+                  <optgroup label="🏢 Commercial">
+                    <option value="office">🏢 Office Space</option>
+                    <option value="shop">🏪 Shop</option>
+                    <option value="showroom">🚗 Showroom</option>
+                    <option value="warehouse">🏭 Warehouse</option>
+                    <option value="factory">⚙️ Factory</option>
+                    <option value="coworking">💻 Co-working Space</option>
+                    <option value="industrial_land">🌍 Industrial Land</option>
+                  </optgroup>
+                </select>
+              </div>
+              <!-- BHK chips — shown only for residential types -->
+              <div class="hs-field" id="adminBedsRow">
+                <label>🛏️ BHK / Bedrooms</label>
+                <div class="hs-chips" id="bhkChips">
+                  <span class="hs-chip" onclick="hsChipBhk(this,'1')">🛏️ 1 BHK</span>
+                  <span class="hs-chip" onclick="hsChipBhk(this,'2')">🛏️🛏️ 2 BHK</span>
+                  <span class="hs-chip" onclick="hsChipBhk(this,'3')">🛏️🛏️🛏️ 3 BHK</span>
+                  <span class="hs-chip" onclick="hsChipBhk(this,'4')">4+ BHK</span>
+                </div>
+                <input type="hidden" id="pBeds" value=""/>
+              </div>
+              <!-- Seats/Cabins — shown for office/shop -->
+              <div class="hs-field" id="adminSeatsRow" style="display:none">
+                <label>💺 Seats / Cabins</label>
+                <div class="hs-chips">
+                  <span class="hs-chip" onclick="hsChip(this,'pSeats','5')">5</span>
+                  <span class="hs-chip" onclick="hsChip(this,'pSeats','10')">10</span>
+                  <span class="hs-chip" onclick="hsChip(this,'pSeats','20')">20</span>
+                  <span class="hs-chip" onclick="hsChip(this,'pSeats','50+')">50+</span>
+                </div>
+                <input type="hidden" id="pSeats" value=""/>
+              </div>
+            </div>
+
+            <!-- Area row — auto-suggest based on BHK + type -->
+            <div class="hs-row cols-3">
+              <div class="hs-field">
+                <label id="pSqftLabel">📐 Super Built-up Area (sq.ft)</label>
+                <div style="position:relative">
+                  <input type="number" id="pSqft" placeholder="e.g. 1215" oninput="updateAdminScore()"/>
+                  <!-- Auto-suggest pill -->
+                  <div id="sqftSuggest" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:10;background:#fff;border:1.5px solid #FF4D4D;border-radius:8px;margin-top:4px;overflow:hidden;box-shadow:0 4px 16px rgba(255,77,77,0.15);"></div>
+                </div>
+                <div id="sqftHint" style="font-size:0.72rem;color:#888;margin-top:4px;display:none;"></div>
+              </div>
+              <input type="hidden" id="pBaths" value="0"/>
+              <input type="hidden" id="pCarpetArea" value="0"/>
+              <input type="hidden" id="pBuiltArea" value="0"/>
+              <input type="hidden" id="pBalconies" value="0"/>
+              <input type="hidden" id="pFacing" value=""/>
+              <input type="hidden" id="pToken" value=""/>
+              <input type="hidden" id="pFloorPlan" value=""/>
+              <div class="hs-field">
+                <label>🏗️ Age of Property</label>
+                <select id="pAgeOfProperty">
+                  <option value="">Select</option>
+                  <option>New Construction</option>
+                  <option>Less than 1 year</option>
+                  <option>1-3 years</option>
+                  <option>3-5 years</option>
+                  <option>5-10 years</option>
+                  <option>10+ years</option>
+                </select>
+              </div>
+              <div class="hs-field">
+                <label>🛋️ Furnishing</label>
+                <div class="hs-toggle" style="flex-wrap:wrap">
+                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pFurnished','Furnished')">Furnished</button>
+                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pFurnished','Semi-Furnished')">Semi</button>
+                  <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pFurnished','Unfurnished')">Unfurnished</button>
+                </div>
+                <input type="hidden" id="pFurnished" value="Unfurnished"/>
+              </div>
+            </div>
+
+            <div class="hs-row cols-1">
+              <div class="hs-field">
+                <label>Amenities</label>
+                <div class="hs-amenities" id="amenitiesGrid"></div>
+              </div>
+            </div>
+
+            <div class="hs-row cols-2">
+              <div class="hs-field">
+                <label>Parking</label>
+                <div class="hs-chips">
+                  <span class="hs-chip active" onclick="hsChip(this,'pParking','0')">0</span>
+                  <span class="hs-chip" onclick="hsChip(this,'pParking','1')">1</span>
+                  <span class="hs-chip" onclick="hsChip(this,'pParking','2')">2</span>
+                  <span class="hs-chip" onclick="hsChip(this,'pParking','3+')">3+</span>
+                </div>
+                <input type="hidden" id="pParking" value="0"/>
+              </div>
+              <div class="hs-field">
+                <label>Tenant Preference</label>
+                <div class="hs-toggle">
+                  <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pTenantPref','Family')">Family</button>
+                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pTenantPref','Bachelors')">Bachelors</button>
+                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pTenantPref','Company')">Company</button>
+                </div>
+                <input type="hidden" id="pTenantPref" value="Family"/>
+              </div>
+            </div>
+
+            <div class="hs-step-nav">
+              <span></span>
+              <button type="button" class="hs-btn-next" onclick="hsNextStep(1)">Next <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </div>
+
+          <!-- ===== STEP 2: Photos Upload ===== -->
+          <div class="step-panel" id="step-2">
+            <div class="step-title">Photos Upload</div>
+            <div class="step-sub">Add photos to attract more buyers/tenants</div>
+
+            <div class="hs-upload-area" onclick="document.getElementById('pImageFile').click()">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <p><strong>Click to upload</strong> or drag & drop photos here</p>
+              <p style="font-size:0.75rem;margin-top:4px">JPG, PNG accepted • Max 10 photos</p>
+            </div>
+            <input type="file" id="pImageFile" accept="image/*" multiple style="display:none" onchange="handleAdminImages(this)"/>
+            <div id="pImagePreview" class="hs-photo-preview"></div>
+            <input type="hidden" id="pImage"/>
+
+            <!-- Image display tip -->
+            <div style="margin-top:14px;background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:12px 16px;font-size:0.78rem;color:#7a5800;display:flex;align-items:flex-start;gap:8px">
+              <i class="fa-solid fa-lightbulb" style="color:#f59e0b;margin-top:2px;flex-shrink:0"></i>
+              <span><strong>Tip:</strong> Upload landscape/horizontal images (e.g. 1200×800px) for best display. Portrait images will show with white background. First image will be the cover photo.</span>
+            </div>
+
+            <div class="hs-step-nav">
+              <button type="button" class="hs-btn-back" onclick="hsPrevStep(2)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+              <button type="button" class="hs-btn-next" onclick="hsNextStep(2)">Next <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </div>
+
+          <!-- ===== STEP 3: Pricing & Extras ===== -->
+          <div class="step-panel" id="step-3">
+            <div class="step-title">Pricing & Details</div>
+            <div class="step-sub">Set your price and additional details</div>
+
+            <div class="hs-row cols-2">
+              <div class="hs-field">
+                <label>Price / Rent *</label>
+                <input type="number" id="pPrice" placeholder="e.g. 25000"/>
+              </div>
+              <div class="hs-field">
+                <label>Price Label</label>
+                <input type="text" id="pPriceLabel" placeholder="e.g. ₹25K/mo or ₹1.2 Cr"/>
+              </div>
+            </div>
+
+            <div class="hs-row cols-2">
+              <div class="hs-field">
+                <label>Security Deposit</label>
+                <div class="hs-toggle" style="flex-wrap:wrap">
+                  <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pDeposit','None')">None</button>
+                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pDeposit','1 Month')">1 Month</button>
+                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pDeposit','2 Month')">2 Month</button>
+                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pDeposit','Custom')">Custom</button>
+                </div>
+                <input type="hidden" id="pDeposit" value="None"/>
+              </div>
+              <div class="hs-field">
+                <label>Availability Date</label>
+                <input type="date" id="pAvailDate"/>
+              </div>
+            </div>
+
+            <div class="hs-row cols-2">
+              <div class="hs-field">
+                <label>Floor No.</label>
+                <select id="pFloor">
+                  <option value="">Select</option>
+                  <option>Ground</option><option>1</option><option>2</option><option>3</option>
+                  <option>4</option><option>5</option><option>6</option><option>7</option>
+                  <option>8</option><option>9</option><option>10</option><option>11</option>
+                  <option>12</option><option>13+</option>
+                </select>
+              </div>
+              <div class="hs-field">
+                <label>Total Floors</label>
+                <select id="pTotalFloors">
+                  <option value="">Select</option>
+                  <option>1</option><option>2</option><option>3</option><option>4</option>
+                  <option>5</option><option>6</option><option>7</option><option>8</option>
+                  <option>9</option><option>10</option><option>11</option><option>12</option>
+                  <option>13+</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="hs-row cols-2">
+              <div class="hs-field">
+                <label>Possession</label>
+                <select id="pPossession">
+                  <option value="Ready to Move">Ready to Move</option>
+                  <option value="Under Construction">Under Construction</option>
+                  <option value="New Launch">New Launch</option>
+                </select>
+              </div>
+              <div class="hs-field">
+                <label>RERA Number</label>
+                <input type="text" id="pReraNo" placeholder="e.g. PR/GJ/AHMEDABAD/..."/>
+              </div>
+            </div>
+
+            <div class="hs-row cols-2">
+              <div class="hs-field">
+                <label>Agent Name</label>
+                <input type="text" id="pAgentName" placeholder="Agent Name"/>
+              </div>
+              <div class="hs-field">
+                <label>Agent Phone</label>
+                <input type="text" id="pAgentPhone" placeholder="+91 XXXXX XXXXX"/>
+              </div>
+            </div>
+
+            <div class="hs-step-nav">
+              <button type="button" class="hs-btn-back" onclick="hsPrevStep(3)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+              <button type="button" class="hs-btn-next" onclick="hsNextStep(3)">Next <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </div>
+
+          <!-- ===== STEP 4: Highlights ===== -->
+          <div class="step-panel" id="step-4">
+            <div class="step-title">Property Highlights</div>
+            <div class="step-sub">Add title and description to attract buyers</div>
+
+            <div class="hs-row cols-1">
+              <div class="hs-field">
+                <label>Property Title *</label>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <input type="text" id="pTitle" placeholder="e.g. 2 BHK Apartment for Rent in Bopal" style="flex:1"/>
+                  <button type="button" onclick="aiGenerateTitle()" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:10px 16px;border-radius:10px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;white-space:nowrap;display:flex;align-items:center;gap:6px;flex-shrink:0" id="aiTitleBtn">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> AI Generate
+                  </button>
+                </div>
+                <!-- SEO Score Bar -->
+                <div id="titleSeoBar" style="margin-top:8px;display:none">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                    <span style="font-size:0.72rem;color:#888;font-weight:600">SEO Score</span>
+                    <span id="titleSeoScore" style="font-size:0.72rem;font-weight:700;color:#10b981">0/100</span>
+                  </div>
+                  <div style="height:6px;background:#f0f0f0;border-radius:4px;overflow:hidden">
+                    <div id="titleSeoFill" style="height:100%;width:0%;background:linear-gradient(90deg,#FF4D4D,#f59e0b,#10b981);border-radius:4px;transition:width 0.4s ease"></div>
+                  </div>
+                  <div id="titleSeoTips" style="margin-top:6px;font-size:0.72rem;color:#888"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="hs-row cols-1">
+              <div class="hs-field">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                  <label style="margin:0">Description</label>
+                  <button type="button" onclick="aiGenerateDesc()" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-size:0.75rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:5px" id="aiDescBtn">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> AI Write
+                  </button>
+                </div>
+                <textarea id="pDesc" rows="6" placeholder="Click 'AI Write' to auto-generate, or type manually..." style="border:1.5px solid #e8e8e8;border-radius:10px;padding:12px 14px;font-size:0.88rem;font-family:Poppins,sans-serif;color:#333;background:#fff;outline:none;resize:vertical;width:100%;transition:border-color 0.2s"></textarea>
+                <div id="descWordCount" style="font-size:0.72rem;color:#aaa;margin-top:4px;text-align:right">0 words</div>
+              </div>
+            </div>
+
+            <div class="hs-row cols-2">
+              <div class="hs-field">
+                <label>Video Tour URL</label>
+                <input type="text" id="pVideoUrl" placeholder="YouTube link (optional)"/>
+              </div>
+              <div class="hs-field">
+                <label>Price per Sqft (₹)</label>
+                <input type="number" id="pPricePerSqft" placeholder="e.g. 4500"/>
+              </div>
+            </div>
+
+            <div class="hs-row cols-1">
+              <div class="hs-field" style="flex-direction:row;gap:20px;flex-wrap:wrap">
+                <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;color:#555;cursor:pointer;font-weight:500">
+                  <input type="checkbox" id="pFeatured" style="accent-color:#FF4D4D;width:16px;height:16px;"/> Mark as Featured (Trending)
+                </label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;color:#555;cursor:pointer;font-weight:500">
+                  <input type="checkbox" id="pApproved" checked style="accent-color:#10b981;width:16px;height:16px;"/> Approve immediately
+                </label>
+              </div>
+            </div>
+
+            <div class="hs-step-nav">
+              <button type="button" class="hs-btn-back" onclick="hsPrevStep(4)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+              <button type="button" class="hs-btn-next" onclick="hsNextStep(4)">Review <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </div>
+
+          <!-- ===== STEP 5: Review & Submit ===== -->
+          <div class="step-panel" id="step-5">
+            <div class="step-title">Review & Submit</div>
+            <div class="step-sub">Check all details before posting</div>
+
+            <div class="hs-review-grid" id="reviewGrid"></div>
+
+            <div class="hs-step-nav">
+              <button type="button" class="hs-btn-back" onclick="hsPrevStep(5)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+              <div style="display:flex;gap:10px">
+                <button type="button" onclick="saveDraft()" style="background:#fff;border:1.5px solid #e0e0e0;color:#555;padding:11px 24px;border-radius:50px;font-size:0.88rem;font-weight:600;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:7px;transition:all 0.2s" id="saveDraftBtn">
+                  <i class="fa-regular fa-floppy-disk"></i> Save Draft
+                </button>
+                <button type="submit" class="hs-btn-next" id="propSaveBtn"><i class="fa-solid fa-paper-plane"></i> Post Property</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
     </div>
-    <form id="propForm" class="modal-form">
-      <input type="hidden" id="propId"/>
-      <div class="form-row-2">
-        <div class="form-grp"><label>Title *</label><input type="text" id="pTitle" placeholder="Property Title" required/></div>
-        <div class="form-grp"><label>Price Label *</label><input type="text" id="pPriceLabel" placeholder="e.g. ₹1.2 Cr" required/></div>
-      </div>
-      <div class="form-row-2">
-        <div class="form-grp"><label>Price (number) *</label><input type="number" id="pPrice" placeholder="e.g. 12000000" required/></div>
-        <div class="form-grp"><label>Type *</label>
-          <select id="pType" required>
-            <option value="">Select Type</option>
-            <option value="apartment">Apartment / Flat</option>
-            <option value="villa">Villa</option>
-            <option value="bungalow">Bungalow</option>
-            <option value="rowhouse">Row House</option>
-            <option value="plot">Plot / Land</option>
-            <option value="office">Office Space</option>
-            <option value="shop">Shop / Showroom</option>
-            <option value="warehouse">Warehouse / Godown</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row-2">
-        <div class="form-grp"><label>Category *</label>
-          <select id="pCategory" required>
-            <option value="residential">Residential</option>
-            <option value="commercial">Commercial</option>
-          </select>
-        </div>
-        <div class="form-grp"><label>Status *</label>
-          <select id="pStatus" required>
-            <option value="for-sale">For Sale</option>
-            <option value="for-rent">For Rent</option>
-            <option value="new-launch">New Launch</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row-2">
-        <div class="form-grp"><label>City *</label>
-          <select id="pCitySelect" required>
-            <option value="">-- Select City --</option>
-            <option value="Ahmedabad">Ahmedabad</option>
-            <option value="Gandhinagar">Gandhinagar</option>
-            <option value="Surat">Surat</option>
-            <option value="Vadodara">Vadodara</option>
-            <option value="Rajkot">Rajkot</option>
-          </select>
-        </div>
-        <div class="form-grp"><label>Area / Locality *</label>
-          <select id="pAreaSelect" required>
-            <option value="">-- Select City First --</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row-2">
-        <div class="form-grp"><label>Sub Area / Street</label>
-          <select id="pSubAreaSelect">
-            <option value="">-- Select Locality First --</option>
-          </select>
-        </div>
-        <div class="form-grp"><label>Sub Area (Manual)</label>
-          <input type="text" id="pSubArea" placeholder="Type sub area / street (optional)"/>
-        </div>
-      </div>
-      <!-- Residential: Beds/Baths/Balcony -->
-      <div class="form-row-3" id="adminBedsRow">
-        <div class="form-grp"><label>Beds</label><input type="number" id="pBeds" placeholder="0" min="0"/></div>
-        <div class="form-grp"><label>Baths</label><input type="number" id="pBaths" placeholder="0" min="0"/></div>
-        <div class="form-grp"><label>Balconies</label><input type="number" id="pBalconies" placeholder="0" min="0"/></div>
-      </div>
-      <!-- Plot specific -->
-      <div id="adminPlotRow" style="display:none">
-        <div class="form-row-2">
-          <div class="form-grp"><label>Plot Width (ft)</label><input type="number" id="pPlotWidth" placeholder="e.g. 30" min="0"/></div>
-          <div class="form-grp"><label>Plot Length (ft)</label><input type="number" id="pPlotLength" placeholder="e.g. 60" min="0"/></div>
-        </div>
-        <div class="form-grp"><label>Facing Direction</label>
-          <select id="pFacing">
-            <option value="">Select</option>
-            <option>East</option><option>West</option><option>North</option><option>South</option>
-            <option>North-East</option><option>North-West</option><option>South-East</option><option>South-West</option>
-          </select>
-        </div>
-      </div>
-      <!-- Commercial: Cabins/Washrooms -->
-      <div id="adminCommercialRow" style="display:none">
-        <div class="form-row-2">
-          <div class="form-grp"><label>Cabins / Seats</label><input type="number" id="pCabins" placeholder="e.g. 4" min="0"/></div>
-          <div class="form-grp"><label>Washrooms</label><input type="number" id="pWashrooms" placeholder="e.g. 2" min="0"/></div>
-        </div>
-      </div>
-      <!-- Area row -->
-      <div class="form-row-3" id="adminAreaRow">
-        <div class="form-grp"><label id="pSuperAreaLabel">Super Built-up Area (sq.ft)</label><input type="number" id="pSqft" placeholder="0" min="0"/></div>
-        <div class="form-grp" id="pCarpetGrp"><label>Carpet Area (sq.ft)</label><input type="number" id="pCarpetArea" placeholder="0" min="0"/></div>
-        <div class="form-grp" id="pBuiltGrp"><label>Built-up Area (sq.ft)</label><input type="number" id="pBuiltArea" placeholder="0" min="0"/></div>
-      </div>
-      <!-- Floor row -->
-      <div class="form-row-3" id="adminFloorRow">
-        <div class="form-grp"><label>Floor No.</label>
-          <select id="pFloor">
-            <option value="">Select Floor</option>
-            <option>Ground</option>
-            <option>1</option><option>2</option><option>3</option><option>4</option>
-            <option>5</option><option>6</option><option>7</option><option>8</option>
-            <option>9</option><option>10</option><option>11</option><option>12</option>
-            <option>13+</option>
-          </select>
-        </div>
-        <div class="form-grp"><label>Total Floors</label>
-          <select id="pTotalFloors">
-            <option value="">Select</option>
-            <option>1</option><option>2</option><option>3</option><option>4</option>
-            <option>5</option><option>6</option><option>7</option><option>8</option>
-            <option>9</option><option>10</option><option>11</option><option>12</option>
-            <option>13+</option>
-          </select>
-        </div>
-      </div>
-      <!-- Furnished (residential + commercial only) -->
-      <div class="form-row-2" id="adminFurnishedRow">
-        <div class="form-grp"><label>Furnished Status</label>
-          <select id="pFurnished">
-            <option value="">Select</option>
-            <option value="Furnished">Fully Furnished</option>
-            <option value="Semi-Furnished">Semi Furnished</option>
-            <option value="Unfurnished">Unfurnished</option>
-            <option value="Bare Shell">Bare Shell</option>
-          </select>
-        </div>
-        <div class="form-grp"><label>Possession Status</label>
-          <select id="pPossession">
-            <option value="Ready to Move">Ready to Move</option>
-            <option value="Under Construction">Under Construction</option>
-            <option value="New Launch">New Launch</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row-2">
-        <div class="form-grp">
-          <label id="pProjectLabel">Project / Society Name</label>
-          <select id="pProjectSelect" onchange="handleProjectSelect()">
-            <option value="">-- Select or Type Below --</option>
-          </select>
-          <input type="text" id="pProject" placeholder="Type project / society name" style="margin-top:6px"/>
-        </div>
-        <div class="form-grp"><label>Token Amount (optional)</label><input type="text" id="pToken" placeholder="e.g. ₹1 Lakh"/></div>
-      </div>
-      <div class="form-row-2">
-        <div class="form-grp"><label>Agent Name</label><input type="text" id="pAgentName" placeholder="Agent Name"/></div>
-        <div class="form-grp"><label>Agent Phone</label><input type="text" id="pAgentPhone" placeholder="+91 XXXXX XXXXX"/></div>
-      </div>
-      <!-- 99acres style extra fields -->
-      <div class="form-row-2">
-        <div class="form-grp">
-          <label>Facing Direction</label>
-          <select id="pFacing">
-            <option value="">Select</option>
-            <option>East</option><option>West</option><option>North</option><option>South</option>
-            <option>North-East</option><option>North-West</option><option>South-East</option><option>South-West</option>
-          </select>
-        </div>
-        <div class="form-grp">
-          <label>Age of Property</label>
-          <select id="pAgeOfProperty">
-            <option value="">Select</option>
-            <option>New Construction</option>
-            <option>Less than 1 year</option>
-            <option>1-3 years</option>
-            <option>3-5 years</option>
-            <option>5-10 years</option>
-            <option>10+ years</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row-2">
-        <div class="form-grp"><label>Price per Sqft (&#8377;)</label><input type="number" id="pPricePerSqft" placeholder="e.g. 4500" min="0"/></div>
-        <div class="form-grp"><label>RERA Number</label><input type="text" id="pReraNo" placeholder="e.g. PR/GJ/AHMEDABAD/..."/></div>
-      </div>
-      <div class="form-grp"><label>Video Tour URL (YouTube)</label><input type="text" id="pVideoUrl" placeholder="https://youtube.com/watch?v=..."/></div>
-      <div class="form-grp">
-        <label>Floor Plan Image</label>
-        <div style="display:flex;gap:8px;align-items:center">
-          <input type="text" id="pFloorPlan" placeholder="Paste floor plan image URL or upload below" style="flex:1"/>
-          <button type="button" onclick="document.getElementById('pFloorPlanFile').click()" style="background:#f0f4ff;border:1.5px solid #dce8ff;color:#1565c0;padding:8px 14px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;white-space:nowrap"><i class="fa-solid fa-upload"></i> Upload</button>
-        </div>
-        <input type="file" id="pFloorPlanFile" accept="image/*" style="display:none" onchange="handleFloorPlanUpload(this)"/>
-      </div>
-      <div class="form-grp">
-        <label>Property Images</label>
-        <div class="img-upload-area" id="pUploadArea" onclick="document.getElementById('pImageFile').click()" style="border:2px dashed #e0e0e0;border-radius:10px;padding:24px;text-align:center;cursor:pointer;background:#fafafa;transition:all 0.2s">
-          <i class="fa-solid fa-cloud-arrow-up" style="font-size:2rem;color:#ccc;margin-bottom:8px;display:block"></i>
-          <p style="color:#888;font-size:0.82rem;margin:0"><strong style="color:#E53935">Click to upload</strong> property images</p>
-          <p style="color:#aaa;font-size:0.75rem;margin:4px 0 0">JPG, PNG accepted</p>
-        </div>
-        <input type="file" id="pImageFile" accept="image/*" multiple style="display:none" onchange="handleAdminImages(this)"/>
-        <div id="pImagePreview" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px"></div>
-        <input type="hidden" id="pImage"/>
-      </div>
-      <div class="form-grp"><label>Description</label><textarea id="pDesc" rows="3" placeholder="Property description..."></textarea></div>
-      <div class="form-grp check-grp">
-        <label class="check-label"><input type="checkbox" id="pFeatured"/> Mark as Featured (Trending)</label>
-        <label class="check-label"><input type="checkbox" id="pApproved" checked/> Approve immediately</label>
-      </div>
-      <div class="modal-actions">
-        <button type="button" class="btn-cancel" onclick="closeModal('propModal')">Cancel</button>
-        <button type="submit" class="btn-save" id="propSaveBtn">Save Property</button>
-      </div>
-    </form>
-    </div><!-- end form col -->
-    <!-- SCORE PANEL -->
-    <div class="admin-score-panel">
-      <div class="asc-header"><i class="fas fa-chart-line"></i> Listing Score</div>
-      <div class="asc-ring" id="ascRing">
-        <svg viewBox="0 0 136 136">
-          <defs>
-            <linearGradient id="ascGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%"   id="ascGradA" stop-color="#f87171"/>
-              <stop offset="100%" id="ascGradB" stop-color="#ef4444"/>
-            </linearGradient>
-          </defs>
-          <circle class="asc-track" cx="68" cy="68" r="56"/>
-          <circle class="asc-spin"  cx="68" cy="68" r="56"/>
-          <circle class="asc-glow"  id="ascGlow"   cx="68" cy="68" r="56" stroke="url(#ascGrad)" stroke-dasharray="351.86" stroke-dashoffset="351.86"/>
-          <circle class="asc-fill"  id="ascCircle" cx="68" cy="68" r="56" stroke="url(#ascGrad)" stroke-dasharray="351.86" stroke-dashoffset="351.86"/>
-        </svg>
-        <div class="asc-num"><span id="ascNum">0</span><small>/ 100</small></div>
-      </div>
-      <!-- Status badge: shows Low / Medium / High Listing -->
-      <div class="asc-status-badge low" id="ascStatusBadge"><i class="fas fa-arrow-down"></i> Low Listing</div>
-      <div class="asc-divider"></div>
-      <ul class="asc-list">
-        <li id="asc-title" ><span class="asi"><i class="fas fa-check"></i></span> Property Title  <span class="apts">+15</span></li>
-        <li id="asc-type"  ><span class="asi"><i class="fas fa-check"></i></span> Property Type   <span class="apts">+10</span></li>
-        <li id="asc-city"  ><span class="asi"><i class="fas fa-check"></i></span> City &amp; Area <span class="apts">+15</span></li>
-        <li id="asc-price" ><span class="asi"><i class="fas fa-check"></i></span> Price           <span class="apts">+15</span></li>
-        <li id="asc-area"  ><span class="asi"><i class="fas fa-check"></i></span> Area (sq.ft)    <span class="apts">+10</span></li>
-        <li id="asc-desc"  ><span class="asi"><i class="fas fa-check"></i></span> Description     <span class="apts">+20</span></li>
-        <li id="asc-images"><span class="asi"><i class="fas fa-check"></i></span> Photos          <span class="apts">+15</span></li>
-      </ul>
-      <div class="asc-divider"></div>
-      <button class="asc-publish-btn locked" id="ascPublishBtn" type="button" onclick="ascPublishClick()"><i class="fas fa-lock"></i> Fill required fields</button>
-    </div>
-    </div><!-- end prop-modal-inner -->
   </div>
 </div>
 
@@ -770,7 +989,7 @@
 <!-- TOAST -->
 <div class="admin-toast" id="adminToast"></div>
 
-<script src="/admin/admin-script.js"></script>
+<script src="/admin/script.js"></script>
 <script src="/cursor.js"></script>
 </body>
 </html>

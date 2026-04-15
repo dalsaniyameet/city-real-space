@@ -125,7 +125,7 @@ function createCard(p) {
         ${slides}${arrows}${dots}
         <span class="card-badge ${p.badgeClass || ''}">${p.badge}</span>
         <button class="card-fav" onclick="toggleFav(this)"><i class="fa-regular fa-heart"></i></button>
-        <div class="card-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
+        <div class="card-verified"><div class="card-verified-inner"><span class="cv-icon"><i class="fa-solid fa-check"></i></span> Verified</div></div>
         <div class="card-price"><span>${p.price}</span></div>
       </div>
       <div class="card-body">
@@ -233,7 +233,7 @@ function startCardImageAutoScroll() {
       cur = (cur + 1) % slides.length;
       slides[cur].classList.add('active');
       if (dots[cur]) dots[cur].classList.add('active');
-    }, 2000);
+    }, 4000); // 4 seconds per image
   });
 }
 
@@ -251,7 +251,7 @@ function initSlider(sliderId, prevId, nextId) {
   };
 
   let offset = 0;
-  let speed = 1.2; // px per frame
+  let speed = 0.4; // px per frame — very slow
   let paused = false;
   let raf;
 
@@ -323,20 +323,22 @@ if (heroSlides.length > 0) {
 
 // ===== STATS COUNTER =====
 function animateCounter(el, target, duration) {
+  if (!target || isNaN(target)) return;
+  const suffix = el.dataset.suffix || '';
   let start = 0;
   const step = target / (duration / 16);
   const timer = setInterval(() => {
     start += step;
     if (start >= target) { start = target; clearInterval(timer); }
-    el.textContent = Math.floor(start).toLocaleString() + el.dataset.suffix;
+    el.textContent = Math.floor(start).toLocaleString() + suffix;
   }, 16);
 }
 
 const statsObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      document.querySelectorAll('.snum').forEach(el => {
-        animateCounter(el, el.dataset.target, 3500);
+      document.querySelectorAll('.snum[data-target]').forEach(el => {
+        animateCounter(el, Number(el.dataset.target), 3500);
       });
       statsObserver.disconnect();
     }
@@ -578,13 +580,16 @@ if (mainSearchBtn) {
 // ===== FAVORITES =====
 let favCount = 0;
 async function toggleFav(btn) {
-  // Login check
   if (!localStorage.getItem('token')) {
     showLoginPrompt('Save properties to your favourites!');
     return;
   }
   const icon = btn.querySelector('i');
   const isActive = btn.classList.toggle('active');
+  // Re-trigger animation
+  btn.classList.remove('active');
+  void btn.offsetWidth;
+  if (isActive) btn.classList.add('active');
   icon.className = isActive ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
   favCount += isActive ? 1 : -1;
   const favEl = document.querySelector('.fav-count');
@@ -646,20 +651,46 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// ===== REGISTER AUTO POPUP =====
+// ===== REGISTER AUTO POPUP — only show if user is completely idle =====
 let isRegistered = !!localStorage.getItem('token');
-
 let autoCloseTimer = null;
 let repeatTimer = null;
+let _userInteracting = false;
+let _interactTimer = null;
 
 function isUserTyping() {
   const active = document.activeElement;
   return active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT');
 }
 
+function isUserActive() {
+  return _userInteracting || isUserTyping();
+}
+
+// Track any user interaction — reset idle state
+['mousemove','keydown','keypress','click','scroll','touchstart','input','focus'].forEach(function(evt) {
+  document.addEventListener(evt, function() {
+    _userInteracting = true;
+    clearTimeout(_interactTimer);
+    // Consider user idle after 8 seconds of no interaction
+    _interactTimer = setTimeout(function() { _userInteracting = false; }, 8000);
+    // If popup is open and user starts typing, close it
+    const overlay = document.getElementById('authOverlay');
+    if (overlay && overlay.classList.contains('open') && isUserTyping()) {
+      // Don't close if they're typing inside the auth modal itself
+      const active = document.activeElement;
+      if (!overlay.contains(active)) {
+        clearTimeout(autoCloseTimer);
+        clearTimeout(repeatTimer);
+        overlay.classList.remove('open');
+      }
+    }
+  }, { passive: true });
+});
+
 function openRegisterPopup() {
   if (isRegistered) return;
-  if (isUserTyping()) return;
+  if (isUserActive()) return; // Don't show if user is active
   const overlay = document.getElementById('authOverlay');
   if (!overlay) return;
   overlay.classList.add('open');
@@ -669,26 +700,32 @@ function openRegisterPopup() {
   clearTimeout(autoCloseTimer);
   clearTimeout(repeatTimer);
   autoCloseTimer = setTimeout(() => {
-    if (isUserTyping()) return;
+    if (isUserTyping()) return; // Don't close if typing
     overlay.classList.remove('open');
-    if (!isRegistered) repeatTimer = setTimeout(openRegisterPopup, 30000);
-  }, 8000);
+    if (!isRegistered) repeatTimer = setTimeout(openRegisterPopup, 60000); // repeat after 60s
+  }, 10000); // auto close after 10s
 }
 
-setTimeout(openRegisterPopup, 3000);
+// Show popup only after 8 seconds AND user must be idle
+setTimeout(function() {
+  if (!isUserActive()) openRegisterPopup();
+}, 8000);
 
 let lastScrollPopup = 0;
 window.addEventListener('scroll', () => {
-  if (isUserTyping()) return;
+  if (isUserActive()) return; // Don't show while user is scrolling actively
   const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
   const now = Date.now();
-  if (scrolled > 0.4 && now - lastScrollPopup > 15000) {
+  if (scrolled > 0.6 && now - lastScrollPopup > 30000) { // only after 60% scroll, 30s gap
     lastScrollPopup = now;
-    openRegisterPopup();
+    setTimeout(openRegisterPopup, 2000); // 2s delay after scroll stops
   }
 });
 
-document.addEventListener('mouseleave', e => { if (e.clientY < 10 && !isUserTyping()) openRegisterPopup(); });
+// Exit intent — only on desktop, only if not typing
+document.addEventListener('mouseleave', e => {
+  if (e.clientY < 10 && !isUserActive()) openRegisterPopup();
+});
 
 // ===== AUTH MODAL =====
 const authOverlay = document.getElementById('authOverlay');
@@ -764,6 +801,7 @@ if (document.getElementById('loginForm')) {
       document.getElementById('loginOtpEmailDisplay').textContent = email;
       document.getElementById('loginOtpInput').value = '';
       showToast('OTP sent to ' + email);
+      startOtpTimer('resendLoginOtpLink', 'resendLoginOtpTimer');
     } else if (data.success) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
@@ -827,6 +865,7 @@ document.getElementById('registerForm').addEventListener('submit', async e => {
       document.getElementById('otpForm').dataset.email = email;
       document.getElementById('otpInput').value = '';
       showToast('OTP sent to ' + email);
+      startOtpTimer('resendOtpLink', 'resendOtpTimer');
     } else {
       showToast(data.message || 'Registration failed');
     }
@@ -868,10 +907,13 @@ async function verifyRegisterOTP() {
 async function resendOTP() {
   const email = document.getElementById('otpForm').dataset.email;
   if (!email) return;
+  const link = document.getElementById('resendOtpLink');
+  if (link && link.dataset.disabled === '1') return;
   try {
     const res  = await fetch(`${API}/auth/resend-otp`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
     const data = await res.json();
     showToast(data.success ? 'OTP resent to ' + email : (data.message || 'Error'));
+    if (data.success) startOtpTimer('resendOtpLink', 'resendOtpTimer');
   } catch { showToast('Server error.'); }
 }
 
@@ -953,11 +995,38 @@ async function verifyLoginOTP() {
 async function resendLoginOTP() {
   const email = document.getElementById('loginOtpForm').dataset.email;
   if (!email) return;
+  const link = document.getElementById('resendLoginOtpLink');
+  if (link && link.dataset.disabled === '1') return;
   try {
     const res  = await fetch(`${API}/auth/resend-otp`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
     const data = await res.json();
     showToast(data.success ? 'OTP resent to ' + email : (data.message || 'Error'));
+    if (data.success) startOtpTimer('resendLoginOtpLink', 'resendLoginOtpTimer');
   } catch { showToast('Server error.'); }
+}
+
+// ===== OTP RESEND TIMER =====
+function startOtpTimer(linkId, timerId, seconds) {
+  seconds = seconds || 60;
+  const link  = document.getElementById(linkId);
+  const timer = document.getElementById(timerId);
+  if (!link || !timer) return;
+  link.dataset.disabled = '1';
+  link.style.opacity = '0.4';
+  link.style.pointerEvents = 'none';
+  let remaining = seconds;
+  timer.textContent = '(' + remaining + 's)';
+  const interval = setInterval(function() {
+    remaining--;
+    timer.textContent = '(' + remaining + 's)';
+    if (remaining <= 0) {
+      clearInterval(interval);
+      timer.textContent = '';
+      link.dataset.disabled = '0';
+      link.style.opacity = '1';
+      link.style.pointerEvents = 'auto';
+    }
+  }, 1000);
 }
 
 // ===== INQUIRY MODAL =====

@@ -739,7 +739,18 @@ function loadProperties(page) {
 }
 
 function showEmptyState(grid) {
-  grid.innerHTML = '<div class="empty-res"><i class="fa-solid fa-building"></i><p>No properties found.<br/>Try different filters or check back soon.</p><p style="font-size:0.82rem;color:#bbb;margin-top:8px">Can\'t find what you need? We\'ll find it for you!</p><button onclick="window.openReqModal && window.openReqModal()" class="btn-req-pulse" style="margin-top:16px;background:#E53935;color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:inline-flex;align-items:center;gap:8px"><i class="fa-solid fa-bell"></i> Post Your Requirement</button></div>';
+  const f = getFilters();
+  const locText = f.area ? f.area + (f.city ? ', ' + f.city : '') : (f.city || '');
+  const typeText = f.type ? ' ' + f.type : '';
+  const searchInfo = locText ? ' in <strong>' + locText + '</strong>' : '';
+  grid.innerHTML = '<div class="empty-res">' +
+    '<i class="fa-solid fa-building"></i>' +
+    '<p>No' + typeText + ' properties found' + searchInfo + '.</p>' +
+    '<p style="font-size:0.82rem;color:#bbb;margin-top:8px">Can\'t find what you need? Post your requirement — we\'ll find it for you!</p>' +
+    '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">' +
+    '<button onclick="window.openReqModal && window.openReqModal()" class="btn-req-pulse" style="background:#E53935;color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:inline-flex;align-items:center;gap:8px"><i class="fa-solid fa-bell"></i> Post Your Requirement</button>' +
+    '<button onclick="document.getElementById(\'clearBtn\').click()" style="background:#f5f5f5;color:#555;border:1.5px solid #e8e8e8;padding:12px 24px;border-radius:10px;font-size:0.88rem;font-weight:600;cursor:pointer;font-family:Poppins,sans-serif;display:inline-flex;align-items:center;gap:8px"><i class="fa-solid fa-xmark"></i> Clear Filters</button>' +
+    '</div></div>';
   document.getElementById('resultsCount').innerHTML = '<strong>0</strong> properties found';
   document.getElementById('pagination').innerHTML = '';
   showReqModal();
@@ -857,20 +868,36 @@ function showEmptyState(grid) {
     btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
     btn.disabled=true;
     const f = getFilters();
+    const u = JSON.parse(localStorage.getItem('user')||'null');
+    const tok = localStorage.getItem('token');
     const message = 'Requirement: '+(d.type||f.type||'Any')+(d.budget?' | Budget: '+d.budget:'')+(f.city?' | City: '+f.city:'')+(d.msg?' | Note: '+d.msg:'');
     try{
-      const res = await fetch(API+'/inquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:d.name,phone:d.phone,lookingFor:'Post Requirement',interestedIn:d.type||f.type||'',propertyType:d.type||f.type||'Any',budget:d.budget||'',city:f.city||'',message:message})});
-      const result = await res.json();
-      console.log('Requirement saved:', result);
-    }catch(e){ console.error('Requirement save error:', e); }
+      await fetch(API+'/inquiry',{
+        method:'POST',
+        headers: Object.assign({'Content-Type':'application/json'}, tok ? {'Authorization':'Bearer '+tok} : {}),
+        body:JSON.stringify({
+          name:d.name, phone:d.phone,
+          email: u ? u.email||'' : '',
+          lookingFor:'Post Requirement',
+          propertyType:d.type||f.type||'Any',
+          budget:d.budget||'',
+          city:f.city||'',
+          message:message,
+          userId: u ? u._id||'' : '',
+          isRequirement: true
+        })
+      });
+    }catch(e){}
     btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Submit';
     btn.disabled=false;
     closeReq();
-    let t=document.querySelector('.auth-toast');
-    if(!t){t=document.createElement('div');t.className='auth-toast';document.body.appendChild(t);}
-    t.innerHTML='<i class="fa-solid fa-circle-check"></i> Requirement submitted! We\'ll contact you soon.';
-    t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),3500);
+    // Redirect to post-property with pre-filled data
+    const params = new URLSearchParams();
+    params.set('from', 'requirement');
+    if (d.type || f.type) params.set('reqType', d.type || f.type);
+    if (f.city)           params.set('reqCity', f.city);
+    if (d.budget)         params.set('reqBudget', d.budget);
+    window.location.href = 'post-property.html?' + params.toString();
   });
 
   const u=JSON.parse(localStorage.getItem('user')||'null');
@@ -880,6 +907,25 @@ function showEmptyState(grid) {
   }
 
   window.openReqModal=function(){
+    // Login check
+    const tok = localStorage.getItem('token');
+    const u   = JSON.parse(localStorage.getItem('user')||'null');
+    if (!tok || !u) {
+      let t = document.querySelector('.auth-toast');
+      if (!t) { t = document.createElement('div'); t.className = 'auth-toast'; document.body.appendChild(t); }
+      t.style.background = '#1565c0';
+      t.innerHTML = '<i class="fa-solid fa-user"></i> Please login to post your requirement &nbsp;<a href="login.html?redirect=properties" style="color:#fff;font-weight:700;text-decoration:underline;">Login / Register</a>';
+      t.classList.add('show');
+      setTimeout(() => { t.classList.remove('show'); t.style.background = ''; }, 4000);
+      return;
+    }
+    // Pre-fill user details
+    if (u.firstName) document.getElementById('reqName').value = (u.firstName+' '+(u.lastName||'')).trim();
+    if (u.phone)     document.getElementById('reqPhone').value = u.phone.replace('+91','').trim();
+    // Pre-fill current search filters
+    const f = getFilters();
+    if (f.type)   document.getElementById('reqType').value   = f.type === 'apartment' ? 'Apartment / Flat' : f.type === 'villa' ? 'Villa' : f.type === 'plot' ? 'Plot / Land' : f.type === 'office' ? 'Office Space' : f.type === 'shop' ? 'Shop / Showroom' : '';
+    if (f.budget) document.getElementById('reqBudget').value = f.budget;
     overlay.style.opacity='1';
     overlay.style.pointerEvents='all';
     document.getElementById('reqBox').style.transform='translateX(0)';
@@ -1014,6 +1060,7 @@ function showLoginToast(msg) {
         <div class="social-links">
           <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
           <a href="https://wa.me/919377531247" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
           <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
       </div>
@@ -1044,9 +1091,8 @@ function showLoginToast(msg) {
       <div class="footer-col">
         <h4>Contact Us</h4>
         <div class="contact-info">
-          <div class="ci"><i class="fa-solid fa-location-dot"></i><span>A-708, Prahlad Nagar Trade Centre, Satellite, Ahmedabad</span></div>
+          <div class="ci"><i class="fa-solid fa-location-dot"></i><span>D-102, Prahlad Nagar Trade Centre, Satellite, Ahmedabad-380015</span></div>
           <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 98250 31247</span></div>
-          <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 84600 14000</span></div>
           <div class="ci"><i class="fa-solid fa-envelope"></i><span>info@cityrealspace.com</span></div>
         </div>
         <div class="working-hours">
