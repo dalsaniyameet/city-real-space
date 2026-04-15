@@ -314,11 +314,17 @@ loadAllProperties();
 const heroSlides = document.querySelectorAll('.hero-slide');
 if (heroSlides.length > 0) {
   let heroCurrent = 0;
-  setInterval(() => {
+  function getSlideDelay(idx) {
+    // Banner.png (index 0) ke liye 8 seconds, baaki ke liye 4 seconds
+    return idx === 0 ? 8000 : 4000;
+  }
+  function nextHeroSlide() {
     heroSlides[heroCurrent].classList.remove('active');
     heroCurrent = (heroCurrent + 1) % heroSlides.length;
     heroSlides[heroCurrent].classList.add('active');
-  }, 4000);
+    setTimeout(nextHeroSlide, getSlideDelay(heroCurrent));
+  }
+  setTimeout(nextHeroSlide, getSlideDelay(0));
 }
 
 // ===== STATS COUNTER =====
