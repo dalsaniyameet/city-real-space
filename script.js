@@ -371,13 +371,19 @@ if (document.getElementById('backTop')) document.getElementById('backTop').addEv
 
 // ===== HAMBURGER =====
 if (document.getElementById('hamburger')) document.getElementById('hamburger').addEventListener('click', () => {
-  const nav = document.getElementById('nav');
+  const nav = document.getElementById('mobileNav');
   const btn = document.getElementById('hamburger');
-  const isOpen = nav.classList.toggle('open');
-  btn.classList.toggle('active', isOpen);
-  btn.innerHTML = isOpen
-    ? '<i class="fa-solid fa-xmark"></i>'
-    : '<i class="fa-solid fa-bars"></i>';
+  if (!nav) return;
+  const isOpen = nav.style.display === 'flex';
+  if (isOpen) {
+    nav.style.display = 'none';
+    btn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+    document.body.style.overflow = '';
+  } else {
+    nav.style.display = 'flex';
+    btn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+    document.body.style.overflow = 'hidden';
+  }
 });
 
 // ===== SEARCH TABS =====

@@ -11,12 +11,12 @@
   <link rel="canonical" href="https://www.cityrealspace.com/properties"/>
   <meta property="og:type" content="website"/>
   <meta property="og:title" content="Search Properties in Ahmedabad | Buy, Sell & Rent | City Real Space"/>
-  <meta property="og:description" content="Search 12,500+ verified properties in Ahmedabad. Filter by area, budget, BHK. Apartments, villas, plots, offices. RERA registered."/>
+  <meta property="og:description" content="Search 1000+ verified properties in Ahmedabad. Filter by area, budget, BHK. Apartments, villas, plots, offices. RERA registered."/>
   <meta property="og:url" content="https://www.cityrealspace.com/properties"/>
   <meta property="og:image" content="https://www.cityrealspace.com/images/logo.jpeg"/>
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" content="Search Properties in Ahmedabad | City Real Space"/>
-  <meta name="twitter:description" content="Search 12,500+ verified properties in Ahmedabad. Filter by area, budget, BHK. RERA registered."/>
+  <meta name="twitter:description" content="Search 1000+ verified properties in Ahmedabad. Filter by area, budget, BHK. RERA registered."/>
   <meta name="twitter:image" content="https://www.cityrealspace.com/images/logo.jpeg"/>
   <link rel="icon" type="image/jpeg" href="images/logo.jpeg"/>
   <link rel="apple-touch-icon" href="images/logo.jpeg"/>
@@ -180,7 +180,28 @@
   </div>
 </header>
 
-<div class="prop-page-wrap">
+<!-- MOBILE NAV -->
+<div id="mobileNav" style="display:none;position:fixed;inset:0;z-index:9998;background:#fff;flex-direction:column;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:2px solid #f0f0f0;flex-shrink:0;background:#fff">
+    <span style="font-size:1rem;font-weight:800;color:#0D1B2A">Menu</span>
+    <button onclick="closeMobileNav()" style="background:#f5f5f5;border:none;width:36px;height:36px;border-radius:50%;font-size:1.1rem;cursor:pointer;color:#333;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden">
+    <a href="index.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-house" style="color:#E53935;width:18px"></i>Home</a>
+    <a href="properties.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-building" style="color:#E53935;width:18px"></i>Properties</a>
+    <a href="buy.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-tag" style="color:#E53935;width:18px"></i>Buy</a>
+    <a href="rent.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-key" style="color:#E53935;width:18px"></i>Rent</a>
+    <a href="new-launch.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-rocket" style="color:#E53935;width:18px"></i>New Launch</a>
+    <a href="resale.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-rotate" style="color:#E53935;width:18px"></i>Resale</a>
+    <a href="land.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-map" style="color:#E53935;width:18px"></i>Land</a>
+    <a href="prelease.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-handshake" style="color:#E53935;width:18px"></i>Prelease</a>
+    <a href="post-property.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-plus" style="color:#E53935;width:18px"></i>Post Property</a>
+    <a href="about.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-circle-info" style="color:#E53935;width:18px"></i>About</a>
+    <a href="blog.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-newspaper" style="color:#E53935;width:18px"></i>Blog</a>
+    <a href="contact.html" style="padding:22px 16px;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-phone" style="color:#E53935;width:18px"></i>Contact</a>
+  </div>
+</div>
+<script>function closeMobileNav(){var n=document.getElementById('mobileNav');if(n)n.style.display='none';var b=document.getElementById('hamburger');if(b)b.innerHTML='<i class="fa-solid fa-bars"></i>';document.body.style.overflow='';}</script>
   <div class="prop-page-head">
     <h1 id="pageTitle">All Properties</h1>
     <p id="pageSubtitle">Browse verified properties across Gujarat</p>
@@ -697,7 +718,11 @@ document.getElementById('clearBtn').addEventListener('click', function() {
 });
 
 document.getElementById('hamburger').addEventListener('click', function() {
-  document.getElementById('nav').classList.toggle('open');
+  var n=document.getElementById('mobileNav');if(!n)return;
+  var isOpen=n.style.display==='flex';
+  n.style.display=isOpen?'none':'flex';
+  document.getElementById('hamburger').innerHTML=isOpen?'<i class="fa-solid fa-bars"></i>':'<i class="fa-solid fa-xmark"></i>';
+  document.body.style.overflow=isOpen?'':'hidden';
 });
 
 window.addEventListener('scroll', function() {

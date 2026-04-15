@@ -135,6 +135,29 @@
   </div>
 </header>
 
+<!-- MOBILE NAV -->
+<div id="mobileNav" style="display:none;position:fixed;inset:0;z-index:9998;background:#fff;flex-direction:column;overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:2px solid #f0f0f0;flex-shrink:0;background:#fff">
+    <span style="font-size:1rem;font-weight:800;color:#0D1B2A">Menu</span>
+    <button onclick="closeMobileNav()" style="background:#f5f5f5;border:none;width:36px;height:36px;border-radius:50%;font-size:1.1rem;cursor:pointer;color:#333;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden">
+    <a href="index.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-house" style="color:#E53935;width:18px"></i>Home</a>
+    <a href="properties.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-building" style="color:#E53935;width:18px"></i>Properties</a>
+    <a href="buy.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-tag" style="color:#E53935;width:18px"></i>Buy</a>
+    <a href="rent.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-key" style="color:#E53935;width:18px"></i>Rent</a>
+    <a href="new-launch.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-rocket" style="color:#E53935;width:18px"></i>New Launch</a>
+    <a href="resale.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-rotate" style="color:#E53935;width:18px"></i>Resale</a>
+    <a href="land.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-map" style="color:#E53935;width:18px"></i>Land</a>
+    <a href="prelease.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-handshake" style="color:#E53935;width:18px"></i>Prelease</a>
+    <a href="post-property.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-plus" style="color:#E53935;width:18px"></i>Post Property</a>
+    <a href="about.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-circle-info" style="color:#E53935;width:18px"></i>About</a>
+    <a href="blog.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-newspaper" style="color:#E53935;width:18px"></i>Blog</a>
+    <a href="contact.html" style="padding:22px 16px;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-phone" style="color:#E53935;width:18px"></i>Contact</a>
+  </div>
+</div>
+<script>function closeMobileNav(){var n=document.getElementById('mobileNav');if(n)n.style.display='none';var b=document.getElementById('hamburger');if(b)b.innerHTML='<i class="fa-solid fa-bars"></i>';document.body.style.overflow='';}</script>
+
 <!-- PAGE HERO -->
 <div class="page-hero">
   <div class="page-hero-overlay"></div>
@@ -328,7 +351,7 @@
     document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
   });
   document.getElementById('backTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-  document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
+  document.getElementById('hamburger').addEventListener('click', () => {var n=document.getElementById('mobileNav');if(!n)return;var o=n.style.display==='flex';n.style.display=o?'none':'flex';document.getElementById('hamburger').innerHTML=o?'<i class="fa-solid fa-bars"></i>':'<i class="fa-solid fa-xmark"></i>';document.body.style.overflow=o?'':'hidden';});
   document.querySelectorAll('.nav-drop-btn').forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
