@@ -384,7 +384,22 @@ const cityLocalities = {
     'SG Highway':      ['Sola','Gota','Motera','Ranip','Sabarmati'],
     'CG Road':         ['Navrangpura','Ellisbridge','Paldi','Ambawadi'],
     'Iscon':           ['Iscon Cross Road','Iscon Ambli Road','Bopal Road'],
-    'Giftcity':        ['GIFT City Block 1','GIFT City Block 2','GIFT City SEZ','Infocity Road']
+    'Giftcity':        ['GIFT City Block 1','GIFT City Block 2','GIFT City SEZ','Infocity Road'],
+    'Chekhla':         ['Chekhla Gam','Chekhla GIDC','Narol Road'],
+    'Narol':           ['Narol Chokdi','Narol GIDC','Vatva Road'],
+    'Vatva':           ['Vatva GIDC','Vatva Chokdi','Odhav Road'],
+    'Odhav':           ['Odhav GIDC','Odhav Chokdi','Ring Road Odhav'],
+    'Nikol':           ['Nikol Chokdi','Nikol Gam','CTM Cross Road'],
+    'Naroda':          ['Naroda GIDC','Naroda Patia','Naroda Road'],
+    'Vastral':         ['Vastral Gam','Vastral Chokdi','Amraiwadi'],
+    'Maninagar':       ['Maninagar Cross Road','Maninagar Station','Kankaria Road'],
+    'Paldi':           ['Paldi Cross Road','Ellisbridge','Ashram Road'],
+    'Ashram Road':     ['Ashram Road Chokdi','Income Tax','Usmanpura'],
+    'Gandhinagar Highway': ['Chandkheda','Motera','Sabarmati','Ranip'],
+    'Sanand':          ['Sanand GIDC','Sanand Chokdi','Sanand Bavla Road'],
+    'Bavla':           ['Bavla Chokdi','Bavla GIDC'],
+    'Dholka':          ['Dholka Chokdi','Dholka Town'],
+    'Dholera':         ['Dholera SIR','Dholera Township']
   },
   'Gandhinagar': {
     'Giftcity':  ['GIFT City Block 1','GIFT City Block 2','GIFT City SEZ'],
@@ -460,9 +475,22 @@ if (mainSearchBtn) {
     if (locality) params.set('area', locality);
     if (type)     params.set('type', type);
     if (budget) {
-      const [min, max] = budget.split('-');
-      if (min) params.set('minPrice', min);
-      if (max) params.set('maxPrice', max);
+      const parts = budget.split('-');
+      if (budget.startsWith('rent-')) {
+        const [, min, max] = budget.split('-');
+        if (min) params.set('minPrice', min);
+        if (max) params.set('maxPrice', max);
+        // Force rent status if not already set
+        if (!params.get('status')) params.set('status', 'for-rent');
+      } else if (budget.startsWith('sale-')) {
+        const [, min, max] = budget.split('-');
+        if (min) params.set('minPrice', min);
+        if (max) params.set('maxPrice', max);
+      } else {
+        const [min, max] = parts;
+        if (min) params.set('minPrice', min);
+        if (max) params.set('maxPrice', max);
+      }
     }
     window.location.href = 'properties.html?' + params.toString();
   });

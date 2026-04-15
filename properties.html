@@ -359,7 +359,7 @@ document.addEventListener('click', function(e) {
   if (btn && !btn.contains(e.target)) document.getElementById('userDropdown').style.display = 'none';
 });
 const cityLocalities = {
-  'Ahmedabad': ['Prahlad Nagar','Satellite','Bopal','Thaltej','Memnagar','Vastrapur','Bodakdev','Navrangpura','Chandkheda','Shela','SG Highway','CG Road','Iscon','Giftcity'],
+  'Ahmedabad': ['Prahlad Nagar','Satellite','Bopal','Thaltej','Memnagar','Vastrapur','Bodakdev','Navrangpura','Chandkheda','Shela','SG Highway','CG Road','Iscon','Giftcity','Chekhla','Narol','Vatva','Odhav','Nikol','Naroda','Vastral','Maninagar','Paldi','Ashram Road','Sanand','Bavla','Dholka','Dholera'],
   'Gandhinagar': ['Giftcity','Sector 1','Sector 5','Sector 11','Sector 21','Infocity'],
   'Surat': ['Adajan','Vesu','Pal','Katargam','Udhna','Althan'],
   'Vadodara': ['Alkapuri','Gotri','Waghodia Road','Manjalpur','Fatehgunj'],
@@ -367,20 +367,34 @@ const cityLocalities = {
 };
 
 const localitySubAreas = {
-  'Prahlad Nagar': ['Prahlad Nagar Cross Road','Commerce Six Roads','Anand Nagar Cross Road','Satellite Road'],
-  'Satellite': ['Satellite Main Road','Jodhpur Cross Road','Ambawadi','Nehru Nagar'],
+  'Prahlad Nagar': ['Prahlad Nagar Cross Road','Commerce Six Roads','Anand Nagar Cross Road','Satellite Road','100 Feet Road Prahlad Nagar'],
+  'Satellite': ['Satellite Main Road','Jodhpur Cross Road','Ambawadi','Nehru Nagar','Judges Bungalow Road'],
   'Bopal': ['Bopal Chokdi','South Bopal','Ambli Bopal Road','Shilaj','Ghuma'],
   'Thaltej': ['Thaltej Cross Road','SG Highway Thaltej','Sola Road','Science City Road'],
   'Memnagar': ['Memnagar Fire Station','Gurukul Road','Drive In Road'],
   'Vastrapur': ['Vastrapur Lake','Vastrapur Cross Road','Bodakdev'],
   'Bodakdev': ['Bodakdev Cross Road','100 Feet Road Bodakdev','Sindhu Bhavan Road'],
   'Navrangpura': ['CG Road','Navrangpura Cross Road','Swastik Cross Road'],
-  'Chandkheda': ['Chandkheda Gam','Sola Bhagwat','Visat Cross Road'],
+  'Chandkheda': ['Chandkheda Gam','Sola Bhagwat','Visat Cross Road','Tragad'],
   'Shela': ['Shela Village','Shela Chokdi','Ambli Road Shela'],
-  'Giftcity': ['GIFT City Block 1','GIFT City Block 2','GIFT City SEZ'],
+  'Giftcity': ['GIFT City Block 1','GIFT City Block 2','GIFT City SEZ','Infocity Road'],
   'SG Highway': ['Sarkhej','Makarba','Shilaj Road','Judges Bungalow Road'],
   'CG Road': ['Swastik Cross Road','Navrangpura','Ellisbridge'],
   'Iscon': ['Iscon Cross Road','Iscon Ambli Road','Bopal Road'],
+  'Chekhla': ['Chekhla Gam','Chekhla GIDC','Narol Road'],
+  'Narol': ['Narol Chokdi','Narol GIDC','Vatva Road'],
+  'Vatva': ['Vatva GIDC','Vatva Chokdi','Odhav Road'],
+  'Odhav': ['Odhav GIDC','Odhav Chokdi','Ring Road Odhav'],
+  'Nikol': ['Nikol Chokdi','Nikol Gam','CTM Cross Road'],
+  'Naroda': ['Naroda GIDC','Naroda Patia','Naroda Road'],
+  'Vastral': ['Vastral Gam','Vastral Chokdi','Amraiwadi'],
+  'Maninagar': ['Maninagar Cross Road','Maninagar Station','Kankaria Road'],
+  'Paldi': ['Paldi Cross Road','Ellisbridge','Ashram Road'],
+  'Ashram Road': ['Ashram Road Chokdi','Income Tax','Usmanpura'],
+  'Sanand': ['Sanand GIDC','Sanand Chokdi','Sanand Bavla Road'],
+  'Bavla': ['Bavla Chokdi','Bavla GIDC'],
+  'Dholka': ['Dholka Chokdi','Dholka Town'],
+  'Dholera': ['Dholera SIR','Dholera Township'],
   // Gandhinagar
   'Sector 1': ['Sector 1A','Sector 1B','Sector 1C'],
   'Sector 5': ['Sector 5A','Sector 5B','Sector 5C'],
@@ -716,8 +730,8 @@ function loadProperties(page) {
   if (f.type)   url += '&type='   + encodeURIComponent(f.type);
   if (f.beds)   url += '&beds='   + encodeURIComponent(f.beds);
   if (f.budget) {
-    var parts = f.budget.split('-');
-    url += '&minPrice=' + parts[0] + '&maxPrice=' + parts[1];
+    var budgetParts = f.budget.split('-');
+    url += '&minPrice=' + budgetParts[0] + '&maxPrice=' + budgetParts[1];
   }
 
   fetch(url)
