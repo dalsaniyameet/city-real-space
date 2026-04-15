@@ -685,89 +685,14 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// ===== REGISTER AUTO POPUP — only show if user is completely idle =====
+// ===== REGISTER AUTO POPUP — DISABLED =====
 let isRegistered = !!localStorage.getItem('token');
-let autoCloseTimer = null;
-let repeatTimer = null;
-let _userInteracting = false;
-let _interactTimer = null;
-
-function isUserTyping() {
-  const active = document.activeElement;
-  return active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT');
-}
-
-function isUserActive() {
-  return _userInteracting || isUserTyping();
-}
-
-// Track any user interaction — reset idle state
-['mousemove','keydown','keypress','click','scroll','touchstart','input','focus'].forEach(function(evt) {
-  document.addEventListener(evt, function() {
-    _userInteracting = true;
-    clearTimeout(_interactTimer);
-    // Consider user idle after 8 seconds of no interaction
-    _interactTimer = setTimeout(function() { _userInteracting = false; }, 8000);
-    // If popup is open and user starts typing, close it
-    const overlay = document.getElementById('authOverlay');
-    if (overlay && overlay.classList.contains('open') && isUserTyping()) {
-      // Don't close if they're typing inside the auth modal itself
-      const active = document.activeElement;
-      if (!overlay.contains(active)) {
-        clearTimeout(autoCloseTimer);
-        clearTimeout(repeatTimer);
-        overlay.classList.remove('open');
-      }
-    }
-  }, { passive: true });
-});
-
-function openRegisterPopup() {
-  if (isRegistered) return;
-  if (isUserActive()) return; // Don't show if user is active
-  const overlay = document.getElementById('authOverlay');
-  if (!overlay) return;
-  overlay.classList.add('open');
-  document.querySelectorAll('.atab').forEach(b => b.classList.toggle('active', b.dataset.tab === 'register'));
-  if (document.getElementById('loginForm')) document.getElementById('loginForm').classList.add('hidden');
-  if (document.getElementById('registerForm')) document.getElementById('registerForm').classList.remove('hidden');
-  clearTimeout(autoCloseTimer);
-  clearTimeout(repeatTimer);
-  autoCloseTimer = setTimeout(() => {
-    if (isUserTyping()) return; // Don't close if typing
-    overlay.classList.remove('open');
-    if (!isRegistered) repeatTimer = setTimeout(openRegisterPopup, 60000); // repeat after 60s
-  }, 10000); // auto close after 10s
-}
-
-// Show popup only after 8 seconds AND user must be idle
-setTimeout(function() {
-  if (!isUserActive()) openRegisterPopup();
-}, 8000);
-
-let lastScrollPopup = 0;
-window.addEventListener('scroll', () => {
-  if (isUserActive()) return; // Don't show while user is scrolling actively
-  const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-  const now = Date.now();
-  if (scrolled > 0.6 && now - lastScrollPopup > 30000) { // only after 60% scroll, 30s gap
-    lastScrollPopup = now;
-    setTimeout(openRegisterPopup, 2000); // 2s delay after scroll stops
-  }
-});
-
-// Exit intent — only on desktop, only if not typing
-document.addEventListener('mouseleave', e => {
-  if (e.clientY < 10 && !isUserActive()) openRegisterPopup();
-});
 
 // ===== AUTH MODAL =====
 const authOverlay = document.getElementById('authOverlay');
 if (authOverlay) {
 
 function closeAuthOverlay() {
-  clearTimeout(autoCloseTimer);
-  clearTimeout(repeatTimer);
   authOverlay.classList.remove('open');
 }
 
