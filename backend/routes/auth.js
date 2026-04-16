@@ -164,26 +164,108 @@ async function sendOTPEmail(email, otp, name, type) {
   const subject = subjects[type] || subjects.login;
 
   // Simple clean HTML — no domain dependency
-  const html = `
-  <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e8e8e8">
-    <div style="background:linear-gradient(135deg,#0D1B2A,#1a3a5c);padding:28px 32px;text-align:center">
-      <h2 style="color:#FFC107;margin:0;font-size:1.4rem">City Real Space</h2>
-      <p style="color:rgba(255,255,255,0.7);margin:6px 0 0;font-size:0.85rem">Gujarat's Most Trusted Real Estate Platform</p>
-    </div>
-    <div style="padding:32px;text-align:center">
-      <p style="color:#333;font-size:1rem;margin:0 0 8px">Hello <strong>${name}</strong>,</p>
-      <p style="color:#666;font-size:0.9rem;margin:0 0 24px">${type === 'register' ? 'Verify your email to activate your account.' : type === 'forgot' ? 'Use this OTP to reset your password.' : 'Use this OTP to complete your login.'}</p>
-      <div style="background:#f8f9fa;border:2px dashed #E53935;border-radius:12px;padding:20px;margin:0 0 24px">
-        <p style="color:#888;font-size:0.78rem;margin:0 0 8px;text-transform:uppercase;letter-spacing:1px">Your OTP</p>
-        <h1 style="color:#E53935;font-size:2.5rem;font-weight:900;margin:0;letter-spacing:10px">${otp}</h1>
-        <p style="color:#aaa;font-size:0.75rem;margin:8px 0 0">Valid for 10 minutes only</p>
-      </div>
-      <p style="color:#999;font-size:0.78rem;margin:0">Do not share this OTP with anyone.<br/>If you didn't request this, ignore this email.</p>
-    </div>
-    <div style="background:#f8f9fa;padding:16px;text-align:center;border-top:1px solid #e8e8e8">
-      <p style="color:#aaa;font-size:0.75rem;margin:0">© 2025 City Real Space | admin@cityestate.co.in</p>
-    </div>
-  </div>`;
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>City Real Space OTP</title>
+<style>
+  @keyframes fadeInDown { from{opacity:0;transform:translateY(-24px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeInUp   { from{opacity:0;transform:translateY(24px)}  to{opacity:1;transform:translateY(0)} }
+  @keyframes popUp      { from{opacity:0;transform:scale(0.7)}        to{opacity:1;transform:scale(1)} }
+  @keyframes floatLogo  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  @keyframes shimmer    { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+  @keyframes pulse      { 0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,0.4)} 70%{box-shadow:0 0 0 14px rgba(255,255,255,0)} }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#e8edf5;font-family:'Segoe UI',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#e8edf5;padding:32px 12px;">
+<tr><td align="center">
+
+  <table width="100%" cellpadding="0" cellspacing="0" border="0"
+    style="max-width:520px;width:100%;border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.18);animation:fadeInDown 0.6s cubic-bezier(0.22,1,0.36,1) both;">
+
+    <!-- HEADER -->
+    <tr>
+      <td align="center"
+        style="background:linear-gradient(135deg,#0D1B2A 0%,#1a3a5c 50%,#0d2137 100%);padding:36px 24px 28px;">
+        <!-- Logo centered -->
+        <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 14px;">
+          <tr>
+            <td align="center">
+              <img src="https://city-real-space.vercel.app/images/logo.jpeg" alt="CRS"
+                width="72" height="72"
+                style="display:block;width:72px;height:72px;border-radius:18px;object-fit:contain;background:#ffffff;padding:6px;box-shadow:0 8px 28px rgba(0,0,0,0.4);border:3px solid rgba(255,255,255,0.2);"/>
+            </td>
+          </tr>
+        </table>
+        <!-- Brand name centered -->
+        <div style="color:#ffffff;font-size:22px;font-weight:800;letter-spacing:0.5px;margin:0 0 4px;font-family:'Segoe UI',Arial,sans-serif;text-align:center;">City Real Space</div>
+        <div style="color:rgba(255,255,255,0.5);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;font-family:'Segoe UI',Arial,sans-serif;text-align:center;margin:0 0 14px;">Gujarat's Most Trusted Real Estate Platform</div>
+        <!-- Admin Access Only badge centered -->
+        <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto;">
+          <tr>
+            <td align="center" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:50px;padding:5px 16px;">
+              <span style="color:#FFC107;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;font-family:'Segoe UI',Arial,sans-serif;">&#128274; Admin Access Only</span>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- BODY -->
+    <tr>
+      <td style="background:#ffffff;padding:32px 36px 28px;animation:fadeInUp 0.6s 0.15s both;">
+        <p style="margin:0 0 6px;color:#0D1B2A;font-size:16px;font-weight:700;text-align:center;font-family:'Segoe UI',Arial,sans-serif;">Hello <strong>${name}</strong>,</p>
+        <p style="margin:0 0 24px;color:#666;font-size:13px;text-align:center;line-height:1.6;font-family:'Segoe UI',Arial,sans-serif;">${type === 'register' ? 'Verify your email to activate your account.' : type === 'forgot' ? 'Use this OTP to reset your password.' : 'Use this OTP to complete your login.'}</p>
+
+        <!-- OTP Box -->
+        <table cellpadding="0" cellspacing="0" border="0" width="100%"
+          style="background:linear-gradient(135deg,#f8f9fa,#fff);border:2px dashed #E53935;border-radius:16px;margin:0 0 24px;animation:popUp 0.5s 0.3s cubic-bezier(0.175,0.885,0.32,1.275) both;">
+          <tr>
+            <td align="center" style="padding:24px 16px;">
+              <div style="color:#999;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;margin:0 0 10px;font-family:'Segoe UI',Arial,sans-serif;">Your OTP</div>
+              <div style="font-size:48px;font-weight:900;letter-spacing:16px;color:#E53935;font-family:'Courier New',monospace;line-height:1;">${otp}</div>
+              <div style="color:#aaa;font-size:12px;margin:10px 0 0;font-family:'Segoe UI',Arial,sans-serif;">&#9201; Valid for <strong style="color:#555;">10 minutes</strong> only</div>
+            </td>
+          </tr>
+        </table>
+
+        <!-- Warning -->
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tr><td style="background:#fff8f0;border-left:4px solid #f59e0b;border-radius:0 10px 10px 0;padding:12px 16px;">
+            <span style="color:#92400e;font-size:12px;font-family:'Segoe UI',Arial,sans-serif;">&#9888;&#65039; <strong>Do not share this OTP</strong> with anyone. City Real Space will never ask for your OTP.</span>
+          </td></tr>
+        </table>
+        <p style="margin:16px 0 0;color:#bbb;font-size:11px;text-align:center;font-family:'Segoe UI',Arial,sans-serif;">If you didn't request this, ignore this email.</p>
+      </td>
+    </tr>
+
+    <!-- FOOTER -->
+    <tr>
+      <td style="background:#0D1B2A;padding:20px 28px;text-align:center;">
+        <div style="color:#ffffff;font-size:13px;font-weight:700;margin:0 0 3px;font-family:'Segoe UI',Arial,sans-serif;">City Real Space</div>
+        <div style="color:rgba(255,255,255,0.35);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin:0 0 10px;font-family:'Segoe UI',Arial,sans-serif;">Ahmedabad, Gujarat</div>
+        <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto 10px;">
+          <tr>
+            <td style="padding:0 10px;border-right:1px solid rgba(255,255,255,0.1);">
+              <a href="mailto:info@cityrealspace.com" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:11px;font-family:'Segoe UI',Arial,sans-serif;">&#128231; info@cityrealspace.com</a>
+            </td>
+            <td style="padding:0 10px;">
+              <a href="https://cityrealspace.com" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:11px;font-family:'Segoe UI',Arial,sans-serif;">&#127760; cityrealspace.com</a>
+            </td>
+          </tr>
+        </table>
+        <div style="color:rgba(255,255,255,0.2);font-size:10px;font-family:'Segoe UI',Arial,sans-serif;">&copy; 2026 City Real Space. All rights reserved.</div>
+      </td>
+    </tr>
+
+  </table>
+</td></tr>
+</table>
+</body>
+</html>`;
 
   try {
     console.log(`📧 Sending ${type} OTP to ${email} via Gmail SMTP`);

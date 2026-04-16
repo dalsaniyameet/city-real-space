@@ -11,99 +11,114 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    body { margin: 0; min-height: 100vh; background: #f0f2f5; display: flex; align-items: center; justify-content: center; padding: 32px 20px 20px; }
+    @keyframes fadeInUp   { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeInDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes scaleIn    { from{opacity:0;transform:scale(0.82)} to{opacity:1;transform:scale(1)} }
+    @keyframes floatLogo  { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-10px) rotate(2deg)} }
+    @keyframes pulse2     { 0%,100%{box-shadow:0 0 0 0 rgba(255,193,7,0.5)} 70%{box-shadow:0 0 0 18px rgba(255,193,7,0)} }
+    @keyframes shimmer    { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+    @keyframes orb1       { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-20px) scale(1.15)} }
+    @keyframes orb2       { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-20px,25px) scale(0.9)} }
+    @keyframes orb3       { 0%,100%{transform:translate(0,0)} 50%{transform:translate(15px,15px)} }
+    @keyframes countUp    { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes slideRight { from{opacity:0;transform:translateX(-20px)} to{opacity:1;transform:translateX(0)} }
+
+    body { margin:0; min-height:100vh; background:linear-gradient(135deg,#0a1628 0%,#0d2137 50%,#0a1628 100%); display:flex; align-items:center; justify-content:center; padding:32px 20px 20px; font-family:'Poppins',sans-serif; }
 
     .page-card {
-      background: #fff; border-radius: 20px; overflow: hidden;
-      display: flex; width: 100%; max-width: 900px;
-      box-shadow: 0 32px 80px rgba(0,0,0,0.18);
-      min-height: 580px;
+      background:#fff; border-radius:24px; overflow:hidden;
+      display:flex; width:100%; max-width:940px;
+      box-shadow:0 40px 100px rgba(0,0,0,0.5);
+      min-height:600px;
+      animation: scaleIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
     }
 
     /* ---- LEFT PANEL ---- */
     .page-left {
-      width: 42%; background: linear-gradient(160deg, #0D1B2A 0%, #1a3a5c 60%, #0d2137 100%);
-      padding: 50px 40px; display: flex; flex-direction: column; justify-content: center;
-      position: relative; overflow: hidden; flex-shrink: 0;
+      width:44%; background:linear-gradient(160deg,#0D1B2A 0%,#0d2a4a 55%,#0a1f38 100%);
+      padding:48px 38px; display:flex; flex-direction:column; justify-content:center;
+      position:relative; overflow:hidden; flex-shrink:0;
     }
-    .page-left::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,193,7,0.08); }
-    .page-left::after  { content: ''; position: absolute; bottom: -40px; left: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(229,57,53,0.07); }
+    /* Animated orbs */
+    .orb { position:absolute; border-radius:50%; filter:blur(40px); pointer-events:none; }
+    .orb-1 { width:220px;height:220px; background:rgba(229,57,53,0.18); top:-60px;right:-60px; animation:orb1 7s ease-in-out infinite; }
+    .orb-2 { width:180px;height:180px; background:rgba(255,193,7,0.12); bottom:-50px;left:-50px; animation:orb2 9s ease-in-out infinite; }
+    .orb-3 { width:120px;height:120px; background:rgba(21,101,192,0.15); top:50%;left:50%; animation:orb3 6s ease-in-out infinite; }
+    .page-left-bg { position:absolute;inset:0; background:url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80') center/cover no-repeat; opacity:0.05; }
 
-    .pl-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; position: relative; }
-    .pl-brand .logo-icon { width: 42px; height: 42px; background: linear-gradient(135deg, #FFC107, #ff8f00); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.1rem; box-shadow: 0 4px 14px rgba(255,193,7,0.4); }
-    .pl-brand .logo-text { font-size: 1.2rem; font-weight: 800; color: #fff; }
-    .pl-brand .logo-text span { color: #FFC107; }
+    /* Logo centered + animated */
+    .pl-logo-wrap { display:flex; flex-direction:column; align-items:center; margin-bottom:28px; position:relative; animation:fadeInDown 0.7s 0.1s both; }
+    .pl-logo-img { width:80px;height:80px; border-radius:20px; object-fit:contain; background:#fff; padding:6px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.4); animation:floatLogo 4s ease-in-out infinite, pulse2 2.5s 1s infinite; }
+    .pl-logo-name { font-size:1.3rem; font-weight:800; color:#fff; margin-top:10px; letter-spacing:0.3px; }
+    .pl-logo-name span { color:#FFC107; }
+    .pl-logo-tag { font-size:0.72rem; color:rgba(255,255,255,0.5); letter-spacing:2px; text-transform:uppercase; margin-top:3px; }
 
-    .page-left h2 { font-size: 1.5rem; font-weight: 800; color: #fff; line-height: 1.3; margin-bottom: 12px; position: relative; }
-    .page-left > p { color: rgba(255,255,255,0.6); font-size: 0.84rem; line-height: 1.7; margin-bottom: 28px; position: relative; }
+    .page-left h2 { font-size:1.45rem; font-weight:800; color:#fff; line-height:1.35; margin-bottom:10px; position:relative; text-align:center; animation:fadeInUp 0.7s 0.2s both; }
+    .page-left > p { color:rgba(255,255,255,0.55); font-size:0.82rem; line-height:1.7; margin-bottom:24px; position:relative; text-align:center; animation:fadeInUp 0.7s 0.3s both; }
 
-    .pl-perks { list-style: none; padding: 0; margin: 0 0 32px; position: relative; }
-    .pl-perks li { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.8); font-size: 0.82rem; margin-bottom: 12px; }
-    .pl-perks li i { color: #FFC107; font-size: 0.85rem; }
+    .pl-perks { list-style:none; padding:0; margin:0 0 28px; position:relative; }
+    .pl-perks li { display:flex; align-items:center; gap:10px; color:rgba(255,255,255,0.8); font-size:0.81rem; margin-bottom:11px;
+      animation:slideRight 0.5s both; }
+    .pl-perks li:nth-child(1){animation-delay:0.35s} .pl-perks li:nth-child(2){animation-delay:0.45s}
+    .pl-perks li:nth-child(3){animation-delay:0.55s} .pl-perks li:nth-child(4){animation-delay:0.65s}
+    .pl-perks li i { color:#FFC107; font-size:0.85rem; flex-shrink:0; }
 
-    .pl-stats { display: flex; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 22px; position: relative; }
-    .pl-stats div { flex: 1; text-align: center; }
-    .pl-stats div:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.12); }
-    .pl-stats span { display: block; font-size: 1.3rem; font-weight: 800; color: #FFC107; }
-    .pl-stats small { font-size: 0.72rem; color: rgba(255,255,255,0.5); }
+    .pl-stats { display:flex; border-top:1px solid rgba(255,255,255,0.1); padding-top:20px; position:relative; animation:fadeInUp 0.7s 0.7s both; }
+    .pl-stats div { flex:1; text-align:center; }
+    .pl-stats div:not(:last-child) { border-right:1px solid rgba(255,255,255,0.1); }
+    .pl-stats span { display:block; font-size:1.25rem; font-weight:800; color:#FFC107; }
+    .pl-stats small { font-size:0.7rem; color:rgba(255,255,255,0.45); }
 
     /* ---- RIGHT PANEL ---- */
-    .page-right { flex: 1; padding: 50px 44px; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
+    .page-right { flex:1; padding:50px 44px; display:flex; flex-direction:column; justify-content:center; overflow-y:auto; animation:fadeInUp 0.6s 0.2s both; }
+    .page-right h3 { font-size:1.6rem; font-weight:800; color:#0D1B2A; margin-bottom:4px; }
+    .page-right .sub { font-size:0.85rem; color:#888; margin-bottom:28px; }
 
-    .page-right h3 { font-size: 1.6rem; font-weight: 800; color: #0D1B2A; margin-bottom: 4px; }
-    .page-right .sub { font-size: 0.85rem; color: #888; margin-bottom: 30px; }
+    .form-grp { display:flex; flex-direction:column; gap:5px; margin-bottom:16px; }
+    .form-grp label { font-size:0.8rem; font-weight:600; color:#555; }
+    .finput { display:flex; align-items:center; gap:10px; border:1.5px solid #e8e8e8; border-radius:10px; padding:12px 14px; transition:all 0.25s; background:#fff; }
+    .finput:focus-within { border-color:#E53935; box-shadow:0 0 0 3px rgba(229,57,53,0.1); transform:translateY(-1px); }
+    .finput > i { color:#E53935; font-size:0.85rem; flex-shrink:0; }
+    .finput input { flex:1; border:none; outline:none; font-size:0.88rem; color:#333; font-family:'Poppins',sans-serif; background:transparent; }
+    .eye-btn { background:none; border:none; cursor:pointer; color:#aaa; font-size:0.85rem; padding:0; transition:color 0.2s; }
+    .eye-btn:hover { color:#E53935; }
 
-    .form-grp { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
-    .form-grp label { font-size: 0.8rem; font-weight: 600; color: #555; }
-    .finput { display: flex; align-items: center; gap: 10px; border: 1.5px solid #e8e8e8; border-radius: 10px; padding: 12px 14px; transition: border-color 0.2s, box-shadow 0.2s; background: #fff; }
-    .finput:focus-within { border-color: #FFC107; box-shadow: 0 0 0 3px rgba(255,193,7,0.1); }
-    .finput > i { color: #E53935; font-size: 0.85rem; flex-shrink: 0; }
-    .finput input { flex: 1; border: none; outline: none; font-size: 0.88rem; color: #333; font-family: 'Poppins', sans-serif; background: transparent; }
-    .eye-btn { background: none; border: none; cursor: pointer; color: #aaa; font-size: 0.85rem; padding: 0; transition: color 0.2s; }
-    .eye-btn:hover { color: #E53935; }
+    .form-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+    .check-label { display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#666; cursor:pointer; }
+    .check-label input { accent-color:#E53935; width:15px; height:15px; }
+    .forgot { font-size:0.8rem; color:#E53935; font-weight:600; text-decoration:none; }
+    .forgot:hover { text-decoration:underline; }
 
-    .form-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-    .check-label { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #666; cursor: pointer; }
-    .check-label input { accent-color: #E53935; width: 15px; height: 15px; }
-    .forgot { font-size: 0.8rem; color: #E53935; font-weight: 600; text-decoration: none; }
-    .forgot:hover { text-decoration: underline; }
+    .btn-submit { width:100%; background:linear-gradient(135deg,#E53935,#c62828); color:#fff; border:none; padding:14px; border-radius:10px; font-size:0.95rem; font-weight:700; cursor:pointer; transition:all 0.25s; display:flex; align-items:center; justify-content:center; gap:8px; font-family:'Poppins',sans-serif; margin-bottom:20px; box-shadow:0 4px 16px rgba(229,57,53,0.3); }
+    .btn-submit:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(229,57,53,0.45); }
+    .btn-submit:active { transform:translateY(0); }
 
-    .btn-submit { width: 100%; background: #E53935; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Poppins', sans-serif; margin-bottom: 20px; }
-    .btn-submit:hover { background: #c62828; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(229,57,53,0.35); }
+    .divider { display:flex; align-items:center; gap:12px; color:#bbb; font-size:0.78rem; margin-bottom:16px; }
+    .divider::before,.divider::after { content:''; flex:1; height:1px; background:#e8e8e8; }
 
-    .divider { display: flex; align-items: center; gap: 12px; color: #bbb; font-size: 0.78rem; margin-bottom: 16px; }
-    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e8e8e8; }
+    .social-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:22px; }
+    .soc-btn { display:flex; align-items:center; justify-content:center; gap:8px; padding:11px; border:1.5px solid #e8e8e8; border-radius:10px; background:#fff; font-size:0.82rem; font-weight:600; cursor:pointer; transition:all 0.2s; font-family:'Poppins',sans-serif; color:#444; }
+    .soc-btn:hover { border-color:#ccc; background:#f9f9f9; transform:translateY(-1px); box-shadow:0 4px 12px rgba(0,0,0,0.08); }
+    .soc-btn .fa-google { color:#EA4335; } .soc-btn .fa-facebook-f { color:#1877F2; }
 
-    .social-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
-    .soc-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 11px; border: 1.5px solid #e8e8e8; border-radius: 10px; background: #fff; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Poppins', sans-serif; color: #444; }
-    .soc-btn:hover { border-color: #ccc; background: #f9f9f9; transform: translateY(-1px); }
-    .soc-btn .fa-google { color: #EA4335; }
-    .soc-btn .fa-facebook-f { color: #1877F2; }
+    .switch-link { text-align:center; font-size:0.83rem; color:#888; }
+    .switch-link a { color:#E53935; font-weight:700; text-decoration:none; }
+    .switch-link a:hover { text-decoration:underline; }
 
-    .switch-link { text-align: center; font-size: 0.83rem; color: #888; }
-    .switch-link a { color: #E53935; font-weight: 700; text-decoration: none; }
-    .switch-link a:hover { text-decoration: underline; }
+    .back-home { display:inline-flex; align-items:center; gap:6px; color:rgba(255,255,255,0.5); font-size:0.78rem; text-decoration:none; margin-bottom:20px; transition:color 0.2s; position:relative; }
+    .back-home:hover { color:#FFC107; }
 
-    .back-home { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.55); font-size: 0.78rem; text-decoration: none; margin-bottom: 24px; transition: color 0.2s; position: relative; }
-    .back-home:hover { color: #FFC107; }
-
-    /* Hero bg image */
-    .page-left-bg {
-      position: absolute; inset: 0;
-      background: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80') center/cover no-repeat;
-      opacity: 0.06;
+    @media (max-width:700px) {
+      body { padding:0; align-items:flex-start; background:#f0f2f5; }
+      .page-left { display:none; }
+      .page-card { border-radius:0; min-height:100vh; box-shadow:none; }
+      .page-right { padding:32px 20px 40px; justify-content:flex-start; }
     }
-
-    @media (max-width: 700px) {
-      body { padding: 0; align-items: flex-start; min-height: 100vh; }
-      .page-left { display: none; }
-      .page-card { border-radius: 0; min-height: 100vh; box-shadow: none; }
-      .page-right { padding: 32px 20px 40px; justify-content: flex-start; }
-    }
-    @media (max-width: 400px) {
-      .page-right { padding: 28px 16px 32px; }
-      .page-right h3 { font-size: 1.3rem; }
-      .social-row { grid-template-columns: 1fr; }
+    @media (max-width:400px) {
+      .page-right { padding:28px 16px 32px; }
+      .page-right h3 { font-size:1.3rem; }
+      .social-row { grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -122,13 +137,17 @@
   <!-- LEFT -->
   <div class="page-left">
     <div class="page-left-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
     <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
-    <div class="pl-brand">
-      <img src="images/logo.jpeg" alt="City Real Space" style="height:42px;width:42px;object-fit:contain;border-radius:10px;flex-shrink:0;"/>
-      <span class="logo-text">City <span>Real</span> Space</span>
+    <div class="pl-logo-wrap">
+      <img src="images/logo.jpeg" alt="City Real Space" class="pl-logo-img"/>
+      <div class="pl-logo-name">City <span>Real</span> Space</div>
+      <div class="pl-logo-tag">Gujarat's Most Trusted Platform</div>
     </div>
-    <h2>Gujarat's Most Trusted<br/>Real Estate Platform</h2>
-    <p>Join 8,200+ happy clients. Buy, Sell & Invest in verified properties across Ahmedabad, Gandhinagar & beyond.</p>
+    <h2>Welcome Back to<br/>Your Dream Home</h2>
+    <p>Join 8,200+ happy clients. Buy, Sell & Invest in verified properties across Gujarat.</p>
     <ul class="pl-perks">
       <li><i class="fa-solid fa-circle-check"></i> 12,500+ Verified Listings</li>
       <li><i class="fa-solid fa-circle-check"></i> Free Property Consultation</li>

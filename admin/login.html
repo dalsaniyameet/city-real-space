@@ -9,42 +9,94 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
+    @keyframes fadeInUp  { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes scaleIn   { from{opacity:0;transform:scale(0.8)} to{opacity:1;transform:scale(1)} }
+    @keyframes floatLogo { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-12px) rotate(2deg)} }
+    @keyframes pulse2    { 0%,100%{box-shadow:0 0 0 0 rgba(21,101,192,0.6)} 70%{box-shadow:0 0 0 20px rgba(21,101,192,0)} }
+    @keyframes orb1      { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-25px) scale(1.15)} }
+    @keyframes orb2      { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-25px,30px) scale(0.88)} }
+    @keyframes orb3      { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,20px)} }
+    @keyframes shimmerBg { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+    @keyframes badgePop  { 0%{opacity:0;transform:scale(0.5) translateY(-10px)} 100%{opacity:1;transform:scale(1) translateY(0)} }
+
     *{margin:0;padding:0;box-sizing:border-box;}
-    body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0D1B2A 0%,#1a3a5c 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;}
-    .box{background:#fff;border-radius:20px;padding:48px 40px;width:100%;max-width:420px;box-shadow:0 32px 80px rgba(0,0,0,0.35);}
-    .logo{text-align:center;margin-bottom:32px;}
-    .logo img{height:56px;width:auto;object-fit:contain;margin-bottom:12px;}
-    .logo h2{font-size:1.4rem;font-weight:800;color:#0D1B2A;}
-    .logo p{font-size:0.82rem;color:#888;margin-top:4px;}
-    .grp{margin-bottom:18px;}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:linear-gradient(135deg,#020c1b 0%,#0a1628 40%,#0d2040 70%,#020c1b 100%);
+      background-size:400% 400%;
+      animation:shimmerBg 12s ease infinite;
+      min-height:100vh;display:flex;align-items:center;justify-content:center;
+      position:relative;overflow:hidden;
+    }
+    /* Background orbs */
+    body::before { content:''; position:fixed; width:500px;height:500px; border-radius:50%; background:radial-gradient(circle,rgba(21,101,192,0.15),transparent 70%); top:-100px;right:-100px; animation:orb1 10s ease-in-out infinite; pointer-events:none; }
+    body::after  { content:''; position:fixed; width:400px;height:400px; border-radius:50%; background:radial-gradient(circle,rgba(229,57,53,0.08),transparent 70%); bottom:-80px;left:-80px; animation:orb2 13s ease-in-out infinite; pointer-events:none; }
+
+    .box{
+      background:rgba(255,255,255,0.97);
+      border-radius:24px;padding:48px 40px;width:100%;max-width:440px;
+      box-shadow:0 40px 100px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+      animation:scaleIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
+      position:relative;overflow:hidden;
+    }
+    .box::before { content:''; position:absolute; top:0;left:0;right:0;height:4px; background:linear-gradient(90deg,#1565c0,#42a5f5,#1565c0); background-size:200% 100%; animation:shimmerBg 3s linear infinite; }
+
+    /* Admin badge */
+    .admin-badge {
+      display:inline-flex;align-items:center;gap:6px;
+      background:linear-gradient(135deg,#1565c0,#0d47a1);
+      color:#fff;font-size:0.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+      padding:4px 14px;border-radius:50px;margin-bottom:20px;
+      animation:badgePop 0.6s 0.3s cubic-bezier(0.175,0.885,0.32,1.275) both;
+      box-shadow:0 4px 14px rgba(21,101,192,0.4);
+    }
+
+    .logo{text-align:center;margin-bottom:28px;animation:fadeInUp 0.6s 0.1s both;display:flex;flex-direction:column;align-items:center;}
+    .logo-img-wrap {
+      display:inline-block;margin-bottom:14px;
+      animation:floatLogo 4s ease-in-out infinite, pulse2 2.5s 0.8s infinite;
+    }
+    .logo img{height:72px;width:72px;object-fit:contain;border-radius:18px;background:#fff;padding:6px;box-shadow:0 8px 28px rgba(0,0,0,0.2);display:block;}
+    .logo h2{font-size:1.4rem;font-weight:800;color:#0D1B2A;margin-bottom:3px;}
+    .logo p{font-size:0.8rem;color:#888;}
+
+    .grp{margin-bottom:16px;animation:fadeInUp 0.5s both;}
+    .grp:nth-child(1){animation-delay:0.25s} .grp:nth-child(2){animation-delay:0.35s}
     .grp label{display:block;font-size:0.8rem;font-weight:600;color:#555;margin-bottom:6px;}
-    .inp{display:flex;align-items:center;gap:10px;border:1.5px solid #e8e8e8;border-radius:10px;padding:12px 14px;transition:border-color 0.2s;}
-    .inp:focus-within{border-color:#E53935;box-shadow:0 0 0 3px rgba(229,57,53,0.1);}
-    .inp i{color:#E53935;font-size:0.85rem;flex-shrink:0;}
+    .inp{display:flex;align-items:center;gap:10px;border:1.5px solid #e8e8e8;border-radius:10px;padding:12px 14px;transition:all 0.25s;}
+    .inp:focus-within{border-color:#1565c0;box-shadow:0 0 0 3px rgba(21,101,192,0.12);transform:translateY(-1px);}
+    .inp i{color:#1565c0;font-size:0.85rem;flex-shrink:0;}
     .inp input{flex:1;border:none;outline:none;font-size:0.88rem;color:#333;font-family:'Poppins',sans-serif;}
-    .btn{width:100%;background:#E53935;color:#fff;border:none;padding:14px;border-radius:10px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;}
-    .btn:hover{background:#c62828;transform:translateY(-1px);}
+
+    .btn{width:100%;background:linear-gradient(135deg,#1565c0,#0d47a1);color:#fff;border:none;padding:14px;border-radius:10px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:'Poppins',sans-serif;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;box-shadow:0 4px 16px rgba(21,101,192,0.35);animation:fadeInUp 0.5s 0.45s both;}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(21,101,192,0.5);}
+    .btn:active{transform:translateY(0);}
     .btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+
     .err{background:#fff5f5;border:1px solid #ffcdd2;color:#c62828;padding:10px 14px;border-radius:8px;font-size:0.82rem;margin-bottom:16px;display:none;align-items:center;gap:8px;}
-    .back{text-align:center;margin-top:20px;font-size:0.82rem;color:#888;}
-    .back a{color:#E53935;font-weight:600;text-decoration:none;}
+    .back{text-align:center;margin-top:20px;font-size:0.82rem;color:#888;animation:fadeInUp 0.5s 0.55s both;}
+    .back a{color:#1565c0;font-weight:600;text-decoration:none;}
     .hidden{display:none!important;}
+
     /* OTP boxes */
     .otp-boxes{display:flex;gap:10px;justify-content:center;margin:20px 0;}
     .otp-boxes input{width:46px;height:52px;border:1.5px solid #e8e8e8;border-radius:10px;text-align:center;font-size:1.4rem;font-weight:700;color:#0D1B2A;font-family:'Poppins',sans-serif;outline:none;transition:all 0.2s;}
-    .otp-boxes input:focus{border-color:#E53935;box-shadow:0 0 0 3px rgba(229,57,53,0.1);}
+    .otp-boxes input:focus{border-color:#1565c0;box-shadow:0 0 0 3px rgba(21,101,192,0.12);background:#eff6ff;}
     .otp-info{text-align:center;font-size:0.82rem;color:#888;margin-bottom:8px;}
     .otp-info strong{color:#0D1B2A;}
     .resend-row{text-align:center;margin-top:12px;font-size:0.8rem;color:#aaa;}
-    .resend-row button{background:none;border:none;color:#E53935;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;font-size:0.8rem;}
+    .resend-row button{background:none;border:none;color:#1565c0;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;font-size:0.8rem;}
   </style>
 </head>
 <body>
 <div class="box">
   <div class="logo">
-    <img src="../images/logo.jpeg" alt="City Real Space"/>
+    <div class="logo-img-wrap">
+      <img src="../images/logo.jpeg" alt="City Real Space"/>
+    </div>
     <h2>Admin Panel</h2>
     <p>City Real Space — Secure Access</p>
+    <div class="admin-badge"><i class="fa-solid fa-shield-halved"></i> Admin Access Only</div>
   </div>
 
   <div class="err" id="errMsg"><i class="fa-solid fa-circle-exclamation"></i> <span id="errText"></span></div>

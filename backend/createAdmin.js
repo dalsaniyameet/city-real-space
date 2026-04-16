@@ -1,4 +1,4 @@
-// Run this ONCE to create admin user:
+// Run this ONCE to create admin users:
 // node createAdmin.js
 
 require('dotenv').config();
@@ -8,8 +8,10 @@ const User = require('./models/User');
 async function createAdmin() {
   await mongoose.connect(process.env.MONGO_URI);
 
+  // Delete existing admins
   await User.deleteMany({ role: 'admin' });
 
+  // Admin 1 — Shriji
   await User.create({
     firstName: 'Shriji',
     lastName: 'Patel',
@@ -21,9 +23,21 @@ async function createAdmin() {
     isVerified: true
   });
 
-  console.log('✅ Admin created!');
-  console.log('   Email:    patelshriji72@gmail.com');
-  console.log('   Password: CRS@Meet#2026!');
+  // Admin 2 — City Real Space (info@)
+  await User.create({
+    firstName: 'City',
+    lastName: 'Admin',
+    email: 'info@cityrealspace.com',
+    phone: '9825031247',
+    password: 'CRS@Info#2026!',
+    role: 'admin',
+    city: 'Ahmedabad',
+    isVerified: true
+  });
+
+  console.log('✅ Admins created!');
+  console.log('   1. patelshriji72@gmail.com  / CRS@Meet#2026!');
+  console.log('   2. info@cityrealspace.com   / CRS@Info#2026!');
   process.exit(0);
 }
 
