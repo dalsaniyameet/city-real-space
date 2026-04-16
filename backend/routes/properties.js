@@ -199,6 +199,25 @@ router.put('/:id/owner', protect, async (req, res) => {
   }
 });
 
+// POST /api/properties/:id/contact — increment recentContacts (last 4 days window)
+router.post('/:id/contact', async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id);
+    if (!property) return res.status(404).json({ success: false });
+    // Reset counter if last reset was > 4 days ago
+    const fourDays = 4 * 24 * 60 * 60 * 1000;
+    if (Date.now() - new Date(property.lastContactReset).getTime() > fourDays) {
+      property.recentContacts = 0;
+      property.lastContactReset = new Date();
+    }
+    property.recentContacts += 1;
+    await property.save();
+    res.json({ success: true, recentContacts: property.recentContacts });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // POST /api/properties/:id/save — save to favorites
 router.post('/:id/save', protect, async (req, res) => {
   try {

@@ -243,9 +243,10 @@ function startCardImageAutoScroll() {
   });
 }
 
-// ===== PROPERTY SLIDER (smooth infinite marquee) =====
+// ===== PROPERTY SLIDER (smooth infinite marquee + drag/touch) =====
 function initSlider(sliderId, prevId, nextId) {
   const slider = document.getElementById(sliderId);
+  const wrap = slider.parentElement;
 
   // Duplicate cards for seamless loop
   const origCards = Array.from(slider.children);
@@ -257,7 +258,7 @@ function initSlider(sliderId, prevId, nextId) {
   };
 
   let offset = 0;
-  let speed = 0.4; // px per frame — very slow
+  let speed = 0.4;
   let paused = false;
   let raf;
 
@@ -269,17 +270,64 @@ function initSlider(sliderId, prevId, nextId) {
     }
     raf = requestAnimationFrame(animate);
   }
-
   animate();
 
   // Pause on hover
-  slider.parentElement.addEventListener('mouseenter', () => paused = true);
-  slider.parentElement.addEventListener('mouseleave', () => paused = false);
+  wrap.addEventListener('mouseenter', () => paused = true);
+  wrap.addEventListener('mouseleave', () => paused = false);
 
-  // Manual buttons — jump by one card width
+  // Manual buttons
   const cardW = () => slider.querySelector('.prop-card').offsetWidth + 24;
-  document.getElementById(nextId).addEventListener('click', () => { offset = Math.min(offset + cardW(), totalW() - 1); });
-  document.getElementById(prevId).addEventListener('click', () => { offset = Math.max(offset - cardW(), 0); });
+  document.getElementById(nextId).addEventListener('click', () => {
+    paused = true;
+    offset = Math.min(offset + cardW(), totalW() - 1);
+    slider.style.transform = `translateX(${-offset}px)`;
+    setTimeout(() => paused = false, 2000);
+  });
+  document.getElementById(prevId).addEventListener('click', () => {
+    paused = true;
+    offset = Math.max(offset - cardW(), 0);
+    slider.style.transform = `translateX(${-offset}px)`;
+    setTimeout(() => paused = false, 2000);
+  });
+
+  // ===== MOUSE DRAG =====
+  let isDragging = false, dragStartX = 0, dragStartOffset = 0;
+  wrap.addEventListener('mousedown', e => {
+    isDragging = true;
+    paused = true;
+    dragStartX = e.clientX;
+    dragStartOffset = offset;
+    wrap.style.cursor = 'grabbing';
+  });
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const diff = dragStartX - e.clientX;
+    offset = Math.max(0, Math.min(dragStartOffset + diff, totalW() - 1));
+    slider.style.transform = `translateX(${-offset}px)`;
+  });
+  window.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    wrap.style.cursor = '';
+    setTimeout(() => paused = false, 2000);
+  });
+
+  // ===== TOUCH SWIPE =====
+  let touchStartX = 0, touchStartOffset = 0;
+  wrap.addEventListener('touchstart', e => {
+    paused = true;
+    touchStartX = e.touches[0].clientX;
+    touchStartOffset = offset;
+  }, { passive: true });
+  wrap.addEventListener('touchmove', e => {
+    const diff = touchStartX - e.touches[0].clientX;
+    offset = Math.max(0, Math.min(touchStartOffset + diff, totalW() - 1));
+    slider.style.transform = `translateX(${-offset}px)`;
+  }, { passive: true });
+  wrap.addEventListener('touchend', () => {
+    setTimeout(() => paused = false, 2000);
+  });
 }
 loadAllProperties();
 

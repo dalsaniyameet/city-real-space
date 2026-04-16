@@ -306,7 +306,8 @@ select, input { font-family: 'Poppins', sans-serif; border: none; outline: none;
 .btn-offer:hover { background: #c62828; transform: scale(1.04); }
 
 /* ===== SLIDER ===== */
-.slider-wrap { overflow: hidden; }
+.slider-wrap { overflow: hidden; cursor: grab; user-select: none; }
+.slider-wrap:active { cursor: grabbing; }
 .cards-slider { display: flex; gap: 24px; will-change: transform; }
 .cards-slider .prop-card { min-width: 300px; flex-shrink: 0; }
 .slider-controls { display: flex; gap: 8px; }
@@ -578,7 +579,7 @@ select, input { font-family: 'Poppins', sans-serif; border: none; outline: none;
 .slide-label p { color: rgba(255,255,255,0.8); font-size: 0.85rem; display: flex; align-items: center; gap: 6px; margin: 0; }
 .slide-label p i { color: var(--yellow); }
 /* ===== HERO (no search box inside) ===== */
-.hero { min-height: 70vh; padding-top: 105px; }
+.hero { min-height: 70vh; padding-top: 0; }
 .vslider-wrap { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.18); }
 .vslider { position: relative; height: 520px; }
 .vslide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease; pointer-events: none; }
@@ -638,7 +639,7 @@ select, input { font-family: 'Poppins', sans-serif; border: none; outline: none;
 }
 .auth-overlay { position: fixed; inset: 0; z-index: 2000; background: rgba(13,27,42,0.75); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity 0.15s; overflow-y: auto; }
 .auth-overlay.open { opacity: 1; pointer-events: all; }
-.auth-modal { background: #fff; border-radius: 20px; overflow: hidden; display: flex; width: 100%; max-width: 900px; max-height: 90vh; box-shadow: 0 32px 80px rgba(0,0,0,0.35); transform: translateY(30px) scale(0.97); transition: transform 0.15s ease; position: relative; }
+.auth-modal { background: #fff; border-radius: 20px; overflow: hidden; display: flex; width: 100%; max-width: 820px; max-height: 88vh; box-shadow: 0 32px 80px rgba(0,0,0,0.35); transform: translateY(30px) scale(0.97); transition: transform 0.15s ease; position: relative; overflow-y: auto; }
 .auth-overlay.open .auth-modal { transform: translateY(0) scale(1); }
 /* Auto popup entrance — thodi delay sathe animate thay */
 .auth-overlay.open { animation: fadeInOverlay 0.3s ease forwards; }

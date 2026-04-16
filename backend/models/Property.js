@@ -46,7 +46,9 @@ const propertySchema = new mongoose.Schema({
   isApproved: { type: Boolean, default: false },
   isRejected: { type: Boolean, default: false },
   rejectedReason: { type: String, default: '' },
-  views:     { type: Number, default: 0 },
+  views:          { type: Number, default: 0 },
+  recentContacts:  { type: Number, default: 0 },
+  lastContactReset:{ type: Date, default: Date.now },
   agent: {
     name:  { type: String, default: '' },
     phone: { type: String, default: '' },

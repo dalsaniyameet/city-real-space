@@ -15,7 +15,14 @@ table { width: 100%; overflow-x: auto; display: block; }
 
 /* ===== HEADER ===== */
 .header-inner { flex-wrap: nowrap; gap: 8px; }
-.logo img { height: 40px !important; }
+.logo img, .header-logo-img { height: 40px !important; width: auto !important; }
+
+@media (max-width: 480px) {
+  .logo img, .header-logo-img { height: 36px !important; }
+}
+@media (max-width: 360px) {
+  .logo img, .header-logo-img { height: 32px !important; }
+}
 
 /* Hide login text on very small screens, keep icon */
 @media (max-width: 400px) {
@@ -177,21 +184,23 @@ table { width: 100%; overflow-x: auto; display: block; }
 
 /* ===== AUTH MODAL ===== */
 @media (max-width: 768px) {
-  .auth-overlay { align-items: flex-start; padding: 10px; overflow-y: auto; }
-  .auth-modal { flex-direction: column; max-height: none; border-radius: 16px; width: 100%; position: relative; }
+  .auth-overlay { align-items: center; padding: 16px; overflow-y: auto; }
+  .auth-modal { flex-direction: column; max-height: 92vh; border-radius: 16px; width: 100%; position: relative; overflow-y: auto; }
   .auth-left { display: none; }
-  .auth-right { padding: 50px 18px 24px; overflow-y: visible; }
+  .auth-right { padding: 44px 18px 20px; overflow-y: visible; }
   .auth-close { position: fixed; top: 14px; right: 14px; z-index: 9999; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.2); }
   .form-row-2 { grid-template-columns: 1fr; }
 }
 @media (max-width: 400px) {
-  .auth-right { padding: 50px 14px 20px; }
+  .auth-overlay { padding: 10px; }
+  .auth-modal { max-height: 95vh; }
+  .auth-right { padding: 44px 14px 16px; }
 }
 
 /* ===== INQUIRY MODAL ===== */
 @media (max-width: 768px) {
   .inq-overlay { align-items: flex-start; padding: 10px; overflow-y: auto; }
-  .inq-modal { flex-direction: column; max-height: none; border-radius: 16px; width: 100%; position: relative; }
+  .inq-modal { flex-direction: column; max-height: 92vh; overflow-y: auto; border-radius: 16px; width: 100%; position: relative; }
   .inq-left { display: none; }
   .inq-right { padding: 50px 18px 24px; overflow-y: visible; }
   .inq-close { position: fixed; top: 14px; right: 14px; z-index: 9999; background: #333; }
@@ -532,6 +541,28 @@ table { width: 100%; overflow-x: auto; display: block; }
   .live-chat-widget { max-height: 70vh; }
 }
 
+/* ===== USER MENU DROPDOWN — MOBILE FIX ===== */
+@media (max-width: 768px) {
+  #userDropdown {
+    position: fixed !important;
+    top: 97px !important;
+    right: 8px !important;
+    left: auto !important;
+    bottom: auto !important;
+    width: 220px !important;
+    min-width: unset !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2) !important;
+    z-index: 99999 !important;
+    border: 1px solid #f0f0f0 !important;
+  }
+  #userDropdown a,
+  #userDropdown button {
+    padding: 14px 18px !important;
+    font-size: 0.9rem !important;
+  }
+}
+
 /* ===== VERY SMALL SCREENS (320px) ===== */
 @media (max-width: 360px) {
   .container { padding: 0 10px; }
@@ -699,7 +730,7 @@ body, html { max-width: 100vw; overflow-x: hidden; }
   }
   .auth-modal,
   .inq-modal {
-    max-height: none !important;
+    max-height: 92vh !important;
     min-height: auto !important;
     flex-direction: column !important;
     width: 100% !important;

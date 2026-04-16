@@ -677,6 +677,36 @@ function renderProperty(p) {
     ).join('');
   }
 
+  // Left/Right arrows on main image
+  const mainImgWrap = document.querySelector('.pd-main-img');
+  if (imgs.length > 1 && !mainImgWrap.querySelector('.pd-arr')) {
+    mainImgWrap.insertAdjacentHTML('beforeend', `
+      <button class="pd-arr pd-arr-prev" onclick="pdImgMove(-1)" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);z-index:5;width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,0.85);color:#333;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.2)"><i class="fa-solid fa-chevron-left"></i></button>
+      <button class="pd-arr pd-arr-next" onclick="pdImgMove(1)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);z-index:5;width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,0.85);color:#333;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.2)"><i class="fa-solid fa-chevron-right"></i></button>
+      <div style="position:absolute;bottom:10px;right:12px;background:rgba(0,0,0,0.5);color:#fff;font-size:0.72rem;font-weight:600;padding:3px 10px;border-radius:20px;z-index:5" id="pdImgCounter">1 / ${imgs.length}</div>
+    `);
+  }
+
+  // Dynamic contact counter — only show real data from backend
+  const contactCount = p.recentContacts || 0;
+  const galleryEl = document.querySelector('.pd-gallery');
+  if (galleryEl && !document.getElementById('pdContactCounter') && contactCount > 0) {
+    galleryEl.insertAdjacentHTML('afterend', `
+      <div id="pdContactCounter" style="display:flex;align-items:center;gap:10px;background:#fff8e1;border:1.5px solid #ffe082;border-radius:10px;padding:10px 16px;margin-bottom:16px;">
+        <div style="display:flex;">
+          ${Array.from({length:Math.min(contactCount,4)}).map((_,i)=>`<div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,${['#E53935','#1565c0','#2e7d32','#6a1b9a'][i%4]},${['#c62828','#0d47a1','#1b5e20','#4a148c'][i%4]});border:2px solid #fff;margin-left:${i>0?'-8px':'0'};display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:800;color:#fff">${['A','R','S','M'][i%4]}</div>`).join('')}
+        </div>
+        <div>
+          <div style="font-size:0.82rem;font-weight:700;color:#e65100"><i class="fa-solid fa-fire" style="color:#ff6f00;margin-right:4px"></i>${contactCount} people contacted in last 4 days</div>
+          <div style="font-size:0.72rem;color:#f57f17">High demand property — respond quickly!</div>
+        </div>
+      </div>
+    `);
+  }
+
+  // Init swipe after images are set
+  initImageSwipe();
+
   // Badges
   const statusMap = {'for-sale':'For Sale','for-rent':'For Rent','new-launch':'New Launch'};
   const badgeClass = p.status === 'for-rent' ? 'rent' : p.status === 'new-launch' ? 'new' : 'sale';
@@ -764,6 +794,7 @@ function renderProperty(p) {
     const name = document.getElementById('pdName').value.trim();
     const phone = document.getElementById('pdPhone').value.trim();
     if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
+    fetch(`${API}/properties/${p._id}/contact`, { method: 'POST' }).catch(() => {});
     const msg = encodeURIComponent(`Hi, I am ${name} (+91 ${phone}). I am interested in: ${propTitle} (${propLoc}). Please share more details.`);
     window.open(`https://wa.me/919377531247?text=${msg}`, '_blank');
   };
@@ -772,6 +803,7 @@ function renderProperty(p) {
     const name = document.getElementById('pdName').value.trim();
     const phone = document.getElementById('pdPhone').value.trim();
     if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
+    fetch(`${API}/properties/${p._id}/contact`, { method: 'POST' }).catch(() => {});
     try {
       await fetch(`${API}/inquiry`, { method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ name, phone, propertyName: propTitle, lookingFor: 'Get Offer', city: p.location?.city, message: `Callback request for: ${propTitle}` })
@@ -828,16 +860,56 @@ function renderProperty(p) {
 function switchImg(src, el) {
   document.getElementById('pdMainImg').src = src;
   document.querySelectorAll('.pd-thumb').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
+  if (el) el.classList.add('active');
+  // Counter update
+  const thumbs = document.querySelectorAll('.pd-thumb');
+  const counter = document.getElementById('pdImgCounter');
+  if (counter && thumbs.length) {
+    const idx = [...thumbs].findIndex(t => t.classList.contains('active'));
+    counter.textContent = (idx + 1) + ' / ' + thumbs.length;
+  }
+}
+
+function pdImgMove(dir) {
+  const thumbs = document.querySelectorAll('.pd-thumb');
+  if (!thumbs.length) return;
+  let cur = [...thumbs].findIndex(t => t.classList.contains('active'));
+  if (cur === -1) cur = 0;
+  const next = (cur + dir + thumbs.length) % thumbs.length;
+  switchImg(thumbs[next].querySelector('img').src, thumbs[next]);
+}
+
+function initImageSwipe() {
+  const el = document.querySelector('.pd-main-img');
+  if (!el || el._swipeInit) return;
+  el._swipeInit = true;
+  let tx = 0;
+  el.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  el.addEventListener('touchend', e => {
+    const diff = tx - e.changedTouches[0].clientX;
+    if (Math.abs(diff) < 40) return;
+    pdImgMove(diff > 0 ? 1 : -1);
+  }, { passive: true });
 }
 
 function showError(msg) {
   document.getElementById('pdLoading').innerHTML = `
-    <i class="fa-solid fa-triangle-exclamation" style="color:#E53935;font-size:2.5rem;display:block;margin-bottom:16px"></i>
-    <p style="color:#333;font-size:1rem;font-weight:600;margin-bottom:8px">${msg}</p>
-    <div style="display:flex;gap:12px;justify-content:center;margin-top:20px;flex-wrap:wrap">
-      <a href="properties.html" style="background:#E53935;color:#fff;padding:10px 20px;border-radius:8px;font-weight:700;text-decoration:none;font-size:0.88rem">← Back to Properties</a>
-      <button onclick="window.location.reload()" style="background:#f5f5f5;color:#333;padding:10px 20px;border-radius:8px;font-weight:700;border:none;cursor:pointer;font-size:0.88rem;font-family:Poppins,sans-serif"><i class="fa-solid fa-rotate-right"></i> Retry</button>
+    <div style="text-align:center;padding:60px 20px;font-family:Poppins,sans-serif">
+      <div style="font-size:4rem;margin-bottom:16px">🏠</div>
+      <h2 style="color:#0D1B2A;font-size:1.4rem;font-weight:800;margin-bottom:8px">Property Not Found</h2>
+      <p style="color:#888;font-size:0.9rem;margin-bottom:6px">Yeh property abhi available nahi hai ya remove ho gayi hai.</p>
+      <p style="color:#555;font-size:0.88rem;margin-bottom:28px">Ghabrao mat! Hum aapke liye <strong style="color:#E53935">perfect property dhundh sakte hain.</strong></p>
+      <div style="background:linear-gradient(135deg,#0D1B2A,#1a3a5c);border-radius:16px;padding:24px;max-width:420px;margin:0 auto 24px">
+        <p style="color:#FFC107;font-size:0.82rem;font-weight:700;margin-bottom:6px">✨ FREE SERVICE</p>
+        <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">Post Your Requirement</h3>
+        <p style="color:rgba(255,255,255,0.65);font-size:0.82rem;margin-bottom:16px">Apni zaroorat batao — hamare expert 30 minutes mein aapko best options bhejenge.</p>
+        <a href="login.html" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;background:#E53935;color:#fff;padding:13px;border-radius:10px;font-size:0.9rem;font-weight:700;text-decoration:none">
+          <i class="fa-solid fa-paper-plane"></i> Login & Post Requirement
+        </a>
+      </div>
+      <a href="properties.html" style="display:inline-flex;align-items:center;gap:6px;color:#888;font-size:0.85rem;font-weight:600;text-decoration:none">
+        <i class="fa-solid fa-arrow-left"></i> Browse All Properties
+      </a>
     </div>`;
 }
 
@@ -1230,15 +1302,9 @@ function renderTrend(range, btn) {
 }
 
 // ===== FEATURED DEALERS =====
-const DEFAULT_DEALERS = [
-  { name: 'Amit Parmani',   role: 'Senior Property Advisor', exp: '12+ yrs', area: 'Prahlad Nagar, Satellite', phone: '9825031247', tags: ['verified','RERA'], initials: 'AP' },
-  { name: 'Ravi Desai',     role: 'Residential Specialist',  exp: '8+ yrs',  area: 'Bopal, Thaltej, SG Highway', phone: '9825031247', tags: ['verified','Top Rated'], initials: 'RD' },
-  { name: 'Priya Shah',     role: 'Commercial Expert',       exp: '6+ yrs',  area: 'Navrangpura, CG Road', phone: '9825031247', tags: ['verified'], initials: 'PS' },
-];
 
 function renderDealers(p) {
   const area = p.location?.area || '';
-  // Agent from property — show first if exists
   const propAgent = (p.agent && p.agent.name) ? [{
     name: p.agent.name,
     role: 'Property Advisor',
@@ -1249,10 +1315,13 @@ function renderDealers(p) {
     initials: p.agent.initials || p.agent.name.split(' ').map(w=>w[0]).join('').toUpperCase()
   }] : [];
 
-  const dealers = [...propAgent, ...DEFAULT_DEALERS].slice(0, 3);
-  const colors = ['#E53935','#1565c0','#2e7d32','#6a1b9a'];
+  if (!propAgent.length) {
+    document.querySelector('.dealers-box').style.display = 'none';
+    return;
+  }
 
-  document.getElementById('dealersList').innerHTML = dealers.map((d, i) => `
+  const colors = ['#E53935','#1565c0','#2e7d32','#6a1b9a'];
+  document.getElementById('dealersList').innerHTML = propAgent.map((d, i) => `
     <div class="dealer-card">
       <div class="dealer-av-txt" style="background:linear-gradient(135deg,${colors[i%colors.length]},${colors[(i+1)%colors.length]})">${d.initials}</div>
       <div class="dealer-info">
