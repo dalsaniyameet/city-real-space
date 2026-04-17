@@ -143,7 +143,7 @@ function createCard(p) {
             <div class="agent-av">${p.agent}</div>
             <span class="agent-name">${p.agentName}</span>
           </div>
-          <button class="btn-offer" onclick="requireLoginForOffer(event,'${p.title.replace(/'/g,"&apos;")}','${p.loc.replace(/'/g,"&apos;")}')">Get Offer</button>
+          <button class="btn-offer" onclick="requireLoginForOffer(event,'${p.title.replace(/'/g,"&apos;")}','${p.loc.replace(/'/g,"&apos;")}')">Contact Now</button>
         </div>
       </div>
     </div>`;

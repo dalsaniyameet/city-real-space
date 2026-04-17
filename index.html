@@ -129,7 +129,7 @@
 <header class="header" id="header">
   <div class="container header-inner">
     <a href="index.html" class="logo">
-      <img src="images/logo.jpeg" alt="City Real Space" class="header-logo-img" style="height:48px;width:auto;object-fit:contain;"/>
+      <img src="images/logo.jpeg" alt="City Real Space" class="header-logo-img" style="height:56px;width:auto;object-fit:contain;"/>
     </a>
     <nav class="nav" id="nav">
       <a href="index.html">Home</a>
@@ -234,6 +234,7 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
     <p class="hero-tag hero-anim-tag"><i class="fa-solid fa-star"></i> #1 Real Estate Platform in Ahmedabad</p>
     <h1 id="heroTitle"></h1>
     <p class="hero-sub" id="heroSub"></p>
+    <p class="hero-sub" id="heroSub2" style="margin-top:-20px;min-height:1.4em;font-weight:700;"></p>
   </div>
 </section>
 
@@ -1433,18 +1434,6 @@ window.addEventListener('message', function(e) {
 <script>
 function openReqModal() {
   const u = JSON.parse(localStorage.getItem('user') || '{}');
-  const token = localStorage.getItem('token');
-  // If not logged in, show login prompt first
-  if (!token || !u.firstName) {
-    const authOverlay = document.getElementById('authOverlay');
-    if (authOverlay) {
-      authOverlay.classList.add('open');
-      if (typeof switchTab === 'function') switchTab('register');
-    }
-    // After login, open req modal
-    sessionStorage.setItem('openReqAfterLogin', '1');
-    return;
-  }
   if (u.firstName) document.getElementById('hReqName').value = (u.firstName + ' ' + (u.lastName||'')).trim();
   if (u.phone) document.getElementById('hReqPhone').value = u.phone.replace('+91','').trim();
   const o = document.getElementById('reqOverlay');
@@ -1581,9 +1570,30 @@ function submitReqWA() {
 
   function typeSub(i) {
     if (i === 0) subEl.textContent = '';
-    if (i >= subText.length) return;
+    if (i >= subText.length) { setTimeout(() => typeSub2(0), 200); return; }
     subEl.textContent += subText[i];
     setTimeout(() => typeSub(i + 1), 18);
+  }
+
+  const sub2El = document.getElementById('heroSub2');
+  const sub2Parts = [
+    { text: 'The ',      color: '#34d399' },
+    { text: 'Unit ',     color: '#ff6b6b' },
+    { text: 'of ',       color: 'rgba(255,255,255,0.7)' },
+    { text: 'Property ', color: '#34d399' },
+    { text: 'Platform',  color: '#ff6b6b' }
+  ];
+  const sub2Chars = [];
+  sub2Parts.forEach(p => { for (const ch of p.text) sub2Chars.push({ ch, color: p.color }); });
+
+  function typeSub2(i) {
+    if (i === 0) sub2El.innerHTML = '';
+    if (i >= sub2Chars.length) return;
+    const s = document.createElement('span');
+    s.textContent = sub2Chars[i].ch;
+    s.style.color = sub2Chars[i].color;
+    sub2El.appendChild(s);
+    setTimeout(() => typeSub2(i + 1), 28);
   }
 
   // start after splash

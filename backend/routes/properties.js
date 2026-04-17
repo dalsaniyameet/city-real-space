@@ -10,7 +10,9 @@ router.get('/', async (req, res) => {
     const query = { isApproved: true };
 
     if (category)   query.category = category;
-    if (type)       query.type = type;
+    if (type) {
+      query.type = type === 'shop' ? { $in: ['shop','showroom'] } : type;
+    }
     if (status)     query.status = status;
     if (city)       query['location.city'] = new RegExp(city, 'i');
     if (area)       query['location.area'] = new RegExp(area, 'i');

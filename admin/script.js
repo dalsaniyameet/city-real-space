@@ -135,15 +135,13 @@ document.getElementById('pCitySelect').addEventListener('change', function() {
   const city = this.value;
   const areaEl = document.getElementById('pAreaSelect');
   const subEl  = document.getElementById('pSubAreaSelect');
-  const projEl = document.getElementById('pProjectSelect');
   const locs   = Object.keys(cityLocalities[city] || {});
   areaEl.innerHTML = '<option value="">-- Select Locality --</option>' +
     locs.map(l => '<option value="' + l + '">' + l + '</option>').join('') +
     '<option value="__other__">Other (Type Manually)</option>';
   subEl.innerHTML  = '<option value="">-- Select Locality First --</option>';
-  projEl.innerHTML = '<option value="">-- Select Locality First --</option>';
-  document.getElementById('pSubArea').value  = '';
   document.getElementById('pProject').value  = '';
+  document.getElementById('projectDropdown').style.display = 'none';
 });
 
 // Locality change → populate sub-area + projects
@@ -151,45 +149,60 @@ document.getElementById('pAreaSelect').addEventListener('change', function() {
   const city  = document.getElementById('pCitySelect').value;
   const area  = this.value;
   const subEl = document.getElementById('pSubAreaSelect');
-  const projEl = document.getElementById('pProjectSelect');
   if (area === '__other__') {
-    subEl.innerHTML  = '<option value="">-- N/A --</option>';
-    projEl.innerHTML = '<option value="">-- N/A --</option>';
+    subEl.innerHTML = '<option value="">-- N/A --</option>';
     return;
   }
-  const subs     = (cityLocalities[city] && cityLocalities[city][area]) || [];
-  const projects = (cityData[city] && cityData[city][area] && cityData[city][area].projects) || [];
+  const subs = (cityLocalities[city] && cityLocalities[city][area]) || [];
   subEl.innerHTML = '<option value="">-- Select Sub Area --</option>' +
     subs.map(s => '<option value="' + s + '">' + s + '</option>').join('') +
     '<option value="__other__">Other (Type Manually)</option>';
-  projEl.innerHTML = '<option value="">-- Select Project --</option>' +
-    projects.map(p => '<option value="' + p + '">' + p + '</option>').join('') +
-    '<option value="__other__">Other (Type Manually)</option>';
-  document.getElementById('pSubArea').value = '';
+  // Reset project field and refresh dropdown suggestions
   document.getElementById('pProject').value = '';
+  document.getElementById('projectDropdown').style.display = 'none';
 });
 
 // Sub-area select → fill text input
 document.getElementById('pSubAreaSelect').addEventListener('change', function() {
   if (this.value && this.value !== '__other__') {
-    document.getElementById('pSubArea').value = this.value;
-  } else if (this.value === '__other__') {
-    document.getElementById('pSubArea').value = '';
-    document.getElementById('pSubArea').focus();
+    document.getElementById('pSubArea') && (document.getElementById('pSubArea').value = this.value);
   }
 });
 
-// Project select → fill text input
-function onProjectSelectChange() {
-  const sel = document.getElementById('pProjectSelect');
-  const txt = document.getElementById('pProject');
-  if (sel.value && sel.value !== '__other__') {
-    txt.value = sel.value;
-  } else if (sel.value === '__other__') {
-    txt.value = '';
-    txt.focus();
+// Project smart combo
+function onProjectInput(query) {
+  var city = document.getElementById('pCitySelect').value;
+  var area = document.getElementById('pAreaSelect').value;
+  var dropdown = document.getElementById('projectDropdown');
+  // Get projects list for city+area
+  var projects = (cityData[city] && cityData[city][area] && cityData[city][area].projects) || [];
+  // Filter by query
+  var q = query.toLowerCase().trim();
+  var filtered = q ? projects.filter(function(p) { return p.toLowerCase().indexOf(q) !== -1; }) : projects;
+  if (!filtered.length) {
+    dropdown.style.display = 'none';
+    return;
   }
+  dropdown.innerHTML = filtered.map(function(p) {
+    return '<div onclick="selectProject(\'' + p.replace(/'/g,"\\'") + '\')" ' +
+      'style="padding:10px 14px;cursor:pointer;font-size:0.85rem;color:#333;border-bottom:1px solid #f5f5f5;transition:background 0.15s;" ' +
+      'onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'\'">'
+      + '<i class="fa-solid fa-building" style="color:#FF4D4D;margin-right:8px;font-size:0.75rem;"></i>' + p + '</div>';
+  }).join('');
+  dropdown.style.display = 'block';
 }
+
+function selectProject(name) {
+  document.getElementById('pProject').value = name;
+  document.getElementById('projectDropdown').style.display = 'none';
+}
+
+// Close dropdown on outside click
+document.addEventListener('click', function(e) {
+  var dd = document.getElementById('projectDropdown');
+  var inp = document.getElementById('pProject');
+  if (dd && inp && !dd.contains(e.target) && e.target !== inp) dd.style.display = 'none';
+});
 
 // cityData reference for projects — real Ahmedabad societies/projects
 const cityData = {
@@ -562,25 +575,31 @@ let currentPropFilter = 'all';
 let propsCache = {};
 
 function renderPropRow(p) {
-  const isCommercial = p.category === 'commercial' || ['office','shop','showroom','warehouse','factory','coworking','industrial_land'].includes(p.type);
-  const typeLabel = { apartment:'Apartment', villa:'Villa', bungalow:'Bungalow', rowhouse:'Row House', plot:'Plot', office:'Office', shop:'Shop', showroom:'Showroom', warehouse:'Warehouse', factory:'Factory', coworking:'Co-working', industrial_land:'Industrial Land' };
-  const catBadge = isCommercial
+  var isCommercial = p.category === 'commercial' || ['office','shop','showroom','warehouse','factory','coworking','industrial_land'].indexOf(p.type) !== -1;
+  var typeLabel = { apartment:'Apartment', villa:'Villa', bungalow:'Bungalow', rowhouse:'Row House', plot:'Plot', office:'Office', shop:'Shop', showroom:'Showroom', warehouse:'Warehouse', factory:'Factory', coworking:'Co-working', industrial_land:'Industrial Land' };
+  var catBadge = isCommercial
     ? '<span style="color:#60a5fa;font-weight:700;font-size:0.78rem;">Commercial</span><br><small style="color:var(--text3);font-size:0.68rem;">' + (typeLabel[p.type] || p.type) + '</small>'
     : '<span style="color:#34d399;font-weight:700;font-size:0.78rem;">Residential</span><br><small style="color:var(--text3);font-size:0.68rem;">' + (typeLabel[p.type] || p.type) + '</small>';
-  const trendBtn = '<button class="act-btn trending' + (p.isFeatured ? ' active' : '') + '" title="' + (p.isFeatured ? 'Remove Trending' : 'Mark Trending') + '" onclick="toggleTrending(\'' + p._id + '\', ' + (p.isFeatured ? 'true' : 'false') + ')" style="' + (p.isFeatured ? 'background:rgba(245,158,11,0.25);color:#f59e0b;box-shadow:0 0 8px rgba(245,158,11,0.3);' : '') + '"><i class="fa-solid fa-fire"></i></button>';
+  var trendBtn = '<button class="act-btn trending' + (p.isFeatured ? ' active' : '') + '" title="' + (p.isFeatured ? 'Remove Trending' : 'Mark Trending') + '" onclick="toggleTrending(\'' + p._id + '\', ' + (p.isFeatured ? 'true' : 'false') + ')" style="' + (p.isFeatured ? 'background:rgba(245,158,11,0.25);color:#f59e0b;box-shadow:0 0 8px rgba(245,158,11,0.3);' : '') + '"><i class="fa-solid fa-fire"></i></button>';
+  // Listing Score
+  var score = calcPropScore(p);
+  var sc = score >= 75 ? '#10b981' : score >= 50 ? '#3b82f6' : score >= 25 ? '#f59e0b' : '#ef4444';
+  var sb = score >= 75 ? 'rgba(16,185,129,0.12)' : score >= 50 ? 'rgba(59,130,246,0.12)' : score >= 25 ? 'rgba(245,158,11,0.12)' : 'rgba(239,68,68,0.12)';
+  var sl = score >= 75 ? 'ðŸ”¥' : score >= 50 ? 'âš¡' : score >= 25 ? 'âš ï¸' : 'ðŸ“‰';
+  var scoreBadge = '<div style="display:inline-flex;align-items:center;gap:4px;background:' + sb + ';color:' + sc + ';font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;margin-top:3px;">' + sl + ' ' + score + '/100</div>';
   return '<tr>' +
     '<td><div style="display:flex;align-items:center;gap:10px">' +
     (p.images && p.images[0] ? '<img src="' + p.images[0] + '" class="prop-thumb" alt=""/>' : '<div style="width:48px;height:36px;background:rgba(255,255,255,0.05);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#555"><i class="fa-solid fa-image"></i></div>') +
-    '<div class="prop-info"><strong>' + p.title + '</strong><span>' + (p.isFeatured ? '🔥 ' : '') + (p.agent && p.agent.name ? p.agent.name : '') + '</span></div></div></td>' +
+    '<div class="prop-info"><strong>' + p.title + '</strong><span>' + (p.isFeatured ? 'ðŸ”¥ ' : '') + (p.agent && p.agent.name ? p.agent.name : '') + '</span>' + scoreBadge + '</div></div></td>' +
     '<td style="white-space:normal">' + catBadge + '</td>' +
-    '<td>' + (p.location ? p.location.area + ', ' + p.location.city : '—') + '</td>' +
-    '<td><strong>' + (p.priceLabel || '₹' + p.price) + '</strong></td>' +
+    '<td>' + (p.location ? p.location.area + ', ' + p.location.city : 'â€”') + '</td>' +
+    '<td><strong>' + (p.priceLabel || 'â‚¹' + p.price) + '</strong></td>' +
     '<td><span class="badge ' + (p.status === 'for-sale' ? 'badge-green' : p.status === 'for-rent' ? 'badge-blue' : 'badge-orange') + '">' + p.status + '</span></td>' +
     '<td><span class="badge ' + (p.isApproved ? 'badge-green' : 'badge-orange') + '">' + (p.isApproved ? 'Approved' : 'Pending') + '</span></td>' +
     '<td><div class="act-btns">' +
     (!p.isApproved ? '<button class="act-btn approve" title="Approve" onclick="approveProperty(\'' + p._id + '\')"><i class="fa-solid fa-check"></i></button>' : '') +
     trendBtn +
-    '<button class="act-btn edit" title="Edit" onclick="editPropertyById(\'' + p._id + '\')" ><i class="fa-solid fa-pen"></i></button>' +
+    '<button class="act-btn edit" title="Edit" onclick="editPropertyById(\'' + p._id + '\')"><i class="fa-solid fa-pen"></i></button>' +
     '<button class="act-btn del" title="Delete" onclick="deleteProperty(\'' + p._id + '\')"><i class="fa-solid fa-trash"></i></button>' +
     '</div></td></tr>';
 }
@@ -655,7 +674,8 @@ document.getElementById('addPropBtn').addEventListener('click', function() {
   // Reset dynamic dropdowns
   document.getElementById('pAreaSelect').innerHTML = '<option value="">-- Select City First --</option>';
   document.getElementById('pSubAreaSelect').innerHTML = '<option value="">-- Select Locality First --</option>';
-  document.getElementById('pSubArea').value = '';
+  document.getElementById('pProject').value = '';
+  document.getElementById('projectDropdown').style.display = 'none';
   // Reset stepper to step 1
   document.querySelectorAll('.step-panel').forEach(function(p) { p.classList.remove('active','slide-back'); });
   document.querySelectorAll('.stepper-step').forEach(function(t) { t.classList.remove('active','done'); });
@@ -664,88 +684,264 @@ document.getElementById('addPropBtn').addEventListener('click', function() {
   updateStepperProgress(1);
   initAmenitiesGrid([]);
   _ascPrev = -1;
+  filterPropertyTypeByCategory('residential');
   updateAdminScore();
   openModal('propModal');
 });
 
 function editProperty(p) {
+  var ex = p.extraDetails || {};
+  // ===== EDIT MODE: Lock structural fields, only allow editable ones =====
+  var _editMode = !!p._id;
+  // Fields to LOCK in edit mode (structural â€” should not change after posting)
+  var lockFields = ['pCitySelect','pAreaSelect','pSubAreaSelect','pProject','pType','pCategory','pStatus',
+    'pBeds','rBeds','rBaths','rBalconies','rCarpet','rSBA','rFloor','rTotalFloors',
+    'rFacing','rOwnership','rAge','rLift','rCoveredParking','rOpenParking',
+    'rSecurity','rCCTV','rWater','rPowerBackup','rGarden','rGymPool',
+    'rAvailFrom','rSuitableFor','rFurnishing','pAgeOfProperty'];
+  // Fields to KEEP EDITABLE
+  var editFields = ['pTitle','pDesc','pPrice','pPriceLabel','pAgentName','pAgentPhone',
+    'pFeatured','pApproved','pPossession','pReraNo','pAllInclusive','pNegotiable',
+    'pTaxCharges','pBookingAmount','pMaintenance','pAnnualDues','pMembershipCharge',
+    'rMaintenance','rLockIn','rNoticePeriod','rBrokerage'];
+
+  setTimeout(function() {
+    if (!_editMode) return;
+    // Lock structural fields - readonly style (no disabled = value stays visible, no black)
+    lockFields.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.style.pointerEvents = 'none';
+      el.style.cursor = 'not-allowed';
+      if (el.tagName === 'SELECT') {
+        el.style.background = '#f5f5f5';
+        el.style.color = '#555';
+        el.style.border = '1.5px solid #e0e0e0';
+        el.style.appearance = 'none';
+        el.style.webkitAppearance = 'none';
+      } else {
+        el.style.background = '#f5f5f5';
+        el.style.color = '#555';
+      }
+    });
+    // Lock toggle buttons - keep active one visible, dim inactive
+    ['pCategory','pStatus','rLift','rSuitableFor','rSecurity','rCCTV','rWater','rPowerBackup','rGarden','rGymPool'].forEach(function(fid) {
+      document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+        var oc = b.getAttribute('onclick') || '';
+        if (oc.indexOf("'" + fid + "'") !== -1) {
+          b.style.pointerEvents = 'none';
+          b.style.cursor = 'not-allowed';
+          if (!b.classList.contains('active')) b.style.opacity = '0.35';
+        }
+      });
+    });
+    // Lock furnishing toggle
+    document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+      var oc = b.getAttribute('onclick') || '';
+      if (oc.indexOf('setResFurnishing') !== -1) {
+        b.style.pointerEvents = 'none';
+        b.style.cursor = 'not-allowed';
+        if (!b.classList.contains('active')) b.style.opacity = '0.35';
+      }
+    });
+    // Lock BHK + bedroom chips
+    document.querySelectorAll('#bhkChips .hs-chip, #rBedsChips .hs-chip, #rBathsChips .hs-chip, #rBalconiesChips .hs-chip').forEach(function(c) {
+      c.style.pointerEvents = 'none';
+      c.style.cursor = 'not-allowed';
+      if (!c.classList.contains('active')) c.style.opacity = '0.35';
+    });
+    // Lock parking buttons
+    document.querySelectorAll('[onclick*="adjParking"]').forEach(function(b) {
+      b.style.pointerEvents = 'none';
+      b.style.opacity = '0.35';
+      b.style.cursor = 'not-allowed';
+    });
+    // Banner
+    var existing = document.getElementById('editModeBanner');
+    if (existing) existing.remove();
+    var banner = document.createElement('div');
+    banner.id = 'editModeBanner';
+    banner.style.cssText = 'background:linear-gradient(135deg,#fff8e1,#fff3cd);border:1.5px solid #ffe082;border-radius:10px;padding:10px 16px;margin-bottom:14px;font-size:0.78rem;color:#7a5800;display:flex;align-items:center;gap:8px;';
+    banner.innerHTML = '<i class="fa-solid fa-lock" style="color:#f59e0b"></i><span><strong>Edit Mode:</strong> Location, Type, BHK & structural details are locked. You can edit Title, Description, Price, Agent & Pricing details.</span>';
+    var step1 = document.getElementById('step-1');
+    if (step1) step1.insertBefore(banner, step1.firstChild);
+  }, 100);
+
+
   document.getElementById('propModalTitle').textContent = 'Edit Property';
-  document.getElementById('propId').value = p._id;
-  document.getElementById('pTitle').value = p.title || '';
+  document.getElementById('propId').value   = p._id;
+  document.getElementById('pTitle').value   = p.title || '';
   document.getElementById('pPriceLabel').value = p.priceLabel || '';
-  document.getElementById('pPrice').value = p.price || '';
-  document.getElementById('pType').value = p.type || '';
-  document.getElementById('pCategory').value = p.category || 'residential';
-  document.getElementById('pStatus').value = p.status || 'for-sale';
+  document.getElementById('pPrice').value   = p.price || '';
+  document.getElementById('pType').value    = p.type  || '';
+  document.getElementById('pDesc').value    = p.description || '';
+  document.getElementById('pFeatured').checked = p.isFeatured  || false;
+  document.getElementById('pApproved').checked = p.isApproved  || false;
+  document.getElementById('pAgentName').value  = p.agent ? p.agent.name  : '';
+  document.getElementById('pAgentPhone').value = p.agent ? p.agent.phone : '';
+  document.getElementById('pToken').value      = ex.tokenAmount || '';
+  document.getElementById('pPossession').value = ex.possession  || 'Ready to Move';
+  document.getElementById('pReraNo') && (document.getElementById('pReraNo').value = ex.reraNo || '');
 
-  // City → populate locality → set value
-  const city = p.location ? p.location.city : '';
-  const area = p.location ? p.location.area : '';
-  const subArea = (p.extraDetails && p.extraDetails.subArea) || '';
+  // Category toggle
+  var cat = p.category || 'residential';
+  document.getElementById('pCategory').value = cat;
+  document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+    var oc = b.getAttribute('onclick') || '';
+    if (oc.indexOf("'pCategory'") !== -1) b.classList.toggle('active', oc.indexOf("'" + cat + "'") !== -1);
+  });
+  filterPropertyTypeByCategory(cat);
 
-  const cityEl = document.getElementById('pCitySelect');
+  // Status toggle
+  var status = p.status || 'for-sale';
+  document.getElementById('pStatus').value = status;
+  document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+    var oc = b.getAttribute('onclick') || '';
+    if (oc.indexOf("'pStatus'") !== -1) b.classList.toggle('active', oc.indexOf("'" + status + "'") !== -1);
+  });
+
+  // City â†’ Locality â†’ SubArea
+  var city    = p.location ? p.location.city : '';
+  var area    = p.location ? p.location.area : '';
+  var subArea = ex.subArea || '';
+  var cityEl  = document.getElementById('pCitySelect');
   cityEl.value = city;
-  // Trigger locality population
-  const locs = Object.keys(cityLocalities[city] || {});
-  const areaEl = document.getElementById('pAreaSelect');
+  var locs = Object.keys(cityLocalities[city] || {});
+  var areaEl = document.getElementById('pAreaSelect');
   areaEl.innerHTML = '<option value="">-- Select Locality --</option>' +
-    locs.map(l => '<option value="' + l + '">' + l + '</option>').join('') +
+    locs.map(function(l){ return '<option value="' + l + '">' + l + '</option>'; }).join('') +
     '<option value="__other__">Other (Type Manually)</option>';
   areaEl.value = area;
-  // Trigger sub-area population
-  const subs = (cityLocalities[city] && cityLocalities[city][area]) || [];
-  const subEl = document.getElementById('pSubAreaSelect');
+  var subs = (cityLocalities[city] && cityLocalities[city][area]) || [];
+  var subEl = document.getElementById('pSubAreaSelect');
   subEl.innerHTML = '<option value="">-- Select Sub Area --</option>' +
-    subs.map(s => '<option value="' + s + '">' + s + '</option>').join('') +
+    subs.map(function(s){ return '<option value="' + s + '">' + s + '</option>'; }).join('') +
     '<option value="__other__">Other (Type Manually)</option>';
   subEl.value = subArea;
-  document.getElementById('pSubArea').value = subArea;
-  // Populate project dropdown
-  const projects = (cityData[city] && cityData[city][area] && cityData[city][area].projects) || [];
-  const projEl = document.getElementById('pProjectSelect');
-  projEl.innerHTML = '<option value="">-- Select Project --</option>' +
-    projects.map(pr => '<option value="' + pr + '">' + pr + '</option>').join('') +
-    '<option value="__other__">Other (Type Manually)</option>';
-  const projVal = (p.extraDetails && p.extraDetails.project) || '';
-  projEl.value = projects.includes(projVal) ? projVal : '';
-  document.getElementById('pProject').value = projVal;
+  document.getElementById('pProject').value = ex.project || '';
 
-  document.getElementById('pBeds').value = p.specs ? p.specs.beds : 0;
-  // Restore BHK chip active state
-  const bedsVal = String(p.specs && p.specs.beds ? (p.specs.beds >= 4 ? '4' : p.specs.beds) : '');
+  // BHK chips
+  var bedsVal = String(p.specs && p.specs.beds ? (p.specs.beds >= 4 ? '4' : p.specs.beds) : '');
+  document.getElementById('pBeds').value = bedsVal;
   document.querySelectorAll('#bhkChips .hs-chip').forEach(function(c) {
     c.classList.toggle('active', c.textContent.trim().startsWith(bedsVal));
   });
-  document.getElementById('pBaths').value = p.specs ? p.specs.baths : 0;
-  document.getElementById('pSqft').value = p.specs ? p.specs.sqft : 0;
-  document.getElementById('pBalconies').value = (p.extraDetails && p.extraDetails.balconies) || 0;
-  document.getElementById('pFloor').value = (p.extraDetails && p.extraDetails.floor) || '';
-  document.getElementById('pTotalFloors').value = (p.extraDetails && p.extraDetails.totalFloors) || '';
-  document.getElementById('pFurnished').value = (p.extraDetails && p.extraDetails.furnished) || '';
-  document.getElementById('pPossession').value = (p.extraDetails && p.extraDetails.possession) || 'Ready to Move';
-  document.getElementById('pProject').value = (p.extraDetails && p.extraDetails.project) || '';
-  document.getElementById('pToken').value = (p.extraDetails && p.extraDetails.tokenAmount) || '';
-  document.getElementById('pAgentName').value = p.agent ? p.agent.name : '';
-  document.getElementById('pAgentPhone').value = p.agent ? p.agent.phone : '';
-  document.getElementById('pDesc').value = p.description || '';
-  document.getElementById('pFeatured').checked = p.isFeatured || false;
-  document.getElementById('pApproved').checked = p.isApproved || false;
-  // Update dynamic fields based on type
-  updateAdminTypeFields();
-  initAmenitiesGrid(p.amenities || []);
-  // Reset stepper to step 1
-  document.querySelectorAll('.step-panel').forEach(function(p2) { p2.classList.remove('active','slide-back'); });
+
+  // Residential fields
+  function setChip(chipsId, val) {
+    var el = document.getElementById(chipsId);
+    if (!el) return;
+    el.value = val;
+    var chips = el.closest('.hs-field') ? el.closest('.hs-field').querySelectorAll('.hs-chip') : [];
+    chips.forEach(function(c) { c.classList.toggle('active', c.textContent.trim() === String(val) || (String(val) >= '4' && c.textContent.trim() === '4+') || (String(val) >= '5' && c.textContent.trim() === '5+')); });
+  }
+
+  setChip('rBeds',      ex.beds      || (p.specs && p.specs.beds  ? p.specs.beds  : ''));
+  setChip('rBaths',     ex.baths     || (p.specs && p.specs.baths ? p.specs.baths : ''));
+  setChip('rBalconies', ex.balconies || '0');
+
+  var rCarpet = document.getElementById('rCarpet'); if (rCarpet) rCarpet.value = ex.carpetArea || '';
+  var rSBA    = document.getElementById('rSBA');    if (rSBA)    rSBA.value    = ex.superBuiltUp || (p.specs && p.specs.sqft ? p.specs.sqft : '');
+  var pSqft   = document.getElementById('pSqft');   if (pSqft)   pSqft.value   = ex.superBuiltUp || (p.specs && p.specs.sqft ? p.specs.sqft : '');
+
+  // Floor / Lift
+  var rFloor = document.getElementById('rFloor'); if (rFloor) rFloor.value = ex.floor || '';
+  var rTF    = document.getElementById('rTotalFloors'); if (rTF) rTF.value = ex.totalFloors || '';
+  document.getElementById('pFloor') && (document.getElementById('pFloor').value = ex.floor || '');
+  document.getElementById('pTotalFloors') && (document.getElementById('pTotalFloors').value = ex.totalFloors || '');
+
+  // Lift toggle
+  var liftVal = ex.lift || 'Available';
+  document.getElementById('rLift') && (document.getElementById('rLift').value = liftVal);
+  document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+    var oc = b.getAttribute('onclick') || '';
+    if (oc.indexOf("'rLift'") !== -1) b.classList.toggle('active', oc.indexOf("'" + liftVal + "'") !== -1);
+  });
+
+  // Parking counters
+  var covP = ex.coveredParking || '0', openP = ex.openParking || '0';
+  var covEl = document.getElementById('rCoveredParking'); if (covEl) { covEl.value = covP; var cd = document.getElementById('rCoveredParkingDisplay'); if (cd) cd.textContent = covP; }
+  var opEl  = document.getElementById('rOpenParking');    if (opEl)  { opEl.value  = openP; var od = document.getElementById('rOpenParkingDisplay');    if (od) od.textContent = openP; }
+
+  // Facing / Ownership / Age
+  var rFacing = document.getElementById('rFacing'); if (rFacing) rFacing.value = ex.facing || '';
+  var rOwn    = document.getElementById('rOwnership'); if (rOwn) rOwn.value = ex.ownership || '';
+  var rAge    = document.getElementById('rAge'); if (rAge) rAge.value = ex.ageOfProperty || '';
+  document.getElementById('pAgeOfProperty') && (document.getElementById('pAgeOfProperty').value = ex.ageOfProperty || '');
+
+  // Furnishing
+  var furnVal = ex.furnished || 'Unfurnished';
+  document.getElementById('rFurnishing') && (document.getElementById('rFurnishing').value = furnVal);
+  document.getElementById('pFurnished')  && (document.getElementById('pFurnished').value  = furnVal);
+  document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+    var oc = b.getAttribute('onclick') || '';
+    if (oc.indexOf('setResFurnishing') !== -1) b.classList.toggle('active', oc.indexOf("'" + furnVal + "'") !== -1);
+  });
+  var fi = document.getElementById('furnishingItems');
+  if (fi) fi.style.display = (furnVal === 'Unfurnished') ? 'none' : 'block';
+
+  // Available From / Suitable For
+  var rAF = document.getElementById('rAvailFrom'); if (rAF) rAF.value = ex.availFrom || '';
+  var rSF = document.getElementById('rSuitableFor'); if (rSF) {
+    rSF.value = ex.suitableFor || 'Family';
+    document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+      var oc = b.getAttribute('onclick') || '';
+      if (oc.indexOf("'rSuitableFor'") !== -1) b.classList.toggle('active', oc.indexOf("'" + (ex.suitableFor||'Family') + "'") !== -1);
+    });
+  }
+
+  // Amenity toggles helper
+  function setToggle(fieldId, val) {
+    var el = document.getElementById(fieldId); if (!el || !val) return;
+    el.value = val;
+    document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+      var oc = b.getAttribute('onclick') || '';
+      if (oc.indexOf("'" + fieldId + "'") !== -1) b.classList.toggle('active', oc.indexOf("'" + val + "'") !== -1);
+    });
+  }
+  setToggle('rSecurity',    ex.security    || 'Yes');
+  setToggle('rCCTV',        ex.cctv        || 'Yes');
+  setToggle('rWater',       ex.waterSupply || '24x7');
+  setToggle('rPowerBackup', ex.powerBackup || 'Yes');
+  setToggle('rGarden',      ex.garden      || 'Not Available');
+  setToggle('rGymPool',     ex.gymPool     || 'Not Available');
+
+  // Sell pricing
+  setToggle('pAllInclusive', ex.allInclusive || 'Yes');
+  setToggle('pNegotiable',   ex.negotiable   || 'Yes');
+  setToggle('pTaxCharges',   ex.taxCharges   || 'Included');
+  document.getElementById('pBookingAmount')    && (document.getElementById('pBookingAmount').value    = ex.bookingAmount    || '');
+  document.getElementById('pMaintenance')      && (document.getElementById('pMaintenance').value      = ex.maintenance      || '');
+  document.getElementById('pAnnualDues')       && (document.getElementById('pAnnualDues').value       = ex.annualDues       || '');
+  document.getElementById('pMembershipCharge') && (document.getElementById('pMembershipCharge').value = ex.membershipCharge || '');
+
+  // Rent pricing
+  document.getElementById('rMaintenance')  && (document.getElementById('rMaintenance').value  = ex.maintenance_rent || '');
+  document.getElementById('rLockIn')       && (document.getElementById('rLockIn').value       = ex.lockIn           || '');
+  document.getElementById('rNoticePeriod') && (document.getElementById('rNoticePeriod').value = ex.noticePeriod     || '');
+  setToggle('rBrokerage', ex.brokerage || 'None');
+
+  // Stepper reset to step 1
+  document.querySelectorAll('.step-panel').forEach(function(s) { s.classList.remove('active','slide-back'); });
   document.querySelectorAll('.stepper-step').forEach(function(t) { t.classList.remove('active','done'); });
   document.getElementById('step-1').classList.add('active');
   document.getElementById('step-tab-1').classList.add('active');
   updateStepperProgress(1);
+
+  // Type fields + amenities
+  updateAdminTypeFields();
+  initAmenitiesGrid(p.amenities || []);
+
+  // Score
   _ascPrev = -1;
   updateAdminScore();
-  const preview = document.getElementById('pImagePreview');
+
+  // Images
+  var preview = document.getElementById('pImagePreview');
   preview.innerHTML = '';
   if (p.images && p.images.length) {
     p.images.forEach(function(url) {
-      const item = document.createElement('div');
+      var item = document.createElement('div');
       item.style.cssText = 'position:relative;width:90px;height:70px;border-radius:8px;overflow:hidden;border:1.5px solid #e8e8e8;flex-shrink:0';
       item.dataset.existingUrl = url;
       item.innerHTML = '<img src="' + url + '" style="width:100%;height:100%;object-fit:cover"/>' +
@@ -753,6 +949,7 @@ function editProperty(p) {
       preview.appendChild(item);
     });
   }
+
   openModal('propModal');
 }
 
@@ -825,7 +1022,11 @@ document.getElementById('propForm').addEventListener('submit', async function(e)
       area: document.getElementById('pAreaSelect').value === '__other__' ? '' : (document.getElementById('pAreaSelect').value || ''),
       city: document.getElementById('pCitySelect').value
     },
-    specs: { beds: Number(document.getElementById('pBeds').value), baths: Number(document.getElementById('pBaths').value), sqft: Number(document.getElementById('pSqft').value) },
+    specs: {
+      beds:  Number(document.getElementById('rBeds').value  || document.getElementById('pBeds').value  || 0),
+      baths: Number(document.getElementById('rBaths').value || document.getElementById('pBaths').value || 0),
+      sqft:  Number(document.getElementById('rSBA').value   || document.getElementById('pSqft').value  || 0)
+    },
     agent: { name: document.getElementById('pAgentName').value, phone: document.getElementById('pAgentPhone').value, initials: document.getElementById('pAgentName').value.split(' ').map(function(w){return w[0];}).join('').toUpperCase() },
     images: imageUrls,
     description: document.getElementById('pDesc').value,
@@ -833,14 +1034,49 @@ document.getElementById('propForm').addEventListener('submit', async function(e)
     isApproved: document.getElementById('pApproved').checked,
     amenities: getSelectedAmenities(),
     extraDetails: {
-      balconies: Number(document.getElementById('pBalconies').value) || 0,
-      floor: document.getElementById('pFloor').value,
-      totalFloors: document.getElementById('pTotalFloors').value,
-      furnished: document.getElementById('pFurnished').value,
-      possession: document.getElementById('pPossession').value,
-      project: document.getElementById('pProject').value || (document.getElementById('pProjectSelect').value !== '__other__' ? document.getElementById('pProjectSelect').value : ''),
-      tokenAmount: document.getElementById('pToken').value,
-      subArea: document.getElementById('pSubArea').value || (document.getElementById('pSubAreaSelect').value !== '__other__' ? document.getElementById('pSubAreaSelect').value : '')
+      // Basic
+      subArea:      document.getElementById('pSubAreaSelect').value !== '__other__' ? document.getElementById('pSubAreaSelect').value : '',
+      project:      document.getElementById('pProject').value,
+      possession:   document.getElementById('pPossession').value,
+      tokenAmount:  document.getElementById('pToken').value,
+      // Residential
+      beds:         document.getElementById('rBeds').value,
+      baths:        document.getElementById('rBaths').value,
+      balconies:    document.getElementById('rBalconies').value || '0',
+      carpetArea:   Number(document.getElementById('rCarpet').value) || 0,
+      superBuiltUp: Number(document.getElementById('rSBA').value)    || 0,
+      floor:        document.getElementById('rFloor').value    || document.getElementById('pFloor').value,
+      totalFloors:  document.getElementById('rTotalFloors').value || document.getElementById('pTotalFloors').value,
+      furnished:    (document.getElementById('rFurnishing') || {value:''}).value || (document.getElementById('pFurnished') || {value:''}).value,
+      facing:       document.getElementById('rFacing').value,
+      ownership:    document.getElementById('rOwnership').value,
+      lift:         document.getElementById('rLift').value,
+      coveredParking: document.getElementById('rCoveredParking').value || '0',
+      openParking:    document.getElementById('rOpenParking').value   || '0',
+      ageOfProperty:  document.getElementById('rAge').value || document.getElementById('pAgeOfProperty').value,
+      availFrom:    document.getElementById('rAvailFrom') ? document.getElementById('rAvailFrom').value : '',
+      suitableFor:  document.getElementById('rSuitableFor') ? document.getElementById('rSuitableFor').value : '',
+      // Amenities toggles
+      security:     document.getElementById('rSecurity')    ? document.getElementById('rSecurity').value    : '',
+      cctv:         document.getElementById('rCCTV')        ? document.getElementById('rCCTV').value        : '',
+      waterSupply:  document.getElementById('rWater')       ? document.getElementById('rWater').value       : '',
+      powerBackup:  document.getElementById('rPowerBackup') ? document.getElementById('rPowerBackup').value : '',
+      garden:       document.getElementById('rGarden')      ? document.getElementById('rGarden').value      : '',
+      gymPool:      document.getElementById('rGymPool')     ? document.getElementById('rGymPool').value     : '',
+      // Sell pricing
+      allInclusive:     document.getElementById('pAllInclusive')     ? document.getElementById('pAllInclusive').value     : '',
+      negotiable:       document.getElementById('pNegotiable')       ? document.getElementById('pNegotiable').value       : '',
+      taxCharges:       document.getElementById('pTaxCharges')       ? document.getElementById('pTaxCharges').value       : '',
+      bookingAmount:    document.getElementById('pBookingAmount')    ? Number(document.getElementById('pBookingAmount').value)    : 0,
+      maintenance:      document.getElementById('pMaintenance')      ? Number(document.getElementById('pMaintenance').value)      : 0,
+      annualDues:       document.getElementById('pAnnualDues')       ? Number(document.getElementById('pAnnualDues').value)       : 0,
+      membershipCharge: document.getElementById('pMembershipCharge') ? Number(document.getElementById('pMembershipCharge').value) : 0,
+      // Rent
+      maintenance_rent: document.getElementById('rMaintenance')  ? Number(document.getElementById('rMaintenance').value)  : 0,
+      lockIn:           document.getElementById('rLockIn')        ? document.getElementById('rLockIn').value        : '',
+      noticePeriod:     document.getElementById('rNoticePeriod')  ? document.getElementById('rNoticePeriod').value  : '',
+      brokerage:        document.getElementById('rBrokerage')     ? document.getElementById('rBrokerage').value     : '',
+      reraNo:           document.getElementById('pReraNo')        ? document.getElementById('pReraNo').value        : ''
     }
   };
   const data = id ? await api('PUT', '/properties/' + id, body) : await api('POST', '/properties', body);
@@ -1495,10 +1731,119 @@ function onAdminTypeChange() {
   showSqftSuggest();
 }
 
+// BHK auto-fill data
+const BHK_AUTO = {
+  apartment: {
+    '1': { beds:1, baths:1, balconies:1, carpet:[450,550],  sba:[580,700]  },
+    '2': { beds:2, baths:2, balconies:1, carpet:[750,950],  sba:[950,1200] },
+    '3': { beds:3, baths:2, balconies:2, carpet:[1050,1300],sba:[1300,1600]},
+    '4': { beds:4, baths:3, balconies:2, carpet:[1500,1900],sba:[1900,2500]},
+  },
+  villa: {
+    '1': { beds:1, baths:1, balconies:1, carpet:[900,1200], sba:[1200,1600]},
+    '2': { beds:2, baths:2, balconies:1, carpet:[1400,1800],sba:[1800,2400]},
+    '3': { beds:3, baths:3, balconies:2, carpet:[2000,2600],sba:[2600,3400]},
+    '4': { beds:4, baths:4, balconies:3, carpet:[3000,4000],sba:[3800,5000]},
+  },
+  bungalow: {
+    '1': { beds:1, baths:1, balconies:0, carpet:[1200,1600],sba:[1600,2000]},
+    '2': { beds:2, baths:2, balconies:1, carpet:[1800,2400],sba:[2200,3000]},
+    '3': { beds:3, baths:3, balconies:2, carpet:[2600,3400],sba:[3200,4200]},
+    '4': { beds:4, baths:4, balconies:2, carpet:[3500,5000],sba:[4200,6000]},
+  },
+  rowhouse: {
+    '1': { beds:1, baths:1, balconies:0, carpet:[700,1000], sba:[900,1300] },
+    '2': { beds:2, baths:2, balconies:1, carpet:[1100,1500],sba:[1400,1900]},
+    '3': { beds:3, baths:2, balconies:2, carpet:[1600,2200],sba:[2000,2800]},
+    '4': { beds:4, baths:3, balconies:2, carpet:[2400,3200],sba:[3000,4000]},
+  },
+};
+
+function adjParking(fieldId, delta) {
+  var inp = document.getElementById(fieldId);
+  if (!inp) return;
+  var cur = parseInt(inp.value) || 0;
+  cur = Math.max(0, cur + delta);
+  inp.value = cur;
+  var disp = document.getElementById(fieldId + 'Display');
+  if (disp) disp.textContent = cur;
+}
+
+function syncSBAtoMain() {
+  var sba = document.getElementById('rSBA');
+  var pSqft = document.getElementById('pSqft');
+  if (pSqft && sba) pSqft.value = sba.value;
+  updateAdminScore();
+}
+
 function hsChipBhk(chip, val) {
   chip.closest('.hs-chips').querySelectorAll('.hs-chip').forEach(c => c.classList.remove('active'));
   chip.classList.add('active');
   document.getElementById('pBeds').value = val;
+
+  // Auto-fill Bedrooms, Bathrooms, Balconies in residentialFields
+  var type = document.getElementById('pType').value;
+  var key  = val === '4' ? '4' : val; // treat 4+ as 4
+  var data = BHK_AUTO[type] && BHK_AUTO[type][key];
+
+  if (data) {
+    // --- Bedrooms chip ---
+    var bedsStr = String(data.beds);
+    var rBedsEl = document.getElementById('rBeds');
+    if (rBedsEl) {
+      rBedsEl.value = bedsStr;
+      var bedsChips = document.getElementById('rBedsChips');
+      if (bedsChips) bedsChips.querySelectorAll('.hs-chip').forEach(function(c) {
+        c.classList.toggle('active', c.textContent.trim() === bedsStr || (data.beds >= 5 && c.textContent.trim() === '5+'));
+      });
+    }
+
+    // --- Bathrooms chip ---
+    var bathsStr = String(data.baths);
+    var rBathsEl = document.getElementById('rBaths');
+    if (rBathsEl) {
+      rBathsEl.value = bathsStr;
+      var bathChips = rBathsEl.closest('.hs-field').querySelectorAll('.hs-chip');
+      bathChips.forEach(function(c) {
+        c.classList.toggle('active', c.textContent.trim() === bathsStr || (data.baths >= 4 && c.textContent.trim() === '4+'));
+      });
+    }
+
+    // --- Balconies chip ---
+    var balStr = String(data.balconies);
+    var rBalEl = document.getElementById('rBalconies');
+    if (rBalEl) {
+      rBalEl.value = balStr;
+      var balChips = rBalEl.closest('.hs-field').querySelectorAll('.hs-chip');
+      balChips.forEach(function(c) {
+        c.classList.toggle('active', c.textContent.trim() === balStr || (data.balconies >= 3 && c.textContent.trim() === '3+'));
+      });
+    }
+
+    // --- Carpet Area auto-fill (mid value) ---
+    var carpetMid = Math.round((data.carpet[0] + data.carpet[1]) / 2);
+    var rCarpetEl = document.getElementById('rCarpet');
+    if (rCarpetEl && !rCarpetEl.value) {
+      rCarpetEl.value = carpetMid;
+    }
+
+    // --- Super Built-up Area auto-fill ---
+    var sbaMid = Math.round((data.sba[0] + data.sba[1]) / 2);
+    var rSBAEl = document.getElementById('rSBA');
+    if (rSBAEl && !rSBAEl.value) rSBAEl.value = sbaMid;
+
+    // --- pSqft (main area field) auto-fill ---
+    var pSqftEl = document.getElementById('pSqft');
+    if (pSqftEl && !pSqftEl.value) pSqftEl.value = sbaMid;
+
+    // --- Show area hint banner ---
+    var hint = document.getElementById('sqftHint');
+    if (hint) {
+      hint.textContent = '💡 ' + val + ' BHK ' + (type||'') + ': Carpet ' + data.carpet[0] + '–' + data.carpet[1] + ' | SBA ' + data.sba[0] + '–' + data.sba[1] + ' sq.ft';
+      hint.style.display = 'block';
+    }
+  }
+
   showSqftSuggest();
   updateAdminScore();
 }
@@ -1561,18 +1906,23 @@ const ADMIN_TYPE_CONFIG = {
 };
 
 function updateAdminTypeFields() {
-  const type = document.getElementById('pType').value;
-  const cfg  = ADMIN_TYPE_CONFIG[type] || { residential: false, plot: false, commercial: false, floor: false, carpet: false, build: false };
-  const bedsRow   = document.getElementById('adminBedsRow');       if (bedsRow)   bedsRow.style.display       = cfg.residential ? '' : 'none';
-  const seatsRow  = document.getElementById('adminSeatsRow');      if (seatsRow)  seatsRow.style.display      = cfg.commercial  ? '' : 'none';
-  const plotRow   = document.getElementById('adminPlotRow');       if (plotRow)   plotRow.style.display       = cfg.plot        ? '' : 'none';
-  const commRow   = document.getElementById('adminCommercialRow'); if (commRow)   commRow.style.display       = cfg.commercial  ? '' : 'none';
-  const floorRow  = document.getElementById('adminFloorRow');      if (floorRow)  floorRow.style.display      = cfg.floor       ? '' : 'none';
-  const furnRow   = document.getElementById('adminFurnishedRow');  if (furnRow)   furnRow.style.display       = (cfg.residential || cfg.commercial) ? '' : 'none';
-  const carpetGrp = document.getElementById('pCarpetGrp');         if (carpetGrp) carpetGrp.style.display     = cfg.carpet      ? '' : 'none';
-  const builtGrp  = document.getElementById('pBuiltGrp');          if (builtGrp)  builtGrp.style.display      = cfg.build       ? '' : 'none';
-  // Update area label
-  const areaLabel = document.getElementById('pSqftLabel');
+  var type = document.getElementById('pType').value;
+  var cfg  = ADMIN_TYPE_CONFIG[type] || { residential: false, plot: false, commercial: false, floor: false, carpet: false, build: false };
+  var isOffice = type === 'office' || type === 'coworking';
+  var bedsRow   = document.getElementById('adminBedsRow');       if (bedsRow)   bedsRow.style.display   = cfg.residential ? '' : 'none';
+  var seatsRow  = document.getElementById('adminSeatsRow');      if (seatsRow)  seatsRow.style.display  = (cfg.commercial && !isOffice) ? '' : 'none';
+  var plotRow   = document.getElementById('adminPlotRow');       if (plotRow)   plotRow.style.display   = cfg.plot ? '' : 'none';
+  var commRow   = document.getElementById('adminCommercialRow'); if (commRow)   commRow.style.display   = cfg.commercial ? '' : 'none';
+  var floorRow  = document.getElementById('adminFloorRow');      if (floorRow)  floorRow.style.display  = cfg.floor ? '' : 'none';
+  var furnRow   = document.getElementById('adminFurnishedRow');  if (furnRow)   furnRow.style.display   = (cfg.residential || (cfg.commercial && !isOffice)) ? '' : 'none';
+  var carpetGrp = document.getElementById('pCarpetGrp');         if (carpetGrp) carpetGrp.style.display = (cfg.carpet && !isOffice) ? '' : 'none';
+  var builtGrp  = document.getElementById('pBuiltGrp');          if (builtGrp)  builtGrp.style.display  = cfg.build ? '' : 'none';
+  var areaRow   = document.getElementById('areaRow');            if (areaRow)   areaRow.style.display   = isOffice ? 'none' : '';
+  var sqftField = document.getElementById('pSqft') ? document.getElementById('pSqft').closest('.hs-field') : null;
+  if (sqftField) sqftField.style.display = isOffice ? 'none' : '';
+  var nonResRow = document.getElementById('nonResAreaRow');
+  if (nonResRow) nonResRow.style.display = cfg.residential ? 'none' : '';
+  var areaLabel = document.getElementById('pSqftLabel');
   if (areaLabel) areaLabel.textContent = TYPE_AREA_LABEL[type] || '\ud83d\udcd0 Super Built-up Area (sq.ft)';
   initAmenitiesGrid(getSelectedAmenities());
   updateAdminScore();
@@ -1871,18 +2221,33 @@ const AMENITIES_BY_TYPE = {
     { icon: '📶', label: 'Internet Ready' },
   ],
   office: [
-    { icon: '🅿️', label: 'Parking' },
-    { icon: '🛗', label: 'Lift' },
-    { icon: '⚡', label: 'Power Backup' },
-    { icon: '🔒', label: '24/7 Security' },
-    { icon: '❄️', label: 'Central AC' },
-    { icon: '📶', label: 'High Speed Internet' },
-    { icon: '🍽️', label: 'Cafeteria' },
-    { icon: '🚿', label: 'Washroom' },
-    { icon: '🎥', label: 'CCTV' },
-    { icon: '🏢', label: 'Reception Area' },
-    { icon: '🔥', label: 'Fire Safety' },
-    { icon: '♿', label: 'Wheelchair Access' },
+    { icon: '<i class="fa-solid fa-square-parking"></i>', label: 'Parking' },
+    { icon: '<i class="fa-solid fa-car"></i>', label: 'Visitor Parking' },
+    { icon: '<i class="fa-solid fa-square-parking"></i>', label: 'Reserved Parking' },
+    { icon: '<i class="fa-solid fa-elevator"></i>', label: 'Lift(s)' },
+    { icon: '<i class="fa-solid fa-elevator"></i>', label: 'Service Lift' },
+    { icon: '<i class="fa-solid fa-bolt"></i>', label: 'Power Back-up' },
+    { icon: '<i class="fa-solid fa-shield-halved"></i>', label: 'Security Guard' },
+    { icon: '<i class="fa-solid fa-video"></i>', label: 'CCTV Surveillance' },
+    { icon: '<i class="fa-solid fa-snowflake"></i>', label: 'Central AC' },
+    { icon: '<i class="fa-solid fa-wifi"></i>', label: 'High Speed Internet' },
+    { icon: '<i class="fa-solid fa-utensils"></i>', label: 'Cafeteria / Food Court' },
+    { icon: '<i class="fa-solid fa-person-booth"></i>', label: 'Reception Area' },
+    { icon: '<i class="fa-solid fa-phone-volume"></i>', label: 'Intercom Facility' },
+    { icon: '<i class="fa-solid fa-fire-extinguisher"></i>', label: 'Fire Extinguisher' },
+    { icon: '<i class="fa-solid fa-bell"></i>', label: 'Fire Sensors' },
+    { icon: '<i class="fa-solid fa-door-open"></i>', label: 'Emergency Exit' },
+    { icon: '<i class="fa-solid fa-wheelchair"></i>', label: 'WheelChair Accessibility' },
+    { icon: '<i class="fa-solid fa-restroom"></i>', label: 'Washroom' },
+    { icon: '<i class="fa-solid fa-droplet"></i>', label: '24x7 Water' },
+    { icon: '<i class="fa-solid fa-water"></i>', label: 'Water Storage' },
+    { icon: '<i class="fa-solid fa-trash"></i>', label: 'Waste Disposal' },
+    { icon: '<i class="fa-solid fa-users"></i>', label: 'Maintenance Staff' },
+    { icon: '<i class="fa-solid fa-landmark"></i>', label: 'ATM' },
+    { icon: '<i class="fa-solid fa-store"></i>', label: 'Shopping Centre' },
+    { icon: '<i class="fa-solid fa-basket-shopping"></i>', label: 'Grocery Shop' },
+    { icon: '<i class="fa-solid fa-generator"></i>', label: 'DG Availability' },
+    { icon: '<i class="fa-solid fa-om"></i>', label: 'Vaastu Compliant' },
   ],
   shop: [
     { icon: '🅿️', label: 'Parking' },
@@ -1978,10 +2343,32 @@ function getSelectedAmenities() {
 }
 
 
+function filterPropertyTypeByCategory(cat) {
+  var pTypeEl = document.getElementById('pType');
+  if (!pTypeEl) return;
+  // Reset selection
+  pTypeEl.value = '';
+  var groups = pTypeEl.querySelectorAll('optgroup');
+  groups.forEach(function(g) {
+    var isRes = g.label.indexOf('Residential') !== -1;
+    var isComm = g.label.indexOf('Commercial') !== -1;
+    var show = (cat === 'residential' && isRes) || (cat === 'commercial' && isComm);
+    g.style.display = show ? '' : 'none';
+    g.querySelectorAll('option').forEach(function(o) { o.disabled = !show; });
+  });
+  // Reset dependent fields
+  var rf = document.getElementById('residentialFields');
+  if (rf) rf.style.display = 'none';
+  var of2 = document.getElementById('officeFields');
+  if (of2) of2.style.display = 'none';
+  updateAdminScore();
+}
+
 function hsToggle(btn, fieldId, val) {
   btn.closest('.hs-toggle').querySelectorAll('.hs-toggle-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById(fieldId).value = val;
+  if (fieldId === 'pCategory') filterPropertyTypeByCategory(val);
   if (fieldId === 'pCategory' || fieldId === 'pStatus') updateAdminScore();
 }
 
@@ -2001,38 +2388,85 @@ function updateStepperProgress(currentStep) {
 }
 
 function hsValidateStep(step) {
-  // Remove old errors
   document.querySelectorAll('.hs-field-error').forEach(el => el.classList.remove('hs-field-error'));
   document.querySelectorAll('.hs-error-msg').forEach(el => el.remove());
 
+  var firstErr = null;
+
   function markErr(fieldId, msg) {
-    const el = document.getElementById(fieldId);
+    var el = document.getElementById(fieldId);
     if (!el) return;
-    const wrap = el.closest('.hs-field');
+    var wrap = el.closest('.hs-field');
     if (wrap) {
       wrap.classList.add('hs-field-error');
-      const err = document.createElement('div');
+      var err = document.createElement('div');
       err.className = 'hs-error-msg';
       err.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> ' + msg;
       wrap.appendChild(err);
     }
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (!firstErr) firstErr = el;
   }
 
+  function v(id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; }
+  function n(id) { var e = document.getElementById(id); return e ? Number(e.value) : 0; }
+
+  var type = v('pType');
+  var isResNoPlot = ['apartment','villa','bungalow','rowhouse'].indexOf(type) !== -1;
+  var status = v('pStatus');
+
   if (step === 1) {
-    let ok = true;
-    if (!document.getElementById('pCitySelect').value) { markErr('pCitySelect', 'City is required'); ok = false; }
-    if (!document.getElementById('pAreaSelect').value || document.getElementById('pAreaSelect').value === '__other__') { markErr('pAreaSelect', 'Locality is required'); ok = false; }
-    if (!document.getElementById('pType').value) { markErr('pType', 'Property type is required'); ok = false; }
-    return ok;
+    if (!v('pCitySelect'))  markErr('pCitySelect', 'City is required');
+    if (!v('pAreaSelect') || v('pAreaSelect') === '__other__') markErr('pAreaSelect', 'Locality is required');
+    if (!type) markErr('pType', 'Property type is required');
+    if (isResNoPlot) {
+      if (!v('pBeds'))    markErr('pBeds',    'BHK selection is required');
+      if (!v('rBeds'))    markErr('rBeds',    'Bedrooms is required');
+      if (!v('rBaths'))   markErr('rBaths',   'Bathrooms is required');
+      if (!n('rCarpet'))  markErr('rCarpet',  'Carpet Area is required');
+      if (!n('rSBA'))     markErr('rSBA',     'Super Built-up Area is required');
+      if (!v('rFurnishing')) markErr('rFurnishing', 'Furnishing status is required');
+      if (!v('rAge'))     markErr('rAge',     'Property age is required');
+      if (!v('rFacing'))  markErr('rFacing',  'Facing is required');
+      if (!v('rOwnership')) markErr('rOwnership', 'Ownership type is required');
+    }
   }
+
+  if (step === 2) {
+    var photos = document.querySelectorAll('#pImagePreview div').length;
+    if (photos === 0) {
+      var ua = document.querySelector('.hs-upload-area');
+      if (ua) { ua.style.border = '2px dashed #FF4D4D'; ua.style.background = '#fff5f5'; }
+      var pe = document.getElementById('photoErr');
+      if (pe) pe.remove();
+      var errDiv = document.createElement('div');
+      errDiv.className = 'hs-error-msg'; errDiv.id = 'photoErr';
+      errDiv.style.cssText = 'margin-top:8px;justify-content:center;font-size:0.82rem;';
+      errDiv.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> At least 1 photo is required';
+      if (ua) ua.parentNode.insertBefore(errDiv, ua.nextSibling);
+      if (ua) ua.scrollIntoView({ behavior:'smooth', block:'center' });
+      toast('Please upload at least 1 photo', 'error');
+      return false;
+    } else {
+      var ua2 = document.querySelector('.hs-upload-area');
+      if (ua2) { ua2.style.border = ''; ua2.style.background = ''; }
+      var pe2 = document.getElementById('photoErr');
+      if (pe2) pe2.remove();
+    }
+  }
+
   if (step === 3) {
-    if (!(Number(document.getElementById('pPrice').value) > 0)) { markErr('pPrice', 'Price is required'); return false; }
-    return true;
+    if (!(n('pPrice') > 0)) markErr('pPrice', 'Price is required');
   }
+
   if (step === 4) {
-    if (document.getElementById('pTitle').value.trim().length < 5) { markErr('pTitle', 'Title must be at least 5 characters'); return false; }
-    return true;
+    if (v('pTitle').length < 5) markErr('pTitle', 'Title must be at least 5 characters');
+    if (v('pDesc').length < 20) markErr('pDesc', 'Description is required (min 20 chars)');
+  }
+
+  if (firstErr) {
+    firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    toast('Please fill all required fields', 'error');
+    return false;
   }
   return true;
 }
@@ -2048,6 +2482,9 @@ function hsNextStep(current) {
   nextPanel.classList.add('active');
   document.getElementById('step-tab-' + (current + 1)).classList.add('active');
   updateStepperProgress(current + 1);
+  // Scroll form area to top
+  var fa = document.querySelector('.prop-form-area');
+  if (fa) fa.scrollTop = 0;
   if (current + 1 === 5) buildReviewGrid();
 }
 
@@ -2060,22 +2497,155 @@ function hsPrevStep(current) {
   prevPanel.classList.add('active');
   document.getElementById('step-tab-' + (current - 1)).classList.add('active');
   updateStepperProgress(current - 1);
+  var fa = document.querySelector('.prop-form-area');
+  if (fa) fa.scrollTop = 0;
 }
 
 function buildReviewGrid() {
-  const grid = document.getElementById('reviewGrid');
+  var grid = document.getElementById('reviewGrid');
   if (!grid) return;
-  const fields = [
-    ['Type', document.getElementById('pType').value],
-    ['City', document.getElementById('pCitySelect').value],
-    ['Area', document.getElementById('pAreaSelect').value || document.getElementById('pSubArea').value],
-    ['Price', document.getElementById('pPrice').value],
-    ['Sqft', document.getElementById('pSqft').value],
-    ['Title', document.getElementById('pTitle').value],
-  ];
-  grid.innerHTML = fields.map(([k,v]) =>
-    '<div style="padding:8px 12px;background:#f8f9fa;border-radius:8px;margin-bottom:6px;font-size:0.82rem;"><strong>' + k + ':</strong> ' + (v || '<span style="color:#aaa">—</span>') + '</div>'
-  ).join('');
+
+  function g(id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; }
+  function gn(id) { var e = document.getElementById(id); return e ? Number(e.value) : 0; }
+
+  var type = g('pType'), status = g('pStatus'), city = g('pCitySelect');
+  var area = g('pAreaSelect'), subArea = g('pSubAreaSelect'), project = g('pProject');
+  var bhk = g('pBeds'), beds = g('rBeds'), baths = g('rBaths'), balc = g('rBalconies');
+  var carpet = g('rCarpet'), sba = g('rSBA') || g('pSqft');
+  var floor = g('rFloor'), totalFloors = g('rTotalFloors');
+  var furnish = g('rFurnishing') || g('pFurnished');
+  var age = g('rAge') || g('pAgeOfProperty'), facing = g('rFacing'), ownership = g('rOwnership');
+  var covPark = g('rCoveredParking') || '0', openPark = g('rOpenParking') || '0';
+  var lift = g('rLift'), price = gn('pPrice'), priceLabel = g('pPriceLabel');
+  var title = g('pTitle'), desc = g('pDesc'), possession = g('pPossession');
+  var rera = g('pReraNo'), agent = g('pAgentName'), agentPh = g('pAgentPhone');
+  var photos = document.querySelectorAll('#pImagePreview div').length;
+  var amenities = getSelectedAmenities();
+  var score = parseInt((document.getElementById('ascNum')||{textContent:'0'}).textContent) || 0;
+
+  var typeMap = { apartment:'Apartment / Flat', villa:'Villa', bungalow:'Bungalow', rowhouse:'Row House', plot:'Plot', office:'Office Space', shop:'Shop', showroom:'Showroom', warehouse:'Warehouse', factory:'Factory', coworking:'Co-working', industrial_land:'Industrial Land' };
+  var statusMap = { 'for-sale':'For Sale', 'for-rent':'For Rent', 'new-launch':'New Launch' };
+  var isRes = ['apartment','villa','bungalow','rowhouse'].indexOf(type) !== -1;
+
+  function priceStr(p) {
+    if (!p) return 'â€”';
+    if (p >= 10000000) return 'â‚¹' + (p/10000000).toFixed(2) + ' Cr';
+    if (p >= 100000)   return 'â‚¹' + (p/100000).toFixed(2) + ' L';
+    return 'â‚¹' + p.toLocaleString('en-IN');
+  }
+
+  function row(icon, label, value, hi) {
+    if (!value) value = '';
+    var bg = hi ? 'linear-gradient(135deg,#fff5f5,#fff)' : '#f8f9fb';
+    var br = hi ? '1.5px solid #ffcdd2' : '1.5px solid #f0f0f0';
+    var vc = hi ? '#E53935' : '#333';
+    return '<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:' + bg + ';border:' + br + ';border-radius:10px;margin-bottom:7px;">' +
+      '<span style="font-size:1rem;flex-shrink:0;">' + icon + '</span>' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:0.68rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.5px;">' + label + '</div>' +
+        '<div style="font-size:0.88rem;font-weight:700;color:' + vc + ';margin-top:2px;">' + (value || '<span style="color:#ccc;font-weight:400;">â€”</span>') + '</div>' +
+      '</div></div>';
+  }
+
+  function sec(title, content) {
+    return '<div style="margin-bottom:14px;">' +
+      '<div style="font-size:0.7rem;font-weight:800;color:#E53935;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;display:flex;align-items:center;gap:6px;">' +
+        '<div style="width:3px;height:12px;background:#E53935;border-radius:2px;flex-shrink:0;"></div>' + title +
+      '</div>' + content + '</div>';
+  }
+
+  var html = '';
+
+  // Header
+  html += '<div style="background:linear-gradient(135deg,#E53935,#b71c1c);border-radius:14px;padding:16px 18px;margin-bottom:16px;color:#fff;">' +
+    '<div style="font-size:0.68rem;font-weight:700;opacity:0.7;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">ðŸ“‹ Review Before Posting</div>' +
+    '<div style="font-size:1rem;font-weight:800;margin-bottom:10px;line-height:1.4;">' + (title || '<span style="opacity:0.5">Title not set</span>') + '</div>' +
+    '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">' +
+      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">' + (statusMap[status]||status||'â€”') + '</span>' +
+      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">' + (typeMap[type]||type||'â€”') + '</span>' +
+      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">ðŸ“¸ ' + photos + ' Photos</span>' +
+    '</div>' +
+    '<div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;">' +
+      '<span style="font-size:0.72rem;font-weight:600;">Listing Score</span>' +
+      '<div style="display:flex;align-items:center;gap:8px;">' +
+        '<div style="width:80px;height:5px;background:rgba(255,255,255,0.2);border-radius:4px;overflow:hidden;"><div style="width:' + score + '%;height:100%;background:#fff;border-radius:4px;"></div></div>' +
+        '<span style="font-size:0.85rem;font-weight:800;">' + score + '/100</span>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
+  // Location
+  html += sec('ðŸ“ Location',
+    row('ðŸ™ï¸', 'City', city) +
+    row('ðŸ“Œ', 'Locality', area) +
+    (subArea && subArea !== '__other__' ? row('ðŸ—ºï¸', 'Sub Area', subArea) : '') +
+    (project ? row('ðŸ—ï¸', 'Building / Society', project) : '')
+  );
+
+  // Property Info
+  var propInfo = row('ðŸ ', 'Property Type', typeMap[type]||type, true) +
+    row('ðŸ“‹', 'Listing Type', statusMap[status]||status, true);
+  if (isRes && bhk) propInfo += row('ðŸ›ï¸', 'BHK', bhk + ' BHK', false);
+  if (isRes) propInfo += row('ðŸ›Œ', 'Bedrooms', beds) + row('ðŸš¿', 'Bathrooms', baths) + row('ðŸ ', 'Balconies', balc);
+  html += sec('ðŸ  Property Info', propInfo);
+
+  // Area
+  if (isRes && (carpet || sba)) {
+    var loading = (carpet && sba) ? Math.round((Number(sba)/Number(carpet) - 1)*100) + '%' : '';
+    html += sec('ðŸ“ Area Details',
+      row('ðŸ“', 'Carpet Area', carpet ? carpet + ' sq.ft' : '') +
+      row('ðŸ“', 'Super Built-up Area', sba ? sba + ' sq.ft' : '') +
+      (loading ? row('ðŸ“Š', 'Loading Factor', loading) : '')
+    );
+  }
+
+  // Building
+  if (isRes) {
+    html += sec('ðŸ¢ Building Details',
+      row('ðŸ¢', 'Floor', floor ? 'Floor ' + floor + (totalFloors ? ' / ' + totalFloors : '') : '') +
+      row('ðŸ›—', 'Lift', lift) +
+      row('ðŸš—', 'Parking', covPark + ' Covered + ' + openPark + ' Open') +
+      row('ðŸ§­', 'Facing', facing) +
+      row('ðŸ“‹', 'Ownership', ownership) +
+      row('ðŸ—ï¸', 'Property Age', age) +
+      row('ðŸ›‹ï¸', 'Furnishing', furnish)
+    );
+  }
+
+  // Pricing
+  html += sec('ðŸ’° Pricing',
+    row('ðŸ’°', 'Expected Price', priceStr(price) + (priceLabel ? '  (' + priceLabel + ')' : ''), true) +
+    (possession ? row('ðŸ”‘', 'Possession', possession) : '') +
+    (rera ? row('ðŸ“œ', 'RERA No.', rera) : '')
+  );
+
+  // Amenities
+  if (amenities.length) {
+    html += sec('âœ… Amenities (' + amenities.length + ')',
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;padding:4px 0;">' +
+      amenities.map(function(a) {
+        return '<span style="background:#e8f5e9;color:#2e7d32;font-size:0.73rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid #c8e6c9;">âœ“ ' + a + '</span>';
+      }).join('') + '</div>'
+    );
+  }
+
+  // Agent
+  if (agent) {
+    html += sec('ðŸ‘¤ Agent Details',
+      row('ðŸ‘¤', 'Agent Name', agent) +
+      row('ðŸ“ž', 'Phone', agentPh)
+    );
+  }
+
+  // Description
+  if (desc) {
+    html += sec('ðŸ“ Description Preview',
+      '<div style="background:#f8f9fb;border:1.5px solid #f0f0f0;border-radius:10px;padding:12px 14px;font-size:0.82rem;color:#555;line-height:1.7;">' +
+      desc.substring(0,250) + (desc.length > 250 ? '...' : '') + '</div>'
+    );
+  }
+
+  grid.innerHTML = html;
 }
 
 // ===== AI TITLE / DESC STUBS =====
@@ -2115,79 +2685,270 @@ function aiGenerateDesc() {
 }
 
 // ===== DRAFTS =====
-function saveDraft() {
-  const draft = {
+// ===== DRAFT: Collect ALL form fields =====
+function collectDraftData() {
+  function g(id) { var e = document.getElementById(id); return e ? e.value : ''; }
+  function gc(id) { var e = document.getElementById(id); return e ? e.checked : false; }
+  return {
     id: Date.now(),
-    title: document.getElementById('pTitle').value || 'Untitled Draft',
-    type: document.getElementById('pType').value,
-    category: document.getElementById('pCategory').value,
-    status: document.getElementById('pStatus').value,
-    city: document.getElementById('pCitySelect').value,
-    area: document.getElementById('pAreaSelect').value,
-    subArea: document.getElementById('pSubArea').value,
-    project: document.getElementById('pProject').value,
-    beds: document.getElementById('pBeds').value,
-    sqft: document.getElementById('pSqft').value,
-    price: document.getElementById('pPrice').value,
-    priceLabel: document.getElementById('pPriceLabel').value,
-    desc: document.getElementById('pDesc').value,
-    agentName: document.getElementById('pAgentName').value,
-    agentPhone: document.getElementById('pAgentPhone').value,
-    furnished: document.getElementById('pFurnished').value,
-    savedAt: new Date().toISOString()
+    savedAt: new Date().toISOString(),
+    // Basic
+    title: g('pTitle') || 'Untitled Draft',
+    type: g('pType'), category: g('pCategory'), status: g('pStatus'),
+    // Location
+    city: g('pCitySelect'), area: g('pAreaSelect'), subArea: g('pSubAreaSelect'), project: g('pProject'),
+    // BHK
+    beds: g('pBeds'), rBeds: g('rBeds'), rBaths: g('rBaths'), rBalconies: g('rBalconies'),
+    // Area
+    carpetArea: g('rCarpet'), superBuiltUp: g('rSBA'), sqft: g('pSqft'),
+    // Building
+    floor: g('rFloor'), totalFloors: g('rTotalFloors'), lift: g('rLift'),
+    coveredParking: g('rCoveredParking'), openParking: g('rOpenParking'),
+    facing: g('rFacing'), ownership: g('rOwnership'), ageOfProperty: g('rAge') || g('pAgeOfProperty'),
+    furnished: g('rFurnishing') || g('pFurnished'), availFrom: g('rAvailFrom'), suitableFor: g('rSuitableFor'),
+    // Amenities toggles
+    security: g('rSecurity'), cctv: g('rCCTV'), water: g('rWater'),
+    powerBackup: g('rPowerBackup'), garden: g('rGarden'), gymPool: g('rGymPool'),
+    // Pricing
+    price: g('pPrice'), priceLabel: g('pPriceLabel'), possession: g('pPossession'), reraNo: g('pReraNo'),
+    allInclusive: g('pAllInclusive'), negotiable: g('pNegotiable'), taxCharges: g('pTaxCharges'),
+    bookingAmount: g('pBookingAmount'), maintenance: g('pMaintenance'),
+    annualDues: g('pAnnualDues'), membershipCharge: g('pMembershipCharge'),
+    // Rent
+    maintenanceRent: g('rMaintenance'), lockIn: g('rLockIn'), noticePeriod: g('rNoticePeriod'), brokerage: g('rBrokerage'),
+    // Highlights
+    desc: g('pDesc'), agentName: g('pAgentName'), agentPhone: g('pAgentPhone'),
+    featured: gc('pFeatured'), approved: gc('pApproved'),
+    // Amenities checkboxes
+    amenities: getSelectedAmenities(),
+    // Images (existing URLs only)
+    images: Array.from(document.querySelectorAll('#pImagePreview div[data-existing-url]')).map(function(d){ return d.dataset.existingUrl; })
   };
-  const drafts = JSON.parse(localStorage.getItem('adminDrafts') || '[]');
+}
+
+function saveDraft() {
+  var draft = collectDraftData();
+  var drafts = JSON.parse(localStorage.getItem('adminDrafts') || '[]');
   drafts.unshift(draft);
+  if (drafts.length > 20) drafts = drafts.slice(0, 20); // max 20 drafts
   localStorage.setItem('adminDrafts', JSON.stringify(drafts));
-  const badge = document.getElementById('draftBadge');
+  var badge = document.getElementById('draftBadge');
   if (badge) badge.textContent = drafts.length;
-  toast('✅ Draft saved!');
+  showDraftSavedToast();
   closeModal('propModal');
 }
 
+// Auto-save draft on page unload/refresh while modal is open
+var _autoSaveInterval = null;
+function startAutoSave() {
+  _autoSaveInterval = setInterval(function() {
+    var modal = document.getElementById('propModal');
+    if (!modal || !modal.classList.contains('open')) return;
+    var titleVal = document.getElementById('pTitle') ? document.getElementById('pTitle').value : '';
+    var typeVal  = document.getElementById('pType')  ? document.getElementById('pType').value  : '';
+    if (!typeVal && !titleVal) return; // nothing to save
+    var draft = collectDraftData();
+    draft.id = 'autosave';
+    draft.title = (draft.title || 'Auto-saved Draft');
+    localStorage.setItem('adminAutoSaveDraft', JSON.stringify(draft));
+  }, 10000); // every 10 seconds
+}
+startAutoSave();
+
+// On page load â€” check for auto-saved draft
+window.addEventListener('load', function() {
+  var autoSave = localStorage.getItem('adminAutoSaveDraft');
+  if (!autoSave) return;
+  try {
+    var d = JSON.parse(autoSave);
+    if (!d.type && !d.title) return;
+    // Show recovery toast after 2 seconds
+    setTimeout(function() {
+      showDraftRecoveryToast(d);
+    }, 2000);
+  } catch(e) {}
+});
+
+function showDraftRecoveryToast(d) {
+  var existing = document.getElementById('draftRecoveryToast');
+  if (existing) existing.remove();
+
+  // Use maximum z-index so nothing blocks it
+  var MAX_Z = 2147483647;
+
+  var t = document.createElement('div');
+  t.id = 'draftRecoveryToast';
+  t.style.position   = 'fixed';
+  t.style.bottom     = '24px';
+  t.style.left       = '50%';
+  t.style.transform  = 'translateX(-50%) translateY(80px)';
+  t.style.zIndex     = MAX_Z;
+  t.style.background = 'linear-gradient(135deg,#0D1B2A,#1a3a5c)';
+  t.style.border     = '1.5px solid rgba(99,102,241,0.4)';
+  t.style.borderRadius = '16px';
+  t.style.padding    = '16px 20px';
+  t.style.boxShadow  = '0 20px 60px rgba(0,0,0,0.5)';
+  t.style.display    = 'flex';
+  t.style.alignItems = 'center';
+  t.style.gap        = '14px';
+  t.style.minWidth   = '320px';
+  t.style.maxWidth   = '480px';
+  t.style.opacity    = '0';
+  t.style.fontFamily = 'Poppins,sans-serif';
+  t.style.transition = 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s';
+  t.style.pointerEvents = 'all';
+
+  // Icon
+  var icon = document.createElement('div');
+  icon.style.cssText = 'width:42px;height:42px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.3rem;pointer-events:none;';
+  icon.textContent = '\uD83D\uDCBE';
+
+  // Info
+  var info = document.createElement('div');
+  info.style.cssText = 'flex:1;min-width:0;pointer-events:none;';
+  var h = document.createElement('div');
+  h.style.cssText = 'font-size:0.85rem;font-weight:700;color:#f1f5f9;margin-bottom:2px;';
+  h.textContent = 'Unsaved Draft Found!';
+  var sub = document.createElement('div');
+  sub.style.cssText = 'font-size:0.75rem;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
+  sub.textContent = (d.title || 'Untitled') + (d.city ? ' - ' + d.city : '');
+  info.appendChild(h);
+  info.appendChild(sub);
+
+  // Recover button
+  var recoverBtn = document.createElement('button');
+  recoverBtn.textContent = 'Recover';
+  recoverBtn.style.background    = 'linear-gradient(135deg,#6366f1,#8b5cf6)';
+  recoverBtn.style.color         = '#fff';
+  recoverBtn.style.border        = 'none';
+  recoverBtn.style.padding       = '10px 18px';
+  recoverBtn.style.borderRadius  = '8px';
+  recoverBtn.style.fontSize      = '0.82rem';
+  recoverBtn.style.fontWeight    = '700';
+  recoverBtn.style.cursor        = 'pointer';
+  recoverBtn.style.fontFamily    = 'Poppins,sans-serif';
+  recoverBtn.style.flexShrink    = '0';
+  recoverBtn.style.position      = 'relative';
+  recoverBtn.style.zIndex        = MAX_Z;
+  recoverBtn.style.pointerEvents = 'all';
+  recoverBtn.onclick = function(e) { e.stopPropagation(); recoverAutoDraft(); };
+
+  // Dismiss button
+  var dismissBtn = document.createElement('button');
+  dismissBtn.textContent = 'Dismiss';
+  dismissBtn.style.background    = 'rgba(255,255,255,0.1)';
+  dismissBtn.style.color         = '#94a3b8';
+  dismissBtn.style.border        = '1px solid rgba(255,255,255,0.15)';
+  dismissBtn.style.padding       = '10px 14px';
+  dismissBtn.style.borderRadius  = '8px';
+  dismissBtn.style.fontSize      = '0.82rem';
+  dismissBtn.style.cursor        = 'pointer';
+  dismissBtn.style.fontFamily    = 'Poppins,sans-serif';
+  dismissBtn.style.flexShrink    = '0';
+  dismissBtn.style.position      = 'relative';
+  dismissBtn.style.zIndex        = MAX_Z;
+  dismissBtn.style.pointerEvents = 'all';
+  dismissBtn.onclick = function(e) { e.stopPropagation(); dismissDraftRecovery(); };
+
+  var btns = document.createElement('div');
+  btns.style.cssText = 'display:flex;gap:8px;flex-shrink:0;';
+  btns.appendChild(recoverBtn);
+  btns.appendChild(dismissBtn);
+
+  t.appendChild(icon);
+  t.appendChild(info);
+  t.appendChild(btns);
+  document.body.appendChild(t);
+
+  setTimeout(function() {
+    t.style.transform = 'translateX(-50%) translateY(0)';
+    t.style.opacity   = '1';
+  }, 50);
+}
+
+function recoverAutoDraft() {
+  var autoSave = localStorage.getItem('adminAutoSaveDraft');
+  if (!autoSave) return;
+  try {
+    var d = JSON.parse(autoSave);
+    dismissDraftRecovery();
+    loadDraftData(d);
+    goPage('properties');
+    setTimeout(function() { openModal('propModal'); }, 200);
+  } catch(e) {}
+}
+
+function dismissDraftRecovery() {
+  localStorage.removeItem('adminAutoSaveDraft');
+  var t = document.getElementById('draftRecoveryToast');
+  if (t) { t.style.transform = 'translateX(-50%) translateY(80px)'; t.style.opacity = '0'; setTimeout(function(){ t.remove(); }, 400); }
+}
+
+function showDraftSavedToast() {
+  var existing = document.getElementById('draftSavedToast');
+  if (existing) existing.remove();
+  var t = document.createElement('div');
+  t.id = 'draftSavedToast';
+  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);z-index:99999;background:linear-gradient(135deg,#064e3b,#065f46);border:1.5px solid rgba(16,185,129,0.4);border-radius:16px;padding:16px 24px;box-shadow:0 20px 60px rgba(0,0,0,0.4);display:flex;align-items:center;gap:12px;font-family:Poppins,sans-serif;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s;opacity:0;';
+  t.innerHTML = '<div style="width:38px;height:38px;background:rgba(16,185,129,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">ðŸ’¾</div>' +
+    '<div>' +
+      '<div style="font-size:0.88rem;font-weight:700;color:#6ee7b7;">Draft Saved!</div>' +
+      '<div style="font-size:0.75rem;color:rgba(110,231,183,0.6);margin-top:1px;">All details saved. Continue anytime.</div>' +
+    '</div>' +
+    '<div style="width:32px;height:32px;border-radius:50%;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;" onclick="this.closest(\'#draftSavedToast\').remove()"><i class="fa-solid fa-xmark" style="color:#6ee7b7;font-size:0.8rem;"></i></div>';
+  document.body.appendChild(t);
+  setTimeout(function() { t.style.transform = 'translateX(-50%) translateY(0)'; t.style.opacity = '1'; }, 50);
+  setTimeout(function() { if (t.parentNode) { t.style.transform = 'translateX(-50%) translateY(80px)'; t.style.opacity = '0'; setTimeout(function(){ t.remove(); }, 400); } }, 4000);
+}
+
 function loadDrafts() {
-  const drafts = JSON.parse(localStorage.getItem('adminDrafts') || '[]');
-  const grid = document.getElementById('draftsGrid');
-  const badge = document.getElementById('draftBadge');
+  var drafts = JSON.parse(localStorage.getItem('adminDrafts') || '[]');
+  var grid = document.getElementById('draftsGrid');
+  var badge = document.getElementById('draftBadge');
   if (badge) badge.textContent = drafts.length || '';
   if (!drafts.length) {
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text3)"><i class="fa-regular fa-floppy-disk" style="font-size:2.5rem;display:block;margin-bottom:12px;opacity:0.3"></i><p style="font-size:0.9rem">No saved drafts yet.<br><small>Click "Save Draft" while adding a property.</small></p></div>';
     return;
   }
-  const typeIcon = { apartment:'🏢', villa:'🏡', bungalow:'🏠', rowhouse:'🏘️', plot:'🌿', office:'🏢', shop:'🏪', showroom:'🚗', warehouse:'🏭', factory:'⚙️', coworking:'💻', industrial_land:'🌍' };
-  const typeLabel = { apartment:'Apartment', villa:'Villa', bungalow:'Bungalow', rowhouse:'Row House', plot:'Plot', office:'Office', shop:'Shop', showroom:'Showroom', warehouse:'Warehouse', factory:'Factory', coworking:'Co-working', industrial_land:'Industrial Land' };
+  var typeIcon  = { apartment:'ðŸ¢', villa:'ðŸ¡', bungalow:'ðŸ ', rowhouse:'ðŸ˜ï¸', plot:'ðŸŒ¿', office:'ðŸ¢', shop:'ðŸª', showroom:'ðŸš—', warehouse:'ðŸ­', factory:'âš™ï¸', coworking:'ðŸ’»', industrial_land:'ðŸŒ' };
+  var typeLabel = { apartment:'Apartment', villa:'Villa', bungalow:'Bungalow', rowhouse:'Row House', plot:'Plot', office:'Office', shop:'Shop', showroom:'Showroom', warehouse:'Warehouse', factory:'Factory', coworking:'Co-working', industrial_land:'Industrial Land' };
   grid.innerHTML = drafts.map(function(d, idx) {
-    const icon  = typeIcon[d.type] || '🏠';
-    const tLabel = typeLabel[d.type] || d.type || 'Property';
-    const loc   = [d.area, d.city].filter(Boolean).join(', ') || '—';
-    const price = d.price ? '₹' + Number(d.price).toLocaleString('en-IN') : '—';
-    const beds  = d.beds ? d.beds + ' BHK' : '';
-    const sqft  = d.sqft ? d.sqft + ' sq.ft' : '';
-    const saved = new Date(d.savedAt).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
-    return '<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:all 0.25s;position:relative;overflow:hidden" ' +
+    var icon   = typeIcon[d.type]  || 'ðŸ ';
+    var tLabel = typeLabel[d.type] || d.type || 'Property';
+    var loc    = [d.area, d.city].filter(Boolean).join(', ') || 'â€”';
+    var price  = d.price ? 'â‚¹' + Number(d.price).toLocaleString('en-IN') : 'â€”';
+    var beds   = d.rBeds || d.beds ? (d.rBeds || d.beds) + ' BHK' : '';
+    var sqft   = d.superBuiltUp || d.sqft ? (d.superBuiltUp || d.sqft) + ' sq.ft' : '';
+    var saved  = new Date(d.savedAt).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    var score  = 0;
+    if (d.title && d.title !== 'Untitled Draft') score += 15;
+    if (d.type)  score += 10;
+    if (d.city && d.area) score += 15;
+    if (d.price) score += 15;
+    if (d.superBuiltUp || d.sqft) score += 10;
+    if (d.desc)  score += 20;
+    var sc = score >= 75 ? '#10b981' : score >= 50 ? '#3b82f6' : '#f59e0b';
+    return '<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:all 0.25s;position:relative;overflow:hidden;animation:fadeIn 0.3s ease ' + (idx*0.05) + 's both;" ' +
       'onmouseover="this.style.borderColor=\'rgba(99,102,241,0.4)\';this.style.transform=\'translateY(-2px)\'" ' +
       'onmouseout="this.style.borderColor=\'var(--border)\';this.style.transform=\'\'">' +
-      // Top accent line
       '<div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))"></div>' +
-      // Header
       '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">' +
         '<div style="display:flex;align-items:center;gap:10px">' +
           '<div style="width:40px;height:40px;background:rgba(99,102,241,0.12);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">' + icon + '</div>' +
           '<div>' +
             '<div style="font-size:0.88rem;font-weight:700;color:var(--text);line-height:1.3;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (d.title || 'Untitled Draft') + '</div>' +
             '<div style="font-size:0.72rem;color:var(--text3);margin-top:2px">' + tLabel + '</div>' +
+            '<div style="display:inline-flex;align-items:center;gap:3px;background:rgba(99,102,241,0.1);color:' + sc + ';font-size:0.62rem;font-weight:700;padding:2px 7px;border-radius:20px;margin-top:3px;">' + score + '/100</div>' +
           '</div>' +
         '</div>' +
-        '<button onclick="deleteDraft(' + idx + ')" style="width:26px;height:26px;border-radius:8px;border:none;background:rgba(239,68,68,0.12);color:#f87171;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0" title="Delete draft"><i class="fa-solid fa-trash"></i></button>' +
+        '<button onclick="deleteDraft(' + idx + ')" style="width:26px;height:26px;border-radius:8px;border:none;background:rgba(239,68,68,0.12);color:#f87171;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fa-solid fa-trash"></i></button>' +
       '</div>' +
-      // Details
       '<div style="display:flex;flex-direction:column;gap:6px">' +
         '<div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)"><i class="fa-solid fa-location-dot" style="color:var(--accent);width:14px"></i>' + loc + '</div>' +
-        (price !== '—' ? '<div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)"><i class="fa-solid fa-indian-rupee-sign" style="color:#10b981;width:14px"></i>' + price + '</div>' : '') +
-        ([beds, sqft].filter(Boolean).length ? '<div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)"><i class="fa-solid fa-ruler-combined" style="color:#f59e0b;width:14px"></i>' + [beds, sqft].filter(Boolean).join(' • ') + '</div>' : '') +
-        (d.desc ? '<div style="font-size:0.72rem;color:var(--text3);line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">' + d.desc.substring(0, 100) + (d.desc.length > 100 ? '...' : '') + '</div>' : '') +
+        (price !== 'â€”' ? '<div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)"><i class="fa-solid fa-indian-rupee-sign" style="color:#10b981;width:14px"></i>' + price + '</div>' : '') +
+        ([beds, sqft].filter(Boolean).length ? '<div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)"><i class="fa-solid fa-ruler-combined" style="color:#f59e0b;width:14px"></i>' + [beds, sqft].filter(Boolean).join(' â€¢ ') + '</div>' : '') +
+        (d.desc ? '<div style="font-size:0.72rem;color:var(--text3);line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">' + d.desc.substring(0,100) + (d.desc.length > 100 ? '...' : '') + '</div>' : '') +
       '</div>' +
-      // Footer
       '<div style="display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border)">' +
         '<span style="font-size:0.68rem;color:var(--text3)"><i class="fa-regular fa-clock" style="margin-right:4px"></i>' + saved + '</span>' +
         '<button onclick="loadDraftIntoForm(' + idx + ')" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:0.75rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:5px"><i class="fa-solid fa-pen"></i> Continue</button>' +
@@ -2197,79 +2958,123 @@ function loadDrafts() {
 }
 
 function deleteDraft(idx) {
-  const drafts = JSON.parse(localStorage.getItem('adminDrafts') || '[]');
+  var drafts = JSON.parse(localStorage.getItem('adminDrafts') || '[]');
   drafts.splice(idx, 1);
   localStorage.setItem('adminDrafts', JSON.stringify(drafts));
   toast('Draft deleted.');
   loadDrafts();
 }
 
-function loadDraftIntoForm(idx) {
-  const drafts = JSON.parse(localStorage.getItem('adminDrafts') || '[]');
-  const d = drafts[idx];
-  if (!d) return;
-  // Open modal fresh
+function loadDraftData(d) {
   document.getElementById('propModalTitle').textContent = 'Continue Draft';
   document.getElementById('propForm').reset();
   document.getElementById('propId').value = '';
   document.getElementById('pApproved').checked = true;
   document.getElementById('pImagePreview').innerHTML = '';
-  // Reset stepper
-  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active','slide-back'));
-  document.querySelectorAll('.stepper-step').forEach(t => t.classList.remove('active','done'));
+  document.querySelectorAll('.step-panel').forEach(function(p) { p.classList.remove('active','slide-back'); });
+  document.querySelectorAll('.stepper-step').forEach(function(t) { t.classList.remove('active','done'); });
   document.getElementById('step-1').classList.add('active');
   document.getElementById('step-tab-1').classList.add('active');
   updateStepperProgress(1);
-  // Fill saved values
+
+  function s(id, val) { var e = document.getElementById(id); if (e && val !== undefined && val !== null) e.value = val; }
+  function setToggleBtn(fieldId, val) {
+    s(fieldId, val);
+    document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+      var oc = b.getAttribute('onclick') || '';
+      if (oc.indexOf("'" + fieldId + "'") !== -1) b.classList.toggle('active', oc.indexOf("'" + val + "'") !== -1);
+    });
+  }
+
   setTimeout(function() {
-    if (d.type)     { document.getElementById('pType').value = d.type; onAdminTypeChange(); }
-    if (d.city)     {
-      document.getElementById('pCitySelect').value = d.city;
-      document.getElementById('pCitySelect').dispatchEvent(new Event('change'));
-    }
+    // Category + filter
+    if (d.category) { setToggleBtn('pCategory', d.category); filterPropertyTypeByCategory(d.category); }
+    if (d.status)   setToggleBtn('pStatus', d.status);
+    if (d.type)     { s('pType', d.type); onAdminTypeChange(); }
+
+    // Location
+    if (d.city) { s('pCitySelect', d.city); document.getElementById('pCitySelect').dispatchEvent(new Event('change')); }
     setTimeout(function() {
-      if (d.area)   { document.getElementById('pAreaSelect').value = d.area; document.getElementById('pAreaSelect').dispatchEvent(new Event('change')); }
+      if (d.area) { s('pAreaSelect', d.area); document.getElementById('pAreaSelect').dispatchEvent(new Event('change')); }
       setTimeout(function() {
-        if (d.subArea)  document.getElementById('pSubArea').value = d.subArea;
-        if (d.project)  document.getElementById('pProject').value = d.project;
-        if (d.beds)     {
-          document.getElementById('pBeds').value = d.beds;
-          document.querySelectorAll('#bhkChips .hs-chip').forEach(c => c.classList.toggle('active', c.textContent.trim().startsWith(d.beds)));
-        }
-        if (d.sqft)     document.getElementById('pSqft').value = d.sqft;
-        if (d.price)    document.getElementById('pPrice').value = d.price;
-        if (d.priceLabel) document.getElementById('pPriceLabel').value = d.priceLabel;
-        if (d.desc)     document.getElementById('pDesc').value = d.desc;
-        if (d.agentName)  document.getElementById('pAgentName').value = d.agentName;
-        if (d.agentPhone) document.getElementById('pAgentPhone').value = d.agentPhone;
-        if (d.category) {
-          document.getElementById('pCategory').value = d.category;
-          document.querySelectorAll('.hs-toggle-btn').forEach(b => {
-            if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'pCategory'")) {
-              b.classList.toggle('active', b.getAttribute('onclick').includes("'" + d.category + "'"));
-            }
-          });
-        }
+        s('pSubAreaSelect', d.subArea); s('pProject', d.project);
+        // BHK
+        if (d.beds) { s('pBeds', d.beds); document.querySelectorAll('#bhkChips .hs-chip').forEach(function(c){ c.classList.toggle('active', c.textContent.trim().startsWith(d.beds)); }); }
+        // Residential
+        s('rBeds', d.rBeds); s('rBaths', d.rBaths); s('rBalconies', d.rBalconies || '0');
+        s('rCarpet', d.carpetArea); s('rSBA', d.superBuiltUp); s('pSqft', d.sqft || d.superBuiltUp);
+        s('rFloor', d.floor); s('rTotalFloors', d.totalFloors);
+        s('rFacing', d.facing); s('rOwnership', d.ownership);
+        s('rAge', d.ageOfProperty); s('pAgeOfProperty', d.ageOfProperty);
+        s('rAvailFrom', d.availFrom);
+        if (d.lift)        setToggleBtn('rLift', d.lift);
+        if (d.suitableFor) setToggleBtn('rSuitableFor', d.suitableFor);
+        if (d.security)    setToggleBtn('rSecurity', d.security);
+        if (d.cctv)        setToggleBtn('rCCTV', d.cctv);
+        if (d.water)       setToggleBtn('rWater', d.water);
+        if (d.powerBackup) setToggleBtn('rPowerBackup', d.powerBackup);
+        if (d.garden)      setToggleBtn('rGarden', d.garden);
+        if (d.gymPool)     setToggleBtn('rGymPool', d.gymPool);
+        // Parking counters
+        if (d.coveredParking !== undefined) { s('rCoveredParking', d.coveredParking); var cd = document.getElementById('rCoveredParkingDisplay'); if (cd) cd.textContent = d.coveredParking; }
+        if (d.openParking   !== undefined) { s('rOpenParking',    d.openParking);    var od = document.getElementById('rOpenParkingDisplay');    if (od) od.textContent = d.openParking; }
+        // Furnishing
         if (d.furnished) {
-          document.getElementById('pFurnished').value = d.furnished;
-          document.querySelectorAll('.hs-toggle-btn').forEach(b => {
-            if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'pFurnished'")) {
-              b.classList.toggle('active', b.getAttribute('onclick').includes("'" + d.furnished + "'"));
-            }
+          s('rFurnishing', d.furnished); s('pFurnished', d.furnished);
+          document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+            var oc = b.getAttribute('onclick') || '';
+            if (oc.indexOf('setResFurnishing') !== -1) b.classList.toggle('active', oc.indexOf("'" + d.furnished + "'") !== -1);
+          });
+          var fi = document.getElementById('furnishingItems');
+          if (fi) fi.style.display = (d.furnished === 'Unfurnished') ? 'none' : 'block';
+        }
+        // Pricing
+        s('pPrice', d.price); s('pPriceLabel', d.priceLabel); s('pPossession', d.possession); s('pReraNo', d.reraNo);
+        if (d.allInclusive) setToggleBtn('pAllInclusive', d.allInclusive);
+        if (d.negotiable)   setToggleBtn('pNegotiable',   d.negotiable);
+        if (d.taxCharges)   setToggleBtn('pTaxCharges',   d.taxCharges);
+        s('pBookingAmount', d.bookingAmount); s('pMaintenance', d.maintenance);
+        s('pAnnualDues', d.annualDues); s('pMembershipCharge', d.membershipCharge);
+        s('rMaintenance', d.maintenanceRent); s('rLockIn', d.lockIn);
+        s('rNoticePeriod', d.noticePeriod);
+        if (d.brokerage) setToggleBtn('rBrokerage', d.brokerage);
+        // Highlights
+        s('pTitle', d.title !== 'Untitled Draft' ? d.title : '');
+        s('pDesc', d.desc); s('pAgentName', d.agentName); s('pAgentPhone', d.agentPhone);
+        if (d.featured !== undefined) document.getElementById('pFeatured').checked = d.featured;
+        // Amenities
+        initAmenitiesGrid(d.amenities || []);
+        // Images
+        if (d.images && d.images.length) {
+          var preview = document.getElementById('pImagePreview');
+          d.images.forEach(function(url) {
+            var item = document.createElement('div');
+            item.style.cssText = 'position:relative;width:90px;height:70px;border-radius:8px;overflow:hidden;border:1.5px solid #e8e8e8;flex-shrink:0';
+            item.dataset.existingUrl = url;
+            item.innerHTML = '<img src="' + url + '" style="width:100%;height:100%;object-fit:cover"/>' +
+              '<button type="button" onclick="this.parentElement.remove()" style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,0.6);border:none;color:#fff;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:0.65rem;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-xmark"></i></button>';
+            preview.appendChild(item);
           });
         }
-        initAmenitiesGrid([]);
+        _ascPrev = -1;
         updateAdminScore();
       }, 150);
     }, 150);
   }, 50);
+}
+
+function loadDraftIntoForm(idx) {
+  var drafts = JSON.parse(localStorage.getItem('adminDrafts') || '[]');
+  var d = drafts[idx];
+  if (!d) return;
+  loadDraftData(d);
   openModal('propModal');
 }
 
 function clearAllDrafts() {
   if (!confirm('Clear all saved drafts?')) return;
   localStorage.removeItem('adminDrafts');
-  const badge = document.getElementById('draftBadge');
+  var badge = document.getElementById('draftBadge');
   if (badge) badge.textContent = '';
   loadDrafts();
   toast('All drafts cleared.');
@@ -2466,4 +3271,112 @@ async function deleteContact(id) {
     headers: { 'Authorization': 'Bearer ' + adminToken }
   });
   toast('Deleted.'); loadContacts();
+}
+
+
+// ===== OFFICE SPACE LOGIC =====
+(function() {
+  var _orig = window.onAdminTypeChange;
+  window.onAdminTypeChange = function() {
+    if (_orig) _orig();
+    var type = document.getElementById('pType').value;
+    var isOffice = type === 'office' || type === 'coworking';
+    var isComm = ['office','shop','showroom','warehouse','factory','coworking','industrial_land'].indexOf(type) !== -1;
+    var catEl = document.getElementById('pCategory');
+    if (catEl) {
+      catEl.value = isComm ? 'commercial' : 'residential';
+      document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+        var oc = b.getAttribute('onclick') || '';
+        if (oc.indexOf('pCategory') !== -1) b.classList.toggle('active', oc.indexOf(isComm ? 'commercial' : 'residential') !== -1);
+      });
+    }
+    var of2 = document.getElementById('officeFields');
+    if (of2) of2.style.display = isOffice ? 'block' : 'none';
+    var lt = document.getElementById('leaseTermsSection');
+    if (lt) lt.style.display = isComm ? 'block' : 'none';
+    document.querySelectorAll('.hs-field').forEach(function(f) {
+      var lbl = f.querySelector('label');
+      if (lbl && lbl.textContent.indexOf('Tenant Preference') !== -1) {
+        var row = f.closest('.hs-row'); if (row) row.style.display = isComm ? 'none' : '';
+      }
+    });
+  };
+})();
+
+function setMeetingRooms(btn, val) {
+  btn.closest('div').querySelectorAll('.hs-toggle-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('oMeetingRooms').value = val;
+}
+
+
+// ===== RESIDENTIAL FIELDS LOGIC =====
+(function() {
+  var _orig2 = window.onAdminTypeChange;
+  window.onAdminTypeChange = function() {
+    if (_orig2) _orig2();
+    var type = document.getElementById('pType').value;
+    var isRes = ['apartment','villa','bungalow','rowhouse'].indexOf(type) !== -1;
+    var isRent = document.getElementById('pStatus') ? document.getElementById('pStatus').value === 'for-rent' : false;
+
+    var rf = document.getElementById('residentialFields');
+    if (rf) rf.style.display = isRes ? 'block' : 'none';
+
+    var rd = document.getElementById('rentalDetailsSection');
+    if (rd) rd.style.display = (isRes && isRent) ? 'block' : 'none';
+    var sd = document.getElementById('sellPricingSection');
+    if (sd) sd.style.display = (isRes && !isRent) ? 'block' : 'none';
+  };
+
+  // Also trigger on status change
+  var statusEl = document.getElementById('pStatus');
+  if (statusEl) {
+    statusEl.addEventListener('change', function() {
+      var type = document.getElementById('pType').value;
+      var isRes = ['apartment','villa','bungalow','rowhouse'].indexOf(type) !== -1;
+      var rd = document.getElementById('rentalDetailsSection');
+      if (rd) rd.style.display = (isRes && this.value === 'for-rent') ? 'block' : 'none';
+      var sd = document.getElementById('sellPricingSection');
+      if (sd) sd.style.display = (isRes && this.value !== 'for-rent') ? 'block' : 'none';
+    });
+  }
+})();
+
+// Also hook into hsToggle for pStatus buttons
+var _origHsToggle = window.hsToggle;
+window.hsToggle = function(btn, fieldId, val) {
+  if (_origHsToggle) _origHsToggle(btn, fieldId, val);
+  if (fieldId === 'pStatus') {
+    var type = document.getElementById('pType').value;
+    var isRes = ['apartment','villa','bungalow','rowhouse'].indexOf(type) !== -1;
+    var rd = document.getElementById('rentalDetailsSection');
+    if (rd) rd.style.display = (isRes && val === 'for-rent') ? 'block' : 'none';
+    var sd = document.getElementById('sellPricingSection');
+    if (sd) sd.style.display = (isRes && (val === 'for-sale' || val === 'new-launch')) ? 'block' : 'none';
+  }
+};
+
+function hsChipRes(chip, fieldId, val) {
+  chip.closest('.hs-chips').querySelectorAll('.hs-chip').forEach(function(c){ c.classList.remove('active'); });
+  chip.classList.add('active');
+  document.getElementById(fieldId).value = val;
+}
+
+function setResFurnishing(btn, val) {
+  btn.closest('.hs-toggle').querySelectorAll('.hs-toggle-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('rFurnishing').value = val;
+  var pf = document.getElementById('pFurnished');
+  if (pf) pf.value = val;
+  var items = document.getElementById('furnishingItems');
+  if (items) items.style.display = (val === 'Unfurnished') ? 'none' : 'block';
+}
+
+function calcSBA() {
+  var carpet = parseFloat(document.getElementById('rCarpet').value) || 0;
+  var sba = document.getElementById('rSBA');
+  if (carpet > 0 && !sba.value) sba.value = Math.round(carpet * 1.25);
+  var pSqft = document.getElementById('pSqft');
+  if (pSqft && !pSqft.value && sba.value) pSqft.value = sba.value;
+  updateAdminScore();
 }

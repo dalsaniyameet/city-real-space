@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -465,27 +465,25 @@
                 </select>
               </div>
               <div class="hs-field">
-                <label>Building / Society</label>
-                <input type="text" id="pProject" placeholder="e.g. Shivalik Sharda"/>
-              </div>
-            </div>
-            <div class="hs-row cols-3">
-              <div class="hs-field">
-                <label>Sub Area / Locality</label>
+                <label>Sub Area</label>
                 <select id="pSubAreaSelect">
                   <option value="">-- Select Locality First --</option>
                 </select>
               </div>
+            </div>
+
+            <!-- Building / Society smart combo -->
+            <div class="hs-row cols-1" style="margin-bottom:16px">
               <div class="hs-field">
-                <label>Sub Area (Manual)</label>
-                <input type="text" id="pSubArea" placeholder="Type sub area manually"/>
-              </div>
-              <div class="hs-field">
-                <label id="pProjectLabel">🏗️ Project / Society Name</label>
-                <select id="pProjectSelect" onchange="onProjectSelectChange()">
-                  <option value="">-- Select Locality First --</option>
-                </select>
-                <input type="text" id="pProject" placeholder="Or type manually..." style="margin-top:6px"/>
+                <label>🏗️ Building / Society / Project</label>
+                <div style="position:relative;">
+                  <input type="text" id="pProject" placeholder="Type or select society name..." autocomplete="off"
+                    oninput="onProjectInput(this.value)"
+                    onfocus="onProjectInput(this.value)"
+                    style="width:100%;"/>
+                  <div id="projectDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:20;background:#fff;border:1.5px solid #FF4D4D;border-radius:10px;margin-top:4px;max-height:200px;overflow-y:auto;box-shadow:0 8px 24px rgba(255,77,77,0.15);"></div>
+                </div>
+                <div style="font-size:0.72rem;color:#aaa;margin-top:4px;">Type manually if not in list — your entry will be saved</div>
               </div>
             </div>
 
@@ -513,17 +511,6 @@
                   </optgroup>
                 </select>
               </div>
-              <!-- BHK chips — shown only for residential types -->
-              <div class="hs-field" id="adminBedsRow">
-                <label>🛏️ BHK / Bedrooms</label>
-                <div class="hs-chips" id="bhkChips">
-                  <span class="hs-chip" onclick="hsChipBhk(this,'1')">🛏️ 1 BHK</span>
-                  <span class="hs-chip" onclick="hsChipBhk(this,'2')">🛏️🛏️ 2 BHK</span>
-                  <span class="hs-chip" onclick="hsChipBhk(this,'3')">🛏️🛏️🛏️ 3 BHK</span>
-                  <span class="hs-chip" onclick="hsChipBhk(this,'4')">4+ BHK</span>
-                </div>
-                <input type="hidden" id="pBeds" value=""/>
-              </div>
               <!-- Seats/Cabins — shown for office/shop -->
               <div class="hs-field" id="adminSeatsRow" style="display:none">
                 <label>💺 Seats / Cabins</label>
@@ -537,24 +524,280 @@
               </div>
             </div>
 
-            <!-- Area row — auto-suggest based on BHK + type -->
-            <div class="hs-row cols-3">
-              <div class="hs-field">
-                <label id="pSqftLabel">📐 Super Built-up Area (sq.ft)</label>
-                <div style="position:relative">
-                  <input type="number" id="pSqft" placeholder="e.g. 1215" oninput="updateAdminScore()"/>
-                  <!-- Auto-suggest pill -->
-                  <div id="sqftSuggest" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:10;background:#fff;border:1.5px solid #FF4D4D;border-radius:8px;margin-top:4px;overflow:hidden;box-shadow:0 4px 16px rgba(255,77,77,0.15);"></div>
+            <!-- hidden fields -->
+            <input type="hidden" id="pBeds" value=""/>
+            <input type="hidden" id="pBaths" value="0"/>
+            <input type="hidden" id="pCarpetArea" value="0"/>
+            <input type="hidden" id="pBuiltArea" value="0"/>
+            <input type="hidden" id="pBalconies" value="0"/>
+            <input type="hidden" id="pFacing" value=""/>
+            <input type="hidden" id="pToken" value=""/>
+            <input type="hidden" id="pFloorPlan" value=""/>
+            <input type="hidden" id="pFurnished" value="Unfurnished"/>
+
+            <!-- ===== RESIDENTIAL SMART SECTION ===== -->
+            <div id="residentialFields" style="display:none">
+              <div style="font-size:0.85rem;font-weight:700;color:#E53935;margin:14px 0 12px;padding:10px 14px;background:linear-gradient(135deg,#fff5f5,#fff);border-radius:10px;border-left:3px solid #E53935;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(255,77,77,0.08);"><i class="fa-solid fa-house"></i> Property Configuration <span style="margin-left:auto;font-size:0.7rem;font-weight:500;color:#aaa;">Auto-fills on BHK select</span></div>
+
+              <!-- BHK selector at top -->
+              <div class="hs-row cols-1" style="margin-bottom:14px">
+                <div class="hs-field" id="adminBedsRow">
+                  <label>🛏️ BHK / Configuration</label>
+                  <div class="hs-chips" id="bhkChips">
+                    <span class="hs-chip" onclick="hsChipBhk(this,'1')">1 BHK</span>
+                    <span class="hs-chip" onclick="hsChipBhk(this,'2')">2 BHK</span>
+                    <span class="hs-chip" onclick="hsChipBhk(this,'3')">3 BHK</span>
+                    <span class="hs-chip" onclick="hsChipBhk(this,'4')">4+ BHK</span>
+                  </div>
+                  <div id="sqftHint" style="font-size:0.72rem;color:#FF4D4D;margin-top:6px;display:none;font-weight:600;"></div>
                 </div>
-                <div id="sqftHint" style="font-size:0.72rem;color:#888;margin-top:4px;display:none;"></div>
               </div>
-              <input type="hidden" id="pBaths" value="0"/>
-              <input type="hidden" id="pCarpetArea" value="0"/>
-              <input type="hidden" id="pBuiltArea" value="0"/>
-              <input type="hidden" id="pBalconies" value="0"/>
-              <input type="hidden" id="pFacing" value=""/>
-              <input type="hidden" id="pToken" value=""/>
-              <input type="hidden" id="pFloorPlan" value=""/>
+
+              <!-- Bedrooms Bathrooms Balconies — auto-filled by BHK -->
+              <div class="hs-row cols-3">
+                <div class="hs-field">
+                  <label>🛌 Bedrooms</label>
+                  <div class="hs-chips" id="rBedsChips">
+                    <span class="hs-chip" onclick="hsChipRes(this,'rBeds','1')">1</span>
+                    <span class="hs-chip" onclick="hsChipRes(this,'rBeds','2')">2</span>
+                    <span class="hs-chip" onclick="hsChipRes(this,'rBeds','3')">3</span>
+                    <span class="hs-chip" onclick="hsChipRes(this,'rBeds','4')">4</span>
+                    <span class="hs-chip" onclick="hsChipRes(this,'rBeds','5+')">5+</span>
+                  </div>
+                  <input type="hidden" id="rBeds" value=""/>
+                </div>
+                <div class="hs-field">
+                  <label>🚿 Bathrooms</label>
+                  <div class="hs-chips" id="rBathsChips">
+                    <span class="hs-chip" onclick="hsChipRes(this,'rBaths','1')">1</span>
+                    <span class="hs-chip" onclick="hsChipRes(this,'rBaths','2')">2</span>
+                    <span class="hs-chip" onclick="hsChipRes(this,'rBaths','3')">3</span>
+                    <span class="hs-chip" onclick="hsChipRes(this,'rBaths','4+')">4+</span>
+                  </div>
+                  <input type="hidden" id="rBaths" value=""/>
+                </div>
+                <div class="hs-field">
+                  <label>🏠 Balconies</label>
+                  <div class="hs-chips" id="rBalconiesChips">
+                    <span class="hs-chip" onclick="hsChipRes(this,'rBalconies','0')">0</span>
+                    <span class="hs-chip" onclick="hsChipRes(this,'rBalconies','1')">1</span>
+                    <span class="hs-chip" onclick="hsChipRes(this,'rBalconies','2')">2</span>
+                    <span class="hs-chip" onclick="hsChipRes(this,'rBalconies','3+')">3+</span>
+                  </div>
+                  <input type="hidden" id="rBalconies" value="0"/>
+                </div>
+              </div>
+
+              <!-- Area — auto-filled by BHK -->
+              <div class="hs-row cols-2">
+                <div class="hs-field">
+                  <label>📐 Carpet Area (sq.ft)</label>
+                  <div style="position:relative">
+                    <input type="number" id="rCarpet" placeholder="e.g. 850" oninput="calcSBA()"/>
+                    <div id="sqftSuggest" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:10;background:#fff;border:1.5px solid #FF4D4D;border-radius:8px;margin-top:4px;overflow:hidden;box-shadow:0 4px 16px rgba(255,77,77,0.15);"></div>
+                  </div>
+                </div>
+                <div class="hs-field">
+                  <label id="pSqftLabel">📐 Super Built-up Area (sq.ft)</label>
+                  <input type="number" id="rSBA" placeholder="e.g. 1050" oninput="syncSBAtoMain()"/>
+                </div>
+              </div>
+              <!-- pSqft hidden sync -->
+              <input type="number" id="pSqft" style="display:none" oninput="updateAdminScore()"/>
+
+              <!-- Floor + Lift -->
+              <div class="hs-row cols-3">
+                <div class="hs-field">
+                  <label>🏢 Floor No.</label>
+                  <select id="rFloor">
+                    <option value="">Select</option>
+                    <option>Ground</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15+</option>
+                  </select>
+                </div>
+                <div class="hs-field">
+                  <label>🏢 Total Floors</label>
+                  <select id="rTotalFloors">
+                    <option value="">Select</option>
+                    <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>20</option><option>25+</option>
+                  </select>
+                </div>
+                <div class="hs-field">
+                  <label>🛗 Lift</label>
+                  <div class="hs-toggle">
+                    <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rLift','Available')">Available</button>
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rLift','Not Available')">Not Available</button>
+                  </div>
+                  <input type="hidden" id="rLift" value="Available"/>
+                </div>
+              </div>
+
+              <!-- Parking + Facing + Ownership -->
+              <div class="hs-row cols-3">
+                <div class="hs-field">
+                  <label>🚗 Parking</label>
+                  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                    <div style="display:flex;align-items:center;gap:8px;background:#f8f9fa;border:1.5px solid #e8e8e8;border-radius:10px;padding:8px 14px;">
+                      <span style="font-size:0.78rem;font-weight:600;color:#555;white-space:nowrap;">🏠 Covered</span>
+                      <div style="display:flex;align-items:center;gap:6px;">
+                        <button type="button" onclick="adjParking('rCoveredParking',-1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;color:#555;">-</button>
+                        <span id="rCoveredParkingDisplay" style="min-width:20px;text-align:center;font-size:0.95rem;font-weight:700;color:#333;">0</span>
+                        <button type="button" onclick="adjParking('rCoveredParking',1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #FF4D4D;background:#fff5f5;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;color:#FF4D4D;">+</button>
+                      </div>
+                      <input type="hidden" id="rCoveredParking" value="0"/>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;background:#f8f9fa;border:1.5px solid #e8e8e8;border-radius:10px;padding:8px 14px;">
+                      <span style="font-size:0.78rem;font-weight:600;color:#555;white-space:nowrap;">🌳 Open</span>
+                      <div style="display:flex;align-items:center;gap:6px;">
+                        <button type="button" onclick="adjParking('rOpenParking',-1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;color:#555;">-</button>
+                        <span id="rOpenParkingDisplay" style="min-width:20px;text-align:center;font-size:0.95rem;font-weight:700;color:#333;">0</span>
+                        <button type="button" onclick="adjParking('rOpenParking',1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #FF4D4D;background:#fff5f5;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;color:#FF4D4D;">+</button>
+                      </div>
+                      <input type="hidden" id="rOpenParking" value="0"/>
+                    </div>
+                  </div>
+                </div>
+                <div class="hs-field">
+                  <label>🧭 Facing</label>
+                  <select id="rFacing">
+                    <option value="">Select</option>
+                    <option>East</option><option>West</option><option>North</option><option>South</option>
+                    <option>North-East</option><option>North-West</option><option>South-East</option><option>South-West</option>
+                  </select>
+                </div>
+                <div class="hs-field">
+                  <label>📋 Ownership</label>
+                  <select id="rOwnership">
+                    <option value="">Select</option>
+                    <option>Freehold</option>
+                    <option>Leasehold</option>
+                    <option>Co-operative Society</option>
+                    <option>Power of Attorney</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Furnishing + Age -->
+              <div class="hs-row cols-2">
+                <div class="hs-field">
+                  <label>🛋️ Furnishing Status</label>
+                  <div class="hs-toggle">
+                    <button type="button" class="hs-toggle-btn active" onclick="setResFurnishing(this,'Unfurnished')">Unfurnished</button>
+                    <button type="button" class="hs-toggle-btn" onclick="setResFurnishing(this,'Semi Furnished')">Semi Furnished</button>
+                    <button type="button" class="hs-toggle-btn" onclick="setResFurnishing(this,'Fully Furnished')">Fully Furnished</button>
+                  </div>
+                  <input type="hidden" id="rFurnishing" value="Unfurnished"/>
+                </div>
+                <div class="hs-field">
+                  <label>🏗️ Property Age</label>
+                  <select id="rAge">
+                    <option value="">Select</option>
+                    <option>New Construction</option>
+                    <option>Less than 1 year</option>
+                    <option>1-3 years</option>
+                    <option>3-5 years</option>
+                    <option>5-10 years</option>
+                    <option>10+ years</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Furnishing Items -->
+              <div id="furnishingItems" style="display:none;background:#f8f9fa;border-radius:10px;padding:14px;border:1px solid #e8e8e8;margin-bottom:12px;">
+                <div style="font-size:0.78rem;font-weight:700;color:#555;margin-bottom:10px;">🔧 Furnishing Includes</div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;">
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Lights"/> 💡 Lights</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Fans"/> 🌀 Fans</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="AC"/> ❄️ AC</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Beds"/> 🛏️ Beds</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Wardrobe"/> 👔 Wardrobe</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Sofa"/> 🛋️ Sofa</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Dining Table"/> 🍽️ Dining Table</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Modular Kitchen"/> 🍳 Modular Kitchen</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Chimney"/> 🌬️ Chimney</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Fridge"/> 🧊 Fridge</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Washing Machine"/> 🫧 Washing Machine</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Geyser"/> 🚿 Geyser</label>
+                </div>
+              </div>
+
+              <!-- Amenities Quick Toggles -->
+              <div style="font-size:0.78rem;font-weight:700;color:#555;margin:12px 0 8px;">🏠 Key Amenities</div>
+              <div class="hs-row cols-2">
+                <div class="hs-field">
+                  <label>🔒 Security</label>
+                  <div class="hs-toggle">
+                    <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rSecurity','Yes')">Yes</button>
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rSecurity','No')">No</button>
+                  </div>
+                  <input type="hidden" id="rSecurity" value="Yes"/>
+                </div>
+                <div class="hs-field">
+                  <label>📹 CCTV</label>
+                  <div class="hs-toggle">
+                    <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rCCTV','Yes')">Yes</button>
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rCCTV','No')">No</button>
+                  </div>
+                  <input type="hidden" id="rCCTV" value="Yes"/>
+                </div>
+              </div>
+              <div class="hs-row cols-2">
+                <div class="hs-field">
+                  <label>💧 Water Supply</label>
+                  <div class="hs-toggle">
+                    <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rWater','24x7')">24x7</button>
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rWater','Limited')">Limited</button>
+                  </div>
+                  <input type="hidden" id="rWater" value="24x7"/>
+                </div>
+                <div class="hs-field">
+                  <label>⚡ Power Backup</label>
+                  <div class="hs-toggle">
+                    <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rPowerBackup','Yes')">Yes</button>
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rPowerBackup','No')">No</button>
+                  </div>
+                  <input type="hidden" id="rPowerBackup" value="Yes"/>
+                </div>
+              </div>
+              <div class="hs-row cols-2">
+                <div class="hs-field">
+                  <label>🌿 Garden / Park</label>
+                  <div class="hs-toggle">
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rGarden','Available')">Available</button>
+                    <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rGarden','Not Available')">Not Available</button>
+                  </div>
+                  <input type="hidden" id="rGarden" value="Not Available"/>
+                </div>
+                <div class="hs-field">
+                  <label>🏋️ Gym / Pool / Club</label>
+                  <div class="hs-toggle">
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rGymPool','Available')">Available</button>
+                    <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rGymPool','Not Available')">Not Available</button>
+                  </div>
+                  <input type="hidden" id="rGymPool" value="Not Available"/>
+                </div>
+              </div>
+
+              <!-- Available From + Suitable For -->
+              <div class="hs-row cols-2">
+                <div class="hs-field">
+                  <label>📅 Available From</label>
+                  <input type="date" id="rAvailFrom"/>
+                </div>
+                <div class="hs-field">
+                  <label>🎯 Suitable For</label>
+                  <div class="hs-toggle" style="flex-wrap:wrap">
+                    <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rSuitableFor','Family')">Family</button>
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rSuitableFor','Bachelors')">Bachelors</button>
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rSuitableFor','Company')">Company</button>
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rSuitableFor','Any')">Any</button>
+                  </div>
+                  <input type="hidden" id="rSuitableFor" value="Family"/>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="hs-row cols-1">
               <div class="hs-field">
                 <label>🏗️ Age of Property</label>
                 <select id="pAgeOfProperty">
@@ -566,15 +809,6 @@
                   <option>5-10 years</option>
                   <option>10+ years</option>
                 </select>
-              </div>
-              <div class="hs-field">
-                <label>🛋️ Furnishing</label>
-                <div class="hs-toggle" style="flex-wrap:wrap">
-                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pFurnished','Furnished')">Furnished</button>
-                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pFurnished','Semi-Furnished')">Semi</button>
-                  <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pFurnished','Unfurnished')">Unfurnished</button>
-                </div>
-                <input type="hidden" id="pFurnished" value="Unfurnished"/>
               </div>
             </div>
 
@@ -607,6 +841,33 @@
               </div>
             </div>
 
+            <!-- OFFICE SPACE FIELDS -->
+            <div id="officeFields" style="display:none">
+              <div style="font-size:0.85rem;font-weight:700;color:#1d4ed8;margin:14px 0 10px;padding:8px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid #3b82f6;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-building"></i> Office Space Details</div>
+              <div class="hs-row cols-3">
+                <div class="hs-field"><label>&#128208; Carpet Area (sq.ft)</label><input type="number" id="oCarpet" placeholder="e.g. 800"/></div>
+                <div class="hs-field"><label>&#128208; Super Built-up Area (sq.ft)</label><input type="number" id="oSBA" placeholder="e.g. 1000"/></div>
+                <div class="hs-field"><label>&#129681; Furnishing</label><div class="hs-toggle" style="flex-wrap:wrap"><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oFurnishing','Fully Furnished')">Fully Furnished</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oFurnishing','Semi Furnished')">Semi Furnished</button><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oFurnishing','Unfurnished')">Unfurnished</button></div><input type="hidden" id="oFurnishing" value="Unfurnished"/></div>
+              </div>
+              <div class="hs-row cols-3">
+                <div class="hs-field"><label>&#128188; Cabins</label><input type="number" id="oCabins" min="0" placeholder="e.g. 4"/></div>
+                <div class="hs-field"><label>&#128187; Workstations</label><input type="number" id="oWorkstations" min="0" placeholder="e.g. 20"/></div>
+                <div class="hs-field"><label>&#128202; Meeting Rooms</label><div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="hs-toggle-btn active" onclick="setMeetingRooms(this,'0')">No</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'1')">1</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'2')">2</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'3')">3</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'4+')">4+</button></div><input type="hidden" id="oMeetingRooms" value="0"/></div>
+              </div>
+              <div class="hs-row cols-3">
+                <div class="hs-field"><label>&#128706; Reception</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oReception','No')">No</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oReception','Yes')">Yes</button></div><input type="hidden" id="oReception" value="No"/></div>
+                <div class="hs-field"><label>&#127869; Pantry</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oPantry','No')">No</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oPantry','Dry')">Dry</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oPantry','Wet')">Wet</button></div><input type="hidden" id="oPantry" value="No"/></div>
+                <div class="hs-field"><label>&#128683; Washroom</label><div style="display:flex;gap:6px;flex-wrap:wrap"><label style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1.5px solid #e8e8e8;border-radius:20px;cursor:pointer;font-size:0.8rem;background:#fff;transition:all 0.2s"><input type="checkbox" id="oWashMale" style="accent-color:#E53935" onchange="this.closest('label').style.borderColor=this.checked?'#E53935':'#e8e8e8';this.closest('label').style.background=this.checked?'#fff5f5':'#fff'"/> &#128697; Male</label><label style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1.5px solid #e8e8e8;border-radius:20px;cursor:pointer;font-size:0.8rem;background:#fff;transition:all 0.2s"><input type="checkbox" id="oWashFemale" style="accent-color:#E53935" onchange="this.closest('label').style.borderColor=this.checked?'#E53935':'#e8e8e8';this.closest('label').style.background=this.checked?'#fff5f5':'#fff'"/> &#128698; Female</label><label style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1.5px solid #e8e8e8;border-radius:20px;cursor:pointer;font-size:0.8rem;background:#fff;transition:all 0.2s"><input type="checkbox" id="oWashCommon" style="accent-color:#E53935" onchange="this.closest('label').style.borderColor=this.checked?'#E53935':'#e8e8e8';this.closest('label').style.background=this.checked?'#fff5f5':'#fff'"/> &#128683; Common</label></div></div>
+              </div>
+              <div class="hs-row cols-3">
+                <div class="hs-field"><label>&#127756; AC</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oAC','None')">None</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oAC','Split AC')">Split AC</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oAC','Central AC')">Central AC</button></div><input type="hidden" id="oAC" value="None"/></div>
+                <div class="hs-field"><label>&#128663; Parking</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oParking','Not Available')">Not Available</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oParking','Available')">Available</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oParking','Reserved')">Reserved</button></div><input type="hidden" id="oParking" value="Not Available"/></div>
+                <div class="hs-field"><label>&#128397; Lift</label><div class="hs-row cols-2" style="margin-bottom:0"><div><label style="font-size:0.72rem;color:#888">Common Lift</label><input type="number" id="oLiftCommon" min="0" max="10" placeholder="0" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:7px 10px;font-size:0.85rem;font-family:Poppins,sans-serif;width:100%;outline:none;"/></div><div><label style="font-size:0.72rem;color:#888">Owner Lift</label><input type="number" id="oLiftOwner" min="0" max="10" placeholder="0" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:7px 10px;font-size:0.85rem;font-family:Poppins,sans-serif;width:100%;outline:none;"/></div></div></div>
+              </div>
+              <div class="hs-row cols-1">
+                <div class="hs-field"><label>&#127919; Suitable For</label><input type="text" id="oSuitableFor" placeholder="e.g. IT Company, Startup, Corporate, Bank..."/></div>
+              </div>
+            </div>
             <div class="hs-step-nav">
               <span></span>
               <button type="button" class="hs-btn-next" onclick="hsNextStep(1)">Next <i class="fa-solid fa-arrow-right"></i></button>
@@ -721,6 +982,116 @@
               </div>
             </div>
 
+
+
+            <!-- Sell Pricing Details - Residential Sell Only -->
+            <div id="sellPricingSection" style="display:none;margin-top:16px;">
+              <div style="font-size:0.85rem;font-weight:700;color:#E53935;margin-bottom:12px;padding:8px 12px;background:#fff5f5;border-radius:8px;border-left:3px solid #E53935;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-indian-rupee-sign"></i> Sale Pricing Details</div>
+              <div class="hs-row cols-3">
+                <div class="hs-field">
+                  <label>💰 All Inclusive</label>
+                  <div class="hs-toggle">
+                    <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pAllInclusive','Yes')">Yes</button>
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pAllInclusive','No')">No</button>
+                  </div>
+                  <input type="hidden" id="pAllInclusive" value="Yes"/>
+                </div>
+                <div class="hs-field">
+                  <label>🤝 Price Negotiable</label>
+                  <div class="hs-toggle">
+                    <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pNegotiable','Yes')">Yes</button>
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pNegotiable','No')">No</button>
+                  </div>
+                  <input type="hidden" id="pNegotiable" value="Yes"/>
+                </div>
+                <div class="hs-field">
+                  <label>🏦 Tax &amp; Govt Charges</label>
+                  <div class="hs-toggle">
+                    <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pTaxCharges','Included')">Included</button>
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pTaxCharges','Extra')">Extra</button>
+                  </div>
+                  <input type="hidden" id="pTaxCharges" value="Included"/>
+                </div>
+              </div>
+              <div class="hs-row cols-2">
+                <div class="hs-field">
+                  <label>💳 Booking Amount (&#8377;)</label>
+                  <input type="number" id="pBookingAmount" placeholder="e.g. 100000"/>
+                </div>
+                <div class="hs-field">
+                  <label>📅 Maintenance (Monthly &#8377;)</label>
+                  <input type="number" id="pMaintenance" placeholder="e.g. 3000"/>
+                </div>
+              </div>
+              <div class="hs-row cols-2">
+                <div class="hs-field">
+                  <label>📆 Annual Dues (&#8377;)</label>
+                  <input type="number" id="pAnnualDues" placeholder="e.g. 12000"/>
+                </div>
+                <div class="hs-field">
+                  <label>🏅 Membership Charge (&#8377;)</label>
+                  <input type="number" id="pMembershipCharge" placeholder="e.g. 50000"/>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rental Details - Residential Only -->
+            <div id="rentalDetailsSection" style="display:none;margin-top:16px;">
+              <div style="font-size:0.85rem;font-weight:700;color:#E53935;margin-bottom:12px;padding:8px 12px;background:#fff5f5;border-radius:8px;border-left:3px solid #E53935;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-indian-rupee-sign"></i> Rental Details</div>
+              <div class="hs-row cols-2">
+                <div class="hs-field">
+                  <label>&#128176; Maintenance (per month)</label>
+                  <input type="number" id="rMaintenance" placeholder="e.g. 2000"/>
+                </div>
+                <div class="hs-field">
+                  <label>&#128274; Lock-in Period</label>
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <input type="number" id="rLockIn" min="0" max="60" placeholder="e.g. 11" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:9px 12px;font-size:0.85rem;font-family:Poppins,sans-serif;flex:1;outline:none;"/>
+                    <span style="font-size:0.82rem;color:#555;white-space:nowrap;font-weight:600;">Months</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hs-row cols-2">
+                <div class="hs-field">
+                  <label>&#128203; Notice Period</label>
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <input type="number" id="rNoticePeriod" min="0" max="12" placeholder="e.g. 1" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:9px 12px;font-size:0.85rem;font-family:Poppins,sans-serif;flex:1;outline:none;"/>
+                    <span style="font-size:0.82rem;color:#555;white-space:nowrap;font-weight:600;">Months</span>
+                  </div>
+                </div>
+                <div class="hs-field">
+                  <label>&#128200; Yearly Rent Increase</label>
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <input type="number" id="rRentIncrease" min="0" max="100" placeholder="e.g. 5" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:9px 12px;font-size:0.85rem;font-family:Poppins,sans-serif;flex:1;outline:none;"/>
+                    <span style="font-size:0.82rem;color:#555;white-space:nowrap;font-weight:600;">%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="hs-row cols-1">
+                <div class="hs-field">
+                  <label>&#129309; Brokerage</label>
+                  <div class="hs-toggle" style="flex-wrap:wrap;">
+                    <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rBrokerage','None')">None</button>
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rBrokerage','1 Month Rent')">1 Month</button>
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rBrokerage','2 Month Rent')">2 Month</button>
+                    <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rBrokerage','Negotiable')">Negotiable</button>
+                  </div>
+                  <input type="hidden" id="rBrokerage" value="None"/>
+                </div>
+              </div>
+            </div>
+            <!-- Lease Terms -->
+            <div id="leaseTermsSection" style="display:none;margin-top:16px;">
+              <div style="font-size:0.85rem;font-weight:700;color:#1d4ed8;margin-bottom:12px;padding:8px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid #3b82f6;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-file-contract"></i> Lease Terms</div>
+              <div class="hs-row cols-2">
+                <div class="hs-field"><label>&#128274; Lock-in Period</label><div style="display:flex;align-items:center;gap:8px;"><input type="number" id="cLockIn" min="0" max="60" placeholder="e.g. 12" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:9px 12px;font-size:0.85rem;font-family:Poppins,sans-serif;flex:1;outline:none;"/><span style="font-size:0.82rem;color:#555;white-space:nowrap;font-weight:600;">Months</span></div></div>
+                <div class="hs-field"><label>&#128203; Notice Period</label><div style="display:flex;align-items:center;gap:8px;"><input type="number" id="cNoticePeriod" min="0" max="12" placeholder="e.g. 2" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:9px 12px;font-size:0.85rem;font-family:Poppins,sans-serif;flex:1;outline:none;"/><span style="font-size:0.82rem;color:#555;white-space:nowrap;font-weight:600;">Months</span></div></div>
+              </div>
+              <div class="hs-row cols-2">
+                <div class="hs-field"><label>&#128200; Yearly Rent Increase</label><div style="display:flex;align-items:center;gap:8px;"><input type="number" id="cRentIncrease" min="0" max="100" placeholder="e.g. 5" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:9px 12px;font-size:0.85rem;font-family:Poppins,sans-serif;flex:1;outline:none;"/><span style="font-size:0.82rem;color:#555;white-space:nowrap;font-weight:600;">%</span></div></div>
+                <div class="hs-field"><label>&#129309; Brokerage</label><div class="hs-toggle" style="flex-wrap:wrap;"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'cBrokerage','None')">None</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'cBrokerage','1 Month Rent')">1 Month</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'cBrokerage','2 Month Rent')">2 Month</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'cBrokerage','Negotiable')">Negotiable</button></div><input type="hidden" id="cBrokerage" value="None"/></div>
+              </div>
+            </div>
             <div class="hs-step-nav">
               <button type="button" class="hs-btn-back" onclick="hsPrevStep(3)"><i class="fa-solid fa-arrow-left"></i> Back</button>
               <button type="button" class="hs-btn-next" onclick="hsNextStep(3)">Next <i class="fa-solid fa-arrow-right"></i></button>

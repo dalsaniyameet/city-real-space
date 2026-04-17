@@ -312,6 +312,7 @@
             <option value="plot">Plot / Land</option>
             <option value="office">Office Space</option>
             <option value="shop">Shop / Showroom</option>
+            <option value="showroom">Showroom</option>
           </select>
         </div>
         <div class="form-group">
@@ -828,7 +829,7 @@ checkAuthState();
     const typeMap = {
       'Apartment / Flat': 'apartment', 'Villa': 'villa', 'Bungalow': 'bungalow',
       'Row House': 'rowhouse', 'Plot / Land': 'plot',
-      'Office Space': 'office', 'Shop / Showroom': 'shop', 'Warehouse': 'warehouse'
+      'Office Space': 'office', 'Shop / Showroom': 'shop', 'Showroom': 'showroom', 'Warehouse': 'warehouse'
     };
     const pType = typeMap[reqType] || '';
     if (pType) {

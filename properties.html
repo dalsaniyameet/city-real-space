@@ -260,6 +260,7 @@
         <option value="plot">Plot / Land</option>
         <option value="office">Office Space</option>
         <option value="shop">Shop / Showroom</option>
+        <option value="showroom">Showroom</option>
         <option value="warehouse">Warehouse</option>
       </select>
     </div>
@@ -535,7 +536,7 @@ document.querySelectorAll('.fp-tab').forEach(t => {
 updateBudgetOptions(initStatus);
 
 // Commercial filter toggle
-const commercialTypes = ['office','shop','warehouse'];
+const commercialTypes = ['office','shop','showroom','warehouse'];
 function toggleFilters() {
   const isC = commercialTypes.includes(document.getElementById('fType').value);
   document.getElementById('bedsGrp').style.display    = isC ? 'none' : '';
@@ -617,7 +618,7 @@ function createCard(p) {
     '<div class="card-footer"><div class="card-agent"><div class="agent-av">' + initials + '</div><span class="agent-name">' + agentName + '</span></div>' +
     '<div style="display:flex;gap:6px;align-items:center;">' +
     '<button class="btn-compare" title="Compare" onclick="toggleCompare(event,\'' + p._id + '\')" id="cmpBtn_' + p._id + '"><i class="fa-solid fa-code-compare"></i></button>' +
-    '<button class="btn-offer" onclick="requireLoginForOffer(event,\'' + p.title.replace(/'/g,"\\'") + '\',\'' + loc.replace(/'/g,"\\'") + '\')" >Get Offer</button>' +
+    '<button class="btn-offer" onclick="requireLoginForOffer(event,\'' + p.title.replace(/'/g,"\\'") + '\',\'' + loc.replace(/'/g,"\\'") + '\')" >Contact Now</button>' +
     '</div></div></div></div>';
 }
 
@@ -967,7 +968,7 @@ function showEmptyState(grid) {
     if (u.phone)     document.getElementById('reqPhone').value = u.phone.replace('+91','').trim();
     // Pre-fill current search filters
     const f = getFilters();
-    if (f.type)   document.getElementById('reqType').value   = f.type === 'apartment' ? 'Apartment / Flat' : f.type === 'villa' ? 'Villa' : f.type === 'plot' ? 'Plot / Land' : f.type === 'office' ? 'Office Space' : f.type === 'shop' ? 'Shop / Showroom' : '';
+    if (f.type)   document.getElementById('reqType').value   = f.type === 'apartment' ? 'Apartment / Flat' : f.type === 'villa' ? 'Villa' : f.type === 'plot' ? 'Plot / Land' : f.type === 'office' ? 'Office Space' : (f.type === 'shop' || f.type === 'showroom') ? 'Shop / Showroom' : '';
     if (f.budget) document.getElementById('reqBudget').value = f.budget;
     overlay.style.opacity='1';
     overlay.style.pointerEvents='all';

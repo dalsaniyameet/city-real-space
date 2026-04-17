@@ -2,6 +2,9 @@
 (function () {
   const dot  = document.createElement('div'); dot.className  = 'cursor-dot';
   const ring = document.createElement('div'); ring.className = 'cursor-ring';
+  // Critical: prevent cursor elements from blocking clicks
+  dot.style.pointerEvents  = 'none';
+  ring.style.pointerEvents = 'none';
   document.body.append(dot, ring);
 
   let mouseX = 0, mouseY = 0;

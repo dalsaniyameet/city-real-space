@@ -171,8 +171,8 @@ async function loadStats() {
       const rEl = document.getElementById('st-residential');
       const cEl = document.getElementById('st-commercial');
       if (tEl) tEl.textContent = props.filter(function(p){ return p.isFeatured; }).length;
-      if (rEl) rEl.textContent = props.filter(function(p){ return p.category === 'residential' || !['office','shop','warehouse'].includes(p.type); }).length;
-      if (cEl) cEl.textContent = props.filter(function(p){ return p.category === 'commercial' || ['office','shop','warehouse'].includes(p.type); }).length;
+      if (rEl) rEl.textContent = props.filter(function(p){ return p.category === 'residential' || !['office','shop','showroom','warehouse'].includes(p.type); }).length;
+      if (cEl) cEl.textContent = props.filter(function(p){ return p.category === 'commercial' || ['office','shop','showroom','warehouse'].includes(p.type); }).length;
     }
   } catch(e) { console.log('Stats error', e); }
 }
@@ -255,8 +255,8 @@ let currentPropFilter = 'all';
 let propsCache = {};
 
 function renderPropRow(p) {
-  const isCommercial = p.category === 'commercial' || ['office','shop','warehouse'].includes(p.type);
-  const typeLabel = { apartment:'Apartment', villa:'Villa', bungalow:'Bungalow', rowhouse:'Row House', plot:'Plot', office:'Office', shop:'Shop', warehouse:'Warehouse' };
+  const isCommercial = p.category === 'commercial' || ['office','shop','showroom','warehouse'].includes(p.type);
+  const typeLabel = { apartment:'Apartment', villa:'Villa', bungalow:'Bungalow', rowhouse:'Row House', plot:'Plot', office:'Office', shop:'Shop', showroom:'Showroom', warehouse:'Warehouse' };
   const catHtml = isCommercial
     ? '<span style="color:#60a5fa;font-weight:700;font-size:0.78rem;">Commercial</span><br><small style="color:var(--text3);font-size:0.68rem;">' + (typeLabel[p.type] || p.type) + '</small>'
     : '<span style="color:#34d399;font-weight:700;font-size:0.78rem;">Residential</span><br><small style="color:var(--text3);font-size:0.68rem;">' + (typeLabel[p.type] || p.type) + '</small>';
@@ -507,7 +507,7 @@ document.getElementById('addPropBtn').addEventListener('click', function() {
 });
 
 // Auto-set category & toggle beds based on type
-const commercialAdminTypes = ['office', 'shop', 'warehouse'];
+const commercialAdminTypes = ['office', 'shop', 'showroom', 'warehouse'];
 function toggleAdminBeds() {
   const type = document.getElementById('pType').value;
   const isComm = commercialAdminTypes.includes(type);
