@@ -19,6 +19,8 @@
   <meta name="twitter:title" content="City Real Space | #1 Real Estate Company in Ahmedabad"/>
   <meta name="twitter:description" content="Buy sell rent verified properties in Ahmedabad Gujarat."/>
   <meta name="twitter:image" content="https://www.cityrealspace.com/images/logo.jpeg"/>
+  <link rel="preload" href="images/logo.jpeg" as="image"/>
+  <link rel="preload" href="images/banner.png" as="image"/>
   <link rel="icon" type="image/jpeg" href="images/logo.jpeg"/>
   <link rel="apple-touch-icon" href="images/logo.jpeg"/>
   <link rel="stylesheet" href="style.css"/>
@@ -157,6 +159,16 @@
 }
 </style>
 <script src="splash.js"></script>
+<script>
+// Lazy load hero slide backgrounds
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    document.querySelectorAll('.hero-slide[data-bg]').forEach(function(el) {
+      el.style.backgroundImage = "url('" + el.dataset.bg + "')";
+    });
+  }, 2000);
+});
+</script>
 
 <!-- NTC REG BAR -->
 <div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;overflow:hidden;white-space:nowrap;width:100%;max-width:100%;">
@@ -245,22 +257,22 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
   <!-- BG Slider -->
   <div class="hero-slides">
     <div class="hero-slide active" style="background-image:url('images/banner.png');background-size:cover;background-position:center;filter:blur(0.001px) brightness(0.7);transform:scale(1.05)"></div>
-    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80')"></div>
-    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&q=80')">
+    <div class="hero-slide" data-bg="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=70"></div>
+    <div class="hero-slide" data-bg="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=70">
       <div class="slide-label">
         <span class="slide-badge">For Sale</span>
         <h2>5BHK Apartment For Sale</h2>
         <p><i class="fa-solid fa-location-dot"></i> Prahlad Nagar, Ahmedabad</p>
       </div>
     </div>
-    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1600&q=80')">
+    <div class="hero-slide" data-bg="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=70">
       <div class="slide-label">
         <span class="slide-badge">For Sale</span>
         <h2>Industrial Land For Sale</h2>
         <p><i class="fa-solid fa-location-dot"></i> Sanand, Ahmedabad</p>
       </div>
     </div>
-    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&q=80')">
+    <div class="hero-slide" data-bg="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=70">
       <div class="slide-label" style="background:linear-gradient(135deg,rgba(229,57,53,0.88),rgba(13,27,42,0.82));border-left:4px solid #FFC107;">
         <span class="slide-badge" style="background:#FFC107;color:#0D1B2A;">New</span>
         <h2>Can't Find Your Property?</h2>
