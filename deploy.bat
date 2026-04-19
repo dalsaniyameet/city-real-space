@@ -18,7 +18,7 @@ if "%~1"=="" (
 :: Push to GitHub
 echo.
 echo [1/2] Pushing to GitHub...
-git push https://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@github.com/dalsaniyameet/city-real-space.git main
+git push origin main
 
 :: Trigger Vercel Deploy Hook
 echo.
