@@ -137,20 +137,7 @@ app.get('/sitemap.xml', async (req, res) => {
       { loc: '/careers', priority: '0.5', changefreq: 'weekly' },
       { loc: '/privacy', priority: '0.4', changefreq: 'yearly' },
       { loc: '/terms', priority: '0.4', changefreq: 'yearly' },
-      // SEO keyword pages
-      { loc: '/properties?city=Ahmedabad&beds=2&status=for-sale', priority: '0.8', changefreq: 'daily' },
-      { loc: '/properties?city=Ahmedabad&beds=3&status=for-sale', priority: '0.8', changefreq: 'daily' },
-      { loc: '/properties?city=Ahmedabad&beds=4&status=for-sale', priority: '0.7', changefreq: 'daily' },
-      { loc: '/properties?city=Ahmedabad&type=villa', priority: '0.7', changefreq: 'daily' },
-      { loc: '/properties?city=Ahmedabad&type=apartment', priority: '0.8', changefreq: 'daily' },
-      { loc: '/properties?city=Ahmedabad&area=Prahlad+Nagar', priority: '0.8', changefreq: 'daily' },
-      { loc: '/properties?city=Ahmedabad&area=Satellite', priority: '0.8', changefreq: 'daily' },
-      { loc: '/properties?city=Ahmedabad&area=Bopal', priority: '0.7', changefreq: 'daily' },
-      { loc: '/properties?city=Ahmedabad&area=Thaltej', priority: '0.7', changefreq: 'daily' },
-      { loc: '/properties?city=Ahmedabad&area=SG+Highway', priority: '0.7', changefreq: 'daily' },
-      { loc: '/properties?status=for-rent&type=office&area=Prahlad+Nagar', priority: '0.8', changefreq: 'daily' },
-      { loc: '/properties?status=for-rent&type=office&area=Satellite', priority: '0.8', changefreq: 'daily' },
-      { loc: '/properties?status=for-sale&type=office&area=Prahlad+Nagar', priority: '0.7', changefreq: 'daily' },
+
     ];
 
     const staticXml = staticUrls.map(u =>
