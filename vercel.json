@@ -64,7 +64,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "https://cityrealspace.com/:path*", "destination": "https://www.cityrealspace.com/:path*", "permanent": true },
+    { "source": "/:path*", "has": [{"type": "host", "value": "cityrealspace.com"}], "destination": "https://www.cityrealspace.com/:path*", "permanent": true },
     { "source": "/index.html",           "destination": "/",               "permanent": true },
     { "source": "/properties.html",      "destination": "/properties",     "permanent": true },
     { "source": "/property-detail.html", "destination": "/property-detail","permanent": true },
