@@ -813,7 +813,48 @@ body.register-page {
   }
 }
 
-/* ===== FLOATING CONTACT CARD — MOBILE ===== */
+/* ===== HERO MOBILE IMAGE FIX ===== */
+@media (max-width: 768px) {
+  .hero-slide {
+    background-position: center center !important;
+    background-size: cover !important;
+  }
+  .hero-slide.active {
+    background-position: center top !important;
+  }
+  .hero { min-height: 55vh !important; }
+}
+@media (max-width: 480px) {
+  .hero { min-height: 50vh !important; }
+  .hero-slide { background-position: 60% center !important; }
+}
+
+/* ===== FORM / MODAL Z-INDEX FIX — header ke neeche nahi jayega ===== */
+.auth-overlay,
+.inq-overlay,
+#reqOverlay,
+#profileOverlay,
+#loginPopupOverlay {
+  z-index: 100000 !important;
+}
+
+/* ===== COOKIE CONSENT Z-INDEX FIX ===== */
+#cookieBanner {
+  z-index: 99997 !important;
+}
+
+/* ===== LOGIN/REGISTER BUTTON — VAP fix ===== */
+@media (max-width: 768px) {
+  .header-actions {
+    position: relative;
+    z-index: 10000;
+  }
+  #loginBtn {
+    display: flex !important;
+    align-items: center;
+    gap: 5px;
+  }
+}
 @media (max-width: 768px) {
   .fc-tab {
     padding: 14px 8px !important;
@@ -839,5 +880,76 @@ body.register-page {
   .seo-keywords-grid {
     grid-template-columns: 1fr !important;
     gap: 10px !important;
+  }
+}
+
+/* ===== HERO MOBILE IMAGE FIX ===== */
+@media (max-width: 768px) {
+  .hero-slide {
+    background-position: center center !important;
+    background-size: cover !important;
+  }
+  .hero { min-height: 55vh !important; }
+}
+@media (max-width: 480px) {
+  .hero { min-height: 50vh !important; }
+}
+
+/* ===== ALL MODALS Z-INDEX FIX - header ke neeche nahi jayega ===== */
+.auth-overlay,
+.inq-overlay,
+#reqOverlay,
+#profileOverlay,
+#loginPopupOverlay {
+  z-index: 100000 !important;
+}
+#cookieBanner {
+  z-index: 99997 !important;
+}
+
+/* ===== LOGIN/REGISTER MOBILE - back button fix ===== */
+@media (max-width: 768px) {
+  .auth-overlay {
+    align-items: flex-start !important;
+    padding-top: 10px !important;
+    overflow-y: auto !important;
+  }
+  .auth-modal {
+    margin-top: 0 !important;
+    border-radius: 16px !important;
+    max-height: 92vh !important;
+    overflow-y: auto !important;
+  }
+  .auth-right {
+    padding-top: 56px !important;
+  }
+  .auth-close {
+    position: fixed !important;
+    top: 14px !important;
+    right: 14px !important;
+    z-index: 100001 !important;
+    background: #fff !important;
+    color: #333 !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3) !important;
+    border-radius: 50% !important;
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+/* ===== POST REQUIREMENT MODAL - header ke neeche nahi jayega ===== */
+#reqOverlay {
+  padding-top: 60px !important;
+}
+@media (max-width: 768px) {
+  #reqOverlay {
+    padding-top: 70px !important;
+    align-items: flex-start !important;
+    overflow-y: auto !important;
+  }
+  #reqOverlay > div {
+    border-radius: 14px !important;
+    max-height: calc(100vh - 80px) !important;
+    overflow-y: auto !important;
   }
 }
