@@ -1,4 +1,4 @@
-// ===== AUTH STATE ===== v2
+﻿// ===== AUTH STATE ===== v2
 // ===== PRICE FORMAT FUNCTION (global) =====
 function formatPrice(price, status) {
   if (!price) return 'Price on Request';
@@ -19,7 +19,7 @@ const API = (function() {
   return 'https://city-real-space.vercel.app/api';
 })();
 
-console.log('🌐 Main Site - API Endpoint:', API);
+console.log('ðŸŒ Main Site - API Endpoint:', API);
 
 async function checkAuthState() {
   const raw   = localStorage.getItem('user');
@@ -37,14 +37,13 @@ async function checkAuthState() {
     try {
       const res = await fetch(`${API}/auth/me`, { headers: { Authorization: 'Bearer ' + token } });
       if (!res.ok) { handleLogout(); return; }
-    } catch { /* network error — keep logged in */ }
+    } catch { /* network error â€” keep logged in */ }
     loginBtn.style.display = 'none';
     userMenu.style.display = 'block';
     userNameDisplay.textContent = user.firstName || user.email.split('@')[0];
     if (postPropBtn) postPropBtn.style.display = 'inline-flex';
   }
 }
-
 function handleLogout() {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
@@ -513,7 +512,7 @@ document.querySelectorAll('.stab').forEach(btn => {
   });
 });
 
-// City select → locality populate
+// City select â†’ locality populate
 const cityEl = document.getElementById('searchCity');
 const localityEl = document.getElementById('searchLocality');
 if (cityEl && localityEl) {
@@ -590,9 +589,9 @@ if (mainSearchBtn) {
             <i class="fa-solid fa-clock" style="color:#E53935;font-size:0.85rem"></i>
             <select id="offerTime" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#555;background:transparent;cursor:pointer">
               <option value="">Preferred Call Time (Optional)</option>
-              <option>Morning (9AM – 12PM)</option>
-              <option>Afternoon (12PM – 3PM)</option>
-              <option>Evening (3PM – 7PM)</option>
+              <option>Morning (9AM â€“ 12PM)</option>
+              <option>Afternoon (12PM â€“ 3PM)</option>
+              <option>Evening (3PM â€“ 7PM)</option>
               <option>Anytime</option>
             </select>
           </div>
@@ -605,7 +604,7 @@ if (mainSearchBtn) {
             <i class="fa-solid fa-phone"></i> Request Call
           </button>
         </div>
-        <p style="text-align:center;font-size:0.72rem;color:#aaa;margin-top:10px">🔒 Your details are safe. No spam calls.</p>
+        <p style="text-align:center;font-size:0.72rem;color:#aaa;margin-top:10px">ðŸ”’ Your details are safe. No spam calls.</p>
       </div>
     </div>`;
   document.body.appendChild(overlay);
@@ -745,7 +744,7 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// ===== REGISTER AUTO POPUP — DISABLED =====
+// ===== REGISTER AUTO POPUP â€” DISABLED =====
 let isRegistered = !!localStorage.getItem('token');
 
 // ===== AUTH MODAL =====
@@ -858,7 +857,7 @@ document.getElementById('registerForm').addEventListener('submit', async e => {
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Validating email...';
   btn.disabled = true;
 
-  // MX record check — real email domain verify
+  // MX record check â€” real email domain verify
   try {
     const mx = await fetch(`${API}/auth/check-email?email=${encodeURIComponent(email)}`);
     const mxData = await mx.json();
@@ -1125,67 +1124,67 @@ if (liveChatBtn && liveChatWidget) {
   liveChatClose.addEventListener('click', () => liveChatWidget.classList.remove('open'));
 }
 
-// AI Q&A knowledge base — City Real Space
+// AI Q&A knowledge base â€” City Real Space
 const lcwQA = [
   {
     q: ['buy', 'purchase', 'kharidna', 'kharidu', 'kharidni', 'lena', 'leni', 'property chahiye', 'flat chahiye', 'ghar chahiye'],
-    a: '🏠 Bilkul! Hamare paas 12,500+ verified properties hain — Ahmedabad, Gandhinagar, Surat mein. Aap kaunsa property type dhundh rahe hain?\n\n• Apartment / Flat\n• Villa / Bungalow\n• Plot / Land\n• Commercial'
+    a: 'ðŸ  Bilkul! Hamare paas 12,500+ verified properties hain â€” Ahmedabad, Gandhinagar, Surat mein. Aap kaunsa property type dhundh rahe hain?\n\nâ€¢ Apartment / Flat\nâ€¢ Villa / Bungalow\nâ€¢ Plot / Land\nâ€¢ Commercial'
   },
   {
     q: ['sell', 'bechna', 'bechu', 'list', 'bechni', 'property sell', 'meri property'],
-    a: '💰 Hum aapki property best market price pe sell karenge! Free valuation + zero brokerage on select projects.\n\nAbhi WhatsApp karein: +91 93775 31247'
+    a: 'ðŸ’° Hum aapki property best market price pe sell karenge! Free valuation + zero brokerage on select projects.\n\nAbhi WhatsApp karein: +91 93775 31247'
   },
   {
     q: ['rent', 'lease', 'kiraya', 'rental', 'kiraye pe', 'rent pe'],
-    a: '🏡 Hamare paas ₹15,000/month se shuru rental properties hain. Kaun sa area aur BHK chahiye aapko?'
+    a: 'ðŸ¡ Hamare paas ₹15,000/month se shuru rental properties hain. Kaun sa area aur BHK chahiye aapko?'
   },
   {
     q: ['2bhk', '2 bhk', 'two bhk', 'do bhk'],
-    a: '🛏️ 2 BHK flats available hain:\n• Bopal: ₹55L – ₹75L\n• Satellite: ₹70L – ₹95L\n• Memnagar: ₹60L – ₹80L\n\nKaunsa area prefer karenge?'
+    a: 'ðŸ›ï¸ 2 BHK flats available hain:\nâ€¢ Bopal: ₹55L â€“ ₹75L\nâ€¢ Satellite: ₹70L â€“ ₹95L\nâ€¢ Memnagar: ₹60L â€“ ₹80L\n\nKaunsa area prefer karenge?'
   },
   {
     q: ['3bhk', '3 bhk', 'three bhk', 'teen bhk'],
-    a: '🛏️ 3 BHK options:\n• Prahlad Nagar: ₹90L – ₹1.5Cr\n• Thaltej: ₹85L – ₹1.2Cr\n• Bopal: ₹75L – ₹1Cr\n\nBudget kya hai aapka?'
+    a: 'ðŸ›ï¸ 3 BHK options:\nâ€¢ Prahlad Nagar: ₹90L â€“ ₹1.5Cr\nâ€¢ Thaltej: ₹85L â€“ ₹1.2Cr\nâ€¢ Bopal: ₹75L â€“ ₹1Cr\n\nBudget kya hai aapka?'
   },
   {
     q: ['4bhk', '4 bhk', 'four bhk', 'char bhk'],
-    a: '🏠 4 BHK premium properties:\n• Prahlad Nagar: ₹1.5Cr – ₹2.5Cr\n• Bodakdev: ₹1.8Cr – ₹3Cr\n• Vastrapur: ₹1.6Cr – ₹2.8Cr\n\nSite visit book karein — bilkul free!'
+    a: 'ðŸ  4 BHK premium properties:\nâ€¢ Prahlad Nagar: ₹1.5Cr â€“ ₹2.5Cr\nâ€¢ Bodakdev: ₹1.8Cr â€“ ₹3Cr\nâ€¢ Vastrapur: ₹1.6Cr â€“ ₹2.8Cr\n\nSite visit book karein â€” bilkul free!'
   },
   {
     q: ['price', 'cost', 'budget', 'kitna', 'rate', 'kitne ka', 'daam', 'paisa'],
-    a: '💎 Hamare properties ka range:\n• Budget: ₹30L – ₹60L\n• Mid Range: ₹60L – ₹1.5Cr\n• Premium: ₹1.5Cr – ₹5Cr+\n\nAapka budget kya hai? Best options suggest karunga!'
+    a: 'ðŸ’Ž Hamare properties ka range:\nâ€¢ Budget: ₹30L â€“ ₹60L\nâ€¢ Mid Range: ₹60L â€“ ₹1.5Cr\nâ€¢ Premium: ₹1.5Cr â€“ ₹5Cr+\n\nAapka budget kya hai? Best options suggest karunga!'
   },
   {
     q: ['bopal', 'satellite', 'prahlad nagar', 'thaltej', 'giftcity', 'gift city', 'memnagar', 'shela', 'vastrapur', 'bodakdev', 'navrangpura', 'chandkheda'],
-    a: '📍 Hum sab prime areas cover karte hain — Bopal, Satellite, Prahlad Nagar, Thaltej, GIFT City, Memnagar, Shela aur bahut zyada!\n\nKaunse area mein property chahiye?'
+    a: '📍 Hum sab prime areas cover karte hain â€” Bopal, Satellite, Prahlad Nagar, Thaltej, GIFT City, Memnagar, Shela aur bahut zyada!\n\nKaunse area mein property chahiye?'
   },
   {
     q: ['loan', 'home loan', 'finance', 'emi', 'bank', 'interest'],
-    a: '🏦 Free Home Loan guidance dete hain hum! 15+ banks ke saath kaam karte hain — SBI, HDFC, ICICI, Axis.\n\nBest interest rate ke liye abhi call karein: +91 98250 31247'
+    a: 'ðŸ¦ Free Home Loan guidance dete hain hum! 15+ banks ke saath kaam karte hain â€” SBI, HDFC, ICICI, Axis.\n\nBest interest rate ke liye abhi call karein: +91 98250 31247'
   },
   {
     q: ['visit', 'site visit', 'dekhna', 'show', 'dikhao', 'visit book', 'free visit'],
-    a: '🚗 FREE Site Visit — koi charge nahi!\n\nBas apna preferred date & time share karein, hum sab arrange kar denge. WhatsApp karein: +91 93775 31247'
+    a: '🚗 FREE Site Visit â€” koi charge nahi!\n\nBas apna preferred date & time share karein, hum sab arrange kar denge. WhatsApp karein: +91 93775 31247'
   },
   {
     q: ['contact', 'call', 'phone', 'number', 'agent', 'baat', 'expert'],
-    a: '📞 Hamare experts se baat karein:\n• +91 98250 31247\n• +91 84600 14000\n• info@cityrealspace.com\n\nMon–Sat: 9AM – 7PM | Sun: 10AM – 4PM'
+    a: '📍ž Hamare experts se baat karein:\nâ€¢ +91 98250 31247\nâ€¢ +91 84600 14000\nâ€¢ info@cityrealspace.com\n\nMonâ€“Sat: 9AM â€“ 7PM | Sun: 10AM â€“ 4PM'
   },
   {
     q: ['new launch', 'new project', 'upcoming', 'naya', 'launch'],
-    a: '🚀 New Launch projects available hain:\n• GIFT City — pre-launch prices\n• Bopal — 2 & 3 BHK\n• Shela — premium villas\n\nEarly bird discount ke liye abhi contact karein!'
+    a: '🚀 New Launch projects available hain:\nâ€¢ GIFT City â€” pre-launch prices\nâ€¢ Bopal â€” 2 & 3 BHK\nâ€¢ Shela â€” premium villas\n\nEarly bird discount ke liye abhi contact karein!'
   },
   {
     q: ['commercial', 'office', 'shop', 'warehouse', 'dukaan', 'godown'],
-    a: '🏢 Commercial properties:\n• Office spaces: 500 – 10,000 sqft\n• Shops / Showrooms: CG Road, SG Highway\n• Warehouses: Sanand, Changodar\n\nKya requirement hai aapki?'
+    a: 'ðŸ¢ Commercial properties:\nâ€¢ Office spaces: 500 â€“ 10,000 sqft\nâ€¢ Shops / Showrooms: CG Road, SG Highway\nâ€¢ Warehouses: Sanand, Changodar\n\nKya requirement hai aapki?'
   },
   {
     q: ['brokerage', 'commission', 'charge', 'fees', 'zero brokerage'],
-    a: '✅ Select projects pe Zero Brokerage! Aur sab properties pe transparent pricing — koi hidden charges nahi.'
+    a: 'âœ… Select projects pe Zero Brokerage! Aur sab properties pe transparent pricing â€” koi hidden charges nahi.'
   },
   {
     q: ['legal', 'document', 'registration', 'agreement', 'papers'],
-    a: '📄 Free Legal Documentation help dete hain hum — sale agreement, registration, title verification sab.\n\nHamara legal team aapki poori help karega!'
+    a: '📍„ Free Legal Documentation help dete hain hum â€” sale agreement, registration, title verification sab.\n\nHamara legal team aapki poori help karega!'
   },
   {
     q: ['hello', 'hi', 'hey', 'helo', 'namaste', 'namaskar', 'kem cho', 'kaise ho'],
@@ -1197,7 +1196,7 @@ const lcwQA = [
   },
 ];
 
-const lcwFinalMsg = '🙏 Thank you for chatting with us! Our property expert will contact you within 30 minutes. You can also call us directly at 📞 +91 98250 31247. Have a great day! 😊';
+const lcwFinalMsg = '🙏 Thank you for chatting with us! Our property expert will contact you within 30 minutes. You can also call us directly at 📍ž +91 98250 31247. Have a great day! 😊';
 
 let lcwMsgCount = 0;
 
@@ -1207,7 +1206,7 @@ function lcwGetReply(text) {
     if (item.q.some(k => lower.includes(k))) return item.a;
   }
   // Default smart fallback
-  return '😊 Samajh gaya! Hamare property expert aapko 30 minutes mein call karenge.\n\nYa abhi call karein: 📞 +91 98250 31247';
+  return '😊 Samajh gaya! Hamare property expert aapko 30 minutes mein call karenge.\n\nYa abhi call karein: 📍ž +91 98250 31247';
 }
 
 function lcwAddMsg(text, type) {
@@ -1278,3 +1277,4 @@ function lcwSendMsg() {
   s.src = 'cookie-consent.js';
   document.body.appendChild(s);
 })();
+

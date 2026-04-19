@@ -9,7 +9,100 @@ const twilio   = require('twilio');
 
 router.use(protect, adminOnly);
 
-// SEND WHATSAPP
+// ===== SERVICES HEALTH CHECK =====
+router.get('/services-status', async (req, res) => {
+  const results = {};
+  const start = Date.now();
+
+  // 1. MongoDB
+  try {
+    const mongoose = require('mongoose');
+    const state = mongoose.connection.readyState;
+    results.mongodb = {
+      name: 'MongoDB',
+      status: state === 1 ? 'online' : 'offline',
+      detail: state === 1 ? 'Connected' : 'Disconnected (state: ' + state + ')',
+      ms: Date.now() - start
+    };
+  } catch(e) {
+    results.mongodb = { name: 'MongoDB', status: 'error', detail: e.message, ms: Date.now() - start };
+  }
+
+  // 2. Cloudinary
+  try {
+    const t = Date.now();
+    const https = require('https');
+    await new Promise((resolve, reject) => {
+      const req2 = https.get('https://api.cloudinary.com/v1_1/' + (process.env.CLOUDINARY_CLOUD_NAME || 'dhqan0w6t') + '/ping', { timeout: 5000 }, (r) => {
+        results.cloudinary = { name: 'Cloudinary', status: r.statusCode < 400 ? 'online' : 'error', detail: 'HTTP ' + r.statusCode, ms: Date.now() - t };
+        resolve();
+      });
+      req2.on('error', (e) => { results.cloudinary = { name: 'Cloudinary', status: 'offline', detail: e.message, ms: Date.now() - t }; resolve(); });
+      req2.on('timeout', () => { results.cloudinary = { name: 'Cloudinary', status: 'timeout', detail: 'Request timed out', ms: Date.now() - t }; req2.destroy(); resolve(); });
+    });
+  } catch(e) {
+    results.cloudinary = { name: 'Cloudinary', status: 'error', detail: e.message, ms: Date.now() - start };
+  }
+
+  // 3. SMTP (Nodemailer)
+  try {
+    const t = Date.now();
+    const nodemailer = require('nodemailer');
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      port: parseInt(process.env.SMTP_PORT) || 587,
+      secure: false,
+      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      connectionTimeout: 5000, greetingTimeout: 5000
+    });
+    await transporter.verify();
+    results.smtp = { name: 'SMTP Email', status: 'online', detail: process.env.SMTP_USER || 'Connected', ms: Date.now() - t };
+  } catch(e) {
+    results.smtp = { name: 'SMTP Email', status: 'offline', detail: e.message.substring(0, 80), ms: Date.now() - start };
+  }
+
+  // 4. Twilio WhatsApp
+  try {
+    const t = Date.now();
+    if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {
+      results.twilio = { name: 'WhatsApp (Twilio)', status: 'warning', detail: 'Credentials not configured', ms: 0 };
+    } else {
+      const twilio = require('twilio');
+      const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+      await client.api.accounts(process.env.TWILIO_ACCOUNT_SID).fetch();
+      results.twilio = { name: 'WhatsApp (Twilio)', status: 'online', detail: 'Account active', ms: Date.now() - t };
+    }
+  } catch(e) {
+    results.twilio = { name: 'WhatsApp (Twilio)', status: 'offline', detail: e.message.substring(0, 80), ms: Date.now() - start };
+  }
+
+  // 5. Google Analytics (just DNS check)
+  try {
+    const t = Date.now();
+    const https = require('https');
+    await new Promise((resolve) => {
+      const req2 = https.get('https://www.google-analytics.com/collect', { timeout: 4000 }, (r) => {
+        results.ga = { name: 'Google Analytics', status: 'online', detail: 'Reachable', ms: Date.now() - t };
+        resolve();
+      });
+      req2.on('error', () => { results.ga = { name: 'Google Analytics', status: 'offline', detail: 'Unreachable', ms: Date.now() - t }; resolve(); });
+      req2.on('timeout', () => { results.ga = { name: 'Google Analytics', status: 'timeout', detail: 'Timed out', ms: Date.now() - t }; req2.destroy(); resolve(); });
+    });
+  } catch(e) {
+    results.ga = { name: 'Google Analytics', status: 'error', detail: e.message, ms: Date.now() - start };
+  }
+
+  // 6. Vercel / Server itself
+  results.server = {
+    name: 'API Server',
+    status: 'online',
+    detail: 'Node ' + process.version + ' | Uptime: ' + Math.floor(process.uptime()) + 's',
+    ms: Date.now() - start
+  };
+
+  res.json({ success: true, services: results, checkedAt: new Date() });
+});
+
 router.post('/send-wa', async (req, res) => {
   try {
     const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);

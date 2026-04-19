@@ -110,26 +110,49 @@ app.use((req, res, next) => {
 // NOTE: Must be before express.static to prevent static file from intercepting
 app.get('/sitemap.xml', async (req, res) => {
   res.setHeader('Content-Type', 'application/xml');
+  res.setHeader('Cache-Control', 'public, max-age=3600'); // 1 hour cache
   try {
     const Property = require('./models/Property');
-    const properties = await Property.find({ isApproved: true, slug: { $ne: '' } })
-      .select('slug location createdAt')
+    // Approved properties — slug ho ya na ho, dono include karo
+    const properties = await Property.find({ isApproved: true })
+      .select('slug location createdAt updatedAt type status')
       .lean();
+
+    const base = 'https://www.cityrealspace.com';
 
     const staticUrls = [
       { loc: '/', priority: '1.0', changefreq: 'daily' },
       { loc: '/properties', priority: '0.9', changefreq: 'daily' },
-      { loc: '/blog', priority: '0.8', changefreq: 'weekly' },
-      { loc: '/about', priority: '0.7', changefreq: 'monthly' },
-      { loc: '/contact', priority: '0.7', changefreq: 'monthly' },
-      { loc: '/post-property', priority: '0.8', changefreq: 'monthly' },
-      { loc: '/faq', priority: '0.6', changefreq: 'monthly' },
-      { loc: '/careers', priority: '0.5', changefreq: 'monthly' },
+      { loc: '/buy', priority: '0.9', changefreq: 'daily' },
+      { loc: '/rent', priority: '0.9', changefreq: 'daily' },
+      { loc: '/new-launch', priority: '0.8', changefreq: 'daily' },
+      { loc: '/resale', priority: '0.8', changefreq: 'daily' },
+      { loc: '/land', priority: '0.7', changefreq: 'daily' },
+      { loc: '/prelease', priority: '0.7', changefreq: 'daily' },
+      { loc: '/blog', priority: '0.8', changefreq: 'daily' },
+      { loc: '/about', priority: '0.7', changefreq: 'weekly' },
+      { loc: '/contact', priority: '0.7', changefreq: 'weekly' },
+      { loc: '/post-property', priority: '0.8', changefreq: 'daily' },
+      { loc: '/faq', priority: '0.6', changefreq: 'weekly' },
+      { loc: '/careers', priority: '0.5', changefreq: 'weekly' },
       { loc: '/privacy', priority: '0.4', changefreq: 'yearly' },
       { loc: '/terms', priority: '0.4', changefreq: 'yearly' },
+      // SEO keyword pages
+      { loc: '/properties?city=Ahmedabad&beds=2&status=for-sale', priority: '0.8', changefreq: 'daily' },
+      { loc: '/properties?city=Ahmedabad&beds=3&status=for-sale', priority: '0.8', changefreq: 'daily' },
+      { loc: '/properties?city=Ahmedabad&beds=4&status=for-sale', priority: '0.7', changefreq: 'daily' },
+      { loc: '/properties?city=Ahmedabad&type=villa', priority: '0.7', changefreq: 'daily' },
+      { loc: '/properties?city=Ahmedabad&type=apartment', priority: '0.8', changefreq: 'daily' },
+      { loc: '/properties?city=Ahmedabad&area=Prahlad+Nagar', priority: '0.8', changefreq: 'daily' },
+      { loc: '/properties?city=Ahmedabad&area=Satellite', priority: '0.8', changefreq: 'daily' },
+      { loc: '/properties?city=Ahmedabad&area=Bopal', priority: '0.7', changefreq: 'daily' },
+      { loc: '/properties?city=Ahmedabad&area=Thaltej', priority: '0.7', changefreq: 'daily' },
+      { loc: '/properties?city=Ahmedabad&area=SG+Highway', priority: '0.7', changefreq: 'daily' },
+      { loc: '/properties?status=for-rent&type=office&area=Prahlad+Nagar', priority: '0.8', changefreq: 'daily' },
+      { loc: '/properties?status=for-rent&type=office&area=Satellite', priority: '0.8', changefreq: 'daily' },
+      { loc: '/properties?status=for-sale&type=office&area=Prahlad+Nagar', priority: '0.7', changefreq: 'daily' },
     ];
 
-    const base = 'https://www.cityrealspace.com';
     const staticXml = staticUrls.map(u =>
       `  <url><loc>${base}${u.loc}</loc><priority>${u.priority}</priority><changefreq>${u.changefreq}</changefreq></url>`
     ).join('\n');
@@ -137,8 +160,12 @@ app.get('/sitemap.xml', async (req, res) => {
     const propXml = properties.map(p => {
       const city = (p.location?.city || 'ahmedabad').toLowerCase().replace(/\s+/g, '-');
       const area = (p.location?.area || 'gujarat').toLowerCase().replace(/\s+/g, '-');
-      const lastmod = p.createdAt ? p.createdAt.toISOString().split('T')[0] : '';
-      return `  <url><loc>${base}/property/${city}/${area}/${p.slug}</loc><priority>0.8</priority><changefreq>daily</changefreq>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`;
+      const lastmod = (p.updatedAt || p.createdAt) ? (p.updatedAt || p.createdAt).toISOString().split('T')[0] : '';
+      // Slug ho to SEO URL, warna ID-based URL
+      const propLoc = p.slug
+        ? `${base}/property/${city}/${area}/${p.slug}`
+        : `${base}/property-detail?id=${p._id}`;
+      return `  <url><loc>${propLoc}</loc><priority>0.8</priority><changefreq>weekly</changefreq>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`;
     }).join('\n');
 
     res.send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticXml}\n${propXml}\n</urlset>`);

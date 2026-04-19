@@ -1080,8 +1080,196 @@ select, input { font-family: 'Poppins', sans-serif; border: none; outline: none;
 }
 .ci-dot.active { background: #fff; width: 16px; border-radius: 3px; }
 
+/* ===== BROKEN EMOJI FIX ===== */
+/* Replace broken lock emoji with FA icon via CSS */
+.emoji-lock {
+  font-style: normal;
+  font-family: inherit;
+}
+.emoji-lock::before {
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  content: '\f023';
+  margin-right: 4px;
+  font-size: 0.85em;
+}
+
 /* ===== CURSOR FIX: prevent blocking clicks ===== */
 .cursor-dot, .cursor-ring { pointer-events: none !important; }
 
 /* ===== LOGO SIZE ===== */
 .header-logo-img { height: 56px !important; width: auto !important; }
+
+/* ===== SEO KEYWORDS SECTION RESPONSIVE ===== */
+@media(max-width:900px) {
+  .seo-keywords-grid { grid-template-columns: 1fr 1fr !important; }
+}
+@media(max-width:600px) {
+  .seo-keywords-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ===== SEO SECTION COMPACT LAYOUT ===== */
+.seo-keywords-section {
+  padding: 40px 0 !important;
+}
+.seo-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+  gap: 12px !important;
+}
+.seo-section {
+  padding: 16px 18px !important;
+  border-radius: 12px !important;
+}
+.seo-section h4 {
+  font-size: 0.82rem !important;
+  margin-bottom: 10px !important;
+  padding-bottom: 8px !important;
+}
+.seo-link {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  color: #555;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+  line-height: 1.3;
+}
+.seo-link:hover {
+  background: #fff0f0;
+  color: #E53935;
+  padding-left: 12px;
+}
+.seo-description {
+  padding: 16px 20px !important;
+  margin-top: 16px !important;
+}
+.seo-description h3 {
+  font-size: 1rem !important;
+}
+.seo-description p {
+  font-size: 0.82rem !important;
+}
+.seo-header h2 {
+  font-size: 1.5rem !important;
+  margin-bottom: 6px !important;
+}
+.seo-header p {
+  font-size: 0.85rem !important;
+}
+@media(max-width: 1024px) {
+  .seo-grid { grid-template-columns: repeat(3, 1fr) !important; }
+}
+@media(max-width: 768px) {
+  .seo-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .seo-keywords-section { padding: 28px 0 !important; }
+}
+@media(max-width: 480px) {
+  .seo-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ===== SEO SECTION FINAL LAYOUT FIX ===== */
+.seo-keywords-section {
+  padding: 48px 0 !important;
+  background: #f8f9fb !important;
+}
+.seo-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 16px !important;
+  margin-bottom: 0 !important;
+}
+.seo-section {
+  background: #fff !important;
+  border-radius: 12px !important;
+  padding: 18px 16px !important;
+  border: 1px solid #f0f0f0 !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04) !important;
+  transition: box-shadow 0.2s, transform 0.2s !important;
+}
+.seo-section:hover {
+  box-shadow: 0 6px 24px rgba(229,57,53,0.1) !important;
+  transform: translateY(-2px) !important;
+}
+.seo-section h4 {
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  color: #0D1B2A !important;
+  margin-bottom: 10px !important;
+  padding-bottom: 8px !important;
+  border-bottom: 1.5px solid #f5f5f5 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  line-height: 1.3 !important;
+}
+.seo-link {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 6px !important;
+  padding: 4px 6px !important;
+  border-radius: 5px !important;
+  color: #555 !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  transition: all 0.15s !important;
+  line-height: 1.4 !important;
+}
+.seo-link:hover {
+  background: #fff0f0 !important;
+  color: #E53935 !important;
+  padding-left: 10px !important;
+}
+.seo-link i {
+  margin-top: 3px !important;
+  flex-shrink: 0 !important;
+}
+/* Also fix old inline-style links in seo-links div */
+.seo-links a {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 6px !important;
+  padding: 4px 6px !important;
+  border-radius: 5px !important;
+  color: #555 !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  transition: all 0.15s !important;
+  line-height: 1.4 !important;
+}
+.seo-links a:hover {
+  background: #fff0f0 !important;
+  color: #E53935 !important;
+  padding-left: 10px !important;
+}
+.seo-description {
+  margin-top: 16px !important;
+  padding: 16px 24px !important;
+  border-radius: 12px !important;
+}
+.seo-header {
+  margin-bottom: 28px !important;
+}
+.seo-header h2 {
+  font-size: 1.6rem !important;
+  margin-bottom: 6px !important;
+}
+.seo-header p {
+  font-size: 0.85rem !important;
+}
+/* Responsive */
+@media(max-width: 1200px) {
+  .seo-grid { grid-template-columns: repeat(4, 1fr) !important; }
+}
+@media(max-width: 900px) {
+  .seo-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media(max-width: 500px) {
+  .seo-grid { grid-template-columns: 1fr !important; }
+  .seo-keywords-section { padding: 28px 0 !important; }
+}

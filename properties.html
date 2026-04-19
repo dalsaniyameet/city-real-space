@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -8,7 +8,6 @@
   <meta name="description" content="Search 12,500+ verified properties for sale & rent in Ahmedabad, Gandhinagar, Surat. Filter by area, budget, BHK. Apartments, villas, plots, offices. RERA registered."/>
   <meta name="keywords" content="buy flat ahmedabad, rent apartment ahmedabad, 2bhk for sale ahmedabad, 3bhk ahmedabad, office space for rent ahmedabad, plot for sale ahmedabad, villa ahmedabad, property search ahmedabad"/>
   <meta name="robots" content="index, follow"/>
-  <link rel="canonical" href="https://www.cityrealspace.com/properties"/>
   <meta property="og:type" content="website"/>
   <meta property="og:title" content="Search Properties in Ahmedabad | Buy, Sell & Rent | City Real Space"/>
   <meta property="og:description" content="Search 1000+ verified properties in Ahmedabad. Filter by area, budget, BHK. Apartments, villas, plots, offices. RERA registered."/>
@@ -202,6 +201,7 @@
   </div>
 </div>
 <script>function closeMobileNav(){var n=document.getElementById('mobileNav');if(n)n.style.display='none';var b=document.getElementById('hamburger');if(b)b.innerHTML='<i class="fa-solid fa-bars"></i>';document.body.style.overflow='';}</script>
+<div class="prop-page-wrap">
   <div class="prop-page-head">
     <h1 id="pageTitle">All Properties</h1>
     <p id="pageSubtitle">Browse verified properties across Gujarat</p>
@@ -271,10 +271,10 @@
       <select id="fBudget">
         <option value="">Any Budget</option>
         <option value="0-3000000">Under ₹30L</option>
-        <option value="3000000-6000000">₹30L – ₹60L</option>
-        <option value="6000000-10000000">₹60L – ₹1Cr</option>
-        <option value="10000000-20000000">₹1Cr – ₹2Cr</option>
-        <option value="20000000-50000000">₹2Cr – ₹5Cr</option>
+        <option value="3000000-6000000">₹30L â€“ ₹60L</option>
+        <option value="6000000-10000000">₹60L â€“ ₹1Cr</option>
+        <option value="10000000-20000000">₹1Cr â€“ ₹2Cr</option>
+        <option value="20000000-50000000">₹2Cr â€“ ₹5Cr</option>
         <option value="50000000-999999999">Above ₹5Cr</option>
       </select>
     </div>
@@ -298,9 +298,9 @@
       <select id="fSqft">
         <option value="">Any Size</option>
         <option value="0-500">Under 500 sqft</option>
-        <option value="500-1000">500 – 1000 sqft</option>
-        <option value="1000-2000">1000 – 2000 sqft</option>
-        <option value="2000-5000">2000 – 5000 sqft</option>
+        <option value="500-1000">500 â€“ 1000 sqft</option>
+        <option value="1000-2000">1000 â€“ 2000 sqft</option>
+        <option value="2000-5000">2000 â€“ 5000 sqft</option>
         <option value="5000-999999">Above 5000 sqft</option>
       </select>
     </div>
@@ -446,7 +446,7 @@ const localitySubAreas = {
 
 let currentPage = 1;
 
-// City → Locality
+// City â†’ Locality
 document.getElementById('fCity').addEventListener('change', function() {
   const locs = cityLocalities[this.value] || [];
   const el = document.getElementById('fLocality');
@@ -454,7 +454,7 @@ document.getElementById('fCity').addEventListener('change', function() {
   document.getElementById('fSubLocality').innerHTML = '<option value="">All Sub-Areas</option>';
 });
 
-// Locality → Sub Area
+// Locality â†’ Sub Area
 document.getElementById('fLocality').addEventListener('change', function() {
   const subs = localitySubAreas[this.value] || [];
   const el = document.getElementById('fSubLocality');
@@ -475,9 +475,12 @@ const initCity     = urlParams.get('city') || '';
 const initArea     = urlParams.get('area') || '';
 const initType     = urlParams.get('type') || ssType || '';
 const initMinPrice = urlParams.get('minPrice') || '';
-const initMaxPrice = urlParams.get('maxPrice') || '';
-
-// Set status tab
+const initMaxPrice = urlParams.get('maxPrice') || urlParams.get('maxprice') || '';
+const initBeds = urlParams.get('beds') || urlParams.get('bhk') || '';
+// budget param: support both ?budget=0-5000000 and ?minPrice=&maxPrice= formats
+const initBudget = urlParams.get('budget') || (initMinPrice && initMaxPrice ? initMinPrice + '-' + initMaxPrice : '');
+// maxprice only (e.g. ?maxprice=5000000)
+const initMaxPriceOnly = urlParams.get('maxprice') || urlParams.get('maxPrice') || '';
 document.querySelectorAll('.fp-tab').forEach(t => t.classList.toggle('active', t.dataset.val === initStatus));
 
 // Set city + locality from URL
@@ -492,25 +495,37 @@ if (initCity) {
 }
 
 if (initType) document.getElementById('fType').value = initType;
-if (initMinPrice && initMaxPrice) document.getElementById('fBudget').value = initMinPrice + '-' + initMaxPrice;
-
-// Budget options
+if (initType) document.getElementById('fType').value = initType;
+if (initBeds) document.getElementById('fBeds').value = initBeds;
+if (initBudget) document.getElementById('fBudget').value = initBudget;
+// Handle ?maxprice=5000000 (single max price param from SEO links)
+if (!initBudget && initMaxPriceOnly) {
+  const maxVal = parseInt(initMaxPriceOnly);
+  const budgetOpts = document.getElementById('fBudget').options;
+  for (let i = 0; i < budgetOpts.length; i++) {
+    const parts = budgetOpts[i].value.split('-');
+    if (parts.length === 2 && parseInt(parts[1]) >= maxVal) {
+      document.getElementById('fBudget').value = budgetOpts[i].value;
+      break;
+    }
+  }
+}
 const BUDGET_SALE = [
   ['', 'Any Budget'],
   ['0-3000000', 'Under ₹30L'],
-  ['3000000-6000000', '₹30L – ₹60L'],
-  ['6000000-10000000', '₹60L – ₹1Cr'],
-  ['10000000-20000000', '₹1Cr – ₹2Cr'],
-  ['20000000-50000000', '₹2Cr – ₹5Cr'],
+  ['3000000-6000000', '₹30L â€“ ₹60L'],
+  ['6000000-10000000', '₹60L â€“ ₹1Cr'],
+  ['10000000-20000000', '₹1Cr â€“ ₹2Cr'],
+  ['20000000-50000000', '₹2Cr â€“ ₹5Cr'],
   ['50000000-999999999', 'Above ₹5Cr']
 ];
 const BUDGET_RENT = [
   ['', 'Any Budget'],
   ['0-10000', 'Under ₹10K/mo'],
-  ['10000-20000', '₹10K – ₹20K/mo'],
-  ['20000-35000', '₹20K – ₹35K/mo'],
-  ['35000-60000', '₹35K – ₹60K/mo'],
-  ['60000-100000', '₹60K – ₹1L/mo'],
+  ['10000-20000', '₹10K â€“ ₹20K/mo'],
+  ['20000-35000', '₹20K â€“ ₹35K/mo'],
+  ['35000-60000', '₹35K â€“ ₹60K/mo'],
+  ['60000-100000', '₹60K â€“ ₹1L/mo'],
   ['100000-999999999', 'Above ₹1L/mo']
 ];
 
@@ -578,7 +593,7 @@ function createCard(p) {
     ? '<div class="cs"><i class="fa-solid fa-vector-square"></i>' + (p.specs?.sqft || 0) + ' sqft</div><div class="cs"><i class="fa-solid fa-building"></i>' + p.type + '</div>'
     : '<div class="cs"><i class="fa-solid fa-bed"></i>' + (p.specs?.beds || 0) + ' Beds</div><div class="cs"><i class="fa-solid fa-bath"></i>' + (p.specs?.baths || 0) + ' Baths</div><div class="cs"><i class="fa-solid fa-vector-square"></i>' + (p.specs?.sqft || 0) + ' sqft</div>';
 
-  // Build images array — fallback to 3 placeholder images if only 1
+  // Build images array â€” fallback to 3 placeholder images if only 1
   const fallbacks = [
     'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
     'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80',
@@ -690,7 +705,7 @@ function startAutoScroll() {
   });
 }
 
-// No static fallback — only real DB data
+// No static fallback â€” only real DB data
 
 // Pagination
 function renderPagination(totalPages, current) {
@@ -761,7 +776,9 @@ function loadProperties(page) {
   if (f.beds)   url += '&beds='   + encodeURIComponent(f.beds);
   if (f.budget) {
     var budgetParts = f.budget.split('-');
-    url += '&minPrice=' + budgetParts[0] + '&maxPrice=' + budgetParts[1];
+    if (budgetParts.length === 2) {
+      url += '&minPrice=' + budgetParts[0] + '&maxPrice=' + budgetParts[1];
+    }
   }
 
   fetch(url)
@@ -790,7 +807,7 @@ function showEmptyState(grid) {
   grid.innerHTML = '<div class="empty-res">' +
     '<i class="fa-solid fa-building"></i>' +
     '<p>No' + typeText + ' properties found' + searchInfo + '.</p>' +
-    '<p style="font-size:0.82rem;color:#bbb;margin-top:8px">Can\'t find what you need? Post your requirement — we\'ll find it for you!</p>' +
+    '<p style="font-size:0.82rem;color:#bbb;margin-top:8px">Can\'t find what you need? Post your requirement â€” we\'ll find it for you!</p>' +
     '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">' +
     '<button onclick="window.openReqModal && window.openReqModal()" class="btn-req-pulse" style="background:#E53935;color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:inline-flex;align-items:center;gap:8px"><i class="fa-solid fa-bell"></i> Post Your Requirement</button>' +
     '<button onclick="document.getElementById(\'clearBtn\').click()" style="background:#f5f5f5;color:#555;border:1.5px solid #e8e8e8;padding:12px 24px;border-radius:10px;font-size:0.88rem;font-weight:600;cursor:pointer;font-family:Poppins,sans-serif;display:inline-flex;align-items:center;gap:8px"><i class="fa-solid fa-xmark"></i> Clear Filters</button>' +
@@ -859,10 +876,10 @@ function showEmptyState(grid) {
             <select id="reqBudget" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:rgba(255,255,255,0.8);background:transparent;cursor:pointer">
               <option value="" style="background:#0D1B2A">Budget Range (Optional)</option>
               <option style="background:#0D1B2A">Under ₹30 Lakh</option>
-              <option style="background:#0D1B2A">₹30L – ₹60L</option>
-              <option style="background:#0D1B2A">₹60L – ₹1 Cr</option>
-              <option style="background:#0D1B2A">₹1Cr – ₹2Cr</option>
-              <option style="background:#0D1B2A">₹2Cr – ₹5Cr</option>
+              <option style="background:#0D1B2A">₹30L â€“ ₹60L</option>
+              <option style="background:#0D1B2A">₹60L â€“ ₹1 Cr</option>
+              <option style="background:#0D1B2A">₹1Cr â€“ ₹2Cr</option>
+              <option style="background:#0D1B2A">₹2Cr â€“ ₹5Cr</option>
               <option style="background:#0D1B2A">Above ₹5Cr</option>
             </select>
           </div>
@@ -879,7 +896,7 @@ function showEmptyState(grid) {
             <i class="fa-solid fa-paper-plane"></i> Submit
           </button>
         </div>
-        <p style="text-align:center;font-size:0.72rem;color:rgba(255,255,255,0.35);margin-top:10px">🔒 Your details are safe. No spam calls.</p>
+        <p style="text-align:center;font-size:0.72rem;color:rgba(255,255,255,0.35);margin-top:10px"><i class="fa-solid fa-lock" style="margin-right:4px"></i> Your details are safe. No spam calls.</p>
     </div>`;
   document.body.appendChild(overlay);
 
@@ -1004,9 +1021,9 @@ function showEmptyState(grid) {
             <i class="fa-solid fa-clock" style="color:#E53935;font-size:0.85rem"></i>
             <select id="offerTime" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#555;background:transparent;cursor:pointer">
               <option value="">Preferred Call Time (Optional)</option>
-              <option>Morning (9AM – 12PM)</option>
-              <option>Afternoon (12PM – 3PM)</option>
-              <option>Evening (3PM – 7PM)</option>
+              <option>Morning (9AM â€“ 12PM)</option>
+              <option>Afternoon (12PM â€“ 3PM)</option>
+              <option>Evening (3PM â€“ 7PM)</option>
               <option>Anytime</option>
             </select>
           </div>
@@ -1019,7 +1036,7 @@ function showEmptyState(grid) {
             <i class="fa-solid fa-phone"></i> Request Call
           </button>
         </div>
-        <p style="text-align:center;font-size:0.72rem;color:#aaa;margin-top:10px">🔒 Your details are safe. No spam calls.</p>
+        <p style="text-align:center;font-size:0.72rem;color:#aaa;margin-top:10px"><i class="fa-solid fa-lock" style="margin-right:4px"></i> Your details are safe. No spam calls.</p>
       </div>
     </div>`;
   document.body.appendChild(overlay);
@@ -1073,7 +1090,7 @@ function showEmptyState(grid) {
 
 // ===== LOGIN REQUIRED HELPERS =====
 
-// Init — after IIFEs so window.openReqModal is ready
+// Init â€” after IIFEs so window.openReqModal is ready
 loadProperties(1);
 
 function requireLoginForOffer(e, title, loc) {
@@ -1114,8 +1131,8 @@ function showLoginToast(msg) {
           <li><a href="properties.html?status=for-sale"><i class="fa-solid fa-chevron-right"></i> Buy Property</a></li>
           <li><a href="properties.html?status=for-sale&type=apartment"><i class="fa-solid fa-chevron-right"></i> Resale</a></li>
           <li><a href="properties.html?status=for-sale&type=plot"><i class="fa-solid fa-chevron-right"></i> Land</a></li>
-          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell – List Property</a></li>
-          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell – List Project</a></li>
+          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell â€“ List Property</a></li>
+          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell â€“ List Project</a></li>
           <li><a href="properties.html?status=new-launch"><i class="fa-solid fa-chevron-right"></i> New Launch</a></li>
           <li><a href="properties.html?status=for-rent"><i class="fa-solid fa-chevron-right"></i> Prelease</a></li>
           <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Property Valuation</a></li>
@@ -1141,15 +1158,15 @@ function showLoginToast(msg) {
         </div>
         <div class="working-hours">
           <h5><i class="fa-regular fa-clock"></i> Working Hours</h5>
-          <p>Mon – Sat: 9:00 AM – 7:00 PM</p>
-          <p>Sunday: 10:00 AM – 4:00 PM</p>
+          <p>Mon â€“ Sat: 9:00 AM â€“ 7:00 PM</p>
+          <p>Sunday: 10:00 AM â€“ 4:00 PM</p>
         </div>
       </div>
     </div>
   </div>
   <div class="footer-bottom">
     <div class="container">
-      <p>© 2026 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p>
+      <p>Â© 2026 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p>
     </div>
   </div>
 </footer>
@@ -1239,7 +1256,7 @@ function findPropData(id) {
       updateDrawer();
     })
     .catch(() => {});
-  return null; // async fetch — updateDrawer called in then()
+  return null; // async fetch â€” updateDrawer called in then()
 }
 
 function updateDrawer() {
@@ -1312,7 +1329,7 @@ function buildCompareTable() {
   const maxSqft  = Math.max(...sqfts);
   const maxBeds  = Math.max(...beds);
 
-  // Header row — property cards
+  // Header row â€” property cards
   let thead = '<thead><tr><th>Feature</th>';
   props.forEach(p => {
     thead += '<th><img src="' + p.img + '" class="cmp-prop-img" alt=""/>' +
@@ -1325,14 +1342,14 @@ function buildCompareTable() {
   const rows = [
     { label: 'Price', fn: p => '<span class="cmp-price">' + formatPrice(p.price, p.status) + '</span>', win: (p,i) => prices[i] === minPrice },
     { label: 'Status', fn: p => '<span class="cmp-badge ' + badgeClass(p.status) + '">' + (statusMap[p.status]||p.status) + '</span>' },
-    { label: 'Type', fn: p => p.type ? p.type.charAt(0).toUpperCase()+p.type.slice(1) : '—' },
-    { label: 'Bedrooms', fn: p => p.specs?.beds ? p.specs.beds + ' BHK' : '—', win: (p,i) => beds[i] === maxBeds && maxBeds > 0 },
-    { label: 'Bathrooms', fn: p => p.specs?.baths ? p.specs.baths : '—' },
-    { label: 'Area (sqft)', fn: p => p.specs?.sqft ? p.specs.sqft.toLocaleString('en-IN') + ' sqft' : '—', win: (p,i) => sqfts[i] === maxSqft && maxSqft > 0 },
-    { label: 'Floor', fn: p => p.extraDetails?.floor || '—' },
-    { label: 'Furnished', fn: p => p.extraDetails?.furnished || '—' },
-    { label: 'Possession', fn: p => p.extraDetails?.possession || '—' },
-    { label: 'Amenities', fn: p => p.amenities?.length ? p.amenities.slice(0,4).join(', ') + (p.amenities.length > 4 ? ' +' + (p.amenities.length-4) + ' more' : '') : '—' },
+    { label: 'Type', fn: p => p.type ? p.type.charAt(0).toUpperCase()+p.type.slice(1) : 'â€”' },
+    { label: 'Bedrooms', fn: p => p.specs?.beds ? p.specs.beds + ' BHK' : 'â€”', win: (p,i) => beds[i] === maxBeds && maxBeds > 0 },
+    { label: 'Bathrooms', fn: p => p.specs?.baths ? p.specs.baths : 'â€”' },
+    { label: 'Area (sqft)', fn: p => p.specs?.sqft ? p.specs.sqft.toLocaleString('en-IN') + ' sqft' : 'â€”', win: (p,i) => sqfts[i] === maxSqft && maxSqft > 0 },
+    { label: 'Floor', fn: p => p.extraDetails?.floor || 'â€”' },
+    { label: 'Furnished', fn: p => p.extraDetails?.furnished || 'â€”' },
+    { label: 'Possession', fn: p => p.extraDetails?.possession || 'â€”' },
+    { label: 'Amenities', fn: p => p.amenities?.length ? p.amenities.slice(0,4).join(', ') + (p.amenities.length > 4 ? ' +' + (p.amenities.length-4) + ' more' : '') : 'â€”' },
   ];
 
   let tbody = '<tbody>';

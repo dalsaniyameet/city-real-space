@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Panel – City Real Space</title>
+  <title>Admin Panel â€“ City Real Space</title>
   <link rel="icon" type="image/jpeg" href="../images/logo.jpeg"/>
   <link rel="apple-touch-icon" href="../images/logo.jpeg"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -15,9 +15,13 @@
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
   <div class="sb-logo">
-    <img src="../images/logo.jpeg" alt="CRS" style="height:28px;width:28px;object-fit:contain;filter:brightness(0) invert(1);flex-shrink:0;border-radius:6px;"/>
+    <div class="sb-logo-img-wrap">
+      <img src="../images/logo.jpeg" alt="CRS" class="sb-logo-img"/>
+      <div class="sb-logo-ring"></div>
+      <div class="sb-logo-ring sb-logo-ring2"></div>
+    </div>
     <div style="min-width:0;">
-      <span class="sb-logo-text" style="font-size:0.82rem;">City <span class="yellow">Real</span> Space</span>
+      <span class="sb-logo-text" style="font-size:0.88rem;">City <span class="yellow">Real</span> Space</span>
       <span class="sb-logo-sub">Admin Panel</span>
     </div>
   </div>
@@ -90,7 +94,7 @@
       </div>
 
       <!-- API STATUS BAR -->
-      <div id="apiStatusBar" style="background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid rgba(99,102,241,0.2);border-radius:14px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+      <div id="apiStatusBar" style="background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid rgba(229,57,53,0.15);border-radius:16px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
         <div style="display:flex;align-items:center;gap:12px;">
           <div id="apiStatusDot" style="width:10px;height:10px;border-radius:50%;background:#64748b;box-shadow:0 0 0 3px rgba(100,116,139,0.2);flex-shrink:0;"></div>
           <div>
@@ -100,7 +104,7 @@
         </div>
         <div style="display:flex;align-items:center;gap:10px;">
           <span id="apiStatusPing" style="font-size:0.72rem;color:#475569;"></span>
-          <button onclick="checkApiStatus()" id="apiRefreshBtn" style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.25);color:#a5b4fc;padding:6px 14px;border-radius:8px;font-size:0.75rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:6px;transition:all 0.2s;"><i class="fa-solid fa-rotate-right"></i> Test API</button>
+          <button onclick="checkAllServices()" id="apiRefreshBtn" style="background:rgba(229,57,53,0.12);border:1px solid rgba(229,57,53,0.25);color:#f87171;padding:6px 14px;border-radius:8px;font-size:0.75rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:6px;transition:all 0.2s;"><i class="fa-solid fa-rotate-right"></i> Test API</button>
         </div>
       </div>
       <div class="stats-grid" id="statsGrid">
@@ -130,7 +134,7 @@
           </div>
           <p style="font-size:0.78rem;color:#78350f;font-weight:600;margin:0 0 12px;">Featured Properties</p>
           <div style="display:flex;gap:6px;">
-            <span style="background:#fef3c7;color:#92400e;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #fde68a;">🔥 Hot Picks</span>
+            <span style="background:#fef3c7;color:#92400e;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #fde68a;">ðŸ”¥ Hot Picks</span>
             <span style="background:#fff7ed;color:#c2410c;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #fed7aa;">Shown on Home</span>
           </div>
           <div style="margin-top:12px;padding-top:12px;border-top:1px solid #fde68a;display:flex;align-items:center;justify-content:space-between;">
@@ -153,7 +157,7 @@
           </div>
           <p style="font-size:0.78rem;color:#064e3b;font-weight:600;margin:0 0 12px;">Flats, Villas, Bungalows</p>
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <span style="background:#d1fae5;color:#065f46;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #6ee7b7;">🏠 Apartments</span>
+            <span style="background:#d1fae5;color:#065f46;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #6ee7b7;">ðŸ  Apartments</span>
             <span style="background:#ecfdf5;color:#047857;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #a7f3d0;">Villas</span>
           </div>
           <div style="margin-top:12px;padding-top:12px;border-top:1px solid #6ee7b7;display:flex;align-items:center;justify-content:space-between;">
@@ -176,7 +180,7 @@
           </div>
           <p style="font-size:0.78rem;color:#1e3a8a;font-weight:600;margin:0 0 12px;">Offices, Shops, Warehouses</p>
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <span style="background:#dbeafe;color:#1e40af;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #93c5fd;">🏢 Offices</span>
+            <span style="background:#dbeafe;color:#1e40af;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #93c5fd;">ðŸ¢ Offices</span>
             <span style="background:#eff6ff;color:#1d4ed8;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #bfdbfe;">Shops</span>
           </div>
           <div style="margin-top:12px;padding-top:12px;border-top:1px solid #93c5fd;display:flex;align-items:center;justify-content:space-between;">
@@ -275,7 +279,7 @@
         <button class="fbtn" data-inqfilter="Buy" onclick="loadInquiries('Buy')">Buy</button>
         <button class="fbtn" data-inqfilter="Rent" onclick="loadInquiries('Rent')">Rent / Lease</button>
         <button class="fbtn" data-inqfilter="Sell" onclick="loadInquiries('Sell')">Sell</button>
-        <button class="fbtn" data-inqfilter="Post Requirement" onclick="goPage('requirements')" style="background:#fff3e0;border-color:#ffb74d;color:#e65100">🔔 Requirements</button>
+        <button class="fbtn" data-inqfilter="Post Requirement" onclick="goPage('requirements')" style="background:#fff3e0;border-color:#ffb74d;color:#e65100">ðŸ”” Requirements</button>
       </div>
       <div class="table-wrap">
         <div class="table-scroll">
@@ -307,7 +311,7 @@
     <div class="page" id="page-requirements">
       <div class="page-head">
         <h2>User Requirements</h2>
-        <p>Properties users couldn't find — they posted their requirement.</p>
+        <p>Properties users couldn't find â€” they posted their requirement.</p>
       </div>
       <div class="table-wrap">
         <div class="table-scroll">
@@ -357,13 +361,26 @@
     <!-- Modal Header -->
     <div class="hs-modal-head">
       <div class="hs-logo">
-        <div class="hs-logo-icon"><i class="fa-solid fa-building"></i></div>
+        <img src="../images/logo.jpeg" alt="CRS" style="height:40px;width:40px;object-fit:contain;border-radius:10px;border:2px solid rgba(229,57,53,0.3);box-shadow:0 2px 12px rgba(229,57,53,0.25);flex-shrink:0;"/>
         <div>
           <span class="hs-logo-text" id="propModalTitle">Post Property</span>
-          <span class="hs-logo-sub">City Real Space — Admin Panel</span>
+          <span class="hs-logo-sub">City Real Space â€” Admin Panel</span>
         </div>
       </div>
-      <button class="modal-close" onclick="closeModal('propModal')" style="background:#f5f5f5;color:#555;"><i class="fa-solid fa-xmark"></i></button>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="display:flex;gap:5px;align-items:center;">
+          <span id="hbadge-1" style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#E53935,#b71c1c);border:1.5px solid #E53935;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:800;color:#fff;box-shadow:0 0 10px rgba(229,57,53,0.5);">1</span>
+          <span style="width:12px;height:1px;background:rgba(255,255,255,0.15);"></span>
+          <span id="hbadge-2" style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.3);">2</span>
+          <span style="width:12px;height:1px;background:rgba(255,255,255,0.15);"></span>
+          <span id="hbadge-3" style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.3);">3</span>
+          <span style="width:12px;height:1px;background:rgba(255,255,255,0.15);"></span>
+          <span id="hbadge-4" style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.3);">4</span>
+          <span style="width:12px;height:1px;background:rgba(255,255,255,0.15);"></span>
+          <span id="hbadge-5" style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.3);">5</span>
+        </div>
+        <button class="modal-close" onclick="closeModal('propModal')" style="background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.2);"><i class="fa-solid fa-xmark"></i></button>
+      </div>
     </div>
 
     <!-- Body: Stepper + Form -->
@@ -430,8 +447,8 @@
               <div class="hs-field">
                 <label>Property Category</label>
                 <div class="hs-toggle">
-                  <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pCategory','residential')">🏠 Residential</button>
-                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pCategory','commercial')">🏢 Commercial</button>
+                  <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pCategory','residential')">ðŸ  Residential</button>
+                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pCategory','commercial')">ðŸ¢ Commercial</button>
                 </div>
                 <input type="hidden" id="pCategory" value="residential"/>
               </div>
@@ -475,7 +492,7 @@
             <!-- Building / Society smart combo -->
             <div class="hs-row cols-1" style="margin-bottom:16px">
               <div class="hs-field">
-                <label>🏗️ Building / Society / Project</label>
+                <label>ðŸ—ï¸ Building / Society / Project</label>
                 <div style="position:relative;">
                   <input type="text" id="pProject" placeholder="Type or select society name..." autocomplete="off"
                     oninput="onProjectInput(this.value)"
@@ -483,7 +500,7 @@
                     style="width:100%;"/>
                   <div id="projectDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:20;background:#fff;border:1.5px solid #FF4D4D;border-radius:10px;margin-top:4px;max-height:200px;overflow-y:auto;box-shadow:0 8px 24px rgba(255,77,77,0.15);"></div>
                 </div>
-                <div style="font-size:0.72rem;color:#aaa;margin-top:4px;">Type manually if not in list — your entry will be saved</div>
+                <div style="font-size:0.72rem;color:#aaa;margin-top:4px;">Type manually if not in list â€” your entry will be saved</div>
               </div>
             </div>
 
@@ -493,27 +510,27 @@
                 <label>Property Type *</label>
                 <select id="pType" onchange="onAdminTypeChange()">
                   <option value="">Select Type</option>
-                  <optgroup label="🏠 Residential">
-                    <option value="apartment">🏢 Apartment / Flat</option>
-                    <option value="villa">🏡 Villa</option>
-                    <option value="bungalow">🏠 Bungalow / Independent House</option>
-                    <option value="rowhouse">🏘️ Row House / Duplex</option>
-                    <option value="plot">🌿 Residential Plot</option>
+                  <optgroup label="ðŸ  Residential">
+                    <option value="apartment">ðŸ¢ Apartment / Flat</option>
+                    <option value="villa">ðŸ¡ Villa</option>
+                    <option value="bungalow">ðŸ  Bungalow / Independent House</option>
+                    <option value="rowhouse">ðŸ˜ï¸ Row House / Duplex</option>
+                    <option value="plot">ðŸŒ¿ Residential Plot</option>
                   </optgroup>
-                  <optgroup label="🏢 Commercial">
-                    <option value="office">🏢 Office Space</option>
-                    <option value="shop">🏪 Shop</option>
-                    <option value="showroom">🚗 Showroom</option>
-                    <option value="warehouse">🏭 Warehouse</option>
-                    <option value="factory">⚙️ Factory</option>
-                    <option value="coworking">💻 Co-working Space</option>
-                    <option value="industrial_land">🌍 Industrial Land</option>
+                  <optgroup label="ðŸ¢ Commercial">
+                    <option value="office">ðŸ¢ Office Space</option>
+                    <option value="shop">ðŸª Shop</option>
+                    <option value="showroom">ðŸš— Showroom</option>
+                    <option value="warehouse">ðŸ­ Warehouse</option>
+                    <option value="factory">âš™ï¸ Factory</option>
+                    <option value="coworking">ðŸ’» Co-working Space</option>
+                    <option value="industrial_land">ðŸŒ Industrial Land</option>
                   </optgroup>
                 </select>
               </div>
-              <!-- Seats/Cabins — shown for office/shop -->
+              <!-- Seats/Cabins â€” shown for office/shop -->
               <div class="hs-field" id="adminSeatsRow" style="display:none">
-                <label>💺 Seats / Cabins</label>
+                <label>ðŸ’º Seats / Cabins</label>
                 <div class="hs-chips">
                   <span class="hs-chip" onclick="hsChip(this,'pSeats','5')">5</span>
                   <span class="hs-chip" onclick="hsChip(this,'pSeats','10')">10</span>
@@ -542,7 +559,7 @@
               <!-- BHK selector at top -->
               <div class="hs-row cols-1" style="margin-bottom:14px">
                 <div class="hs-field" id="adminBedsRow">
-                  <label>🛏️ BHK / Configuration</label>
+                  <label>ðŸ›ï¸ BHK / Configuration</label>
                   <div class="hs-chips" id="bhkChips">
                     <span class="hs-chip" onclick="hsChipBhk(this,'1')">1 BHK</span>
                     <span class="hs-chip" onclick="hsChipBhk(this,'2')">2 BHK</span>
@@ -553,10 +570,10 @@
                 </div>
               </div>
 
-              <!-- Bedrooms Bathrooms Balconies — auto-filled by BHK -->
+              <!-- Bedrooms Bathrooms Balconies â€” auto-filled by BHK -->
               <div class="hs-row cols-3">
                 <div class="hs-field">
-                  <label>🛌 Bedrooms</label>
+                  <label>ðŸ›Œ Bedrooms</label>
                   <div class="hs-chips" id="rBedsChips">
                     <span class="hs-chip" onclick="hsChipRes(this,'rBeds','1')">1</span>
                     <span class="hs-chip" onclick="hsChipRes(this,'rBeds','2')">2</span>
@@ -567,7 +584,7 @@
                   <input type="hidden" id="rBeds" value=""/>
                 </div>
                 <div class="hs-field">
-                  <label>🚿 Bathrooms</label>
+                  <label>ðŸš¿ Bathrooms</label>
                   <div class="hs-chips" id="rBathsChips">
                     <span class="hs-chip" onclick="hsChipRes(this,'rBaths','1')">1</span>
                     <span class="hs-chip" onclick="hsChipRes(this,'rBaths','2')">2</span>
@@ -577,7 +594,7 @@
                   <input type="hidden" id="rBaths" value=""/>
                 </div>
                 <div class="hs-field">
-                  <label>🏠 Balconies</label>
+                  <label>ðŸ  Balconies</label>
                   <div class="hs-chips" id="rBalconiesChips">
                     <span class="hs-chip" onclick="hsChipRes(this,'rBalconies','0')">0</span>
                     <span class="hs-chip" onclick="hsChipRes(this,'rBalconies','1')">1</span>
@@ -588,17 +605,17 @@
                 </div>
               </div>
 
-              <!-- Area — auto-filled by BHK -->
+              <!-- Area â€” auto-filled by BHK -->
               <div class="hs-row cols-2">
                 <div class="hs-field">
-                  <label>📐 Carpet Area (sq.ft)</label>
+                  <label>ðŸ“ Carpet Area (sq.ft)</label>
                   <div style="position:relative">
                     <input type="number" id="rCarpet" placeholder="e.g. 850" oninput="calcSBA()"/>
                     <div id="sqftSuggest" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:10;background:#fff;border:1.5px solid #FF4D4D;border-radius:8px;margin-top:4px;overflow:hidden;box-shadow:0 4px 16px rgba(255,77,77,0.15);"></div>
                   </div>
                 </div>
                 <div class="hs-field">
-                  <label id="pSqftLabel">📐 Super Built-up Area (sq.ft)</label>
+                  <label id="pSqftLabel">ðŸ“ Super Built-up Area (sq.ft)</label>
                   <input type="number" id="rSBA" placeholder="e.g. 1050" oninput="syncSBAtoMain()"/>
                 </div>
               </div>
@@ -608,21 +625,21 @@
               <!-- Floor + Lift -->
               <div class="hs-row cols-3">
                 <div class="hs-field">
-                  <label>🏢 Floor No.</label>
+                  <label>ðŸ¢ Floor No.</label>
                   <select id="rFloor">
                     <option value="">Select</option>
                     <option>Ground</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15+</option>
                   </select>
                 </div>
                 <div class="hs-field">
-                  <label>🏢 Total Floors</label>
+                  <label>ðŸ¢ Total Floors</label>
                   <select id="rTotalFloors">
                     <option value="">Select</option>
                     <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>20</option><option>25+</option>
                   </select>
                 </div>
                 <div class="hs-field">
-                  <label>🛗 Lift</label>
+                  <label>ðŸ›— Lift</label>
                   <div class="hs-toggle">
                     <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rLift','Available')">Available</button>
                     <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rLift','Not Available')">Not Available</button>
@@ -634,10 +651,10 @@
               <!-- Parking + Facing + Ownership -->
               <div class="hs-row cols-3">
                 <div class="hs-field">
-                  <label>🚗 Parking</label>
+                  <label>ðŸš— Parking</label>
                   <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
                     <div style="display:flex;align-items:center;gap:8px;background:#f8f9fa;border:1.5px solid #e8e8e8;border-radius:10px;padding:8px 14px;">
-                      <span style="font-size:0.78rem;font-weight:600;color:#555;white-space:nowrap;">🏠 Covered</span>
+                      <span style="font-size:0.78rem;font-weight:600;color:#555;white-space:nowrap;">ðŸ  Covered</span>
                       <div style="display:flex;align-items:center;gap:6px;">
                         <button type="button" onclick="adjParking('rCoveredParking',-1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;color:#555;">-</button>
                         <span id="rCoveredParkingDisplay" style="min-width:20px;text-align:center;font-size:0.95rem;font-weight:700;color:#333;">0</span>
@@ -646,7 +663,7 @@
                       <input type="hidden" id="rCoveredParking" value="0"/>
                     </div>
                     <div style="display:flex;align-items:center;gap:8px;background:#f8f9fa;border:1.5px solid #e8e8e8;border-radius:10px;padding:8px 14px;">
-                      <span style="font-size:0.78rem;font-weight:600;color:#555;white-space:nowrap;">🌳 Open</span>
+                      <span style="font-size:0.78rem;font-weight:600;color:#555;white-space:nowrap;">ðŸŒ³ Open</span>
                       <div style="display:flex;align-items:center;gap:6px;">
                         <button type="button" onclick="adjParking('rOpenParking',-1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;color:#555;">-</button>
                         <span id="rOpenParkingDisplay" style="min-width:20px;text-align:center;font-size:0.95rem;font-weight:700;color:#333;">0</span>
@@ -657,7 +674,7 @@
                   </div>
                 </div>
                 <div class="hs-field">
-                  <label>🧭 Facing</label>
+                  <label>ðŸ§­ Facing</label>
                   <select id="rFacing">
                     <option value="">Select</option>
                     <option>East</option><option>West</option><option>North</option><option>South</option>
@@ -665,7 +682,7 @@
                   </select>
                 </div>
                 <div class="hs-field">
-                  <label>📋 Ownership</label>
+                  <label>ðŸ“‹ Ownership</label>
                   <select id="rOwnership">
                     <option value="">Select</option>
                     <option>Freehold</option>
@@ -679,7 +696,7 @@
               <!-- Furnishing + Age -->
               <div class="hs-row cols-2">
                 <div class="hs-field">
-                  <label>🛋️ Furnishing Status</label>
+                  <label>ðŸ›‹ï¸ Furnishing Status</label>
                   <div class="hs-toggle">
                     <button type="button" class="hs-toggle-btn active" onclick="setResFurnishing(this,'Unfurnished')">Unfurnished</button>
                     <button type="button" class="hs-toggle-btn" onclick="setResFurnishing(this,'Semi Furnished')">Semi Furnished</button>
@@ -688,7 +705,7 @@
                   <input type="hidden" id="rFurnishing" value="Unfurnished"/>
                 </div>
                 <div class="hs-field">
-                  <label>🏗️ Property Age</label>
+                  <label>ðŸ—ï¸ Property Age</label>
                   <select id="rAge">
                     <option value="">Select</option>
                     <option>New Construction</option>
@@ -703,28 +720,28 @@
 
               <!-- Furnishing Items -->
               <div id="furnishingItems" style="display:none;background:#f8f9fa;border-radius:10px;padding:14px;border:1px solid #e8e8e8;margin-bottom:12px;">
-                <div style="font-size:0.78rem;font-weight:700;color:#555;margin-bottom:10px;">🔧 Furnishing Includes</div>
+                <div style="font-size:0.78rem;font-weight:700;color:#555;margin-bottom:10px;">ðŸ”§ Furnishing Includes</div>
                 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;">
-                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Lights"/> 💡 Lights</label>
-                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Fans"/> 🌀 Fans</label>
-                  <label class="furn-item"><input type="checkbox" name="furnItem" value="AC"/> ❄️ AC</label>
-                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Beds"/> 🛏️ Beds</label>
-                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Wardrobe"/> 👔 Wardrobe</label>
-                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Sofa"/> 🛋️ Sofa</label>
-                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Dining Table"/> 🍽️ Dining Table</label>
-                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Modular Kitchen"/> 🍳 Modular Kitchen</label>
-                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Chimney"/> 🌬️ Chimney</label>
-                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Fridge"/> 🧊 Fridge</label>
-                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Washing Machine"/> 🫧 Washing Machine</label>
-                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Geyser"/> 🚿 Geyser</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Lights"/> ðŸ’¡ Lights</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Fans"/> ðŸŒ€ Fans</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="AC"/> â„ï¸ AC</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Beds"/> ðŸ›ï¸ Beds</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Wardrobe"/> ðŸ‘” Wardrobe</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Sofa"/> ðŸ›‹ï¸ Sofa</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Dining Table"/> ðŸ½ï¸ Dining Table</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Modular Kitchen"/> ðŸ³ Modular Kitchen</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Chimney"/> ðŸŒ¬ï¸ Chimney</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Fridge"/> ðŸ§Š Fridge</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Washing Machine"/> ðŸ«§ Washing Machine</label>
+                  <label class="furn-item"><input type="checkbox" name="furnItem" value="Geyser"/> ðŸš¿ Geyser</label>
                 </div>
               </div>
 
               <!-- Amenities Quick Toggles -->
-              <div style="font-size:0.78rem;font-weight:700;color:#555;margin:12px 0 8px;">🏠 Key Amenities</div>
+              <div style="font-size:0.78rem;font-weight:700;color:#555;margin:12px 0 8px;">ðŸ  Key Amenities</div>
               <div class="hs-row cols-2">
                 <div class="hs-field">
-                  <label>🔒 Security</label>
+                  <label>ðŸ”’ Security</label>
                   <div class="hs-toggle">
                     <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rSecurity','Yes')">Yes</button>
                     <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rSecurity','No')">No</button>
@@ -732,7 +749,7 @@
                   <input type="hidden" id="rSecurity" value="Yes"/>
                 </div>
                 <div class="hs-field">
-                  <label>📹 CCTV</label>
+                  <label>ðŸ“¹ CCTV</label>
                   <div class="hs-toggle">
                     <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rCCTV','Yes')">Yes</button>
                     <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rCCTV','No')">No</button>
@@ -742,7 +759,7 @@
               </div>
               <div class="hs-row cols-2">
                 <div class="hs-field">
-                  <label>💧 Water Supply</label>
+                  <label>ðŸ’§ Water Supply</label>
                   <div class="hs-toggle">
                     <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rWater','24x7')">24x7</button>
                     <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rWater','Limited')">Limited</button>
@@ -750,7 +767,7 @@
                   <input type="hidden" id="rWater" value="24x7"/>
                 </div>
                 <div class="hs-field">
-                  <label>⚡ Power Backup</label>
+                  <label>âš¡ Power Backup</label>
                   <div class="hs-toggle">
                     <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rPowerBackup','Yes')">Yes</button>
                     <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rPowerBackup','No')">No</button>
@@ -760,7 +777,7 @@
               </div>
               <div class="hs-row cols-2">
                 <div class="hs-field">
-                  <label>🌿 Garden / Park</label>
+                  <label>ðŸŒ¿ Garden / Park</label>
                   <div class="hs-toggle">
                     <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rGarden','Available')">Available</button>
                     <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rGarden','Not Available')">Not Available</button>
@@ -768,7 +785,7 @@
                   <input type="hidden" id="rGarden" value="Not Available"/>
                 </div>
                 <div class="hs-field">
-                  <label>🏋️ Gym / Pool / Club</label>
+                  <label>ðŸ‹ï¸ Gym / Pool / Club</label>
                   <div class="hs-toggle">
                     <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rGymPool','Available')">Available</button>
                     <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rGymPool','Not Available')">Not Available</button>
@@ -780,11 +797,11 @@
               <!-- Available From + Suitable For -->
               <div class="hs-row cols-2">
                 <div class="hs-field">
-                  <label>📅 Available From</label>
+                  <label>ðŸ“… Available From</label>
                   <input type="date" id="rAvailFrom"/>
                 </div>
                 <div class="hs-field">
-                  <label>🎯 Suitable For</label>
+                  <label>ðŸŽ¯ Suitable For</label>
                   <div class="hs-toggle" style="flex-wrap:wrap">
                     <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rSuitableFor','Family')">Family</button>
                     <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rSuitableFor','Bachelors')">Bachelors</button>
@@ -799,7 +816,7 @@
 
             <div class="hs-row cols-1">
               <div class="hs-field">
-                <label>🏗️ Age of Property</label>
+                <label>ðŸ—ï¸ Age of Property</label>
                 <select id="pAgeOfProperty">
                   <option value="">Select</option>
                   <option>New Construction</option>
@@ -882,7 +899,7 @@
             <div class="hs-upload-area" onclick="document.getElementById('pImageFile').click()">
               <i class="fa-solid fa-cloud-arrow-up"></i>
               <p><strong>Click to upload</strong> or drag & drop photos here</p>
-              <p style="font-size:0.75rem;margin-top:4px">JPG, PNG accepted • Max 10 photos</p>
+              <p style="font-size:0.75rem;margin-top:4px">JPG, PNG accepted â€¢ Max 10 photos</p>
             </div>
             <input type="file" id="pImageFile" accept="image/*" multiple style="display:none" onchange="handleAdminImages(this)"/>
             <div id="pImagePreview" class="hs-photo-preview"></div>
@@ -891,7 +908,7 @@
             <!-- Image display tip -->
             <div style="margin-top:14px;background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:12px 16px;font-size:0.78rem;color:#7a5800;display:flex;align-items:flex-start;gap:8px">
               <i class="fa-solid fa-lightbulb" style="color:#f59e0b;margin-top:2px;flex-shrink:0"></i>
-              <span><strong>Tip:</strong> Upload landscape/horizontal images (e.g. 1200×800px) for best display. Portrait images will show with white background. First image will be the cover photo.</span>
+              <span><strong>Tip:</strong> Upload landscape/horizontal images (e.g. 1200Ã—800px) for best display. Portrait images will show with white background. First image will be the cover photo.</span>
             </div>
 
             <div class="hs-step-nav">
@@ -912,7 +929,7 @@
               </div>
               <div class="hs-field">
                 <label>Price Label</label>
-                <input type="text" id="pPriceLabel" placeholder="e.g. ₹25K/mo or ₹1.2 Cr"/>
+                <input type="text" id="pPriceLabel" placeholder="e.g. â‚¹25K/mo or â‚¹1.2 Cr"/>
               </div>
             </div>
 
@@ -989,7 +1006,7 @@
               <div style="font-size:0.85rem;font-weight:700;color:#E53935;margin-bottom:12px;padding:8px 12px;background:#fff5f5;border-radius:8px;border-left:3px solid #E53935;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-indian-rupee-sign"></i> Sale Pricing Details</div>
               <div class="hs-row cols-3">
                 <div class="hs-field">
-                  <label>💰 All Inclusive</label>
+                  <label>ðŸ’° All Inclusive</label>
                   <div class="hs-toggle">
                     <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pAllInclusive','Yes')">Yes</button>
                     <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pAllInclusive','No')">No</button>
@@ -997,7 +1014,7 @@
                   <input type="hidden" id="pAllInclusive" value="Yes"/>
                 </div>
                 <div class="hs-field">
-                  <label>🤝 Price Negotiable</label>
+                  <label>ðŸ¤ Price Negotiable</label>
                   <div class="hs-toggle">
                     <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pNegotiable','Yes')">Yes</button>
                     <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pNegotiable','No')">No</button>
@@ -1005,7 +1022,7 @@
                   <input type="hidden" id="pNegotiable" value="Yes"/>
                 </div>
                 <div class="hs-field">
-                  <label>🏦 Tax &amp; Govt Charges</label>
+                  <label>ðŸ¦ Tax &amp; Govt Charges</label>
                   <div class="hs-toggle">
                     <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pTaxCharges','Included')">Included</button>
                     <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pTaxCharges','Extra')">Extra</button>
@@ -1015,21 +1032,21 @@
               </div>
               <div class="hs-row cols-2">
                 <div class="hs-field">
-                  <label>💳 Booking Amount (&#8377;)</label>
+                  <label>ðŸ’³ Booking Amount (&#8377;)</label>
                   <input type="number" id="pBookingAmount" placeholder="e.g. 100000"/>
                 </div>
                 <div class="hs-field">
-                  <label>📅 Maintenance (Monthly &#8377;)</label>
+                  <label>ðŸ“… Maintenance (Monthly &#8377;)</label>
                   <input type="number" id="pMaintenance" placeholder="e.g. 3000"/>
                 </div>
               </div>
               <div class="hs-row cols-2">
                 <div class="hs-field">
-                  <label>📆 Annual Dues (&#8377;)</label>
+                  <label>ðŸ“† Annual Dues (&#8377;)</label>
                   <input type="number" id="pAnnualDues" placeholder="e.g. 12000"/>
                 </div>
                 <div class="hs-field">
-                  <label>🏅 Membership Charge (&#8377;)</label>
+                  <label>ðŸ… Membership Charge (&#8377;)</label>
                   <input type="number" id="pMembershipCharge" placeholder="e.g. 50000"/>
                 </div>
               </div>
@@ -1145,7 +1162,7 @@
                 <input type="text" id="pVideoUrl" placeholder="YouTube link (optional)"/>
               </div>
               <div class="hs-field">
-                <label>Price per Sqft (₹)</label>
+                <label>Price per Sqft (â‚¹)</label>
                 <input type="number" id="pPricePerSqft" placeholder="e.g. 4500"/>
               </div>
             </div>
@@ -1288,7 +1305,7 @@
             <div style="font-size:0.82rem;font-weight:700;color:#0D1B2A;margin-bottom:12px;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-sliders" style="color:#E53935;"></i> Post Settings</div>
             <div class="form-grp" style="margin-bottom:10px;">
               <label>Page Title <span style="color:#aaa;font-weight:400">(60 chars max)</span></label>
-              <input type="text" id="bMetaTitle" placeholder="e.g. 3BHK Flats in Bopal Ahmedabad – Best Price 2025" maxlength="60"/>
+              <input type="text" id="bMetaTitle" placeholder="e.g. 3BHK Flats in Bopal Ahmedabad â€“ Best Price 2025" maxlength="60"/>
               <div style="font-size:0.7rem;color:#aaa;margin-top:3px;"><span id="bMetaTitleCount">0</span>/60</div>
             </div>
             <div class="form-grp">
@@ -1362,5 +1379,98 @@
 
 <script src="/admin/script.js"></script>
 <script src="/cursor.js"></script>
+<script>
+// Fix broken emoji in labels and buttons
+document.addEventListener('DOMContentLoaded', function() {
+  var fixes = [
+    ["'pCategory','residential'", '<i class="fa-solid fa-house"></i> Residential'],
+    ["'pCategory','commercial'", '<i class="fa-solid fa-building"></i> Commercial'],
+    ["'pStatus','for-rent'", '<i class="fa-solid fa-key"></i> Rent'],
+    ["'pStatus','for-sale'", '<i class="fa-solid fa-tag"></i> Sell'],
+    ["'pStatus','new-launch'", '<i class="fa-solid fa-rocket"></i> New Launch']
+  ];
+  fixes.forEach(function(f) {
+    var btn = document.querySelector('button[onclick*="' + f[0] + '"]');
+    if (btn) btn.innerHTML = f[1];
+  });
+
+  // Fix all labels with broken chars
+  var labelMap = {
+    'BHK': '<i class="fa-solid fa-bed"></i> BHK / Configuration',
+    'Bedrooms': '<i class="fa-solid fa-bed"></i> Bedrooms',
+    'Bathrooms': '<i class="fa-solid fa-shower"></i> Bathrooms',
+    'Balconies': '<i class="fa-solid fa-door-open"></i> Balconies',
+    'Carpet Area': '<i class="fa-solid fa-ruler-combined"></i> Carpet Area (sq.ft)',
+    'Super Built': '<i class="fa-solid fa-ruler-combined"></i> Super Built-up Area (sq.ft)',
+    'Floor No': '<i class="fa-solid fa-building"></i> Floor No.',
+    'Total Floors': '<i class="fa-solid fa-layer-group"></i> Total Floors',
+    'Lift': '<i class="fa-solid fa-elevator"></i> Lift',
+    'Parking': '<i class="fa-solid fa-car"></i> Parking',
+    'Facing': '<i class="fa-solid fa-compass"></i> Facing',
+    'Ownership': '<i class="fa-solid fa-file-contract"></i> Ownership',
+    'Furnishing Status': '<i class="fa-solid fa-couch"></i> Furnishing Status',
+    'Property Age': '<i class="fa-solid fa-calendar"></i> Property Age',
+    'Age of Property': '<i class="fa-solid fa-calendar"></i> Age of Property',
+    'Security': '<i class="fa-solid fa-shield-halved"></i> Security',
+    'CCTV': '<i class="fa-solid fa-video"></i> CCTV',
+    'Water Supply': '<i class="fa-solid fa-droplet"></i> Water Supply',
+    'Power Backup': '<i class="fa-solid fa-bolt"></i> Power Backup',
+    'Garden': '<i class="fa-solid fa-leaf"></i> Garden / Park',
+    'Gym': '<i class="fa-solid fa-dumbbell"></i> Gym / Pool / Club',
+    'Available From': '<i class="fa-solid fa-calendar-days"></i> Available From',
+    'Suitable For': '<i class="fa-solid fa-bullseye"></i> Suitable For',
+    'Building / Society': '<i class="fa-solid fa-city"></i> Building / Society / Project',
+    'All Inclusive': '<i class="fa-solid fa-indian-rupee-sign"></i> All Inclusive',
+    'Price Negotiable': '<i class="fa-solid fa-handshake"></i> Price Negotiable',
+    'Tax': '<i class="fa-solid fa-landmark"></i> Tax & Govt Charges',
+    'Booking Amount': '<i class="fa-solid fa-credit-card"></i> Booking Amount',
+    'Maintenance': '<i class="fa-solid fa-wrench"></i> Maintenance',
+    'Annual Dues': '<i class="fa-solid fa-calendar-check"></i> Annual Dues',
+    'Membership': '<i class="fa-solid fa-medal"></i> Membership Charge',
+    'Seats': '<i class="fa-solid fa-chair"></i> Seats / Cabins'
+  };
+
+  document.querySelectorAll('.hs-field label, .hs-row label').forEach(function(lbl) {
+    var txt = lbl.textContent.trim();
+    for (var key in labelMap) {
+      if (txt.indexOf(key) !== -1 && txt !== labelMap[key]) {
+        // Only fix if has broken chars (non-ASCII before the keyword)
+        if (/[^\x00-\x7F]/.test(txt.substring(0, txt.indexOf(key)))) {
+          lbl.innerHTML = labelMap[key];
+          break;
+        }
+      }
+    }
+  });
+
+  // Fix Covered / Open span text
+  document.querySelectorAll('span').forEach(function(s) {
+    var t = s.textContent.trim();
+    if (/[^\x00-\x7F]/.test(t) && t.indexOf('Covered') !== -1) s.innerHTML = '<i class="fa-solid fa-warehouse"></i> Covered';
+    if (/[^\x00-\x7F]/.test(t) && t.indexOf('Open') !== -1) s.innerHTML = '<i class="fa-solid fa-tree"></i> Open';
+    if (/[^\x00-\x7F]/.test(t) && t.indexOf('Hot Picks') !== -1) s.innerHTML = '<i class="fa-solid fa-fire"></i> Hot Picks';
+    if (/[^\x00-\x7F]/.test(t) && t.indexOf('Apartments') !== -1) s.innerHTML = '<i class="fa-solid fa-house"></i> Apartments';
+    if (/[^\x00-\x7F]/.test(t) && t.indexOf('Offices') !== -1) s.innerHTML = '<i class="fa-solid fa-building"></i> Offices';
+  });
+
+  // Fix Requirements button
+  document.querySelectorAll('button[data-inqfilter]').forEach(function(b) {
+    if (/[^\x00-\x7F]/.test(b.textContent)) b.innerHTML = '<i class="fa-solid fa-bell"></i> Requirements';
+  });
+
+  // Fix select optgroup labels
+  document.querySelectorAll('optgroup').forEach(function(og) {
+    if (/[^\x00-\x7F]/.test(og.label)) {
+      og.label = og.label.replace(/[^\x00-\x7F\s]+/g, '').trim();
+    }
+  });
+  document.querySelectorAll('option').forEach(function(op) {
+    if (/[^\x00-\x7F]/.test(op.text)) {
+      op.text = op.text.replace(/[^\x00-\x7F\s]+/g, '').trim();
+    }
+  });
+});
+</script>
 </body>
 </html>
+

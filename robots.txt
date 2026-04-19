@@ -3,8 +3,11 @@ Allow: /
 
 Disallow: /admin/
 Disallow: /api/
+Disallow: /dashboard
 Disallow: /dashboard.html
+Disallow: /login
 Disallow: /login.html
+Disallow: /register
 Disallow: /register.html
 
 Sitemap: https://www.cityrealspace.com/sitemap.xml

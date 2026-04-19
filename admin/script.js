@@ -169,26 +169,61 @@ document.getElementById('pSubAreaSelect').addEventListener('change', function() 
   }
 });
 
-// Project smart combo
+// Project smart combo — shows ALL projects from all cities/areas
 function onProjectInput(query) {
   var city = document.getElementById('pCitySelect').value;
   var area = document.getElementById('pAreaSelect').value;
   var dropdown = document.getElementById('projectDropdown');
-  // Get projects list for city+area
-  var projects = (cityData[city] && cityData[city][area] && cityData[city][area].projects) || [];
-  // Filter by query
-  var q = query.toLowerCase().trim();
-  var filtered = q ? projects.filter(function(p) { return p.toLowerCase().indexOf(q) !== -1; }) : projects;
-  if (!filtered.length) {
-    dropdown.style.display = 'none';
-    return;
+  var q = (query || '').toLowerCase().trim();
+
+  // Collect projects: if city+area selected, show those first; else show ALL
+  var projects = [];
+  if (city && area && cityData[city] && cityData[city][area]) {
+    projects = cityData[city][area].projects || [];
+  } else if (city && cityData[city]) {
+    // All areas of selected city
+    Object.values(cityData[city]).forEach(function(a) {
+      if (a.projects) projects = projects.concat(a.projects);
+    });
+  } else {
+    // All cities, all areas
+    Object.values(cityData).forEach(function(c) {
+      Object.values(c).forEach(function(a) {
+        if (a.projects) projects = projects.concat(a.projects);
+      });
+    });
   }
-  dropdown.innerHTML = filtered.map(function(p) {
-    return '<div onclick="selectProject(\'' + p.replace(/'/g,"\\'") + '\')" ' +
+
+  // Remove duplicates
+  projects = projects.filter(function(v, i, a) { return a.indexOf(v) === i; });
+
+  // Filter by query
+  var filtered = q ? projects.filter(function(p) { return p.toLowerCase().indexOf(q) !== -1; }) : projects;
+
+  // Build dropdown
+  var items = filtered.slice(0, 30).map(function(p) {
+    return '<div onclick="selectProject(\'' + p.replace(/'/g, "\\'") + '\')" ' +
       'style="padding:10px 14px;cursor:pointer;font-size:0.85rem;color:#333;border-bottom:1px solid #f5f5f5;transition:background 0.15s;" ' +
       'onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'\'">'
       + '<i class="fa-solid fa-building" style="color:#FF4D4D;margin-right:8px;font-size:0.75rem;"></i>' + p + '</div>';
   }).join('');
+
+  // If typed something and no match — show "Use: <typed>" option
+  if (q && filtered.length === 0) {
+    items = '<div onclick="selectProject(\'' + query.replace(/'/g, "\\'") + '\')" ' +
+      'style="padding:10px 14px;cursor:pointer;font-size:0.85rem;color:#E53935;border-bottom:1px solid #f5f5f5;transition:background 0.15s;" ' +
+      'onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'\'">'
+      + '<i class="fa-solid fa-plus" style="color:#E53935;margin-right:8px;font-size:0.75rem;"></i>Add "' + query + '" manually</div>';
+  } else if (q && !filtered.some(function(p) { return p.toLowerCase() === q; })) {
+    // Typed something, some matches exist but exact not found — add option at bottom
+    items += '<div onclick="selectProject(\'' + query.replace(/'/g, "\\'") + '\')" ' +
+      'style="padding:10px 14px;cursor:pointer;font-size:0.85rem;color:#E53935;transition:background 0.15s;background:#fff8f8;" ' +
+      'onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'#fff8f8\'">' +
+      '<i class="fa-solid fa-plus" style="color:#E53935;margin-right:8px;font-size:0.75rem;"></i>Add "' + query + '" manually</div>';
+  }
+
+  if (!items) { dropdown.style.display = 'none'; return; }
+  dropdown.innerHTML = items;
   dropdown.style.display = 'block';
 }
 
@@ -420,8 +455,8 @@ async function api(method, path, body) {
 function toast(msg, type) {
   const t = document.getElementById('adminToast');
   t.textContent = msg;
-  t.className = 'admin-toast show' + (type === 'error' ? ' error' : '');
-  setTimeout(function() { t.className = 'admin-toast'; }, 3000);
+  t.className = 'admin-toast show' + (type === 'error' ? ' error' : type === 'warn' ? ' warn' : type === 'success' ? ' success' : '');
+  setTimeout(function() { t.className = 'admin-toast'; }, 4000);
 }
 
 // ===== NAVIGATION =====
@@ -2382,9 +2417,32 @@ function hsChip(chip, fieldId, val) {
 function updateStepperProgress(currentStep) {
   const fill = document.getElementById('stepProgressFill');
   if (!fill) return;
-  // 5 steps: 0% at step1, 100% at step5
   const pct = ((currentStep - 1) / 4) * 100;
   fill.style.height = pct + '%';
+  // Update header badges
+  for (let i = 1; i <= 5; i++) {
+    const b = document.getElementById('hbadge-' + i);
+    if (!b) continue;
+    if (i < currentStep) {
+      b.style.background = 'rgba(16,185,129,0.2)';
+      b.style.borderColor = '#10b981';
+      b.style.color = '#34d399';
+      b.style.boxShadow = '0 0 8px rgba(16,185,129,0.3)';
+      b.innerHTML = '<i class="fa-solid fa-check" style="font-size:0.55rem"></i>';
+    } else if (i === currentStep) {
+      b.style.background = 'linear-gradient(135deg,#E53935,#b71c1c)';
+      b.style.borderColor = '#E53935';
+      b.style.color = '#fff';
+      b.style.boxShadow = '0 0 12px rgba(229,57,53,0.6)';
+      b.textContent = i;
+    } else {
+      b.style.background = 'rgba(255,255,255,0.06)';
+      b.style.borderColor = 'rgba(255,255,255,0.1)';
+      b.style.color = 'rgba(255,255,255,0.3)';
+      b.style.boxShadow = 'none';
+      b.textContent = i;
+    }
+  }
 }
 
 function hsValidateStep(step) {
@@ -3201,8 +3259,78 @@ async function sendTestWA() {
     else toast(data.message || 'WA Error', 'error');
   } catch(e) { toast('Error sending WA', 'error'); }
 }
-async function checkApiStatus() {}
-async function testApiConnection() {}
+// ===== API STATUS CHECK =====
+let _apiCheckInterval = null;
+let _prevApiStatus = null;
+
+async function checkAllServices() {
+  const dot    = document.getElementById('apiStatusDot');
+  const text   = document.getElementById('apiStatusText');
+  const detail = document.getElementById('apiStatusDetail');
+  const ping   = document.getElementById('apiStatusPing');
+  const btn    = document.getElementById('apiRefreshBtn');
+
+  if (btn) { btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Checking...'; btn.disabled = true; }
+
+  const start = Date.now();
+  try {
+    const res  = await fetch(API + '/health', { signal: AbortSignal.timeout(8000) });
+    const ms   = Date.now() - start;
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok) {
+      if (dot)    { dot.style.background = '#10b981'; dot.style.boxShadow = '0 0 0 3px rgba(16,185,129,0.25)'; }
+      if (text)   { text.style.color = '#34d399'; text.textContent = 'API Online'; }
+      if (detail) detail.textContent = data.message || 'Server is running';
+      if (ping)   ping.textContent = ms + 'ms';
+      hideApiWarning();
+      // Notify only when coming back online
+      if (_prevApiStatus === 'offline') toast('API Server is back online!', 'success');
+      _prevApiStatus = 'online';
+    } else {
+      throw new Error('HTTP ' + res.status);
+    }
+  } catch(e) {
+    const ms = Date.now() - start;
+    const msg = e.name === 'AbortError' ? 'Timeout' : e.message;
+    if (dot)    { dot.style.background = '#ef4444'; dot.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.25)'; }
+    if (text)   { text.style.color = '#f87171'; text.textContent = 'API Offline'; }
+    if (detail) detail.textContent = msg;
+    if (ping)   ping.textContent = ms + 'ms';
+    showApiWarning();
+    // Notify only when going offline (not on every check)
+    if (_prevApiStatus !== 'offline') toast('API Server is offline! Check backend.', 'error');
+    _prevApiStatus = 'offline';
+  } finally {
+    if (btn) { btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Test API'; btn.disabled = false; }
+  }
+}
+
+async function checkApiStatus() { await checkAllServices(); }
+async function testApiConnection() { await checkAllServices(); }
+
+function showApiWarning() {
+  if (document.getElementById('apiWarningBanner')) return;
+  var b = document.createElement('div');
+  b.id = 'apiWarningBanner';
+  b.style.cssText = 'position:fixed;top:64px;left:240px;right:0;z-index:999;background:linear-gradient(135deg,#7f1d1d,#991b1b);border-bottom:1px solid rgba(239,68,68,0.4);padding:10px 20px;display:flex;align-items:center;gap:12px;font-family:Poppins,sans-serif;font-size:0.82rem;color:#fca5a5;animation:slideDown 0.3s ease';
+  b.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#f87171;font-size:1rem;flex-shrink:0"></i><span><strong>Backend Offline:</strong> API server not reachable. Website data may not load.</span><button onclick="checkAllServices()" style="margin-left:auto;background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.4);color:#fca5a5;padding:5px 14px;border-radius:8px;font-size:0.75rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;flex-shrink:0">Retry</button><button onclick="this.parentElement.remove()" style="background:none;border:none;color:#f87171;cursor:pointer;font-size:1rem;flex-shrink:0"><i class="fa-solid fa-xmark"></i></button>';
+  document.body.appendChild(b);
+}
+
+function hideApiWarning() {
+  var b = document.getElementById('apiWarningBanner');
+  if (b) b.remove();
+}
+
+setTimeout(checkAllServices, 1200);
+_apiCheckInterval = setInterval(checkAllServices, 60000);
+
+(function(){
+  var s = document.createElement('style');
+  s.textContent = '@keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}';
+  document.head.appendChild(s);
+})();
 
 // ===== INIT =====
 document.body.style.visibility = 'visible';
