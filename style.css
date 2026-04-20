@@ -368,7 +368,7 @@ select, input { font-family: 'Poppins', sans-serif; border: none; outline: none;
 .contact-info { margin-bottom: 20px; }
 .ci { display: flex; gap: 12px; margin-bottom: 12px; }
 .ci i { color: var(--yellow); font-size: 0.9rem; margin-top: 2px; flex-shrink: 0; }
-.ci span { color: rgba(255,255,255,0.6); font-size: 0.83rem; line-height: 1.5; }
+.ci span, .ci a { color: rgba(255,255,255,0.6); font-size: 0.83rem; line-height: 1.5; text-decoration: none; }
 .working-hours { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 16px; }
 .working-hours h5 { color: var(--yellow); font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
 .working-hours p { color: rgba(255,255,255,0.55); font-size: 0.8rem; margin-bottom: 4px; }

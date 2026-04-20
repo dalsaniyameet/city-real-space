@@ -728,80 +728,6 @@ document.getElementById('addPropBtn').addEventListener('click', function() {
 function editProperty(p) {
   var ex = p.extraDetails || {};
   // ===== EDIT MODE: Lock structural fields, only allow editable ones =====
-  var _editMode = !!p._id;
-  // Fields to LOCK in edit mode (structural â€” should not change after posting)
-  var lockFields = ['pCitySelect','pAreaSelect','pSubAreaSelect','pProject','pType','pCategory','pStatus',
-    'pBeds','rBeds','rBaths','rBalconies','rCarpet','rSBA','rFloor','rTotalFloors',
-    'rFacing','rOwnership','rAge','rLift','rCoveredParking','rOpenParking',
-    'rSecurity','rCCTV','rWater','rPowerBackup','rGarden','rGymPool',
-    'rAvailFrom','rSuitableFor','rFurnishing','pAgeOfProperty'];
-  // Fields to KEEP EDITABLE
-  var editFields = ['pTitle','pDesc','pPrice','pPriceLabel','pAgentName','pAgentPhone',
-    'pFeatured','pApproved','pPossession','pReraNo','pAllInclusive','pNegotiable',
-    'pTaxCharges','pBookingAmount','pMaintenance','pAnnualDues','pMembershipCharge',
-    'rMaintenance','rLockIn','rNoticePeriod','rBrokerage'];
-
-  setTimeout(function() {
-    if (!_editMode) return;
-    // Lock structural fields - readonly style (no disabled = value stays visible, no black)
-    lockFields.forEach(function(id) {
-      var el = document.getElementById(id);
-      if (!el) return;
-      el.style.pointerEvents = 'none';
-      el.style.cursor = 'not-allowed';
-      if (el.tagName === 'SELECT') {
-        el.style.background = '#f5f5f5';
-        el.style.color = '#555';
-        el.style.border = '1.5px solid #e0e0e0';
-        el.style.appearance = 'none';
-        el.style.webkitAppearance = 'none';
-      } else {
-        el.style.background = '#f5f5f5';
-        el.style.color = '#555';
-      }
-    });
-    // Lock toggle buttons - keep active one visible, dim inactive
-    ['pCategory','pStatus','rLift','rSuitableFor','rSecurity','rCCTV','rWater','rPowerBackup','rGarden','rGymPool'].forEach(function(fid) {
-      document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
-        var oc = b.getAttribute('onclick') || '';
-        if (oc.indexOf("'" + fid + "'") !== -1) {
-          b.style.pointerEvents = 'none';
-          b.style.cursor = 'not-allowed';
-          if (!b.classList.contains('active')) b.style.opacity = '0.35';
-        }
-      });
-    });
-    // Lock furnishing toggle
-    document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
-      var oc = b.getAttribute('onclick') || '';
-      if (oc.indexOf('setResFurnishing') !== -1) {
-        b.style.pointerEvents = 'none';
-        b.style.cursor = 'not-allowed';
-        if (!b.classList.contains('active')) b.style.opacity = '0.35';
-      }
-    });
-    // Lock BHK + bedroom chips
-    document.querySelectorAll('#bhkChips .hs-chip, #rBedsChips .hs-chip, #rBathsChips .hs-chip, #rBalconiesChips .hs-chip').forEach(function(c) {
-      c.style.pointerEvents = 'none';
-      c.style.cursor = 'not-allowed';
-      if (!c.classList.contains('active')) c.style.opacity = '0.35';
-    });
-    // Lock parking buttons
-    document.querySelectorAll('[onclick*="adjParking"]').forEach(function(b) {
-      b.style.pointerEvents = 'none';
-      b.style.opacity = '0.35';
-      b.style.cursor = 'not-allowed';
-    });
-    // Banner
-    var existing = document.getElementById('editModeBanner');
-    if (existing) existing.remove();
-    var banner = document.createElement('div');
-    banner.id = 'editModeBanner';
-    banner.style.cssText = 'background:linear-gradient(135deg,#fff8e1,#fff3cd);border:1.5px solid #ffe082;border-radius:10px;padding:10px 16px;margin-bottom:14px;font-size:0.78rem;color:#7a5800;display:flex;align-items:center;gap:8px;';
-    banner.innerHTML = '<i class="fa-solid fa-lock" style="color:#f59e0b"></i><span><strong>Edit Mode:</strong> Location, Type, BHK & structural details are locked. You can edit Title, Description, Price, Agent & Pricing details.</span>';
-    var step1 = document.getElementById('step-1');
-    if (step1) step1.insertBefore(banner, step1.firstChild);
-  }, 100);
 
 
   document.getElementById('propModalTitle').textContent = 'Edit Property';
@@ -820,6 +746,20 @@ function editProperty(p) {
   document.getElementById('pReraNo') && (document.getElementById('pReraNo').value = ex.reraNo || '');
 
   // Commercial lift fields
+  // Office area fields
+  document.getElementById('oCarpet') && (document.getElementById('oCarpet').value = ex.oCarpet || ex.carpetArea || '');
+  document.getElementById('oSBA')    && (document.getElementById('oSBA').value    = ex.oSBA    || ex.superBuiltUp || (p.specs && p.specs.sqft ? p.specs.sqft : '') || '');
+  // Sync to nonResAreaRow fields (shown for commercial/plot)
+  setTimeout(function() {
+    var carpetVal = String(ex.oCarpet || ex.carpetArea || '');
+    var sbaVal    = String(ex.oSBA   || ex.superBuiltUp || (p.specs && p.specs.sqft ? p.specs.sqft : '') || '');
+    var pSqftCarpetEl = document.getElementById('pSqftCarpet');
+    var pSqftEl       = document.getElementById('pSqft');
+    if (pSqftCarpetEl) pSqftCarpetEl.value = carpetVal;
+    if (pSqftEl)       pSqftEl.value       = sbaVal;
+    updateAdminScore();
+  }, 300);
+
   document.getElementById('cLiftPassenger') && (document.getElementById('cLiftPassenger').value = ex.commLiftPassenger || '');
   document.getElementById('cLiftService')   && (document.getElementById('cLiftService').value   = ex.commLiftService   || '');
   document.getElementById('cLiftCommon')    && (document.getElementById('cLiftCommon').value    = ex.commLiftCommon    || '');
@@ -844,6 +784,14 @@ function editProperty(p) {
     if (oc.indexOf("'pCategory'") !== -1) b.classList.toggle('active', oc.indexOf("'" + cat + "'") !== -1);
   });
   filterPropertyTypeByCategory(cat);
+  // Restore pType after filterPropertyTypeByCategory resets it
+  var pTypeEl = document.getElementById('pType');
+  if (pTypeEl) {
+    // Re-enable all options first
+    pTypeEl.querySelectorAll('option,optgroup').forEach(function(o) { o.disabled = false; o.style.display = ''; });
+    pTypeEl.value = p.type || '';
+  }
+  updateAdminTypeFields();
 
   // Status toggle
   var status = p.status || 'for-sale';
@@ -923,12 +871,13 @@ function editProperty(p) {
   document.getElementById('pAgeOfProperty') && (document.getElementById('pAgeOfProperty').value = ex.ageOfProperty || '');
 
   // Furnishing
-  var furnVal = ex.furnished || 'Unfurnished';
+  var furnVal = ex.furnished || ex.oFurnishing || 'Unfurnished';
   document.getElementById('rFurnishing') && (document.getElementById('rFurnishing').value = furnVal);
   document.getElementById('pFurnished')  && (document.getElementById('pFurnished').value  = furnVal);
+  document.getElementById('oFurnishing') && (document.getElementById('oFurnishing').value = furnVal);
   document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
     var oc = b.getAttribute('onclick') || '';
-    if (oc.indexOf('setResFurnishing') !== -1) b.classList.toggle('active', oc.indexOf("'" + furnVal + "'") !== -1);
+    if (oc.indexOf('setResFurnishing') !== -1 || oc.indexOf("'oFurnishing'") !== -1) b.classList.toggle('active', oc.indexOf("'" + furnVal + "'") !== -1);
   });
   var fi = document.getElementById('furnishingItems');
   if (fi) fi.style.display = (furnVal === 'Unfurnished') ? 'none' : 'block';
@@ -983,6 +932,11 @@ function editProperty(p) {
 
   // Type fields + amenities
   updateAdminTypeFields();
+  onAdminTypeChange();
+  // For commercial/plot: show nonResAreaRow explicitly
+  var isCommOrPlot = ['office','shop','showroom','warehouse','factory','coworking','industrial_land','plot'].indexOf(p.type) !== -1;
+  var nrr = document.getElementById('nonResAreaRow');
+  if (nrr) nrr.style.display = isCommOrPlot ? '' : 'none';
   initAmenitiesGrid(p.amenities || []);
 
   // Score
@@ -1078,7 +1032,7 @@ document.getElementById('propForm').addEventListener('submit', async function(e)
     specs: {
       beds:  Number(document.getElementById('rBeds').value  || document.getElementById('pBeds').value  || 0),
       baths: Number(document.getElementById('rBaths').value || document.getElementById('pBaths').value || 0),
-      sqft:  Number(document.getElementById('rSBA').value   || document.getElementById('pSqft').value  || 0)
+      sqft:  Number(document.getElementById('rSBA').value || document.getElementById('pSqft').value || (document.getElementById('oSBA')?document.getElementById('oSBA').value:0) || (document.getElementById('oCarpet')?document.getElementById('oCarpet').value:0) || 0)
     },
     agent: { name: document.getElementById('pAgentName').value, phone: document.getElementById('pAgentPhone').value, initials: document.getElementById('pAgentName').value.split(' ').map(function(w){return w[0];}).join('').toUpperCase() },
     images: imageUrls,
@@ -1098,11 +1052,11 @@ document.getElementById('propForm').addEventListener('submit', async function(e)
       beds:         document.getElementById('rBeds').value,
       baths:        document.getElementById('rBaths').value,
       balconies:    document.getElementById('rBalconies').value || '0',
-      carpetArea:   Number(document.getElementById('rCarpet').value) || 0,
-      superBuiltUp: Number(document.getElementById('rSBA').value)    || 0,
-      floor:        document.getElementById('rFloor').value    || document.getElementById('pFloor').value,
-      totalFloors:  document.getElementById('rTotalFloors').value || document.getElementById('pTotalFloors').value,
-      furnished:    (document.getElementById('rFurnishing') || {value:''}).value || (document.getElementById('pFurnished') || {value:''}).value,
+      carpetArea:   Number(document.getElementById('rCarpet').value) || Number((document.getElementById('oCarpet')||{value:0}).value) || 0,
+      superBuiltUp: Number(document.getElementById('rSBA').value)    || Number((document.getElementById('oSBA')||{value:0}).value)    || 0,
+      floor:        document.getElementById('rFloor') ? document.getElementById('rFloor').value : '',
+      totalFloors:  document.getElementById('rTotalFloors') ? document.getElementById('rTotalFloors').value : '',
+      furnished:    (document.getElementById('rFurnishing') ? document.getElementById('rFurnishing').value : '') || (document.getElementById('pFurnished') ? document.getElementById('pFurnished').value : '') || (document.getElementById('oFurnishing') ? document.getElementById('oFurnishing').value : '') || 'Unfurnished',
       facing:       document.getElementById('rFacing').value,
       ownership:    document.getElementById('rOwnership').value,
       lift:         document.getElementById('rLift').value,
@@ -1867,6 +1821,14 @@ function adjParking(fieldId, delta) {
   if (disp) disp.textContent = cur;
 }
 
+function syncCommArea(inp) {
+  var v = inp.value;
+  var oC = document.getElementById('oCarpet');
+  if (oC) oC.value = v;
+  document.getElementById('pSqft').value = v;
+  updateAdminScore();
+}
+
 function syncSBAtoMain() {
   var sba = document.getElementById('rSBA');
   var pSqft = document.getElementById('pSqft');
@@ -2019,7 +1981,7 @@ function updateAdminTypeFields() {
   var sqftField = document.getElementById('pSqft') ? document.getElementById('pSqft').closest('.hs-field') : null;
   if (sqftField) sqftField.style.display = isOffice ? 'none' : '';
   var nonResRow = document.getElementById('nonResAreaRow');
-  if (nonResRow) nonResRow.style.display = cfg.residential ? 'none' : '';
+  if (nonResRow) nonResRow.style.display = (cfg.commercial || cfg.plot) ? '' : 'none';
   var areaLabel = document.getElementById('pSqftLabel');
   if (areaLabel) areaLabel.textContent = TYPE_AREA_LABEL[type] || '\ud83d\udcd0 Super Built-up Area (sq.ft)';
   initAmenitiesGrid(getSelectedAmenities());
@@ -2035,7 +1997,7 @@ const ASC_CHECKS = [
   { id:'asc-type',   pts:10, done:()=> !!document.getElementById('pType').value },
   { id:'asc-city',   pts:15, done:()=> !!document.getElementById('pCitySelect').value && !!document.getElementById('pAreaSelect').value },
   { id:'asc-price',  pts:15, done:()=> Number(document.getElementById('pPrice').value) > 0 },
-  { id:'asc-area',   pts:10, done:()=> Number(document.getElementById('pSqft').value) > 0 },
+  { id:'asc-area',   pts:10, done:function(){ var s=document.getElementById('pSqft'); var oSBA=document.getElementById('oSBA'); var oC=document.getElementById('oCarpet'); return Number(s&&s.value||0)>0 || Number(oSBA&&oSBA.value||0)>0 || Number(oC&&oC.value||0)>0; } },
   { id:'asc-desc',   pts:20, done:()=> document.getElementById('pDesc').value.trim().length >= 30 },
   { id:'asc-images', pts:15, done:()=> document.querySelectorAll('#pImagePreview div').length > 0 },
 ];

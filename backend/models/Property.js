@@ -6,7 +6,7 @@ const propertySchema = new mongoose.Schema({
   description: { type: String, default: '' },
   price:       { type: Number, required: true },
   priceLabel:  { type: String, default: '' }, // e.g. "₹1.2 Cr"
-  type:        { type: String, enum: ['apartment', 'villa', 'plot', 'office', 'shop', 'showroom', 'warehouse', 'rowhouse', 'bungalow'], required: true },
+  type:        { type: String, enum: ['apartment', 'villa', 'plot', 'office', 'shop', 'showroom', 'warehouse', 'rowhouse', 'bungalow', 'factory', 'coworking', 'industrial_land'], required: true },
   category:    { type: String, enum: ['residential', 'commercial'], default: 'residential' },
   status:      { type: String, enum: ['for-sale', 'for-rent', 'new-launch', 'sold', 'rented'], default: 'for-sale' },
   location: {

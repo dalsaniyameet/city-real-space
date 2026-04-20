@@ -172,6 +172,8 @@ router.get('/properties', async (req, res) => {
 router.post('/properties', async (req, res) => {
   try {
     const property = await Property.create({ ...req.body, postedBy: req.user._id, isApproved: true });
+    property.slug = Property.generateSlug(property.type, property.status, property._id);
+    await property.save();
     res.status(201).json({ success: true, property });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

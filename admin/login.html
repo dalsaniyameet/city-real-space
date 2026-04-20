@@ -20,7 +20,7 @@
     @keyframes dotPulse  { 0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.7)} 50%{box-shadow:0 0 0 6px rgba(16,185,129,0)} }
     @keyframes lineShimmer{ 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
 
-    *{margin:0;padding:0;box-sizing:border-box;}
+    *{margin:0;padding:0;box-sizing:border-box;cursor:none !important;}
     body{
       font-family:'Poppins',sans-serif;
       background:linear-gradient(135deg,#080b10 0%,#0e1118 40%,#130d0d 70%,#080b10 100%);
@@ -136,6 +136,14 @@
     .otp-info strong{color:#f5f0eb;}
     .resend-row{text-align:center;margin-top:12px;font-size:0.8rem;color:#7a6a55;}
     .resend-row button{background:none;border:none;color:#D4A017;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;font-size:0.8rem;}
+
+    /* Custom Cursor */
+    .cursor-dot{position:fixed;width:8px;height:8px;background:#E53935;border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);box-shadow:0 0 10px rgba(229,57,53,0.8),0 0 20px rgba(229,57,53,0.4);}
+    .cursor-ring{position:fixed;width:36px;height:36px;border:2px solid rgba(229,57,53,0.5);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:width 0.25s,height 0.25s,border-color 0.25s;}
+    body.cursor-hover .cursor-dot{width:12px;height:12px;background:#D4A017;box-shadow:0 0 16px rgba(212,160,23,0.9);}
+    body.cursor-hover .cursor-ring{width:50px;height:50px;border-color:rgba(212,160,23,0.6);}
+    body.cursor-click .cursor-dot{transform:translate(-50%,-50%) scale(0.6);}
+    body.cursor-click .cursor-ring{transform:translate(-50%,-50%) scale(0.85);}
   </style>
 </head>
 <body>
@@ -362,6 +370,7 @@ async function resendOTP() {
   }
 }
 </script>
+<script src="/cursor.js"></script>
 
 </body>
 </html>
