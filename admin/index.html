@@ -121,7 +121,7 @@
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;">
 
         <!-- Trending -->
-        <div onclick="goPage('properties');setTimeout(function(){document.getElementById('btnTrending').click();},100)" style="cursor:pointer;background:#fff;border-radius:18px;padding:22px 20px;border:1.5px solid #ffe082;box-shadow:0 4px 24px rgba(245,158,11,0.12);position:relative;overflow:hidden;transition:all 0.25s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 36px rgba(245,158,11,0.22)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(245,158,11,0.12)'">
+        <div onclick="filterByCategory('trending')" style="cursor:pointer;background:#fff;border-radius:18px;padding:22px 20px;border:1.5px solid #ffe082;box-shadow:0 4px 24px rgba(245,158,11,0.12);position:relative;overflow:hidden;transition:all 0.25s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 36px rgba(245,158,11,0.22)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(245,158,11,0.12)'">
           <div style="position:absolute;top:0;right:0;width:80px;height:80px;background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(251,191,36,0.06));border-radius:0 18px 0 80px;"></div>
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
             <div style="width:46px;height:46px;background:linear-gradient(135deg,#f59e0b,#d97706);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(245,158,11,0.4);">
@@ -134,7 +134,7 @@
           </div>
           <p style="font-size:0.78rem;color:#78350f;font-weight:600;margin:0 0 12px;">Featured Properties</p>
           <div style="display:flex;gap:6px;">
-            <span style="background:#fef3c7;color:#92400e;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #fde68a;">ðŸ”¥ Hot Picks</span>
+            <span style="background:#fef3c7;color:#92400e;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #fde68a;"><i class="fa-solid fa-fire"></i> Hot Picks</span>
             <span style="background:#fff7ed;color:#c2410c;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #fed7aa;">Shown on Home</span>
           </div>
           <div style="margin-top:12px;padding-top:12px;border-top:1px solid #fde68a;display:flex;align-items:center;justify-content:space-between;">
@@ -144,7 +144,7 @@
         </div>
 
         <!-- Residential -->
-        <div onclick="goPage('properties');setTimeout(function(){document.getElementById('btnResidential').click();},100)" style="cursor:pointer;background:#fff;border-radius:18px;padding:22px 20px;border:1.5px solid #6ee7b7;box-shadow:0 4px 24px rgba(16,185,129,0.1);position:relative;overflow:hidden;transition:all 0.25s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 36px rgba(16,185,129,0.2)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(16,185,129,0.1)'">
+        <div onclick="filterByCategory('residential')" style="cursor:pointer;background:#fff;border-radius:18px;padding:22px 20px;border:1.5px solid #6ee7b7;box-shadow:0 4px 24px rgba(16,185,129,0.1);position:relative;overflow:hidden;transition:all 0.25s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 36px rgba(16,185,129,0.2)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(16,185,129,0.1)'">
           <div style="position:absolute;top:0;right:0;width:80px;height:80px;background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(52,211,153,0.05));border-radius:0 18px 0 80px;"></div>
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
             <div style="width:46px;height:46px;background:linear-gradient(135deg,#10b981,#059669);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(16,185,129,0.4);">
@@ -157,7 +157,7 @@
           </div>
           <p style="font-size:0.78rem;color:#064e3b;font-weight:600;margin:0 0 12px;">Flats, Villas, Bungalows</p>
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <span style="background:#d1fae5;color:#065f46;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #6ee7b7;">ðŸ  Apartments</span>
+            <span style="background:#d1fae5;color:#065f46;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #6ee7b7;"><i class="fa-solid fa-house"></i> Apartments</span>
             <span style="background:#ecfdf5;color:#047857;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #a7f3d0;">Villas</span>
           </div>
           <div style="margin-top:12px;padding-top:12px;border-top:1px solid #6ee7b7;display:flex;align-items:center;justify-content:space-between;">
@@ -167,7 +167,7 @@
         </div>
 
         <!-- Commercial -->
-        <div onclick="goPage('properties');setTimeout(function(){document.getElementById('btnCommercial').click();},100)" style="cursor:pointer;background:#fff;border-radius:18px;padding:22px 20px;border:1.5px solid #93c5fd;box-shadow:0 4px 24px rgba(59,130,246,0.1);position:relative;overflow:hidden;transition:all 0.25s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 36px rgba(59,130,246,0.2)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(59,130,246,0.1)'">
+        <div onclick="filterByCategory('commercial')" style="cursor:pointer;background:#fff;border-radius:18px;padding:22px 20px;border:1.5px solid #93c5fd;box-shadow:0 4px 24px rgba(59,130,246,0.1);position:relative;overflow:hidden;transition:all 0.25s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 36px rgba(59,130,246,0.2)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(59,130,246,0.1)'">
           <div style="position:absolute;top:0;right:0;width:80px;height:80px;background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(96,165,250,0.05));border-radius:0 18px 0 80px;"></div>
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
             <div style="width:46px;height:46px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(59,130,246,0.4);">
@@ -180,7 +180,7 @@
           </div>
           <p style="font-size:0.78rem;color:#1e3a8a;font-weight:600;margin:0 0 12px;">Offices, Shops, Warehouses</p>
           <div style="display:flex;gap:6px;flex-wrap:wrap;">
-            <span style="background:#dbeafe;color:#1e40af;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #93c5fd;">ðŸ¢ Offices</span>
+            <span style="background:#dbeafe;color:#1e40af;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #93c5fd;"><i class="fa-solid fa-building"></i> Offices</span>
             <span style="background:#eff6ff;color:#1d4ed8;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #bfdbfe;">Shops</span>
           </div>
           <div style="margin-top:12px;padding-top:12px;border-top:1px solid #93c5fd;display:flex;align-items:center;justify-content:space-between;">
@@ -279,7 +279,7 @@
         <button class="fbtn" data-inqfilter="Buy" onclick="loadInquiries('Buy')">Buy</button>
         <button class="fbtn" data-inqfilter="Rent" onclick="loadInquiries('Rent')">Rent / Lease</button>
         <button class="fbtn" data-inqfilter="Sell" onclick="loadInquiries('Sell')">Sell</button>
-        <button class="fbtn" data-inqfilter="Post Requirement" onclick="goPage('requirements')" style="background:#fff3e0;border-color:#ffb74d;color:#e65100">ðŸ”” Requirements</button>
+        <button class="fbtn" data-inqfilter="Post Requirement" onclick="goPage('requirements')" style="background:#fff3e0;border-color:#ffb74d;color:#e65100"><i class="fa-solid fa-bell"></i> Requirements</button>
       </div>
       <div class="table-wrap">
         <div class="table-scroll">
@@ -447,8 +447,8 @@
               <div class="hs-field">
                 <label>Property Category</label>
                 <div class="hs-toggle">
-                  <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pCategory','residential')">ðŸ  Residential</button>
-                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pCategory','commercial')">ðŸ¢ Commercial</button>
+                  <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'pCategory','residential')"><i class="fa-solid fa-house"></i> Residential</button>
+                  <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'pCategory','commercial')"><i class="fa-solid fa-building"></i> Commercial</button>
                 </div>
                 <input type="hidden" id="pCategory" value="residential"/>
               </div>
@@ -492,7 +492,7 @@
             <!-- Building / Society smart combo -->
             <div class="hs-row cols-1" style="margin-bottom:16px">
               <div class="hs-field">
-                <label>ðŸ—ï¸ Building / Society / Project</label>
+                <label><i class="fa-solid fa-city"></i> Building / Society / Project</label>
                 <div style="position:relative;">
                   <input type="text" id="pProject" placeholder="Type or select society name..." autocomplete="off"
                     oninput="onProjectInput(this.value)"
@@ -511,26 +511,26 @@
                 <select id="pType" onchange="onAdminTypeChange()">
                   <option value="">Select Type</option>
                   <optgroup label="ðŸ  Residential">
-                    <option value="apartment">ðŸ¢ Apartment / Flat</option>
-                    <option value="villa">ðŸ¡ Villa</option>
-                    <option value="bungalow">ðŸ  Bungalow / Independent House</option>
-                    <option value="rowhouse">ðŸ˜ï¸ Row House / Duplex</option>
-                    <option value="plot">ðŸŒ¿ Residential Plot</option>
+                    <option value="apartment">Apartment / Flat</option>
+                    <option value="villa">Villa</option>
+                    <option value="bungalow">Bungalow / Independent House</option>
+                    <option value="rowhouse">Row House / Duplex</option>
+                    <option value="plot">Residential Plot</option>
                   </optgroup>
-                  <optgroup label="ðŸ¢ Commercial">
-                    <option value="office">ðŸ¢ Office Space</option>
-                    <option value="shop">ðŸª Shop</option>
-                    <option value="showroom">ðŸš— Showroom</option>
-                    <option value="warehouse">ðŸ­ Warehouse</option>
-                    <option value="factory">âš™ï¸ Factory</option>
-                    <option value="coworking">ðŸ’» Co-working Space</option>
-                    <option value="industrial_land">ðŸŒ Industrial Land</option>
+                  <optgroup label="Commercial">
+                    <option value="office">Office Space</option>
+                    <option value="shop">Shop</option>
+                    <option value="showroom">Showroom</option>
+                    <option value="warehouse">Warehouse</option>
+                    <option value="factory">Factory</option>
+                    <option value="coworking">Co-working Space</option>
+                    <option value="industrial_land">Industrial Land</option>
                   </optgroup>
                 </select>
               </div>
               <!-- Seats/Cabins â€” shown for office/shop -->
               <div class="hs-field" id="adminSeatsRow" style="display:none">
-                <label>ðŸ’º Seats / Cabins</label>
+                <label><i class="fa-solid fa-chair"></i> Seats / Cabins</label>
                 <div class="hs-chips">
                   <span class="hs-chip" onclick="hsChip(this,'pSeats','5')">5</span>
                   <span class="hs-chip" onclick="hsChip(this,'pSeats','10')">10</span>
@@ -559,7 +559,7 @@
               <!-- BHK selector at top -->
               <div class="hs-row cols-1" style="margin-bottom:14px">
                 <div class="hs-field" id="adminBedsRow">
-                  <label>ðŸ›ï¸ BHK / Configuration</label>
+                  <label><i class="fa-solid fa-bed"></i> BHK / Configuration</label>
                   <div class="hs-chips" id="bhkChips">
                     <span class="hs-chip" onclick="hsChipBhk(this,'1')">1 BHK</span>
                     <span class="hs-chip" onclick="hsChipBhk(this,'2')">2 BHK</span>
@@ -573,7 +573,7 @@
               <!-- Bedrooms Bathrooms Balconies â€” auto-filled by BHK -->
               <div class="hs-row cols-3">
                 <div class="hs-field">
-                  <label>ðŸ›Œ Bedrooms</label>
+                  <label><i class="fa-solid fa-bed"></i> Bedrooms</label>
                   <div class="hs-chips" id="rBedsChips">
                     <span class="hs-chip" onclick="hsChipRes(this,'rBeds','1')">1</span>
                     <span class="hs-chip" onclick="hsChipRes(this,'rBeds','2')">2</span>
@@ -584,7 +584,7 @@
                   <input type="hidden" id="rBeds" value=""/>
                 </div>
                 <div class="hs-field">
-                  <label>ðŸš¿ Bathrooms</label>
+                  <label><i class="fa-solid fa-shower"></i> Bathrooms</label>
                   <div class="hs-chips" id="rBathsChips">
                     <span class="hs-chip" onclick="hsChipRes(this,'rBaths','1')">1</span>
                     <span class="hs-chip" onclick="hsChipRes(this,'rBaths','2')">2</span>
@@ -594,7 +594,7 @@
                   <input type="hidden" id="rBaths" value=""/>
                 </div>
                 <div class="hs-field">
-                  <label>ðŸ  Balconies</label>
+                  <label><i class="fa-solid fa-door-open"></i> Balconies</label>
                   <div class="hs-chips" id="rBalconiesChips">
                     <span class="hs-chip" onclick="hsChipRes(this,'rBalconies','0')">0</span>
                     <span class="hs-chip" onclick="hsChipRes(this,'rBalconies','1')">1</span>
@@ -608,14 +608,14 @@
               <!-- Area â€” auto-filled by BHK -->
               <div class="hs-row cols-2">
                 <div class="hs-field">
-                  <label>ðŸ“ Carpet Area (sq.ft)</label>
+                  <label><i class="fa-solid fa-ruler-combined"></i> Carpet Area (sq.ft)</label>
                   <div style="position:relative">
                     <input type="number" id="rCarpet" placeholder="e.g. 850" oninput="calcSBA()"/>
                     <div id="sqftSuggest" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:10;background:#fff;border:1.5px solid #FF4D4D;border-radius:8px;margin-top:4px;overflow:hidden;box-shadow:0 4px 16px rgba(255,77,77,0.15);"></div>
                   </div>
                 </div>
                 <div class="hs-field">
-                  <label id="pSqftLabel">ðŸ“ Super Built-up Area (sq.ft)</label>
+                  <label id="pSqftLabel"><i class="fa-solid fa-ruler-combined"></i> Super Built-up Area (sq.ft)</label>
                   <input type="number" id="rSBA" placeholder="e.g. 1050" oninput="syncSBAtoMain()"/>
                 </div>
               </div>
@@ -625,21 +625,21 @@
               <!-- Floor + Lift -->
               <div class="hs-row cols-3">
                 <div class="hs-field">
-                  <label>ðŸ¢ Floor No.</label>
+                  <label><i class="fa-solid fa-building"></i> Floor No.</label>
                   <select id="rFloor">
                     <option value="">Select</option>
                     <option>Ground</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15+</option>
                   </select>
                 </div>
                 <div class="hs-field">
-                  <label>ðŸ¢ Total Floors</label>
+                  <label><i class="fa-solid fa-layer-group"></i> Total Floors</label>
                   <select id="rTotalFloors">
                     <option value="">Select</option>
                     <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>20</option><option>25+</option>
                   </select>
                 </div>
                 <div class="hs-field">
-                  <label>ðŸ›— Lift</label>
+                  <label><i class="fa-solid fa-elevator"></i> Lift</label>
                   <div class="hs-toggle">
                     <button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'rLift','Available')">Available</button>
                     <button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'rLift','Not Available')">Not Available</button>
@@ -651,7 +651,7 @@
               <!-- Parking + Facing + Ownership -->
               <div class="hs-row cols-3">
                 <div class="hs-field">
-                  <label>ðŸš— Parking</label>
+                  <label><i class="fa-solid fa-car"></i> Parking</label>
                   <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
                     <div style="display:flex;align-items:center;gap:8px;background:#f8f9fa;border:1.5px solid #e8e8e8;border-radius:10px;padding:8px 14px;">
                       <span style="font-size:0.78rem;font-weight:600;color:#555;white-space:nowrap;">ðŸ  Covered</span>
@@ -674,7 +674,7 @@
                   </div>
                 </div>
                 <div class="hs-field">
-                  <label>ðŸ§­ Facing</label>
+                  <label><i class="fa-solid fa-compass"></i> Facing</label>
                   <select id="rFacing">
                     <option value="">Select</option>
                     <option>East</option><option>West</option><option>North</option><option>South</option>
@@ -682,7 +682,7 @@
                   </select>
                 </div>
                 <div class="hs-field">
-                  <label>ðŸ“‹ Ownership</label>
+                  <label><i class="fa-solid fa-file-contract"></i> Ownership</label>
                   <select id="rOwnership">
                     <option value="">Select</option>
                     <option>Freehold</option>
@@ -858,29 +858,112 @@
               </div>
             </div>
 
+            <!-- COMMERCIAL LIFT SECTION — shown for ALL commercial types -->
+            <div id="commercialLiftSection" style="display:none;margin-bottom:14px;">
+              <div style="font-size:0.85rem;font-weight:700;color:#1d4ed8;margin:14px 0 10px;padding:8px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid #3b82f6;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-elevator"></i> Lift & Floor Details</div>
+              <div class="hs-row cols-3">
+                <div class="hs-field">
+                  <label><i class="fa-solid fa-elevator"></i> Passenger Lift</label>
+                  <input type="number" id="cLiftPassenger" min="0" max="20" placeholder="e.g. 2" style="border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 13px;font-size:0.85rem;font-family:Poppins,sans-serif;width:100%;outline:none;"/>
+                </div>
+                <div class="hs-field">
+                  <label><i class="fa-solid fa-elevator"></i> Service Lift</label>
+                  <input type="number" id="cLiftService" min="0" max="20" placeholder="e.g. 1" style="border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 13px;font-size:0.85rem;font-family:Poppins,sans-serif;width:100%;outline:none;"/>
+                </div>
+                <div class="hs-field">
+                  <label><i class="fa-solid fa-elevator"></i> Lift</label>
+                  <input type="number" id="cLiftCommon" min="0" max="20" placeholder="e.g. 1" style="border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 13px;font-size:0.85rem;font-family:Poppins,sans-serif;width:100%;outline:none;"/>
+                </div>
+              </div>
+              <div class="hs-row cols-2">
+                <div class="hs-field">
+                  <label><i class="fa-solid fa-layer-group"></i> Total Floors</label>
+                  <select id="cTotalFloors" style="border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 13px;font-size:0.85rem;font-family:Poppins,sans-serif;width:100%;outline:none;">
+                    <option value="">Select</option>
+                    <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+                    <option>11</option><option>12</option><option>13</option><option>14</option><option>15</option>
+                    <option>20</option><option>25+</option>
+                  </select>
+                </div>
+                <div class="hs-field">
+                  <label><i class="fa-solid fa-building"></i> Your Floor</label>
+                  <select id="cYourFloor" style="border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 13px;font-size:0.85rem;font-family:Poppins,sans-serif;width:100%;outline:none;">
+                    <option value="">Select</option>
+                    <option>Ground</option><option>1</option><option>2</option><option>3</option><option>4</option>
+                    <option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+                    <option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15+</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
             <!-- OFFICE SPACE FIELDS -->
             <div id="officeFields" style="display:none">
               <div style="font-size:0.85rem;font-weight:700;color:#1d4ed8;margin:14px 0 10px;padding:8px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid #3b82f6;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-building"></i> Office Space Details</div>
-              <div class="hs-row cols-3">
-                <div class="hs-field"><label>&#128208; Carpet Area (sq.ft)</label><input type="number" id="oCarpet" placeholder="e.g. 800"/></div>
-                <div class="hs-field"><label>&#128208; Super Built-up Area (sq.ft)</label><input type="number" id="oSBA" placeholder="e.g. 1000"/></div>
-                <div class="hs-field"><label>&#129681; Furnishing</label><div class="hs-toggle" style="flex-wrap:wrap"><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oFurnishing','Fully Furnished')">Fully Furnished</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oFurnishing','Semi Furnished')">Semi Furnished</button><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oFurnishing','Unfurnished')">Unfurnished</button></div><input type="hidden" id="oFurnishing" value="Unfurnished"/></div>
+
+              <!-- Area Details -->
+              <div style="font-size:0.78rem;font-weight:700;color:#1d4ed8;margin:10px 0 8px;">&#128208; Area Details</div>
+              <div class="hs-row cols-2">
+                <div class="hs-field"><label>Carpet Area (sq.ft)</label><input type="number" id="oCarpet" placeholder="e.g. 800"/></div>
+                <div class="hs-field"><label>Super Built-up Area (sq.ft)</label><input type="number" id="oSBA" placeholder="e.g. 1000"/></div>
               </div>
+
+              <!-- Cabin / Seats -->
+              <div style="font-size:0.78rem;font-weight:700;color:#1d4ed8;margin:10px 0 8px;">&#128188; Cabin &amp; Seating</div>
               <div class="hs-row cols-3">
-                <div class="hs-field"><label>&#128188; Cabins</label><input type="number" id="oCabins" min="0" placeholder="e.g. 4"/></div>
-                <div class="hs-field"><label>&#128187; Workstations</label><input type="number" id="oWorkstations" min="0" placeholder="e.g. 20"/></div>
-                <div class="hs-field"><label>&#128202; Meeting Rooms</label><div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="hs-toggle-btn active" onclick="setMeetingRooms(this,'0')">No</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'1')">1</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'2')">2</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'3')">3</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'4+')">4+</button></div><input type="hidden" id="oMeetingRooms" value="0"/></div>
+                <div class="hs-field"><label>Cabins</label><input type="number" id="oCabins" min="0" placeholder="e.g. 4"/></div>
+                <div class="hs-field"><label>Min Seats</label><input type="number" id="oMinSeats" min="0" placeholder="e.g. 10"/></div>
+                <div class="hs-field"><label>Max Seats</label><input type="number" id="oMaxSeats" min="0" placeholder="e.g. 50"/></div>
               </div>
+              <div class="hs-row cols-2">
+                <div class="hs-field"><label>Workstations</label><input type="number" id="oWorkstations" min="0" placeholder="e.g. 20"/></div>
+                <div class="hs-field"><label>Conference Rooms</label><input type="number" id="oConferenceRooms" min="0" placeholder="e.g. 2"/></div>
+              </div>
+              <div class="hs-field" style="margin-bottom:14px;"><label>&#128202; Meeting Rooms</label><div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="hs-toggle-btn active" onclick="setMeetingRooms(this,'0')">No</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'1')">1</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'2')">2</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'3')">3</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'4+')">4+</button></div><input type="hidden" id="oMeetingRooms" value="0"/></div>
+
+              <!-- Available Features -->
+              <div style="font-size:0.78rem;font-weight:700;color:#1d4ed8;margin:10px 0 8px;">&#9989; Available Features</div>
               <div class="hs-row cols-3">
                 <div class="hs-field"><label>&#128706; Reception</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oReception','No')">No</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oReception','Yes')">Yes</button></div><input type="hidden" id="oReception" value="No"/></div>
                 <div class="hs-field"><label>&#127869; Pantry</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oPantry','No')">No</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oPantry','Dry')">Dry</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oPantry','Wet')">Wet</button></div><input type="hidden" id="oPantry" value="No"/></div>
-                <div class="hs-field"><label>&#128683; Washroom</label><div style="display:flex;gap:6px;flex-wrap:wrap"><label style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1.5px solid #e8e8e8;border-radius:20px;cursor:pointer;font-size:0.8rem;background:#fff;transition:all 0.2s"><input type="checkbox" id="oWashMale" style="accent-color:#E53935" onchange="this.closest('label').style.borderColor=this.checked?'#E53935':'#e8e8e8';this.closest('label').style.background=this.checked?'#fff5f5':'#fff'"/> &#128697; Male</label><label style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1.5px solid #e8e8e8;border-radius:20px;cursor:pointer;font-size:0.8rem;background:#fff;transition:all 0.2s"><input type="checkbox" id="oWashFemale" style="accent-color:#E53935" onchange="this.closest('label').style.borderColor=this.checked?'#E53935':'#e8e8e8';this.closest('label').style.background=this.checked?'#fff5f5':'#fff'"/> &#128698; Female</label><label style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1.5px solid #e8e8e8;border-radius:20px;cursor:pointer;font-size:0.8rem;background:#fff;transition:all 0.2s"><input type="checkbox" id="oWashCommon" style="accent-color:#E53935" onchange="this.closest('label').style.borderColor=this.checked?'#E53935':'#e8e8e8';this.closest('label').style.background=this.checked?'#fff5f5':'#fff'"/> &#128683; Common</label></div></div>
+                <div class="hs-field"><label>&#129681; Furnishing</label><div class="hs-toggle" style="flex-wrap:wrap"><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oFurnishing','Fully Furnished')">Fully Furnished</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oFurnishing','Semi Furnished')">Semi Furnished</button><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oFurnishing','Unfurnished')">Unfurnished</button></div><input type="hidden" id="oFurnishing" value="Unfurnished"/></div>
+              </div>
+              <div class="hs-row cols-2">
+                <div class="hs-field"><label>&#127756; AC</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oAC','None')">None</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oAC','Split AC')">Split AC</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oAC','Central AC')">Central AC</button></div><input type="hidden" id="oAC" value="None"/></div>
+                <div class="hs-field"><label>&#128683; Washroom</label><div style="display:flex;gap:6px;flex-wrap:wrap"><label style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1.5px solid #e8e8e8;border-radius:20px;cursor:pointer;font-size:0.8rem;background:#fff;"><input type="checkbox" id="oWashMale" style="accent-color:#E53935" onchange="this.closest('label').style.borderColor=this.checked?'#E53935':'#e8e8e8'"/> Male</label><label style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1.5px solid #e8e8e8;border-radius:20px;cursor:pointer;font-size:0.8rem;background:#fff;"><input type="checkbox" id="oWashFemale" style="accent-color:#E53935" onchange="this.closest('label').style.borderColor=this.checked?'#E53935':'#e8e8e8'"/> Female</label><label style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1.5px solid #e8e8e8;border-radius:20px;cursor:pointer;font-size:0.8rem;background:#fff;"><input type="checkbox" id="oWashCommon" style="accent-color:#E53935" onchange="this.closest('label').style.borderColor=this.checked?'#E53935':'#e8e8e8'"/> Common</label></div></div>
+              </div>
+
+              <!-- Floor Details -->
+              <div style="font-size:0.78rem;font-weight:700;color:#1d4ed8;margin:10px 0 8px;"><i class="fa-solid fa-building"></i> Floor Details</div>
+              <div class="hs-row cols-2">
+                <div class="hs-field"><label><i class="fa-solid fa-layer-group"></i> Total Floors</label><select id="oTotalFloors"><option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>20</option><option>25+</option></select></div>
+                <div class="hs-field"><label><i class="fa-solid fa-building"></i> Your Floor</label><select id="oYourFloor"><option value="">Select</option><option>Ground</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15+</option></select></div>
               </div>
               <div class="hs-row cols-3">
-                <div class="hs-field"><label>&#127756; AC</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oAC','None')">None</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oAC','Split AC')">Split AC</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oAC','Central AC')">Central AC</button></div><input type="hidden" id="oAC" value="None"/></div>
-                <div class="hs-field"><label>&#128663; Parking</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oParking','Not Available')">Not Available</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oParking','Available')">Available</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oParking','Reserved')">Reserved</button></div><input type="hidden" id="oParking" value="Not Available"/></div>
-                <div class="hs-field"><label>&#128397; Lift</label><div class="hs-row cols-2" style="margin-bottom:0"><div><label style="font-size:0.72rem;color:#888">Passenger Lift</label><input type="number" id="oLiftCommon" min="0" max="10" placeholder="0" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:7px 10px;font-size:0.85rem;font-family:Poppins,sans-serif;width:100%;outline:none;"/></div><div><label style="font-size:0.72rem;color:#888">Service Lift</label><input type="number" id="oLiftOwner" min="0" max="10" placeholder="0" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:7px 10px;font-size:0.85rem;font-family:Poppins,sans-serif;width:100%;outline:none;"/></div></div></div>
+                <div class="hs-field"><label><i class="fa-solid fa-elevator"></i> Passenger Lift</label><input type="number" id="oLiftCommon" min="0" max="20" placeholder="e.g. 2"/></div>
+                <div class="hs-field"><label><i class="fa-solid fa-elevator"></i> Service Lift</label><input type="number" id="oLiftOwner" min="0" max="20" placeholder="e.g. 1"/></div>
+                <div class="hs-field"><label><i class="fa-solid fa-elevator"></i> Lift</label><input type="number" id="oLiftOwnerPrivate" min="0" max="20" placeholder="e.g. 1"/></div>
               </div>
+              <div class="hs-row cols-1">
+                <div class="hs-field"><label><i class="fa-solid fa-stairs"></i> No. of Staircase</label><input type="number" id="oStaircase" min="0" placeholder="e.g. 2"/></div>
+              </div>
+              <div class="hs-field" style="margin-bottom:14px;"><label><i class="fa-solid fa-car"></i> Parking</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oParking','Not Available')">Not Available</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oParking','Available')">Available</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oParking','Reserved')">Reserved</button></div><input type="hidden" id="oParking" value="Not Available"/></div>
+
+              <!-- Fire & Legal — SELL only -->
+              <div id="officeSellFields" style="display:none">
+                <div style="font-size:0.78rem;font-weight:700;color:#dc2626;margin:10px 0 8px;">&#128293; Fire &amp; Legal</div>
+                <div class="hs-row cols-3">
+                  <div class="hs-field"><label>Fire NOC Certified</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oFireNOC','No')">No</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oFireNOC','Yes')">Yes</button></div><input type="hidden" id="oFireNOC" value="No"/></div>
+                  <div class="hs-field"><label>Occupancy Certificate</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oOccupancy','No')">No</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oOccupancy','Yes')">Yes</button></div><input type="hidden" id="oOccupancy" value="No"/></div>
+                  <div class="hs-field"><label>UPS Available</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oUPS','No')">No</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oUPS','Yes')">Yes</button></div><input type="hidden" id="oUPS" value="No"/></div>
+                </div>
+                <div class="hs-row cols-2">
+                  <div class="hs-field"><label>Ownership</label><select id="oOwnership"><option value="">Select</option><option>Freehold</option><option>Leasehold</option><option>Co-operative Society</option><option>Power of Attorney</option><option>GIDC</option><option>Government Lease</option></select></div>
+                  <div class="hs-field"><label>Office Previously Used For</label><select id="oPrevUsed"><option value="">Select / Type</option><option>IT / Software</option><option>Corporate Office</option><option>Consultancy</option><option>Bank / Finance</option><option>Medical / Clinic</option><option>Education / Coaching</option><option>Retail / Showroom</option><option>Manufacturing</option><option>Warehouse / Storage</option><option>Never Used</option></select></div>
+                </div>
+              </div>
+
               <div class="hs-row cols-1">
                 <div class="hs-field"><label>&#127919; Suitable For</label><input type="text" id="oSuitableFor" placeholder="e.g. IT Company, Startup, Corporate, Bank..."/></div>
               </div>
@@ -1378,99 +1461,34 @@
 <div class="admin-toast" id="adminToast"></div>
 
 <script src="/admin/script.js"></script>
-<script src="/cursor.js"></script>
 <script>
-// Fix broken emoji in labels and buttons
-document.addEventListener('DOMContentLoaded', function() {
-  var fixes = [
-    ["'pCategory','residential'", '<i class="fa-solid fa-house"></i> Residential'],
-    ["'pCategory','commercial'", '<i class="fa-solid fa-building"></i> Commercial'],
-    ["'pStatus','for-rent'", '<i class="fa-solid fa-key"></i> Rent'],
-    ["'pStatus','for-sale'", '<i class="fa-solid fa-tag"></i> Sell'],
-    ["'pStatus','new-launch'", '<i class="fa-solid fa-rocket"></i> New Launch']
-  ];
-  fixes.forEach(function(f) {
-    var btn = document.querySelector('button[onclick*="' + f[0] + '"]');
-    if (btn) btn.innerHTML = f[1];
+// Inline cursor.js — no external file needed
+(function () {
+  var dot  = document.createElement('div'); dot.className  = 'cursor-dot';
+  var ring = document.createElement('div'); ring.className = 'cursor-ring';
+  dot.style.pointerEvents  = 'none';
+  ring.style.pointerEvents = 'none';
+  document.body.append(dot, ring);
+  var mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+  document.addEventListener('mousemove', function(e) {
+    mouseX = e.clientX; mouseY = e.clientY;
+    dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px';
   });
-
-  // Fix all labels with broken chars
-  var labelMap = {
-    'BHK': '<i class="fa-solid fa-bed"></i> BHK / Configuration',
-    'Bedrooms': '<i class="fa-solid fa-bed"></i> Bedrooms',
-    'Bathrooms': '<i class="fa-solid fa-shower"></i> Bathrooms',
-    'Balconies': '<i class="fa-solid fa-door-open"></i> Balconies',
-    'Carpet Area': '<i class="fa-solid fa-ruler-combined"></i> Carpet Area (sq.ft)',
-    'Super Built': '<i class="fa-solid fa-ruler-combined"></i> Super Built-up Area (sq.ft)',
-    'Floor No': '<i class="fa-solid fa-building"></i> Floor No.',
-    'Total Floors': '<i class="fa-solid fa-layer-group"></i> Total Floors',
-    'Lift': '<i class="fa-solid fa-elevator"></i> Lift',
-    'Parking': '<i class="fa-solid fa-car"></i> Parking',
-    'Facing': '<i class="fa-solid fa-compass"></i> Facing',
-    'Ownership': '<i class="fa-solid fa-file-contract"></i> Ownership',
-    'Furnishing Status': '<i class="fa-solid fa-couch"></i> Furnishing Status',
-    'Property Age': '<i class="fa-solid fa-calendar"></i> Property Age',
-    'Age of Property': '<i class="fa-solid fa-calendar"></i> Age of Property',
-    'Security': '<i class="fa-solid fa-shield-halved"></i> Security',
-    'CCTV': '<i class="fa-solid fa-video"></i> CCTV',
-    'Water Supply': '<i class="fa-solid fa-droplet"></i> Water Supply',
-    'Power Backup': '<i class="fa-solid fa-bolt"></i> Power Backup',
-    'Garden': '<i class="fa-solid fa-leaf"></i> Garden / Park',
-    'Gym': '<i class="fa-solid fa-dumbbell"></i> Gym / Pool / Club',
-    'Available From': '<i class="fa-solid fa-calendar-days"></i> Available From',
-    'Suitable For': '<i class="fa-solid fa-bullseye"></i> Suitable For',
-    'Building / Society': '<i class="fa-solid fa-city"></i> Building / Society / Project',
-    'All Inclusive': '<i class="fa-solid fa-indian-rupee-sign"></i> All Inclusive',
-    'Price Negotiable': '<i class="fa-solid fa-handshake"></i> Price Negotiable',
-    'Tax': '<i class="fa-solid fa-landmark"></i> Tax & Govt Charges',
-    'Booking Amount': '<i class="fa-solid fa-credit-card"></i> Booking Amount',
-    'Maintenance': '<i class="fa-solid fa-wrench"></i> Maintenance',
-    'Annual Dues': '<i class="fa-solid fa-calendar-check"></i> Annual Dues',
-    'Membership': '<i class="fa-solid fa-medal"></i> Membership Charge',
-    'Seats': '<i class="fa-solid fa-chair"></i> Seats / Cabins'
-  };
-
-  document.querySelectorAll('.hs-field label, .hs-row label').forEach(function(lbl) {
-    var txt = lbl.textContent.trim();
-    for (var key in labelMap) {
-      if (txt.indexOf(key) !== -1 && txt !== labelMap[key]) {
-        // Only fix if has broken chars (non-ASCII before the keyword)
-        if (/[^\x00-\x7F]/.test(txt.substring(0, txt.indexOf(key)))) {
-          lbl.innerHTML = labelMap[key];
-          break;
-        }
-      }
-    }
+  (function animateRing() {
+    ringX += (mouseX - ringX) * 0.12; ringY += (mouseY - ringY) * 0.12;
+    ring.style.left = ringX + 'px'; ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  })();
+  document.addEventListener('mouseover', function(e) {
+    if (e.target.closest('a, button, input, select, textarea, [onclick]'))
+      document.body.classList.add('cursor-hover');
+    else document.body.classList.remove('cursor-hover');
   });
-
-  // Fix Covered / Open span text
-  document.querySelectorAll('span').forEach(function(s) {
-    var t = s.textContent.trim();
-    if (/[^\x00-\x7F]/.test(t) && t.indexOf('Covered') !== -1) s.innerHTML = '<i class="fa-solid fa-warehouse"></i> Covered';
-    if (/[^\x00-\x7F]/.test(t) && t.indexOf('Open') !== -1) s.innerHTML = '<i class="fa-solid fa-tree"></i> Open';
-    if (/[^\x00-\x7F]/.test(t) && t.indexOf('Hot Picks') !== -1) s.innerHTML = '<i class="fa-solid fa-fire"></i> Hot Picks';
-    if (/[^\x00-\x7F]/.test(t) && t.indexOf('Apartments') !== -1) s.innerHTML = '<i class="fa-solid fa-house"></i> Apartments';
-    if (/[^\x00-\x7F]/.test(t) && t.indexOf('Offices') !== -1) s.innerHTML = '<i class="fa-solid fa-building"></i> Offices';
-  });
-
-  // Fix Requirements button
-  document.querySelectorAll('button[data-inqfilter]').forEach(function(b) {
-    if (/[^\x00-\x7F]/.test(b.textContent)) b.innerHTML = '<i class="fa-solid fa-bell"></i> Requirements';
-  });
-
-  // Fix select optgroup labels
-  document.querySelectorAll('optgroup').forEach(function(og) {
-    if (/[^\x00-\x7F]/.test(og.label)) {
-      og.label = og.label.replace(/[^\x00-\x7F\s]+/g, '').trim();
-    }
-  });
-  document.querySelectorAll('option').forEach(function(op) {
-    if (/[^\x00-\x7F]/.test(op.text)) {
-      op.text = op.text.replace(/[^\x00-\x7F\s]+/g, '').trim();
-    }
-  });
-});
+  document.addEventListener('mousedown', function() { document.body.classList.add('cursor-click'); });
+  document.addEventListener('mouseup',   function() { document.body.classList.remove('cursor-click'); });
+})();
 </script>
 </body>
 </html>
+
 

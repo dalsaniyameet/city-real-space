@@ -817,14 +817,91 @@ function renderProperty(p) {
     }
   } else {
     // Commercial
+    detailsHtml += `<div class="pd-detail-section-title">🏢 Property Details</div>`;
+    detailsHtml += detailItem('Property Type', p.type ? p.type.charAt(0).toUpperCase()+p.type.slice(1) : '');
     detailsHtml += detailItem('Area', p.specs?.sqft ? p.specs.sqft + ' sq.ft' : '');
-    detailsHtml += detailItem('Floor', ex.floor);
-    detailsHtml += detailItem('Furnished', ex.furnished);
+    detailsHtml += detailItem('Carpet Area', ex.carpetArea ? ex.carpetArea + ' sq.ft' : (ex.oCarpet ? ex.oCarpet + ' sq.ft' : ''));
+    detailsHtml += detailItem('Super Built-up', ex.superBuiltUp ? ex.superBuiltUp + ' sq.ft' : (ex.oSBA ? ex.oSBA + ' sq.ft' : ''));
+    detailsHtml += detailItem('Furnishing', ex.furnished || ex.oFurnishing);
     detailsHtml += detailItem('Possession', ex.possession);
-    detailsHtml += detailItem('Project', ex.project);
+    detailsHtml += detailItem('RERA No.', ex.reraNo || p.reraNo);
+
+    // Office specific
+    if (p.type === 'office' || p.type === 'coworking') {
+      const cabins = ex.oCabins || ex.cabins;
+      const minSeats = ex.oMinSeats || ex.minSeats;
+      const maxSeats = ex.oMaxSeats || ex.maxSeats;
+      const workstations = ex.oWorkstations || ex.workstations;
+      const confRooms = ex.oConferenceRooms || ex.conferenceRooms;
+      const meetRooms = ex.oMeetingRooms || ex.meetingRooms;
+      if (cabins || minSeats || maxSeats || workstations) {
+        detailsHtml += `<div class="pd-detail-section-title" style="margin-top:12px">💼 Cabin & Seating</div>`;
+        detailsHtml += detailItem('Cabins', cabins);
+        detailsHtml += detailItem('Min Seats', minSeats);
+        detailsHtml += detailItem('Max Seats', maxSeats);
+        detailsHtml += detailItem('Workstations', workstations);
+        detailsHtml += detailItem('Conference Rooms', confRooms);
+        detailsHtml += detailItem('Meeting Rooms', meetRooms);
+      }
+      const reception = ex.oReception || ex.reception;
+      const pantry = ex.oPantry || ex.pantry;
+      const ac = ex.oAC || ex.ac;
+      const parking = ex.oParking || ex.commParking;
+      const staircase = ex.oStaircase || ex.staircase;
+      if (reception || pantry || ac || parking) {
+        detailsHtml += `<div class="pd-detail-section-title" style="margin-top:12px">✅ Features</div>`;
+        detailsHtml += detailItem('Reception', reception);
+        detailsHtml += detailItem('Pantry', pantry);
+        detailsHtml += detailItem('AC', ac);
+        detailsHtml += detailItem('Parking', parking);
+        detailsHtml += detailItem('Staircase', staircase);
+      }
+      const fireNOC = ex.oFireNOC || ex.fireNOC;
+      const occupancy = ex.oOccupancy || ex.occupancy;
+      const ups = ex.oUPS || ex.ups;
+      const ownership = ex.oOwnership || ex.ownership;
+      const prevUsed = ex.oPrevUsed || ex.prevUsed;
+      const suitableFor = ex.oSuitableFor || ex.suitableFor;
+      if (fireNOC || occupancy || ups || ownership) {
+        detailsHtml += `<div class="pd-detail-section-title" style="margin-top:12px">📋 Legal & Compliance</div>`;
+        detailsHtml += detailItem('Fire NOC', fireNOC);
+        detailsHtml += detailItem('Occupancy Certificate', occupancy);
+        detailsHtml += detailItem('UPS Available', ups);
+        detailsHtml += detailItem('Ownership', ownership);
+        detailsHtml += detailItem('Previously Used For', prevUsed);
+        detailsHtml += detailItem('Suitable For', suitableFor);
+      }
+    }
+
+    // Floor details (all commercial)
+    const commFloor = ex.commYourFloor || ex.oYourFloor || ex.floor;
+    const commTotalFloors = ex.commTotalFloors || ex.oTotalFloors || ex.totalFloors;
+    const liftP = ex.commLiftPassenger || ex.officeLiftPassenger;
+    const liftS = ex.commLiftService || ex.officeLiftService;
+    const liftC = ex.commLiftCommon || ex.officeLiftOwner;
+    if (commFloor || commTotalFloors || liftP || liftS || liftC) {
+      detailsHtml += `<div class="pd-detail-section-title" style="margin-top:12px">🏢 Floor & Lift</div>`;
+      detailsHtml += detailItem('Floor', commFloor ? 'Floor ' + commFloor + (commTotalFloors ? ' / ' + commTotalFloors : '') : '');
+      if (liftP) detailsHtml += detailItem('Passenger Lift', liftP);
+      if (liftS) detailsHtml += detailItem('Service Lift', liftS);
+      if (liftC) detailsHtml += detailItem('Common Lift', liftC);
+    }
+
+    // Lease terms
+    const lockIn = ex.cLockIn || ex.lockIn;
+    const noticePeriod = ex.cNoticePeriod || ex.noticePeriod;
+    const rentIncrease = ex.cRentIncrease || ex.rentIncrease;
+    const brokerage = ex.cBrokerage || ex.brokerage;
+    if (lockIn || noticePeriod || rentIncrease || brokerage) {
+      detailsHtml += `<div class="pd-detail-section-title" style="margin-top:12px">📄 Lease Terms</div>`;
+      detailsHtml += detailItem('Lock-in Period', lockIn ? lockIn + ' months' : '');
+      detailsHtml += detailItem('Notice Period', noticePeriod ? noticePeriod + ' months' : '');
+      detailsHtml += detailItem('Yearly Rent Increase', rentIncrease ? rentIncrease + '%' : '');
+      detailsHtml += detailItem('Brokerage', brokerage);
+    }
   }
 
-  // Location extras
+    // Location extras
   if (ex.subArea || ex.project) {
     detailsHtml += `<div class="pd-detail-section-title" style="margin-top:12px">📍 Location</div>`;
     detailsHtml += detailItem('Sub Area', ex.subArea);

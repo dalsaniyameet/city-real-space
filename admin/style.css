@@ -41,34 +41,10 @@ body::after{
   width:420px;height:420px;
   background:url('../images/logo.jpeg') center center no-repeat;
   background-size:420px;
-  opacity:0;
+  opacity:0.08;
   pointer-events:none;
   filter:sepia(1) saturate(3) hue-rotate(320deg) brightness(0.7);
-  animation:bgLogoPulse 6s ease-in-out infinite;
   border-radius:50%;
-}
-@keyframes bgLogoPulse{
-  0%,100%{
-    opacity:0.08;
-    transform:translate(-50%,-50%) scale(1) rotate(0deg);
-    filter:sepia(1) saturate(3) hue-rotate(320deg) brightness(0.7);
-  }
-  25%{
-    opacity:0.14;
-    transform:translate(-50%,-50%) scale(1.04) rotate(2deg);
-    filter:sepia(1) saturate(4) hue-rotate(330deg) brightness(0.8);
-  }
-  50%{
-    opacity:0.18;
-    transform:translate(-50%,-50%) scale(1.08) rotate(0deg);
-    filter:sepia(1) saturate(5) hue-rotate(340deg) brightness(0.9);
-    box-shadow:0 0 120px rgba(229,57,53,0.3);
-  }
-  75%{
-    opacity:0.12;
-    transform:translate(-50%,-50%) scale(1.04) rotate(-2deg);
-    filter:sepia(1) saturate(4) hue-rotate(330deg) brightness(0.8);
-  }
 }
 
 /* ===== SIDEBAR ===== */
@@ -147,7 +123,7 @@ body::after{
 .sb-logout:hover{background:rgba(239,68,68,0.1)!important;color:var(--red)!important;}
 
 /* ===== MAIN ===== */
-.main-wrap{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh;position:relative;z-index:1;min-width:0;overflow-x:hidden;}
+.main-wrap{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh;position:relative;z-index:1;min-width:0;overflow-x:hidden;overflow-y:auto;}
 
 /* ===== TOPBAR ===== */
 .topbar{
@@ -175,7 +151,7 @@ body::after{
 .admin-info span{font-size:0.85rem;font-weight:600;color:var(--text2);}
 
 /* ===== PAGE CONTENT ===== */
-.page-content{padding:20px;flex:1;min-width:0;overflow-x:hidden;}
+.page-content{padding:20px;flex:1;min-width:0;overflow-x:hidden;overflow-y:auto;}
 .page{display:none;animation:fadeSlideIn 0.35s cubic-bezier(0.4,0,0.2,1);max-width:100%;}
 .page.active{display:block;}
 @keyframes fadeSlideIn{
@@ -532,8 +508,7 @@ body::after{
 ::-webkit-scrollbar-thumb:hover{background:var(--text3);}
 
 /* ===== CUSTOM CURSOR ===== */
-*,
-*:hover { cursor: none !important; }
+* { cursor: none !important; }
 
 .cursor-dot {
   position: fixed;
@@ -786,27 +761,34 @@ body.cursor-click .cursor-ring {
 /* Right form area */
 .prop-form-area {
   flex:1; min-width:0;
-  background:linear-gradient(160deg,#f8f9fb 0%,#f0f2f8 100%);
-  padding:32px 36px;
-  overflow-y:auto;
+  background:#f8f9fb;
+  padding:28px 32px;
+  overflow-y:scroll;
   height:100%;
   position:relative;
-}
-.prop-form-area::before{
-  content:'';
-  position:absolute;
-  top:0;right:0;
-  width:300px;height:300px;
-  background:radial-gradient(circle,rgba(229,57,53,0.04) 0%,transparent 70%);
-  pointer-events:none;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  contain:strict;
 }
 .prop-form-area::-webkit-scrollbar { width:5px; }
-.prop-form-area::-webkit-scrollbar-thumb { background:rgba(99,102,241,0.2); border-radius:4px; }
+.prop-form-area::-webkit-scrollbar-track { background:#f0f0f0; }
+.prop-form-area::-webkit-scrollbar-thumb { background:#ddd; border-radius:4px; }
+.prop-form-area::-webkit-scrollbar-thumb:hover { background:#ccc; }
 
 /* Step content */
 .step-panel { display:none; }
-.step-panel.active { display:block; animation:stepIn 0.3s cubic-bezier(0.34,1.56,0.64,1); min-height:100%; padding-bottom:20px; }
-@keyframes stepIn { from{opacity:0;transform:translateX(20px) scale(0.98)} to{opacity:1;transform:translateX(0) scale(1)} }
+.step-panel.active { display:block; min-height:100%; padding-bottom:24px; }
+
+/* Remove all animations inside form area for performance */
+.prop-form-area *,
+.prop-form-area *::before,
+.prop-form-area *::after {
+  animation:none !important;
+  transition:border-color 0.15s, box-shadow 0.15s, background 0.15s, color 0.15s !important;
+  transform:none !important;
+  will-change:auto !important;
+  backface-visibility:visible !important;
+}
 
 .step-title {
   font-size:1.15rem; font-weight:800; color:#0D1B2A;
@@ -1036,16 +1018,10 @@ body.cursor-click .cursor-ring {
   position:absolute;
   inset:0;
   background:
-    radial-gradient(ellipse at 15% 15%,rgba(99,102,241,0.12) 0%,transparent 50%),
-    radial-gradient(ellipse at 85% 85%,rgba(229,57,53,0.08) 0%,transparent 50%),
-    radial-gradient(ellipse at 50% 0%,rgba(139,92,246,0.06) 0%,transparent 40%);
+    radial-gradient(ellipse at 15% 15%,rgba(99,102,241,0.08) 0%,transparent 50%),
+    radial-gradient(ellipse at 85% 85%,rgba(229,57,53,0.05) 0%,transparent 50%);
   pointer-events:none;
   z-index:0;
-  animation:bgShift 8s ease-in-out infinite alternate;
-}
-@keyframes bgShift{
-  from{opacity:0.6;}
-  to{opacity:1;}
 }
 
 .hs-modal-head {
@@ -1064,11 +1040,6 @@ body.cursor-click .cursor-ring {
   bottom:0;left:0;right:0;
   height:1px;
   background:linear-gradient(90deg,transparent,rgba(99,102,241,0.6),rgba(229,57,53,0.4),transparent);
-  animation:headerLine 3s ease-in-out infinite;
-}
-@keyframes headerLine{
-  0%,100%{opacity:0.5;}
-  50%{opacity:1;}
 }
 .hs-modal-head .hs-logo {
   display:flex; align-items:center; gap:14px;
@@ -1444,47 +1415,8 @@ button.hs-toggle-btn[onclick*="'pStatus','new-launch'"]::before {
 }
 
 /* ===== SMOOTH SCROLL FIX ===== */
-.prop-form-area {
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-  will-change: scroll-position;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-/* Remove heavy animations that cause lag during scroll */
-.prop-form-area .hs-toggle-btn,
-.prop-form-area .hs-chip,
-.prop-form-area .hs-field input,
-.prop-form-area .hs-field select {
-  will-change: auto;
-  transform: none !important;
-  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s !important;
-}
-
-.prop-form-area .hs-toggle-btn:hover:not(.active),
-.prop-form-area .hs-chip:hover:not(.active) {
-  transform: none !important;
-}
-
-.prop-form-area .hs-field input:focus,
-.prop-form-area .hs-field select:focus {
-  transform: none !important;
-}
-
-.prop-form-area .hs-btn-next:hover {
-  transform: none !important;
-}
-
-/* Reduce radial gradient cost */
-.prop-form-area::before {
-  display: none;
-}
-
-/* Disable step animation during scroll */
-.prop-form-area .step-panel.active {
-  animation: none;
-}
+/* All scroll optimizations now handled in .prop-form-area above */
+.prop-form-area::before { display:none; }
 
 /* ===== MODAL HEADER LOGO ANIMATION ===== */
 .hs-logo img {

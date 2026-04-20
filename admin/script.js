@@ -692,7 +692,8 @@ function applyPropFilter(cat) {
 ['btnResidential','btnCommercial','btnTrending'].forEach(function(id) {
   const btn = document.getElementById(id);
   if (!btn) return;
-  btn.addEventListener('click', function() {
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
     setPropFilterActive(this);
     const catMap = { btnResidential:'residential', btnCommercial:'commercial', btnTrending:'trending' };
     applyPropFilter(catMap[id]);
@@ -817,6 +818,23 @@ function editProperty(p) {
   document.getElementById('pToken').value      = ex.tokenAmount || '';
   document.getElementById('pPossession').value = ex.possession  || 'Ready to Move';
   document.getElementById('pReraNo') && (document.getElementById('pReraNo').value = ex.reraNo || '');
+
+  // Commercial lift fields
+  document.getElementById('cLiftPassenger') && (document.getElementById('cLiftPassenger').value = ex.commLiftPassenger || '');
+  document.getElementById('cLiftService')   && (document.getElementById('cLiftService').value   = ex.commLiftService   || '');
+  document.getElementById('cLiftCommon')    && (document.getElementById('cLiftCommon').value    = ex.commLiftCommon    || '');
+  document.getElementById('oLiftCommon')       && (document.getElementById('oLiftCommon').value       = ex.officeLiftPassenger || '');
+  document.getElementById('oLiftOwner')        && (document.getElementById('oLiftOwner').value        = ex.officeLiftService   || '');
+  document.getElementById('oLiftOwnerPrivate') && (document.getElementById('oLiftOwnerPrivate').value = ex.officeLiftOwner     || '');
+  document.getElementById('cTotalFloors')   && (document.getElementById('cTotalFloors').value   = ex.commTotalFloors   || '');
+  document.getElementById('cYourFloor')     && (document.getElementById('cYourFloor').value     = ex.commYourFloor     || '');
+  if (ex.commParking) {
+    document.getElementById('cParking') && (document.getElementById('cParking').value = ex.commParking);
+    document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+      var oc = b.getAttribute('onclick') || '';
+      if (oc.indexOf("'cParking'") !== -1) b.classList.toggle('active', oc.indexOf("'" + ex.commParking + "'") !== -1);
+    });
+  }
 
   // Category toggle
   var cat = p.category || 'residential';
@@ -1067,6 +1085,8 @@ document.getElementById('propForm').addEventListener('submit', async function(e)
     description: document.getElementById('pDesc').value,
     isFeatured: document.getElementById('pFeatured').checked,
     isApproved: document.getElementById('pApproved').checked,
+    videoUrl: document.getElementById('pVideoUrl') ? document.getElementById('pVideoUrl').value : '',
+    pricePerSqft: document.getElementById('pPricePerSqft') ? Number(document.getElementById('pPricePerSqft').value) || 0 : 0,
     amenities: getSelectedAmenities(),
     extraDetails: {
       // Basic
@@ -1111,7 +1131,44 @@ document.getElementById('propForm').addEventListener('submit', async function(e)
       lockIn:           document.getElementById('rLockIn')        ? document.getElementById('rLockIn').value        : '',
       noticePeriod:     document.getElementById('rNoticePeriod')  ? document.getElementById('rNoticePeriod').value  : '',
       brokerage:        document.getElementById('rBrokerage')     ? document.getElementById('rBrokerage').value     : '',
-      reraNo:           document.getElementById('pReraNo')        ? document.getElementById('pReraNo').value        : ''
+      reraNo:           document.getElementById('pReraNo')        ? document.getElementById('pReraNo').value        : '',
+      // Commercial lift fields
+      commLiftPassenger: document.getElementById('cLiftPassenger') ? Number(document.getElementById('cLiftPassenger').value) || 0 : 0,
+      commLiftService:   document.getElementById('cLiftService')   ? Number(document.getElementById('cLiftService').value)   || 0 : 0,
+      commLiftCommon:    document.getElementById('cLiftCommon')    ? Number(document.getElementById('cLiftCommon').value)    || 0 : 0,
+      // Office lift fields
+      officeLiftPassenger: document.getElementById('oLiftCommon')       ? Number(document.getElementById('oLiftCommon').value)       || 0 : 0,
+      officeLiftService:   document.getElementById('oLiftOwner')        ? Number(document.getElementById('oLiftOwner').value)        || 0 : 0,
+      officeLiftOwner:     document.getElementById('oLiftOwnerPrivate') ? Number(document.getElementById('oLiftOwnerPrivate').value) || 0 : 0,
+      commTotalFloors:   document.getElementById('cTotalFloors')   ? document.getElementById('cTotalFloors').value   : '',
+      commYourFloor:     document.getElementById('cYourFloor')     ? document.getElementById('cYourFloor').value     : '',
+      // Office specific fields
+      oCabins:       document.getElementById('oCabins')       ? Number(document.getElementById('oCabins').value)       || 0 : 0,
+      oMinSeats:     document.getElementById('oMinSeats')     ? Number(document.getElementById('oMinSeats').value)     || 0 : 0,
+      oMaxSeats:     document.getElementById('oMaxSeats')     ? Number(document.getElementById('oMaxSeats').value)     || 0 : 0,
+      oWorkstations: document.getElementById('oWorkstations') ? Number(document.getElementById('oWorkstations').value) || 0 : 0,
+      oConferenceRooms: document.getElementById('oConferenceRooms') ? Number(document.getElementById('oConferenceRooms').value) || 0 : 0,
+      oMeetingRooms: document.getElementById('oMeetingRooms') ? document.getElementById('oMeetingRooms').value : '',
+      oReception:    document.getElementById('oReception')    ? document.getElementById('oReception').value    : '',
+      oPantry:       document.getElementById('oPantry')       ? document.getElementById('oPantry').value       : '',
+      oFurnishing:   document.getElementById('oFurnishing')   ? document.getElementById('oFurnishing').value   : '',
+      oAC:           document.getElementById('oAC')           ? document.getElementById('oAC').value           : '',
+      oWashMale:     document.getElementById('oWashMale')     ? document.getElementById('oWashMale').checked   : false,
+      oWashFemale:   document.getElementById('oWashFemale')   ? document.getElementById('oWashFemale').checked : false,
+      oWashCommon:   document.getElementById('oWashCommon')   ? document.getElementById('oWashCommon').checked : false,
+      oTotalFloors:  document.getElementById('oTotalFloors')  ? document.getElementById('oTotalFloors').value  : '',
+      oYourFloor:    document.getElementById('oYourFloor')    ? document.getElementById('oYourFloor').value    : '',
+      oStaircase:    document.getElementById('oStaircase')    ? Number(document.getElementById('oStaircase').value) || 0 : 0,
+      oParking:      document.getElementById('oParking')      ? document.getElementById('oParking').value      : '',
+      oFireNOC:      document.getElementById('oFireNOC')      ? document.getElementById('oFireNOC').value      : '',
+      oOccupancy:    document.getElementById('oOccupancy')    ? document.getElementById('oOccupancy').value    : '',
+      oUPS:          document.getElementById('oUPS')          ? document.getElementById('oUPS').value          : '',
+      oOwnership:    document.getElementById('oOwnership')    ? document.getElementById('oOwnership').value    : '',
+      oPrevUsed:     document.getElementById('oPrevUsed')     ? document.getElementById('oPrevUsed').value     : '',
+      oSuitableFor:  document.getElementById('oSuitableFor')  ? document.getElementById('oSuitableFor').value  : '',
+      oCarpet:       document.getElementById('oCarpet')       ? Number(document.getElementById('oCarpet').value) || 0 : 0,
+      oSBA:          document.getElementById('oSBA')          ? Number(document.getElementById('oSBA').value)   || 0 : 0,
+      commParking:       document.getElementById('cParking')       ? document.getElementById('cParking').value       : ''
     }
   };
   const data = id ? await api('PUT', '/properties/' + id, body) : await api('POST', '/properties', body);
@@ -1152,6 +1209,12 @@ function filterByCategory(cat) {
     p.classList.toggle('active', p.id === 'page-properties');
   });
   document.getElementById('topbarTitle').textContent = 'Properties';
+
+  // Mark correct filter button as active
+  var btnMap = { residential:'btnResidential', commercial:'btnCommercial', trending:'btnTrending' };
+  document.querySelectorAll('#page-properties .fbtn').forEach(function(b) { b.classList.remove('active'); });
+  var activeBtn = document.getElementById(btnMap[cat]);
+  if (activeBtn) activeBtn.classList.add('active');
 
   if (cat === 'trending') {
     loadTrendingProperties();
@@ -2271,6 +2334,8 @@ const AMENITIES_BY_TYPE = {
     { icon: '<i class="fa-solid fa-phone-volume"></i>', label: 'Intercom Facility' },
     { icon: '<i class="fa-solid fa-fire-extinguisher"></i>', label: 'Fire Extinguisher' },
     { icon: '<i class="fa-solid fa-bell"></i>', label: 'Fire Sensors' },
+    { icon: '<i class="fa-solid fa-shower"></i>', label: 'Sprinklers' },
+    { icon: '<i class="fa-solid fa-building-columns"></i>', label: 'Grade A Building' },
     { icon: '<i class="fa-solid fa-door-open"></i>', label: 'Emergency Exit' },
     { icon: '<i class="fa-solid fa-wheelchair"></i>', label: 'WheelChair Accessibility' },
     { icon: '<i class="fa-solid fa-restroom"></i>', label: 'Washroom' },
@@ -3420,8 +3485,15 @@ async function deleteContact(id) {
     }
     var of2 = document.getElementById('officeFields');
     if (of2) of2.style.display = isOffice ? 'block' : 'none';
+    // Show commercial lift section for ALL commercial types
+    var cls = document.getElementById('commercialLiftSection');
+    if (cls) cls.style.display = (isComm && !isOffice) ? 'block' : 'none';
     var lt = document.getElementById('leaseTermsSection');
     if (lt) lt.style.display = isComm ? 'block' : 'none';
+    // Show Fire & Legal section only for office SELL
+    var osf = document.getElementById('officeSellFields');
+    var pStatus = document.getElementById('pStatus') ? document.getElementById('pStatus').value : '';
+    if (osf) osf.style.display = (isOffice && pStatus === 'for-sale') ? 'block' : 'none';
     document.querySelectorAll('.hs-field').forEach(function(f) {
       var lbl = f.querySelector('label');
       if (lbl && lbl.textContent.indexOf('Tenant Preference') !== -1) {
