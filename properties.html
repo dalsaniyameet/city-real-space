@@ -216,6 +216,7 @@
         <button class="fp-tab" data-val="for-sale">Buy</button>
         <button class="fp-tab" data-val="for-rent">Rent</button>
         <button class="fp-tab" data-val="new-launch">New Launch</button>
+        <button class="fp-tab" data-val="commercial">Commercial</button>
       </div>
     </div>
 
@@ -332,6 +333,15 @@
   <!-- RESULTS -->
   <div class="results-bar">
     <p class="results-count" id="resultsCount"></p>
+    <div style="display:flex;align-items:center;gap:8px">
+      <label style="font-size:0.78rem;font-weight:600;color:#555">Sort:</label>
+      <select id="fSort" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:7px 12px;font-family:Poppins,sans-serif;font-size:0.8rem;color:#333;outline:none;background:#fafafa;cursor:pointer">
+        <option value="newest">Newest First</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="sqft-desc">Area: Largest First</option>
+      </select>
+    </div>
   </div>
 
   <div class="prop-grid" id="propGrid"></div>
@@ -543,7 +553,19 @@ document.querySelectorAll('.fp-tab').forEach(t => {
   t.addEventListener('click', function() {
     document.querySelectorAll('.fp-tab').forEach(x => x.classList.remove('active'));
     this.classList.add('active');
-    updateBudgetOptions(this.dataset.val);
+    updateBudgetOptions(this.dataset.val === 'commercial' ? 'for-sale' : this.dataset.val);
+    // Commercial tab pe type filter auto set
+    const typeEl = document.getElementById('fType');
+    if (this.dataset.val === 'commercial') {
+      typeEl.innerHTML = '<option value="">All Commercial</option><option value="office">Office Space</option><option value="shop">Shop / Showroom</option><option value="showroom">Showroom</option><option value="warehouse">Warehouse</option>';
+      document.getElementById('bedsGrp').style.display = 'none';
+      document.getElementById('sqftGrp').style.display = '';
+      document.getElementById('furnishGrp').style.display = '';
+      document.getElementById('possessionGrp').style.display = '';
+    } else {
+      typeEl.innerHTML = '<option value="">All Types</option><option value="apartment">Apartment / Flat</option><option value="villa">Villa</option><option value="bungalow">Bungalow</option><option value="rowhouse">Row House</option><option value="plot">Plot / Land</option><option value="office">Office Space</option><option value="shop">Shop / Showroom</option><option value="showroom">Showroom</option><option value="warehouse">Warehouse</option>';
+      toggleFilters();
+    }
   });
 });
 
@@ -563,13 +585,16 @@ document.getElementById('fType').addEventListener('change', toggleFilters);
 toggleFilters();
 
 function getFilters() {
+  const activeTab = document.querySelector('.fp-tab.active')?.dataset.val || '';
   return {
-    status:   document.querySelector('.fp-tab.active')?.dataset.val || '',
+    status:   activeTab === 'commercial' ? '' : activeTab,
+    category: activeTab === 'commercial' ? 'commercial' : '',
     city:     document.getElementById('fCity').value,
     area:     document.getElementById('fSubLocality').value || document.getElementById('fLocality').value,
     type:     document.getElementById('fType').value,
     beds:     document.getElementById('fBeds').value,
-    budget:   document.getElementById('fBudget').value
+    budget:   document.getElementById('fBudget').value,
+    sort:     document.getElementById('fSort').value
   };
 }
 
@@ -619,7 +644,7 @@ function createCard(p) {
   const area2  = (p.location?.area || 'gujarat').toLowerCase().replace(/\s+/g, '-');
   const propUrl = p.slug ? '/property/' + city2 + '/' + area2 + '/' + p.slug : 'property-detail.html?id=' + p._id;
 
-  return '<div class="prop-card" onclick="window.location.href=\'' + propUrl + '\'" style="cursor:pointer">' +
+  return '<div class="prop-card" onclick="window.open(\'' + propUrl + '\',\'_blank\')" style="cursor:pointer">' +
     '<div class="card-img" id="' + id + '">' +
     slides + arrows + dots +
     '<span class="card-badge ' + badgeClass + '">' + badge + '</span>' +
@@ -719,6 +744,7 @@ function renderPagination(totalPages, current) {
 }
 
 document.getElementById('applyBtn').addEventListener('click', function() { loadProperties(1); });
+document.getElementById('fSort').addEventListener('change', function() { loadProperties(1); });
 
 document.getElementById('clearBtn').addEventListener('click', function() {
   document.querySelectorAll('.fp-tab').forEach(function(t) { t.classList.toggle('active', t.dataset.val === ''); });
@@ -769,11 +795,16 @@ function loadProperties(page) {
   document.getElementById('pagination').innerHTML = '';
 
   var url = API + '/properties?page=' + currentPage + '&limit=12';
-  if (f.status) url += '&status=' + encodeURIComponent(f.status);
-  if (f.city)   url += '&city='   + encodeURIComponent(f.city);
-  if (f.area)   url += '&area='   + encodeURIComponent(f.area);
-  if (f.type)   url += '&type='   + encodeURIComponent(f.type);
-  if (f.beds)   url += '&beds='   + encodeURIComponent(f.beds);
+  if (f.status)   url += '&status='   + encodeURIComponent(f.status);
+  if (f.category) url += '&category=' + encodeURIComponent(f.category);
+  if (f.city)     url += '&city='     + encodeURIComponent(f.city);
+  if (f.area)     url += '&area='     + encodeURIComponent(f.area);
+  if (f.type)     url += '&type='     + encodeURIComponent(f.type);
+  if (f.beds)     url += '&beds='     + encodeURIComponent(f.beds);
+  if (f.sort === 'price-asc')  url += '&sort=price&order=asc';
+  if (f.sort === 'price-desc') url += '&sort=price&order=desc';
+  if (f.sort === 'sqft-desc')  url += '&sort=sqft&order=desc';
+  if (f.sort === 'newest')     url += '&sort=createdAt&order=desc';
   if (f.budget) {
     var budgetParts = f.budget.split('-');
     if (budgetParts.length === 2) {
@@ -1368,7 +1399,7 @@ function buildCompareTable() {
   // Action buttons
   let actions = '';
   props.forEach(p => {
-    actions += '<button class="btn-cmp-view" onclick="window.location.href=\'property-detail.html?id=' + p.id + '\'">' +
+    actions += '<button class="btn-cmp-view" onclick="window.open(\'property-detail.html?id=' + p.id + '\',\'_blank\')">' +
       '<i class="fa-solid fa-eye"></i> View ' + p.title.split(' ').slice(0,3).join(' ') + '...</button>';
   });
   document.getElementById('cmpModalActions').innerHTML = actions;

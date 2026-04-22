@@ -199,8 +199,7 @@
     </nav>
     <div class="header-actions">
       <button class="fav-btn" title="Favorites"><i class="fa-regular fa-heart"></i><span class="fav-count">0</span></button>
-      <button id="postReqBtn" onclick="window.openReqModal && window.openReqModal()" style="background:#E53935;color:#fff;border:none;padding:9px 14px;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:6px;white-space:nowrap;animation:reqPulse 2s ease-in-out infinite;flex-shrink:0;"><i class="fa-solid fa-bell"></i><span class="req-btn-text"> Post Requirement</span></button>
-      <style>@keyframes reqPulse{0%,100%{box-shadow:0 0 0 0 rgba(229,57,53,0.5)}50%{box-shadow:0 0 0 8px rgba(229,57,53,0)}}</style>
+      <button id="postReqBtn" onclick="window.openReqModal && window.openReqModal()" style="background:#E53935;color:#fff;border:none;padding:9px 14px;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:6px;white-space:nowrap;flex-shrink:0;"><i class="fa-solid fa-bell"></i><span class="req-btn-text"> Post Requirement</span></button>
       <a href="post-property.html" class="btn-post-prop" id="postPropBtn" style="display:none"><i class="fa-solid fa-plus"></i> Post Property</a>
       <div id="userMenu" style="display:none;position:relative">
         <button class="btn-login" id="userMenuBtn"><i class="fa-solid fa-user"></i> <span id="userNameDisplay"></span> <i class="fa-solid fa-chevron-down" style="font-size:0.7rem"></i></button>
@@ -620,7 +619,8 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
         <p style="color:#666;font-size:1.1rem;line-height:1.6;max-width:600px;margin:0 auto">City Real Space - Gujarat's most trusted real estate platform with verified properties across major cities</p>
       </div>
       
-      <div class="seo-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px">
+      <!-- Row 1: General SEO (4 cols) -->
+      <div class="seo-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px">
         
         <!-- Property Options in Ahmedabad -->
         <div class="seo-section">
@@ -670,6 +670,10 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
           </div>
         </div>
 
+      </div>
+
+      <!-- Row 2: Office Sections (4 cols) -->
+      <div class="seo-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px">
         <!-- Office for Rent - Premium Buildings -->
         <div class="seo-section">
           <h4 style="color:#0D1B2A;font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-building" style="color:#E53935;font-size:1rem"></i>Office for Rent  -  Premium Buildings</h4>
@@ -712,9 +716,65 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
           </div>
         </div>
 
-        <!-- Sell Office -->
+      </div>
+
+      <!-- Row 3: Residential & Commercial Areas (2 cols) -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+
+        <!-- Residential Areas -->
+        <div class="seo-section" style="border-left:4px solid #10b981">
+          <h4 style="color:#0D1B2A;font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-house" style="color:#E53935;font-size:1rem"></i>Residential Areas in Ahmedabad</h4>
+          <div class="seo-links" style="display:flex;flex-direction:column;gap:4px">
+            <a href="properties.html?city=Ahmedabad&area=Corporate Road, Prahlad Nagar&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Corporate Road, Prahlad Nagar</a>
+            <a href="properties.html?city=Ahmedabad&area=South Bopal&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in South Bopal</a>
+            <a href="properties.html?city=Ahmedabad&area=Satellite&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Satellite</a>
+            <a href="properties.html?city=Ahmedabad&area=Vastrapur&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Vastrapur</a>
+            <a href="properties.html?city=Ahmedabad&area=Ghuma Bopal&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Ghuma Bopal</a>
+            <a href="properties.html?city=Ahmedabad&area=Bodakdev&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Bodakdev</a>
+            <a href="properties.html?city=Ahmedabad&area=Shyamal&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Shyamal</a>
+            <a href="properties.html?city=Ahmedabad&area=Bopal&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Bopal</a>
+            <a href="properties.html?city=Ahmedabad&area=Thaltej&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Thaltej</a>
+            <a href="properties.html?city=Ahmedabad&area=Sindhu Bhavan Road&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Sindhu Bhavan Road</a>
+            <a href="properties.html?city=Ahmedabad&area=Makarba&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Makarba</a>
+            <a href="properties.html?city=Ahmedabad&area=Prahlad Nagar&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in 100 Feet Road, Prahlad Nagar</a>
+            <a href="properties.html?city=Ahmedabad&area=Iscon Ambli Road&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Iscon Ambli Road</a>
+            <a href="properties.html?city=Ahmedabad&area=Shela&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Shela</a>
+            <a href="properties.html?city=Ahmedabad&area=Gota&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Gota</a>
+            <a href="properties.html?city=Ahmedabad&area=Shahibaug&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Shahibaug</a>
+            <a href="properties.html?city=Ahmedabad&area=Shilaj&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Shilaj</a>
+            <a href="properties.html?city=Ahmedabad&area=Sola&status=for-sale" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Sola, SG Highway</a>
+          </div>
+        </div>
+
+        <!-- Commercial Areas -->
+        <div class="seo-section" style="border-left:4px solid #1565c0">
+          <h4 style="color:#0D1B2A;font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-map-location-dot" style="color:#E53935;font-size:1rem"></i>Commercial Areas in Ahmedabad</h4>
+          <div class="seo-links" style="display:flex;flex-direction:column;gap:4px">
+            <a href="properties.html?city=Ahmedabad&area=Corporate Road, Prahlad Nagar&status=commercial" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Corporate Road, Prahlad Nagar</a>
+            <a href="properties.html?city=Ahmedabad&area=Satellite&status=commercial" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Satellite</a>
+            <a href="properties.html?city=Ahmedabad&area=Vastrapur&status=commercial" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Vastrapur</a>
+            <a href="properties.html?city=Ahmedabad&area=Bodakdev&status=commercial" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Bodakdev</a>
+            <a href="properties.html?city=Ahmedabad&area=Shyamal&status=commercial" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Shyamal</a>
+            <a href="properties.html?city=Ahmedabad&area=SG Highway&status=commercial" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property on SG Highway</a>
+            <a href="properties.html?city=Ahmedabad&area=Bopal&status=commercial" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Bopal</a>
+            <a href="properties.html?city=Ahmedabad&area=Thaltej&status=commercial" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Thaltej</a>
+            <a href="properties.html?city=Ahmedabad&area=Sindhu Bhavan Road&status=commercial" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Sindhu Bhavan Road</a>
+            <a href="properties.html?city=Ahmedabad&area=Makarba&status=commercial" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Makarba</a>
+            <a href="properties.html?city=Ahmedabad&area=Prahlad Nagar&status=commercial" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in 100 Feet Road, Prahlad Nagar</a>
+            <a href="properties.html?city=Ahmedabad&area=Ashram Road&status=commercial" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Ashram Road</a>
+            <a href="properties.html?city=Ahmedabad&area=CG Road&status=commercial" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in C G Road</a>
+            <a href="properties.html?city=Ahmedabad&area=Ellisbridge&status=commercial" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Ellisbridge</a>
+            <a href="properties.html?city=Ahmedabad&area=Science City&status=commercial" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Property in Science City</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Row 4: Sell Office (full width) -->
+      <div style="margin-bottom:16px">
         <div class="seo-section">
           <h4 style="color:#0D1B2A;font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-tag" style="color:#E53935;font-size:1rem"></i>Sell Office Space  -  Ahmedabad</h4>
+          <div class="seo-links" style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">
           <div class="seo-links" style="display:flex;flex-direction:column;gap:4px">
             <a href="post-property.html" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Sell Office in PNTC</a>
             <a href="post-property.html" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Sell Office in Titanium City Centre</a>
@@ -723,9 +783,9 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
             <a href="post-property.html" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Sell Office in Prahlad Nagar Trade Centre</a>
             <a href="post-property.html" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Sell Office in Shilp Zaveri</a>
             <a href="post-property.html" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Sell Office in Ratnajali Square</a>
+            <a href="post-property.html" style="color:#666;font-size:0.9rem;text-decoration:none;transition:all 0.3s;padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-chevron-right" style="font-size:0.7rem;color:#E53935"></i>Sell Office in Ratnajali Soliter</a>
           </div>
         </div>
-
       </div>
       
       <!-- Additional SEO Content -->
@@ -1415,16 +1475,9 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
 <script>
 (function(){
   var t = null;
-  var loopTimer = null;
-
-  function scheduleNext(){
-    // 5 sec baad dobara open
-    loopTimer = setTimeout(function(){ openFc(); }, 5000);
-  }
 
   window.openFc = function(){
     clearTimeout(t);
-    clearTimeout(loopTimer);
     document.getElementById('fcTab').style.display = 'none';
     var b = document.getElementById('fcBannerWrap');
     b.style.transition = 'none';
@@ -1436,16 +1489,15 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
       b.style.transform = 'rotateX(0deg)';
       b.style.opacity = '1';
     }, 950);
-    // 3 sec baad auto close
-    t = setTimeout(function(){ closeFc(); }, 3000);
+    // 4 sec baad auto close (sirf ek baar)
+    t = setTimeout(function(){ closeFc(); }, 4000);
   };
 
   window.closeFc = function(){
     clearTimeout(t);
     document.getElementById('fcPopup').classList.remove('open');
     setTimeout(function(){ document.getElementById('fcTab').style.display = 'flex'; }, 500);
-    // close ke baad 5 sec mein phir open
-    scheduleNext();
+    // loop nahi — sirf tab click pe open hoga
   };
 
   window.fcZoom = function(src){
@@ -1466,8 +1518,8 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
     setTimeout(function(){ lb.style.display = 'none'; }, 300);
   };
 
-  // Pehli baar 5 sec baad open
-  setTimeout(function(){ openFc(); }, 5000);
+  // Pehli baar 8 sec baad open (sirf ek baar)
+  setTimeout(function(){ openFc(); }, 8000);
 })();
 </script>
 <!-- ===== PROFILE EDIT MODAL ===== -->

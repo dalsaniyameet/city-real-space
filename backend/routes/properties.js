@@ -3,6 +3,52 @@ const router   = express.Router();
 const Property = require('../models/Property');
 const { protect, adminOnly } = require('../middleware/auth');
 
+// GET /api/properties/localities — city ke basis pe real areas from DB
+router.get('/localities', async (req, res) => {
+  try {
+    const { city } = req.query;
+    const match = { isApproved: true };
+    if (city) match['location.city'] = new RegExp(city, 'i');
+
+    const result = await Property.aggregate([
+      { $match: match },
+      { $group: {
+        _id: {
+          area: '$location.area',
+          subArea: '$location.subArea',
+          project: '$extraDetails.project'
+        }
+      }},
+      { $project: {
+        area: '$_id.area',
+        subArea: '$_id.subArea',
+        project: '$_id.project',
+        _id: 0
+      }}
+    ]);
+
+    // Group by area
+    const areaMap = {};
+    result.forEach(r => {
+      const area = (r.area || '').trim();
+      if (!area) return;
+      if (!areaMap[area]) areaMap[area] = { subAreas: new Set(), projects: new Set() };
+      if (r.subArea && r.subArea.trim()) areaMap[area].subAreas.add(r.subArea.trim());
+      if (r.project && r.project.trim()) areaMap[area].projects.add(r.project.trim());
+    });
+
+    const areas = Object.keys(areaMap).sort().map(area => ({
+      area,
+      subAreas: [...areaMap[area].subAreas].sort(),
+      projects: [...areaMap[area].projects].sort()
+    }));
+
+    res.json({ success: true, areas });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // GET /api/properties — with filters
 router.get('/', async (req, res) => {
   try {

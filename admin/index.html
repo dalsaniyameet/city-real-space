@@ -435,7 +435,7 @@
 
       <!-- Right: Form -->
       <div class="prop-form-area">
-        <form id="propForm">
+        <form id="propForm" novalidate>
           <input type="hidden" id="propId"/>
 
           <!-- ===== STEP 1: Property Details ===== -->
@@ -794,8 +794,8 @@
                 </div>
               </div>
 
-              <!-- Available From + Suitable For -->
-              <div class="hs-row cols-2">
+              <!-- Available From + Suitable For — only for RENT -->
+              <div class="hs-row cols-2" id="rSuitableForRow">
                 <div class="hs-field">
                   <label>ðŸ“… Available From</label>
                   <input type="date" id="rAvailFrom"/>
@@ -811,7 +811,8 @@
                   <input type="hidden" id="rSuitableFor" value="Family"/>
                 </div>
               </div>
-            </div>
+            </div>
+
             <input type="hidden" id="pAgeOfProperty" value=""/>
 
             <div id="nonResAreaRow" style="display:none">
@@ -984,10 +985,10 @@
             <div class="hs-row cols-2">
               <div class="hs-field">
                 <label>Price / Rent *</label>
-                <input type="number" id="pPrice" placeholder="e.g. 25000"/>
+                <div style="display:flex;gap:8px;align-items:center;"><input type="number" id="pPrice" placeholder="e.g. 1.65" oninput="autoPriceLabel()" style="flex:1"/><select id="pPriceUnit" onchange="autoPriceLabel()" style="width:90px;border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 8px;font-size:0.85rem;font-family:Poppins,sans-serif;font-weight:700;color:#E53935;outline:none;background:#fff;"><option value="cr">Cr</option><option value="lakh">Lakh</option><option value="k">K</option><option value="rs">&#8377;</option></select></div><div id="priceHelper" style="display:none;margin-top:6px;padding:8px 12px;background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #ffcdd2;border-radius:8px;font-size:0.78rem;font-weight:700;color:#E53935;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-indian-rupee-sign"></i><span id="priceHelperText"></span></div>
               </div>
               <div class="hs-field">
-                <label>Price Label</label>
+                <label>Price Label <span style="font-size:0.68rem;color:#aaa;font-weight:400">(auto-fills)</span></label>
                 <input type="text" id="pPriceLabel" placeholder="e.g. â‚¹25K/mo or â‚¹1.2 Cr"/>
               </div>
             </div>
@@ -1012,7 +1013,7 @@
             <div class="hs-row cols-2">
               <div class="hs-field">
                 <label>Possession</label>
-                <select id="pPossession">
+                <select id="pPossession" onchange="autoAvailDate(this.value)">
                   <option value="Ready to Move">Ready to Move</option>
                   <option value="Under Construction">Under Construction</option>
                   <option value="New Launch">New Launch</option>
@@ -1020,7 +1021,7 @@
               </div>
               <div class="hs-field">
                 <label>RERA Number</label>
-                <input type="text" id="pReraNo" placeholder="e.g. PR/GJ/AHMEDABAD/..."/>
+                <input type="text" id="pReraNo" placeholder="e.g. PR/GJ/AHMEDABAD/..." value="NTC Reg No: 12376">
               </div>
             </div>
 
@@ -1415,33 +1416,16 @@
 
 <script src="/admin/script.js"></script>
 <script>
-// Inline cursor.js — no external file needed
-(function () {
-  var dot  = document.createElement('div'); dot.className  = 'cursor-dot';
-  var ring = document.createElement('div'); ring.className = 'cursor-ring';
-  dot.style.pointerEvents  = 'none';
-  ring.style.pointerEvents = 'none';
-  document.body.append(dot, ring);
-  var mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-  document.addEventListener('mousemove', function(e) {
-    mouseX = e.clientX; mouseY = e.clientY;
-    dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px';
-  });
-  (function animateRing() {
-    ringX += (mouseX - ringX) * 0.12; ringY += (mouseY - ringY) * 0.12;
-    ring.style.left = ringX + 'px'; ring.style.top = ringY + 'px';
-    requestAnimationFrame(animateRing);
-  })();
-  document.addEventListener('mouseover', function(e) {
-    if (e.target.closest('a, button, input, select, textarea, [onclick]'))
-      document.body.classList.add('cursor-hover');
-    else document.body.classList.remove('cursor-hover');
-  });
-  document.addEventListener('mousedown', function() { document.body.classList.add('cursor-click'); });
-  document.addEventListener('mouseup',   function() { document.body.classList.remove('cursor-click'); });
-})();
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
 
 

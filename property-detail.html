@@ -51,20 +51,27 @@
     .pd-desc h4 { font-size: 1rem; font-weight: 700; color: #0D1B2A; margin-bottom: 10px; }
     .pd-desc p { font-size: 0.88rem; color: #666; line-height: 1.8; }
 
-    /* Extra Details */
+    /* Extra Details — 99acres style */
     .pd-details { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border: 1px solid #e8e8e8; margin-bottom: 20px; }
-    .pd-details h4 { font-size: 1rem; font-weight: 700; color: #0D1B2A; margin-bottom: 16px; }
-    .pd-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .pd-detail-item { display: flex; flex-direction: column; gap: 2px; background: #f8f9fa; border-radius: 8px; padding: 10px 14px; }
-    .pd-detail-item span:first-child { font-size: 0.72rem; color: #aaa; font-weight: 600; text-transform: uppercase; }
-    .pd-detail-item span:last-child { font-size: 0.88rem; color: #0D1B2A; font-weight: 600; }
-    .pd-detail-section-title { grid-column: 1 / -1; font-size: 0.78rem; font-weight: 800; color: #E53935; text-transform: uppercase; letter-spacing: 0.8px; padding: 6px 0 2px; border-bottom: 1.5px solid #ffebee; display: flex; align-items: center; gap: 6px; }
+    .pd-details h4 { font-size: 1rem; font-weight: 700; color: #0D1B2A; margin-bottom: 20px; display:flex; align-items:center; gap:8px; }
+    .pd-details h4 i { color:#E53935; }
+    .pd-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid #e8e8e8; border-radius: 12px; overflow: hidden; }
+    .pd-detail-item { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; border-bottom: 1px solid #f0f0f0; border-right: 1px solid #f0f0f0; background: #fff; transition: background 0.15s; }
+    .pd-detail-item:hover { background: #fafafa; }
+    .pd-detail-item:nth-child(even) { border-right: none; }
+    .pd-detail-item span:first-child { font-size: 0.78rem; color: #888; font-weight: 500; display:flex; align-items:center; gap:6px; }
+    .pd-detail-item span:first-child i { color: #E53935; font-size: 0.72rem; width:14px; text-align:center; }
+    .pd-detail-item span:last-child { font-size: 0.85rem; color: #0D1B2A; font-weight: 700; text-align:right; max-width:55%; }
+    .pd-detail-section-title { grid-column: 1 / -1; font-size: 0.72rem; font-weight: 800; color: #E53935; text-transform: uppercase; letter-spacing: 1px; padding: 10px 16px 8px; background: linear-gradient(135deg,#fff5f5,#fff); border-bottom: 1px solid #ffebee; display: flex; align-items: center; gap: 8px; border-right: none; }
+    .pd-detail-section-title i { font-size: 0.8rem; }
 
     /* Amenities */
     .pd-amenities { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); border: 1px solid #e8e8e8; margin-bottom: 20px; }
     .pd-amenities h4 { font-size: 1rem; font-weight: 700; color: #0D1B2A; margin-bottom: 16px; }
     .pd-amenities-list { display: flex; flex-wrap: wrap; gap: 10px; }
-    .pd-amenity { background: #f0f4ff; color: #1565c0; font-size: 0.78rem; font-weight: 600; padding: 6px 14px; border-radius: 50px; display: flex; align-items: center; gap: 6px; }
+    .pd-amenity { background: #f8f9fa; color: #333; font-size: 0.8rem; font-weight: 600; padding: 10px 16px; border-radius: 8px; display: flex; align-items: center; gap: 10px; border: 1px solid #e8e8e8; transition: all 0.2s; }
+    .pd-amenity:hover { background: #f0f4ff; border-color: #c7d7ff; color: #1565c0; }
+    .pd-amenity i { color: #E53935; font-size: 1.1rem; width: 20px; text-align: center; }
 
     /* Sidebar */
     .pd-sidebar { position: sticky; top: 90px; }
@@ -139,10 +146,10 @@
     .price-trend-box{background:#fff;border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e8e8e8;margin-bottom:20px;}
     .price-trend-box h4{font-size:1rem;font-weight:700;color:#0D1B2A;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
     .price-trend-box h4 i{color:#E53935;}
-    .pt-meta{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:18px;}
-    .pt-meta-item{display:flex;flex-direction:column;gap:2px;}
-    .pt-meta-item span{font-size:0.72rem;color:#aaa;font-weight:600;text-transform:uppercase;}
-    .pt-meta-item strong{font-size:1rem;font-weight:800;color:#0D1B2A;}
+    .pt-meta{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px;}
+    .pt-meta-item{display:flex;flex-direction:column;gap:4px;background:#f8f9fa;border-radius:10px;padding:12px 14px;border:1px solid #f0f0f0;}
+    .pt-meta-item span{font-size:0.7rem;color:#aaa;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+    .pt-meta-item strong{font-size:0.95rem;font-weight:800;color:#0D1B2A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
     .pt-meta-item strong.up{color:#2e7d32;}
     .pt-meta-item strong.down{color:#c62828;}
     .pt-tabs{display:flex;gap:6px;margin-bottom:16px;}
@@ -164,14 +171,14 @@
     .dealer-tag.verified{background:#e8f5e9;color:#2e7d32;}
     .dealer-wa{background:#25D366;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;white-space:nowrap;transition:all 0.2s;display:flex;align-items:center;gap:5px;}
     .dealer-wa:hover{background:#1ebe5d;}
-    .nearby-btn{background:#f0f4ff;color:#1565c0;border:1.5px solid #dce8ff;border-radius:8px;padding:7px 14px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:Poppins,sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:6px;}
-    .nearby-btn:hover,.nearby-btn.active{background:#1565c0;color:#fff;border-color:#1565c0;}
-    .nearby-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;transition:all 0.2s;}
-    .nearby-item:hover{border-color:#1565c0;background:#f0f4ff;}
-    .nearby-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-    .nearby-info strong{display:block;font-size:0.85rem;color:#0D1B2A;font-weight:700;}
-    .nearby-info span{font-size:0.75rem;color:#888;}
-    .nearby-dist{margin-left:auto;font-size:0.75rem;font-weight:700;color:#1565c0;white-space:nowrap;}
+    /* Locality Cards */
+    .loc-card{background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;padding:14px 16px;display:flex;align-items:center;gap:12px;transition:all 0.2s;}
+    .loc-card:hover{border-color:#1565c0;background:#f0f4ff;}
+    .loc-card-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+    .loc-card-body{flex:1;min-width:0;}
+    .loc-card-body strong{display:block;font-size:0.82rem;font-weight:700;color:#0D1B2A;}
+    .loc-card-body span{font-size:0.72rem;color:#888;}
+    .loc-card-count{font-size:1.1rem;font-weight:800;color:#1565c0;flex-shrink:0;}
     /* Video + Floor Plan */
     .pd-video-box{background:#fff;border-radius:16px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #e8e8e8;margin-bottom:20px;}
     .pd-video-box h4{font-size:1rem;font-weight:700;color:#0D1B2A;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
@@ -187,6 +194,8 @@
     .pd-tab-link { padding:14px 18px; font-size:0.82rem; font-weight:600; color:#666; border-bottom:3px solid transparent; cursor:pointer; white-space:nowrap; transition:all 0.2s; background:none; border-top:none; border-left:none; border-right:none; font-family:Poppins,sans-serif; text-decoration:none; display:block; }
     .pd-tab-link:hover { color:#E53935; }
     .pd-tab-link.active { color:#E53935; border-bottom-color:#E53935; }
+    .pd-views { display:inline-flex; align-items:center; gap:5px; font-size:0.78rem; color:#aaa; margin-left:12px; }
+    .pd-views i { font-size:0.72rem; }
   </style>
 
   <!-- Google Analytics GA4 -->
@@ -300,7 +309,7 @@
         <div id="sec-owner"></div>
         <!-- Extra Details -->
         <div class="pd-details" id="pdDetailsBox" style="display:none">
-          <h4>Property Details</h4>
+          <h4><i class="fa-solid fa-list-check"></i> Property Details</h4>
           <div class="pd-details-grid" id="pdDetailsGrid"></div>
         </div>
 
@@ -330,6 +339,28 @@
 
         <!-- Explore Locality -->
         <div id="sec-locality"></div>
+        <!-- LOCALITY SCORE -->
+        <div class="pd-map-box" id="localityBox" style="display:none">
+          <h4><i class="fa-solid fa-map-location-dot"></i> Explore Locality
+            <span style="margin-left:auto;font-size:0.72rem;font-weight:600;color:#888" id="localityAreaLabel"></span>
+          </h4>
+          <!-- Score Bar -->
+          <div id="localityScoreWrap" style="display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#0D1B2A,#1a3a5c);border-radius:12px;padding:16px 20px;margin-bottom:16px">
+            <div style="text-align:center;flex-shrink:0">
+              <div id="localityScoreNum" style="font-size:2.2rem;font-weight:800;color:#FFC107;line-height:1">—</div>
+              <div style="font-size:0.65rem;color:rgba(255,255,255,0.5);margin-top:2px">out of 10</div>
+            </div>
+            <div style="flex:1">
+              <div style="font-size:0.82rem;font-weight:700;color:#fff;margin-bottom:6px">Locality Score</div>
+              <div style="background:rgba(255,255,255,0.15);border-radius:20px;height:8px;overflow:hidden">
+                <div id="localityScoreBar" style="height:100%;background:linear-gradient(90deg,#FFC107,#ff9800);border-radius:20px;width:0%;transition:width 1s ease"></div>
+              </div>
+              <div id="localityScoreLabel" style="font-size:0.72rem;color:rgba(255,255,255,0.5);margin-top:4px">Calculating...</div>
+            </div>
+          </div>
+          <!-- Category Cards -->
+          <div id="localityCards" style="display:grid;grid-template-columns:1fr 1fr;gap:10px"></div>
+        </div>
         <!-- FEATURED DEALERS -->
         <div id="sec-dealers"></div>
         <div class="dealers-box">
@@ -349,20 +380,6 @@
         <div class="pd-amenities" id="pdFloorPlanBox" style="display:none">
           <h4><i class="fa-solid fa-ruler-combined"></i> Floor Plan</h4>
           <img id="pdFloorPlanImg" src="" alt="Floor Plan" style="width:100%;border-radius:10px;border:1px solid #e8e8e8;"/>
-        </div>
-
-        <!-- NEARBY PLACES -->
-        <div class="pd-map-box" id="pdNearbyBox" style="display:none">
-          <h4><i class="fa-solid fa-location-dot"></i> Nearby Places</h4>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px" id="nearbyFilterBtns">
-            <button class="nearby-btn active" data-type="school" onclick="filterNearby('school',this)"><i class="fa-solid fa-school"></i> Schools</button>
-            <button class="nearby-btn" data-type="hospital" onclick="filterNearby('hospital',this)"><i class="fa-solid fa-hospital"></i> Hospitals</button>
-            <button class="nearby-btn" data-type="subway_station" onclick="filterNearby('subway_station',this)"><i class="fa-solid fa-train-subway"></i> Metro</button>
-            <button class="nearby-btn" data-type="restaurant" onclick="filterNearby('restaurant',this)"><i class="fa-solid fa-utensils"></i> Restaurants</button>
-            <button class="nearby-btn" data-type="bank" onclick="filterNearby('bank',this)"><i class="fa-solid fa-building-columns"></i> Banks</button>
-            <button class="nearby-btn" data-type="supermarket" onclick="filterNearby('supermarket',this)"><i class="fa-solid fa-cart-shopping"></i> Malls</button>
-          </div>
-          <div id="nearbyList" style="display:flex;flex-direction:column;gap:8px"></div>
         </div>
 
         <!-- MAP -->
@@ -756,73 +773,102 @@ function renderProperty(p) {
   const ex = p.extraDetails || {};
   const isRes = ['apartment','villa','bungalow','rowhouse'].indexOf(p.type) !== -1;
 
+  const iconMap = {
+    'BHK':'fa-bed','Bedrooms':'fa-bed','Bathrooms':'fa-bath','Balconies':'fa-door-open',
+    'Carpet Area':'fa-ruler-combined','Super Built-up':'fa-ruler-combined','Loading Factor':'fa-percent',
+    'Floor':'fa-building','Lift':'fa-elevator','Parking':'fa-car','Facing':'fa-compass',
+    'Ownership':'fa-file-contract','Property Age':'fa-calendar','Furnishing':'fa-couch',
+    'Possession':'fa-key','Available From':'fa-calendar-check','Suitable For':'fa-users',
+    'Security':'fa-shield-halved','CCTV':'fa-video','Water Supply':'fa-droplet',
+    'Power Backup':'fa-bolt','Garden / Park':'fa-tree','Gym / Pool / Club':'fa-dumbbell',
+    'All Inclusive':'fa-circle-check','Price Negotiable':'fa-handshake',
+    'Tax & Govt Charges':'fa-landmark','Booking Amount':'fa-indian-rupee-sign',
+    'Maintenance':'fa-wrench','Annual Dues':'fa-calendar-days',
+    'Membership Charge':'fa-id-card','Lock-in Period':'fa-lock',
+    'Notice Period':'fa-bell','Brokerage':'fa-percent','RERA No.':'fa-certificate',
+    'Sub Area':'fa-location-dot','Building / Society':'fa-city',
+    'Property Type':'fa-building','Area':'fa-ruler-combined',
+    'Cabins':'fa-door-closed','Min Seats':'fa-chair','Max Seats':'fa-chair',
+    'Workstations':'fa-desktop','Conference Rooms':'fa-users','Meeting Rooms':'fa-comments',
+    'Reception':'fa-concierge-bell','Pantry':'fa-utensils','AC':'fa-snowflake',
+    'Staircase':'fa-stairs','Fire NOC':'fa-fire-extinguisher',
+    'Occupancy Certificate':'fa-file-circle-check','UPS Available':'fa-plug',
+    'Previously Used For':'fa-clock-rotate-left','Passenger Lift':'fa-elevator',
+    'Service Lift':'fa-elevator','Common Lift':'fa-elevator',
+    'Yearly Rent Increase':'fa-arrow-trend-up'
+  };
   function detailItem(label, value) {
     if (!value && value !== 0) return '';
-    return `<div class="pd-detail-item"><span>${label}</span><span>${value}</span></div>`;
+    const icon = iconMap[label] || 'fa-circle-dot';
+    return `<div class="pd-detail-item"><span><i class="fa-solid ${icon}"></i>${label}</span><span>${value}</span></div>`;
   }
 
   var detailsHtml = '';
 
   if (isRes) {
     // Configuration
-    detailsHtml += `<div class="pd-detail-section-title">🏠 Configuration</div>`;
+    detailsHtml += `<div class="pd-detail-section-title"><i class="fa-solid fa-house"></i> Configuration</div>`;
     detailsHtml += detailItem('BHK', p.specs?.beds ? p.specs.beds + ' BHK' : '');
-    detailsHtml += detailItem('Bedrooms', ex.beds);
-    detailsHtml += detailItem('Bathrooms', ex.baths);
-    detailsHtml += detailItem('Balconies', ex.balconies);
+    detailsHtml += detailItem('Bedrooms', ex.beds || (p.specs?.beds ? p.specs.beds : ''));
+    detailsHtml += detailItem('Bathrooms', ex.baths || (p.specs?.baths ? p.specs.baths : ''));
+    detailsHtml += detailItem('Balconies', ex.balconies || ex.balconies === 0 ? ex.balconies : '');
     detailsHtml += detailItem('Carpet Area', ex.carpetArea ? ex.carpetArea + ' sq.ft' : '');
     detailsHtml += detailItem('Super Built-up', ex.superBuiltUp ? ex.superBuiltUp + ' sq.ft' : (p.specs?.sqft ? p.specs.sqft + ' sq.ft' : ''));
     if (ex.carpetArea && ex.superBuiltUp) {
       detailsHtml += detailItem('Loading Factor', Math.round((ex.superBuiltUp/ex.carpetArea - 1)*100) + '%');
     }
     // Building
-    detailsHtml += `<div class="pd-detail-section-title" style="margin-top:12px">🏢 Building</div>`;
+    detailsHtml += `<div class="pd-detail-section-title"><i class="fa-solid fa-building"></i> Building Info</div>`;
     detailsHtml += detailItem('Floor', ex.floor ? 'Floor ' + ex.floor + (ex.totalFloors ? ' / ' + ex.totalFloors : '') : '');
-    detailsHtml += detailItem('Lift', ex.lift);
+    detailsHtml += detailItem('Lift', ex.lift || (p.amenities?.includes('Lift') ? 'Available' : ''));
     const covP = ex.coveredParking || '0', openP = ex.openParking || '0';
     if (covP !== '0' || openP !== '0') detailsHtml += detailItem('Parking', covP + ' Covered + ' + openP + ' Open');
-    detailsHtml += detailItem('Facing', ex.facing);
-    detailsHtml += detailItem('Ownership', ex.ownership);
-    detailsHtml += detailItem('Property Age', ex.ageOfProperty);
-    detailsHtml += detailItem('Furnishing', ex.furnished);
-    detailsHtml += detailItem('Possession', ex.possession);
-    detailsHtml += detailItem('Available From', ex.availFrom);
-    detailsHtml += detailItem('Suitable For', ex.suitableFor);
-    // Amenities
+    detailsHtml += detailItem('Facing', ex.facing || p.facing || '');
+    detailsHtml += detailItem('Ownership', ex.ownership || '');
+    detailsHtml += detailItem('Property Age', ex.ageOfProperty || p.ageOfProperty || '');
+    detailsHtml += detailItem('Furnishing', ex.furnished || '');
+    detailsHtml += detailItem('Possession', ex.possession || '');
+    detailsHtml += detailItem('Available From', ex.availFrom || '');
+    if (p.status === 'for-rent') detailsHtml += detailItem('Suitable For', ex.suitableFor || '');
+    // Key Amenities from toggles — only show if filled
     const amenRows = [
-      ['Security', ex.security], ['CCTV', ex.cctv],
-      ['Water Supply', ex.waterSupply], ['Power Backup', ex.powerBackup],
-      ['Garden / Park', ex.garden], ['Gym / Pool / Club', ex.gymPool]
+      ['Security', ex.security && ex.security !== 'No' ? ex.security : ''],
+      ['CCTV', ex.cctv && ex.cctv !== 'No' ? ex.cctv : ''],
+      ['Water Supply', ex.waterSupply || ''],
+      ['Power Backup', ex.powerBackup && ex.powerBackup !== 'No' ? ex.powerBackup : ''],
+      ['Garden / Park', ex.garden && ex.garden !== 'Not Available' ? ex.garden : ''],
+      ['Gym / Pool / Club', ex.gymPool && ex.gymPool !== 'Not Available' ? ex.gymPool : '']
     ].filter(r => r[1]);
     if (amenRows.length) {
-      detailsHtml += `<div class="pd-detail-section-title" style="margin-top:12px">✅ Key Amenities</div>`;
+      detailsHtml += `<div class="pd-detail-section-title"><i class="fa-solid fa-circle-check"></i> Key Amenities</div>`;
       amenRows.forEach(r => { detailsHtml += detailItem(r[0], r[1]); });
     }
     // Pricing extras
     const pricingRows = [
-      ['All Inclusive', ex.allInclusive], ['Price Negotiable', ex.negotiable],
-      ['Tax & Govt Charges', ex.taxCharges],
+      ['All Inclusive', ex.allInclusive && ex.allInclusive !== 'No' ? ex.allInclusive : ''],
+      ['Price Negotiable', ex.negotiable && ex.negotiable !== 'No' ? ex.negotiable : ''],
+      ['Tax & Govt Charges', ex.taxCharges || ''],
       ['Booking Amount', ex.bookingAmount ? '₹' + Number(ex.bookingAmount).toLocaleString('en-IN') : ''],
       ['Maintenance', ex.maintenance ? '₹' + Number(ex.maintenance).toLocaleString('en-IN') + '/mo' : (ex.maintenance_rent ? '₹' + Number(ex.maintenance_rent).toLocaleString('en-IN') + '/mo' : '')],
       ['Annual Dues', ex.annualDues ? '₹' + Number(ex.annualDues).toLocaleString('en-IN') : ''],
       ['Membership Charge', ex.membershipCharge ? '₹' + Number(ex.membershipCharge).toLocaleString('en-IN') : ''],
       ['Lock-in Period', ex.lockIn ? ex.lockIn + ' months' : ''],
       ['Notice Period', ex.noticePeriod ? ex.noticePeriod + ' months' : ''],
-      ['Brokerage', ex.brokerage],
-      ['RERA No.', ex.reraNo || p.reraNo]
+      ['Brokerage', (ex.brokerage && ex.brokerage !== 'None') ? ex.brokerage : ''],
+      ['RERA No.', ex.reraNo || p.reraNo || '']
     ].filter(r => r[1]);
     if (pricingRows.length) {
-      detailsHtml += `<div class="pd-detail-section-title" style="margin-top:12px">💰 Pricing Details</div>`;
+      detailsHtml += `<div class="pd-detail-section-title"><i class="fa-solid fa-indian-rupee-sign"></i> Pricing Details</div>`;
       pricingRows.forEach(r => { detailsHtml += detailItem(r[0], r[1]); });
     }
   } else {
     // Commercial
-    detailsHtml += `<div class="pd-detail-section-title">🏢 Property Details</div>`;
+    detailsHtml += `<div class="pd-detail-section-title"><i class="fa-solid fa-building"></i> Property Details</div>`;
     detailsHtml += detailItem('Property Type', p.type ? p.type.charAt(0).toUpperCase()+p.type.slice(1) : '');
     detailsHtml += detailItem('Area', p.specs?.sqft ? p.specs.sqft + ' sq.ft' : '');
     detailsHtml += detailItem('Carpet Area', ex.carpetArea ? ex.carpetArea + ' sq.ft' : (ex.oCarpet ? ex.oCarpet + ' sq.ft' : ''));
     detailsHtml += detailItem('Super Built-up', ex.superBuiltUp ? ex.superBuiltUp + ' sq.ft' : (ex.oSBA ? ex.oSBA + ' sq.ft' : ''));
-    detailsHtml += detailItem('Furnishing', ex.furnished || ex.oFurnishing);
+    detailsHtml += detailItem('Furnishing', ex.furnished || ex.oFurnishing || ex.oFurnishing);
     detailsHtml += detailItem('Possession', ex.possession);
     detailsHtml += detailItem('RERA No.', ex.reraNo || p.reraNo);
 
@@ -835,7 +881,7 @@ function renderProperty(p) {
       const confRooms = ex.oConferenceRooms || ex.conferenceRooms;
       const meetRooms = ex.oMeetingRooms || ex.meetingRooms;
       if (cabins || minSeats || maxSeats || workstations) {
-        detailsHtml += `<div class="pd-detail-section-title" style="margin-top:12px">💼 Cabin & Seating</div>`;
+        detailsHtml += `<div class="pd-detail-section-title"><i class="fa-solid fa-chair"></i> Cabin & Seating</div>`;
         detailsHtml += detailItem('Cabins', cabins);
         detailsHtml += detailItem('Min Seats', minSeats);
         detailsHtml += detailItem('Max Seats', maxSeats);
@@ -849,7 +895,7 @@ function renderProperty(p) {
       const parking = ex.oParking || ex.commParking;
       const staircase = ex.oStaircase || ex.staircase;
       if (reception || pantry || ac || parking) {
-        detailsHtml += `<div class="pd-detail-section-title" style="margin-top:12px">✅ Features</div>`;
+        detailsHtml += `<div class="pd-detail-section-title"><i class="fa-solid fa-circle-check"></i> Features</div>`;
         detailsHtml += detailItem('Reception', reception);
         detailsHtml += detailItem('Pantry', pantry);
         detailsHtml += detailItem('AC', ac);
@@ -861,9 +907,9 @@ function renderProperty(p) {
       const ups = ex.oUPS || ex.ups;
       const ownership = ex.oOwnership || ex.ownership;
       const prevUsed = ex.oPrevUsed || ex.prevUsed;
-      const suitableFor = ex.oSuitableFor || ex.suitableFor;
+      const suitableFor = ex.oSuitableFor;
       if (fireNOC || occupancy || ups || ownership) {
-        detailsHtml += `<div class="pd-detail-section-title" style="margin-top:12px">📋 Legal & Compliance</div>`;
+        detailsHtml += `<div class="pd-detail-section-title"><i class="fa-solid fa-file-contract"></i> Legal & Compliance</div>`;
         detailsHtml += detailItem('Fire NOC', fireNOC);
         detailsHtml += detailItem('Occupancy Certificate', occupancy);
         detailsHtml += detailItem('UPS Available', ups);
@@ -880,20 +926,20 @@ function renderProperty(p) {
     const liftS = ex.commLiftService || ex.officeLiftService;
     const liftC = ex.commLiftCommon || ex.officeLiftOwner;
     if (commFloor || commTotalFloors || liftP || liftS || liftC) {
-      detailsHtml += `<div class="pd-detail-section-title" style="margin-top:12px">🏢 Floor & Lift</div>`;
+      detailsHtml += `<div class="pd-detail-section-title"><i class="fa-solid fa-elevator"></i> Floor & Lift</div>`;
       detailsHtml += detailItem('Floor', commFloor ? 'Floor ' + commFloor + (commTotalFloors ? ' / ' + commTotalFloors : '') : '');
       if (liftP) detailsHtml += detailItem('Passenger Lift', liftP);
       if (liftS) detailsHtml += detailItem('Service Lift', liftS);
       if (liftC) detailsHtml += detailItem('Common Lift', liftC);
     }
 
-    // Lease terms
+    // Lease terms — sirf meaningful values dikhao, 'None' hide karo
     const lockIn = ex.cLockIn || ex.lockIn;
     const noticePeriod = ex.cNoticePeriod || ex.noticePeriod;
     const rentIncrease = ex.cRentIncrease || ex.rentIncrease;
-    const brokerage = ex.cBrokerage || ex.brokerage;
+    const brokerage = (ex.cBrokerage && ex.cBrokerage !== 'None') ? ex.cBrokerage : (ex.brokerage && ex.brokerage !== 'None' ? ex.brokerage : '');
     if (lockIn || noticePeriod || rentIncrease || brokerage) {
-      detailsHtml += `<div class="pd-detail-section-title" style="margin-top:12px">📄 Lease Terms</div>`;
+      detailsHtml += `<div class="pd-detail-section-title"><i class="fa-solid fa-file-signature"></i> Lease Terms</div>`;
       detailsHtml += detailItem('Lock-in Period', lockIn ? lockIn + ' months' : '');
       detailsHtml += detailItem('Notice Period', noticePeriod ? noticePeriod + ' months' : '');
       detailsHtml += detailItem('Yearly Rent Increase', rentIncrease ? rentIncrease + '%' : '');
@@ -903,9 +949,9 @@ function renderProperty(p) {
 
     // Location extras
   if (ex.subArea || ex.project) {
-    detailsHtml += `<div class="pd-detail-section-title" style="margin-top:12px">📍 Location</div>`;
-    detailsHtml += detailItem('Sub Area', ex.subArea);
-    detailsHtml += detailItem('Building / Society', ex.project);
+    detailsHtml += `<div class="pd-detail-section-title"><i class="fa-solid fa-location-dot"></i> Location</div>`;
+    if (ex.subArea) detailsHtml += detailItem('Sub Area', ex.subArea);
+    if (ex.project) detailsHtml += detailItem('Building / Society', ex.project.trim());
   }
 
   if (detailsHtml) {
@@ -915,10 +961,45 @@ function renderProperty(p) {
 
   // Amenities
   if (p.amenities && p.amenities.length) {
+    const amenityIcons = {
+      'Lift': 'fa-elevator', 'Swimming Pool': 'fa-person-swimming', 'Gymnasium': 'fa-dumbbell',
+      '24/7 Security': 'fa-shield-halved', 'Covered Parking': 'fa-square-parking',
+      'Power Backup': 'fa-bolt', 'Garden / Park': 'fa-tree', 'Clubhouse': 'fa-building',
+      'Jogging Track': 'fa-person-running', 'Intercom': 'fa-phone-volume',
+      'Water Supply 24/7': 'fa-droplet', 'Gas Pipeline': 'fa-fire-flame-simple',
+      'Housekeeping': 'fa-broom', 'Kids Play Area': 'fa-child', 'Sports Court': 'fa-table-tennis-paddle-ball',
+      'Pet Friendly': 'fa-paw', 'High Speed Internet': 'fa-wifi', 'Rainwater Harvesting': 'fa-cloud-rain',
+      'Private Garden': 'fa-seedling', 'Private Pool': 'fa-water', 'Private Parking': 'fa-car',
+      'Home Gym': 'fa-dumbbell', 'Parking': 'fa-square-parking', 'Security': 'fa-shield-halved',
+      'CCTV': 'fa-video', 'AC': 'fa-snowflake', 'Fire Safety': 'fa-fire-extinguisher',
+      'Internet Ready': 'fa-wifi', 'Loading Dock': 'fa-truck-ramp-box', '3-Phase Power': 'fa-plug',
+      'Highway Access': 'fa-road', 'Storage Racks': 'fa-boxes-stacked', 'Cold Storage': 'fa-temperature-low',
+      'Central AC': 'fa-snowflake', 'Reception Area': 'fa-concierge-bell', 'Washroom': 'fa-restroom',
+      'Cafeteria / Food Court': 'fa-utensils', 'Cafeteria': 'fa-utensils',
+      'Printer / Scanner': 'fa-print', 'Conference Room': 'fa-users',
+      'Lounge Area': 'fa-couch', 'Water Connection': 'fa-droplet',
+      'Electricity Connection': 'fa-bolt', 'Road Access': 'fa-road',
+      'Gated Community': 'fa-lock', 'Landscaping': 'fa-leaf', 'Drainage': 'fa-water',
+      'Gated / Fenced': 'fa-fence', 'GIDC Zone': 'fa-industry',
+      'Warehouse Permitted': 'fa-warehouse', 'ETP Facility': 'fa-recycle',
+      'Overhead Crane': 'fa-gear', 'Storage Area': 'fa-boxes-stacked',
+      'Effluent Treatment': 'fa-recycle', 'Loading / Unloading': 'fa-truck',
+      'Visitor Parking': 'fa-car', 'Reserved Parking': 'fa-square-parking',
+      'Service Lift': 'fa-elevator', 'Security Guard': 'fa-user-shield',
+      'CCTV Surveillance': 'fa-video', 'Intercom Facility': 'fa-phone-volume',
+      'Fire Extinguisher': 'fa-fire-extinguisher', 'Fire Sensors': 'fa-bell',
+      'Sprinklers': 'fa-shower', 'Grade A Building': 'fa-building-columns',
+      'Emergency Exit': 'fa-door-open', 'WheelChair Accessibility': 'fa-wheelchair',
+      '24x7 Water': 'fa-droplet', 'Water Storage': 'fa-water', 'Waste Disposal': 'fa-trash',
+      'Maintenance Staff': 'fa-screwdriver-wrench', 'ATM': 'fa-landmark',
+      'Shopping Centre': 'fa-store', 'Grocery Shop': 'fa-basket-shopping',
+      'DG Availability': 'fa-generator', 'Vaastu Compliant': 'fa-om'
+    };
     document.getElementById('pdAmenitiesBox').style.display = 'block';
-    document.getElementById('pdAmenitiesList').innerHTML = p.amenities.map(a =>
-      `<span class="pd-amenity"><i class="fa-solid fa-circle-check"></i>${a}</span>`
-    ).join('');
+    document.getElementById('pdAmenitiesList').innerHTML = p.amenities.map(a => {
+      const icon = amenityIcons[a] || 'fa-circle-check';
+      return `<span class="pd-amenity"><i class="fa-solid ${icon}"></i>${a}</span>`;
+    }).join('');
   }
 
   // Agent
@@ -1169,8 +1250,10 @@ async function loadMap(p) {
   document.getElementById('pdMapLink').href =
     `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(area + ', ' + city + ', Gujarat')}`;
 
-  // Load nearby places after map
-  loadNearby(lat, lng);
+  // Load locality score after map coords are ready
+  loadLocalityScore(lat, lng, area);
+
+  // (nearby section removed)
 
   if (_mapInstance) { _mapInstance.remove(); _mapInstance = null; }
   const L = window.L;
@@ -1262,65 +1345,96 @@ async function loadMap(p) {
   }
 }
 
-// ===== NEARBY PLACES =====
-let _nearbyData = {};
-let _nearbyLat = 0, _nearbyLng = 0;
+// ===== LOCALITY SCORE =====
+const _locWeights = { school:2, hospital:2, subway_station:2, restaurant:1, bank:1.5, supermarket:1.5 };
+const _locResults = {};
 
-async function loadNearby(lat, lng) {
-  _nearbyLat = lat; _nearbyLng = lng;
-  document.getElementById('pdNearbyBox').style.display = 'block';
-  await fetchNearby('school');
-}
+async function loadLocalityScore(lat, lng, area) {
+  document.getElementById('localityBox').style.display = 'block';
+  document.getElementById('localityAreaLabel').textContent = area || '';
 
-async function fetchNearby(type) {
-  if (_nearbyData[type]) { renderNearby(type); return; }
-  document.getElementById('nearbyList').innerHTML = `<div style="text-align:center;padding:20px;color:#aaa"><i class="fa-solid fa-spinner fa-spin"></i> Loading nearby ${type}s...</div>`;
-  try {
-    // Overpass API — free, no key needed
-    const radius = 2000; // 2km
-    const query = `[out:json][timeout:10];node["amenity"="${type}"](around:${radius},${_nearbyLat},${_nearbyLng});out 8;`;
-    const typeMap = { subway_station: 'public_transport', school: 'amenity', hospital: 'amenity', restaurant: 'amenity', bank: 'amenity', supermarket: 'shop' };
-    const osmKey = typeMap[type] || 'amenity';
-    const osmQuery = type === 'subway_station'
-      ? `[out:json][timeout:10];node["station"="subway"](around:${radius},${_nearbyLat},${_nearbyLng});out 8;`
-      : type === 'supermarket'
-      ? `[out:json][timeout:10];node["shop"="supermarket"](around:${radius},${_nearbyLat},${_nearbyLng});out 8;`
-      : `[out:json][timeout:10];node["amenity"="${type}"](around:${radius},${_nearbyLat},${_nearbyLng});out 8;`;
+  const categories = [
+    { type:'school',         label:'Schools',     emoji:'\ud83c\udfeb', color:'#1565c0', bg:'#e3f2fd' },
+    { type:'hospital',       label:'Hospitals',   emoji:'\ud83c\udfe5', color:'#c62828', bg:'#ffebee' },
+    { type:'subway_station', label:'Metro/Bus',   emoji:'\ud83d\ude87', color:'#6a1b9a', bg:'#f3e5f5' },
+    { type:'restaurant',     label:'Restaurants', emoji:'\ud83c\udf7d\ufe0f', color:'#e65100', bg:'#fff3e0' },
+    { type:'bank',           label:'Banks/ATMs',  emoji:'\ud83c\udfe6', color:'#2e7d32', bg:'#e8f5e9' },
+    { type:'supermarket',    label:'Markets',     emoji:'\ud83d\uded2', color:'#00838f', bg:'#e0f7fa' }
+  ];
 
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 5000);
-    try {
-      const res  = await fetch('https://overpass-api.de/api/interpreter', { method:'POST', body: osmQuery, signal: controller.signal });
-      clearTimeout(timer);
-      const data = await res.json();
-      _nearbyData[type] = (data.elements || []).map(el => {
-        const dist = calcDist(_nearbyLat, _nearbyLng, el.lat, el.lon);
-        return { name: el.tags?.name || el.tags?.['name:en'] || 'Unnamed', dist };
-      }).filter(x => x.name !== 'Unnamed').sort((a,b) => a.dist - b.dist).slice(0, 6);
-    } catch { _nearbyData[type] = []; }
-  } catch { _nearbyData[type] = []; }
-  renderNearby(type);
-}
-
-function renderNearby(type) {
-  const items = _nearbyData[type] || [];
-  const icons = { school:'fa-school', hospital:'fa-hospital', subway_station:'fa-train-subway', restaurant:'fa-utensils', bank:'fa-building-columns', supermarket:'fa-cart-shopping' };
-  const colors = { school:'#1565c0', hospital:'#c62828', subway_station:'#6a1b9a', restaurant:'#e65100', bank:'#2e7d32', supermarket:'#00838f' };
-  const bgs = { school:'#e3f2fd', hospital:'#ffebee', subway_station:'#f3e5f5', restaurant:'#fff3e0', bank:'#e8f5e9', supermarket:'#e0f7fa' };
-  const list = document.getElementById('nearbyList');
-  if (!items.length) { list.innerHTML = `<div style="text-align:center;padding:20px;color:#aaa;font-size:0.85rem">No ${type}s found within 2km</div>`; return; }
-  list.innerHTML = items.map(item => `
-    <div class="nearby-item">
-      <div class="nearby-icon" style="background:${bgs[type]};color:${colors[type]}"><i class="fa-solid ${icons[type]}"></i></div>
-      <div class="nearby-info"><strong>${item.name}</strong><span>${type.replace('_',' ')}</span></div>
-      <div class="nearby-dist">${item.dist < 1 ? (item.dist*1000).toFixed(0)+' m' : item.dist.toFixed(1)+' km'}</div>
+  // Skeleton cards turant dikhao
+  document.getElementById('localityCards').innerHTML = categories.map(c =>
+    `<div class="loc-card" id="lc-${c.type}">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="loc-card-icon" style="background:${c.bg};color:${c.color}">${c.emoji}</div>
+        <div class="loc-card-body"><strong>${c.label}</strong><span style="color:#ccc">Loading...</span></div>
+        <div class="loc-card-count" style="color:#ddd">...</div>
+      </div>
     </div>`).join('');
+
+  // Parallel fetch — har card apne aap update hoga
+  await Promise.all(categories.map(async c => {
+    try {
+      const res = await fetch(`${API}/nearby?lat=${lat}&lng=${lng}&type=${c.type}`);
+      const data = await res.json();
+      const els = data.elements || [];
+      const count = Math.min(els.length, 99);
+      const names = els.map(e => e.tags?.name || e.tags?.['name:en'] || '').filter(n => n).slice(0, 10);
+      _locResults[c.type] = { count, names };
+    } catch {
+      _locResults[c.type] = { count: 0, names: [] };
+    }
+    // Card turant update karo
+    const r = _locResults[c.type];
+    const el = document.getElementById('lc-' + c.type);
+    if (el) {
+      el.style.cursor = r.count > 0 ? 'pointer' : 'default';
+      el.style.flexDirection = 'column';
+      el.style.alignItems = 'stretch';
+      el.onclick = r.count > 0 ? () => _toggleLoc(c.type, c.bg, c.color) : null;
+      el.innerHTML = `
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="loc-card-icon" style="background:${c.bg};color:${c.color}">${c.emoji}</div>
+          <div class="loc-card-body">
+            <strong>${c.label}</strong>
+            <span>${r.count > 0 ? 'Within 3km \u2022 tap to expand' : 'Not found nearby'}</span>
+          </div>
+          <div class="loc-card-count" style="color:${c.color}">${r.count > 0 ? r.count + '+' : '\u2014'}</div>
+          ${r.count > 0 ? `<i class="fa-solid fa-chevron-down" id="la-${c.type}" style="color:#aaa;font-size:0.75rem;transition:transform 0.2s"></i>` : ''}
+        </div>
+        <div id="ll-${c.type}" style="display:none;margin-top:10px;border-top:1px solid #f0f0f0;padding-top:10px">
+          ${r.names.length ? r.names.map((n,i) =>
+            `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f8f8f8">
+              <span style="width:20px;height:20px;border-radius:50%;background:${c.bg};color:${c.color};font-size:0.65rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">${i+1}</span>
+              <span style="font-size:0.8rem;color:#333;font-weight:500">${n}</span>
+            </div>`).join('') : '<div style="font-size:0.78rem;color:#aaa;padding:4px 0">Names not available</div>'}
+        </div>`;
+    }
+    // Score update karo
+    _updateLocScore();
+  }));
 }
 
-function filterNearby(type, btn) {
-  document.querySelectorAll('.nearby-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  fetchNearby(type);
+function _updateLocScore() {
+  let total = 0;
+  const fullMax = 2+2+2+1+1.5+1.5;
+  Object.entries(_locResults).forEach(([type, r]) => {
+    total += Math.min(r.count / 3, 1) * (_locWeights[type] || 1);
+  });
+  const score = Math.round((total / fullMax) * 10 * 10) / 10;
+  const label = score >= 8 ? 'Excellent Locality' : score >= 6 ? 'Good Locality' : score >= 4 ? 'Average Locality' : 'Developing Area';
+  document.getElementById('localityScoreNum').textContent = score.toFixed(1);
+  document.getElementById('localityScoreBar').style.width = (score * 10) + '%';
+  document.getElementById('localityScoreLabel').textContent = label;
+}
+
+function _toggleLoc(type) {
+  const list = document.getElementById('ll-' + type);
+  const arrow = document.getElementById('la-' + type);
+  if (!list) return;
+  const open = list.style.display === 'block';
+  list.style.display = open ? 'none' : 'block';
+  if (arrow) arrow.style.transform = open ? '' : 'rotate(180deg)';
 }
 
 function calcDist(lat1, lng1, lat2, lng2) {
@@ -1365,21 +1479,29 @@ function renderPriceTrend(p) {
 
   // Meta stats
   const sqft = p.specs?.sqft || 0;
-  const ppsf = p.pricePerSqft || (sqft > 0 ? Math.round(_trendPrice / sqft) : 0);
+  // pricePerSqft: admin filled value ko priority do
+  // Auto-calculate sirf for-sale/new-launch pe karo (price / sqft)
+  // for-rent pe: agar admin ne manually fill kiya ho tabhi dikhao
+  const ppsf = p.pricePerSqft > 0 ? p.pricePerSqft : (p.status !== 'for-rent' && sqft > 0 ? Math.round(_trendPrice / sqft) : 0);
   const change12m = (((_trendPrice - _trendPrice * 0.88) / (_trendPrice * 0.88)) * 100).toFixed(1);
+  const locality = p.location?.area || p.location?.city || 'N/A';
+  const sqftLabel = sqft > 0 ? sqft.toLocaleString('en-IN') + ' sqft' : '—';
   document.getElementById('ptMeta').innerHTML = `
     <div class="pt-meta-item">
-      <span>Current Price</span>
+      <span>${p.status === 'for-rent' ? 'Monthly Rent' : 'Current Price'}</span>
       <strong>${formatPrice(_trendPrice, p.status)}</strong>
     </div>
-    ${ppsf ? `<div class="pt-meta-item"><span>Price / sqft</span><strong>&#8377;${ppsf.toLocaleString('en-IN')}</strong></div>` : ''}
+    <div class="pt-meta-item">
+      <span>Price / sqft</span>
+      <strong>${ppsf ? '&#8377;' + ppsf.toLocaleString('en-IN') : (sqftLabel !== '—' ? sqftLabel : '—')}</strong>
+    </div>
     <div class="pt-meta-item">
       <span>12M Change</span>
       <strong class="up">&#9650; ${change12m}%</strong>
     </div>
     <div class="pt-meta-item">
       <span>Locality</span>
-      <strong>${p.location?.area || p.location?.city || 'N/A'}</strong>
+      <strong title="${locality}">${locality}</strong>
     </div>`;
 }
 
@@ -1491,7 +1613,7 @@ async function loadArticles() {
     if (!blogs.length) return;
     document.getElementById('articlesSection').style.display = 'block';
     document.getElementById('articlesList').innerHTML = blogs.map(b => `
-      <div class="prop-card" onclick="window.location.href='blog-detail.html?id=${b._id}'" style="cursor:pointer">
+      <div class="prop-card" onclick="window.open('blog-detail.html?id=${b._id}','_blank')" style="cursor:pointer">
         <div class="card-img"><img src="${b.image||'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80'}" alt="${b.title}" loading="lazy" style="width:100%;height:160px;object-fit:cover"/></div>
         <div class="card-body">
           <div class="card-title" style="font-size:0.88rem">${b.title}</div>
@@ -1506,30 +1628,47 @@ async function loadSimilar(p) {
   const grid = document.getElementById('similarGrid');
   if (!grid) return;
   try {
-    const url = `${API}/properties?type=${p.type || ''}&city=${p.location?.city || ''}&limit=4`;
+    // Same status + same category/type ke properties dikhao
+    const isCommercial = p.category === 'commercial';
+    const url = `${API}/properties?status=${p.status || ''}&${isCommercial ? 'category=commercial' : 'type=' + (p.type || '')}&city=${p.location?.city || ''}&limit=6`;
     const res  = await fetch(url);
     const data = await res.json();
     const list = (data.properties || []).filter(x => x._id !== p._id).slice(0, 3);
-    if (!list.length) { grid.closest('.similar-section').style.display = 'none'; return; }
-    grid.innerHTML = list.map(x => {
-      const img   = x.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80';
-      const price = formatPrice(x.price, x.status);
-      const loc   = (x.location?.area || '') + ', ' + (x.location?.city || '');
-      const _c=(x.location?.city||'ahmedabad').toLowerCase().replace(/\s+/g,'-');
-      const _a=(x.location?.area||'gujarat').toLowerCase().replace(/\s+/g,'-');
-      const _url=x.slug?'/property/'+_c+'/'+_a+'/'+x.slug:'/property-detail.html?id='+x._id;
-      return `<div class="prop-card" onclick="window.location.href='${_url}'" style="cursor:pointer">
-        <div class="card-img"><img src="${img}" alt="${x.title}" loading="lazy"/>
-          <div class="card-verified"><div class="card-verified-inner"><span class="cv-icon"><i class="fa-solid fa-check"></i></span> Verified</div></div>
-          <div class="card-price"><span>${price}</span></div>
-        </div>
-        <div class="card-body">
-          <div class="card-loc"><i class="fa-solid fa-location-dot"></i>${loc}</div>
-          <div class="card-title">${x.title}</div>
-        </div>
-      </div>`;
-    }).join('');
+    if (!list.length) {
+      // Fallback: same status only
+      const res2 = await fetch(`${API}/properties?status=${p.status || ''}&city=${p.location?.city || ''}&limit=5`);
+      const data2 = await res2.json();
+      const list2 = (data2.properties || []).filter(x => x._id !== p._id).slice(0, 3);
+      if (!list2.length) { grid.closest('.similar-section').style.display = 'none'; return; }
+      renderSimilarCards(grid, list2);
+      return;
+    }
+    renderSimilarCards(grid, list);
   } catch { grid.closest('.similar-section').style.display = 'none'; }
+}
+
+function renderSimilarCards(grid, list) {
+  grid.innerHTML = list.map(x => {
+    const img   = x.images?.[0] || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80';
+    const price = formatPrice(x.price, x.status);
+    const loc   = (x.location?.area || '') + ', ' + (x.location?.city || '');
+    const _c=(x.location?.city||'ahmedabad').toLowerCase().replace(/\s+/g,'-');
+    const _a=(x.location?.area||'gujarat').toLowerCase().replace(/\s+/g,'-');
+    const _url=x.slug?'/property/'+_c+'/'+_a+'/'+x.slug:'/property-detail.html?id='+x._id;
+    const statusMap = {'for-sale':'For Sale','for-rent':'For Rent','new-launch':'New Launch'};
+    const badgeClass = x.status === 'for-rent' ? 'rent' : x.status === 'new-launch' ? 'new' : 'sale';
+    return `<div class="prop-card" onclick="window.open('${_url}','_blank')" style="cursor:pointer">
+      <div class="card-img"><img src="${img}" alt="${x.title}" loading="lazy"/>
+        <span class="card-badge ${badgeClass}">${statusMap[x.status]||x.status}</span>
+        <div class="card-verified"><div class="card-verified-inner"><span class="cv-icon"><i class="fa-solid fa-check"></i></span> Verified</div></div>
+        <div class="card-price"><span>${price}</span></div>
+      </div>
+      <div class="card-body">
+        <div class="card-loc"><i class="fa-solid fa-location-dot"></i>${loc}</div>
+        <div class="card-title">${x.title}</div>
+      </div>
+    </div>`;
+  }).join('');
 }
 </script>
 </body>

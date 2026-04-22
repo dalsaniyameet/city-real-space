@@ -202,7 +202,9 @@ async function uploadToCloudinary(file) {
   const res = await fetch('https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/image/upload', { method: 'POST', body: fd });
   const data = await res.json();
   if (!data.secure_url) throw new Error('Upload failed: ' + (data.error && data.error.message || 'Unknown error'));
-  return data.secure_url;
+  // Watermark: Cloudinary URL transformation inject karo
+  const wmUrl = data.secure_url.replace('/upload/', '/upload/l_text:Arial_28_bold:cityrealspace.com,co_white,o_70,g_south_east,x_12,y_12/');
+  return wmUrl;
 }
 
 async function handleFloorPlanUpload(input) {
@@ -1434,19 +1436,88 @@ const adminCityAreas = {
   'Rajkot':      ['Kalawad Road','Mavdi','Raiya Road','University Road','150 Feet Ring Road']
 };
 
-document.getElementById('pCitySelect').addEventListener('change', function() {
-  const areas = adminCityAreas[this.value] || [];
-  const sel = document.getElementById('pAreaSelect');
-  sel.innerHTML = '<option value="">-- Select Area --</option>' +
-    areas.map(a => '<option value="' + a + '">' + a + '</option>').join('') +
+// ===== DYNAMIC LOCALITY FROM DB =====
+let _dbAreas = []; // cache
+
+async function loadDbLocalities(city) {
+  try {
+    const res = await fetch(API + '/admin/../properties/localities?city=' + encodeURIComponent(city), {
+      headers: { 'Authorization': 'Bearer ' + adminToken }
+    });
+    const data = await res.json();
+    if (data.success) _dbAreas = data.areas || [];
+  } catch(e) { _dbAreas = []; }
+}
+
+document.getElementById('pCitySelect').addEventListener('change', async function() {
+  const city = this.value;
+  const areaSel = document.getElementById('pAreaSelect');
+  const subSel  = document.getElementById('pSubAreaSelect');
+  const subInp  = document.getElementById('pSubArea');
+  const projSel = document.getElementById('pProjectSelect');
+
+  areaSel.innerHTML = '<option value="">-- Loading areas... --</option>';
+  subSel.innerHTML  = '<option value="">-- Select Area First --</option>';
+  subInp.value = '';
+
+  if (!city) {
+    areaSel.innerHTML = '<option value="">-- Select City First --</option>';
+    return;
+  }
+
+  // DB se real areas fetch karo
+  await loadDbLocalities(city);
+
+  // Static fallback areas bhi merge karo
+  const staticAreas = adminCityAreas[city] || [];
+  const dbAreaNames = _dbAreas.map(a => a.area);
+  const allAreas = [...new Set([...dbAreaNames, ...staticAreas])].sort();
+
+  areaSel.innerHTML = '<option value="">-- Select Area --</option>' +
+    allAreas.map(a => '<option value="' + a + '">' + a + '</option>').join('') +
     '<option value="__other__">Other (Type Manually)</option>';
-  document.getElementById('pSubAreaSelect').innerHTML = '<option value="">-- Select Locality First --</option>';
-  document.getElementById('pSubArea').value = '';
+
+  document.getElementById('pSubAreaSelect').innerHTML = '<option value="">-- Select Area First --</option>';
+  subInp.value = '';
   updateAdminListingScore();
 });
 
 document.getElementById('pAreaSelect').addEventListener('change', function() {
-  handleAreaSelect();
+  const area = this.value;
+  const subSel = document.getElementById('pSubAreaSelect');
+  const subInp = document.getElementById('pSubArea');
+  const projSel = document.getElementById('pProjectSelect');
+
+  if (!area || area === '__other__') {
+    subSel.innerHTML = '<option value="">-- Select Sub Area --</option><option value="__other__">Other (Type Manually)</option>';
+    subInp.value = '';
+    return;
+  }
+
+  // DB se sub-areas
+  const dbArea = _dbAreas.find(a => a.area === area);
+  const dbSubAreas = dbArea ? dbArea.subAreas : [];
+  const dbProjects = dbArea ? dbArea.projects : [];
+
+  // Static fallback sub-areas bhi merge karo
+  const staticSubs = adminSubLocalities[area] || [];
+  const allSubs = [...new Set([...dbSubAreas, ...staticSubs])].sort();
+
+  subSel.innerHTML = '<option value="">-- Select Sub Area --</option>' +
+    allSubs.map(s => '<option value="' + s + '">' + s + '</option>').join('') +
+    '<option value="__other__">Other (Type Manually)</option>';
+  subInp.value = '';
+
+  // Projects bhi update karo — DB projects + static projects merge
+  const type = document.getElementById('pType').value;
+  const staticProjects = projectsByType[type] || [];
+  const allProjects = [...new Set([...dbProjects, ...staticProjects])].sort();
+  const label = projectLabelByType[type] || 'Project / Society Name';
+
+  projSel.innerHTML = '<option value="">-- Select or Type Below --</option>' +
+    allProjects.map(p => '<option value="' + p + '">' + p + '</option>').join('') +
+    '<option value="__other__">Other (Type Manually)</option>';
+
   updateAdminListingScore();
 });
 document.getElementById('pSubAreaSelect').addEventListener('change', handleSubAreaSelect);

@@ -160,7 +160,7 @@ function createCard(p){
   const specs=p.category==='commercial'
     ?'<div class="cs"><i class="fa-solid fa-vector-square"></i>'+(p.specs?.sqft||0)+' sqft</div>'
     :'<div class="cs"><i class="fa-solid fa-bed"></i>'+(p.specs?.beds||0)+' Beds</div><div class="cs"><i class="fa-solid fa-bath"></i>'+(p.specs?.baths||0)+' Baths</div><div class="cs"><i class="fa-solid fa-vector-square"></i>'+(p.specs?.sqft||0)+' sqft</div>';
-  return '<div class="prop-card" onclick="window.location.href=\''+propUrl+'\'" style="cursor:pointer">'+
+  return '<div class="prop-card" onclick="window.open(\''+propUrl+'\',\'_blank\')" style="cursor:pointer">'+
     '<div class="card-img"><img src="'+img+'" alt="'+p.title+'" loading="lazy" style="width:100%;height:220px;object-fit:cover;"/>'+
     '<span class="card-badge">For Sale</span>'+
     '<div class="card-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>'+

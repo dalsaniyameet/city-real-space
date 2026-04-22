@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
+  <link rel="canonical" href="https://www.cityrealspace.com/post-property"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Post Your Property – City Real Space</title>
+  <title>Post Your Property â€“ City Real Space</title>
   <link rel="stylesheet" href="style.css"/>
   <link rel="stylesheet" href="responsive.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
@@ -528,7 +529,7 @@
   </form>
 
   <div class="success-message" id="successMsg">
-    <div class="confetti-row">🎉 🏠 🎊</div>
+    <div class="confetti-row">ðŸŽ‰ ðŸ  ðŸŽŠ</div>
     <h2>Property Posted Successfully!</h2>
     <p>Your listing has been submitted for review. We'll approve it within 24 hours.</p>
     <div class="success-score-wrap">
@@ -601,7 +602,7 @@
       <li class="pending" id="sc-desc"><span class="si"><i class="fas fa-check"></i></span> Description <span class="pts">+10</span></li>
       <li class="pending" id="sc-images"><span class="si"><i class="fas fa-check"></i></span> Photos <span class="pts">+10</span></li>
     </ul>
-    <div class="score-tip" id="scoreTip">💡 Fill details to boost your score!</div>
+    <div class="score-tip" id="scoreTip">ðŸ’¡ Fill details to boost your score!</div>
   </div>
 </div>
 
@@ -613,7 +614,7 @@ const API = (window.location.hostname === 'localhost' || window.location.hostnam
   : '/api';
 const uploadedFiles = [];
 
-// ===== CITY → LOCALITY → SUBAREA → PROJECT DATA =====
+// ===== CITY â†’ LOCALITY â†’ SUBAREA â†’ PROJECT DATA =====
 const cityData = {
   'Ahmedabad': {
     '100 Feet Road':    { subs: ['100 Feet Road Satellite','100 Feet Road Bodakdev','100 Feet Road Prahlad Nagar','100 Feet Road Anand Nagar'], projects: ['Shivalik Sharda','Rajpath Rangoli','Safal Profitaire','Iscon Platinum','Goyal Intercity'] },
@@ -743,7 +744,7 @@ function checkAuthState() {
   const userMenu = document.getElementById('userMenu');
   const userNameDisplay = document.getElementById('userNameDisplay');
 
-  // Login required — redirect to login page
+  // Login required â€” redirect to login page
   if (!token || !user) {
     sessionStorage.setItem('redirectAfterLogin', window.location.href);
     window.location.href = 'login.html?msg=login-required';
@@ -796,7 +797,7 @@ checkAuthState();
   const pageHeader = document.querySelector('.page-header');
   if (pageHeader) pageHeader.insertAdjacentElement('afterend', banner);
 
-  // Force For Sale — hide Rent & New Launch options
+  // Force For Sale â€” hide Rent & New Launch options
   const listingGroup = document.getElementById('typeGroup');
   if (listingGroup) {
     listingGroup.querySelectorAll('.radio-option').forEach(opt => {
@@ -905,12 +906,26 @@ window.addEventListener('scroll', () => {
   document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
 });
 
-document.getElementById('city').addEventListener('change', function() {
+document.getElementById('city').addEventListener('change', async function() {
   const city = this.value;
   const localityEl = document.getElementById('locality');
   const subEl      = document.getElementById('subArea');
   const projEl     = document.getElementById('society');
-  const locs = Object.keys(cityData[city] || {});
+  // DB se real areas fetch karo aur cityData mein merge karo
+  try {
+    const _API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:5000/api' : '/api';
+    const _res = await fetch(_API + '/properties/localities?city=' + encodeURIComponent(city));
+    const _d = await _res.json();
+    if (_d.success && _d.areas) {
+      if (!cityData[city]) cityData[city] = {};
+      _d.areas.forEach(a => {
+        if (!cityData[city][a.area]) cityData[city][a.area] = { subs: [], projects: [] };
+        a.subAreas.forEach(s => { if (!cityData[city][a.area].subs.includes(s)) cityData[city][a.area].subs.push(s); });
+        a.projects.forEach(p => { if (!cityData[city][a.area].projects.includes(p)) cityData[city][a.area].projects.push(p); });
+      });
+    }
+  } catch(e) {}
+  const locs = Object.keys(cityData[city] || {}).sort();
   localityEl.innerHTML = '<option value="">-- Select Locality --</option>' +
     locs.map(l => '<option value="' + l + '">' + l + '</option>').join('');
   subEl.innerHTML  = '<option value="">-- Select Locality First --</option>';
@@ -950,7 +965,7 @@ function revealNextSections() {
   updateScore();
 }
 
-// ===== PROPERTY TYPE → DYNAMIC FIELDS =====
+// ===== PROPERTY TYPE â†’ DYNAMIC FIELDS =====
 const TYPE_CONFIG = {
   apartment: { residential: true,  plot: false, commercial: false, floor: true,  carpet: true,  build: true  },
   villa:     { residential: true,  plot: false, commercial: false, floor: false, carpet: true,  build: true  },
@@ -1015,7 +1030,7 @@ function validateForm() {
   // Title
   if (document.getElementById('title').value.trim().length < 3) fail('title');
 
-  // Description — min 20 chars
+  // Description â€” min 20 chars
   if (document.getElementById('description').value.trim().length < 20) fail('description');
 
   // Location
@@ -1030,7 +1045,7 @@ function validateForm() {
     fail('superArea', 'err-area');
   }
 
-  // Beds + Baths — only for residential types
+  // Beds + Baths â€” only for residential types
   if (cfg.residential) {
     if (!document.querySelector('#bedsChips .chip.selected')) {
       document.getElementById('bedsChips').classList.add('error');
@@ -1046,7 +1061,7 @@ function validateForm() {
     }
   }
 
-  // Images — at least 1 required
+  // Images â€” at least 1 required
   if (uploadedFiles.length === 0) {
     const box = document.getElementById('uploadBox');
     box.style.borderColor = '#E53935';
@@ -1107,7 +1122,7 @@ function updateScore() {
   const score = total > 0 ? Math.round((earned / total) * 100) : 0;
   document.getElementById('scoreNum').textContent = score;
 
-  // Ring — circumference = 2*PI*60 = 376.99
+  // Ring â€” circumference = 2*PI*60 = 376.99
   const circ = 376.99;
   const offset = circ - (circ * score / 100);
   const circle = document.getElementById('scoreCircle');
@@ -1134,7 +1149,7 @@ function updateScore() {
 
   // Label
   const lbl = document.getElementById('scoreLabel');
-  if (score >= 80)      { lbl.textContent = score === 100 ? '🎉 Perfect!': 'Excellent!'; lbl.className = 'score-label great'; }
+  if (score >= 80)      { lbl.textContent = score === 100 ? 'ðŸŽ‰ Perfect!': 'Excellent!'; lbl.className = 'score-label great'; }
   else if (score >= 60) { lbl.textContent = 'Good';        lbl.className = 'score-label good'; }
   else if (score >= 40) { lbl.textContent = 'Fair';        lbl.className = 'score-label fair'; }
   else                  { lbl.textContent = 'Start Filling'; lbl.className = 'score-label poor'; }
@@ -1145,11 +1160,11 @@ function updateScore() {
     const missing = checks.filter(c => { const li = document.getElementById(c.id); return li && li.style.display !== 'none' && !c.done(); });
     if (missing.length) {
       const labels = { 'sc-name':'name & phone','sc-type':'property type','sc-title':'title','sc-city':'city & locality','sc-price':'price','sc-area':'area (sq.ft)','sc-beds':'beds & baths','sc-desc':'description (min 20 chars)','sc-images':'at least 1 photo' };
-      tip.textContent = '💡 Add ' + labels[missing[0].id] + ' to boost your score!';
+      tip.textContent = 'ðŸ’¡ Add ' + labels[missing[0].id] + ' to boost your score!';
       tip.classList.add('show');
     }
   } else {
-    tip.textContent = '🎉 Perfect listing! You\'re all set.';
+    tip.textContent = 'ðŸŽ‰ Perfect listing! You\'re all set.';
     tip.classList.add('show');
   }
 
@@ -1244,7 +1259,7 @@ function handleFiles(files) {
       img.src = e.target.result;
       const btn = document.createElement('button');
       btn.className = 'delete-btn';
-      btn.innerHTML = '×';
+      btn.innerHTML = 'Ã—';
       btn.type = 'button';
       btn.addEventListener('click', () => { div.remove(); uploadedFiles.splice(uploadedFiles.indexOf(file), 1); updateScore(); });
       div.appendChild(img);
@@ -1276,7 +1291,10 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
         fd.append('upload_preset', 'crs_upload');
         const res = await fetch('https://api.cloudinary.com/v1_1/dhqan0w6t/image/upload', { method: 'POST', body: fd });
         const data = await res.json();
-        if (data.secure_url) imageUrls.push(data.secure_url);
+        if (data.secure_url) {
+          const wmUrl = data.secure_url.replace('/upload/', '/upload/l_text:Arial_28_bold:cityrealspace.com,co_white,o_70,g_south_east,x_12,y_12/');
+          imageUrls.push(wmUrl);
+        }
       } catch(e) {}
     }
   }
@@ -1415,7 +1433,7 @@ function showSuccess() {
           <li><a href="buy.html"><i class="fa-solid fa-chevron-right"></i> Buy Property</a></li>
           <li><a href="resale.html"><i class="fa-solid fa-chevron-right"></i> Resale</a></li>
           <li><a href="land.html"><i class="fa-solid fa-chevron-right"></i> Land</a></li>
-          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell – List Property</a></li>
+          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell â€“ List Property</a></li>
           <li><a href="new-launch.html"><i class="fa-solid fa-chevron-right"></i> New Launch</a></li>
           <li><a href="prelease.html"><i class="fa-solid fa-chevron-right"></i> Prelease</a></li>
           <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Property Valuation</a></li>
@@ -1443,15 +1461,15 @@ function showSuccess() {
         </div>
         <div class="working-hours">
           <h5><i class="fa-regular fa-clock"></i> Working Hours</h5>
-          <p>Mon – Sat: 9:00 AM – 7:00 PM</p>
-          <p>Sunday: 10:00 AM – 4:00 PM</p>
+          <p>Mon â€“ Sat: 9:00 AM â€“ 7:00 PM</p>
+          <p>Sunday: 10:00 AM â€“ 4:00 PM</p>
         </div>
       </div>
     </div>
   </div>
   <div class="footer-bottom">
     <div class="container">
-      <p>© 2026 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p>
+      <p>Â© 2026 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p>
     </div>
   </div>
 </footer>
@@ -1470,3 +1488,4 @@ function showSuccess() {
 </script>
 </body>
 </html>
+

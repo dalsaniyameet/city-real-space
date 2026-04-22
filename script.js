@@ -125,7 +125,7 @@ function createCard(p) {
     `<button class="ci-arr ci-next" onclick="ciMove('${id}',1,event)"><i class="fa-solid fa-chevron-right"></i></button>`;
 
   return `
-    <div class="prop-card" onclick="window.location.href='${p.propUrl || '/property-detail?id=' + p._id}'" style="cursor:pointer">
+    <div class="prop-card" onclick="window.open('${p.propUrl || '/property-detail?id=' + p._id}','_blank')" style="cursor:pointer">
       <div class="card-img" id="${id}">
         ${slides}${arrows}${dots}
         <span class="card-badge ${p.badgeClass || ''}">${p.badge}</span>
@@ -251,6 +251,8 @@ function initSlider(sliderId, prevId, nextId) {
   const origCards = Array.from(slider.children);
   origCards.forEach(card => slider.appendChild(card.cloneNode(true)));
 
+  slider.style.willChange = 'transform';
+
   const totalW = () => {
     const card = slider.querySelector('.prop-card');
     return (card.offsetWidth + 24) * origCards.length;
@@ -272,8 +274,8 @@ function initSlider(sliderId, prevId, nextId) {
   animate();
 
   // Pause on hover
-  wrap.addEventListener('mouseenter', () => paused = true);
-  wrap.addEventListener('mouseleave', () => paused = false);
+  wrap.addEventListener('mouseenter', () => paused = true, { passive: true });
+  wrap.addEventListener('mouseleave', () => paused = false, { passive: true });
 
   // Manual buttons
   const cardW = () => slider.querySelector('.prop-card').offsetWidth + 24;
@@ -304,7 +306,7 @@ function initSlider(sliderId, prevId, nextId) {
     const diff = dragStartX - e.clientX;
     offset = Math.max(0, Math.min(dragStartOffset + diff, totalW() - 1));
     slider.style.transform = `translateX(${-offset}px)`;
-  });
+  }, { passive: true });
   window.addEventListener('mouseup', () => {
     if (!isDragging) return;
     isDragging = false;
@@ -326,7 +328,7 @@ function initSlider(sliderId, prevId, nextId) {
   }, { passive: true });
   wrap.addEventListener('touchend', () => {
     setTimeout(() => paused = false, 2000);
-  });
+  }, { passive: true });
 }
 loadAllProperties();
 
@@ -411,7 +413,7 @@ if (statsEl) statsObserver.observe(statsEl);
 window.addEventListener('scroll', () => {
   document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
   document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
-});
+}, { passive: true });
 
 // ===== BACK TO TOP =====
 if (document.getElementById('backTop')) document.getElementById('backTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
@@ -436,35 +438,90 @@ if (document.getElementById('hamburger')) document.getElementById('hamburger').a
 // ===== SEARCH TABS =====
 const cityLocalities = {
   'Ahmedabad': {
-    'Prahlad Nagar':   ['Prahlad Nagar Cross Road','Commerce Six Roads','Anand Nagar Cross Road','Satellite Road','100 Feet Road Prahlad Nagar'],
-    'Satellite':       ['Satellite Main Road','Jodhpur Cross Road','Ambawadi','Nehru Nagar','Judges Bungalow Road'],
-    'Bopal':           ['Bopal Chokdi','South Bopal','Ambli Bopal Road','Shilaj','Ghuma'],
-    'Thaltej':         ['Thaltej Cross Road','SG Highway Thaltej','Sola Road','Science City Road'],
-    'Memnagar':        ['Memnagar Fire Station','Gurukul Road','Drive In Road','Navrangpura'],
-    'Vastrapur':       ['Vastrapur Lake','Vastrapur Cross Road','Judges Bungalow','Bodakdev'],
-    'Bodakdev':        ['Bodakdev Cross Road','100 Feet Road Bodakdev','Sindhu Bhavan Road'],
-    'Navrangpura':     ['CG Road','Navrangpura Cross Road','Swastik Cross Road','Panchvati'],
-    'Chandkheda':      ['Chandkheda Gam','Sola Bhagwat','Visat Cross Road','Tragad'],
-    'Shela':           ['Shela Village','Shela Chokdi','Ambli Road Shela'],
-    'SG Highway':      ['Sola','Gota','Motera','Ranip','Sabarmati'],
-    'CG Road':         ['Navrangpura','Ellisbridge','Paldi','Ambawadi'],
-    'Iscon':           ['Iscon Cross Road','Iscon Ambli Road','Bopal Road'],
-    'Giftcity':        ['GIFT City Block 1','GIFT City Block 2','GIFT City SEZ','Infocity Road'],
-    'Chekhla':         ['Chekhla Gam','Chekhla GIDC','Narol Road'],
-    'Narol':           ['Narol Chokdi','Narol GIDC','Vatva Road'],
-    'Vatva':           ['Vatva GIDC','Vatva Chokdi','Odhav Road'],
-    'Odhav':           ['Odhav GIDC','Odhav Chokdi','Ring Road Odhav'],
-    'Nikol':           ['Nikol Chokdi','Nikol Gam','CTM Cross Road'],
-    'Naroda':          ['Naroda GIDC','Naroda Patia','Naroda Road'],
-    'Vastral':         ['Vastral Gam','Vastral Chokdi','Amraiwadi'],
-    'Maninagar':       ['Maninagar Cross Road','Maninagar Station','Kankaria Road'],
-    'Paldi':           ['Paldi Cross Road','Ellisbridge','Ashram Road'],
-    'Ashram Road':     ['Ashram Road Chokdi','Income Tax','Usmanpura'],
-    'Gandhinagar Highway': ['Chandkheda','Motera','Sabarmati','Ranip'],
-    'Sanand':          ['Sanand GIDC','Sanand Chokdi','Sanand Bavla Road'],
-    'Bavla':           ['Bavla Chokdi','Bavla GIDC'],
-    'Dholka':          ['Dholka Chokdi','Dholka Town'],
-    'Dholera':         ['Dholera SIR','Dholera Township']
+    '100 Feet Road':    ['100 Feet Road Satellite','100 Feet Road Bodakdev','100 Feet Road Prahlad Nagar','100 Feet Road Anand Nagar'],
+    'Adalaj':           ['Adalaj Village','Adalaj Chokdi','Adalaj GIDC','Near Adalaj Stepwell'],
+    'Ambawadi':         ['Ambawadi Circle','Ambawadi Society','Judges Bungalow Road','Nehru Nagar Cross Road'],
+    'Ambli':            ['Ambli Village','Ambli Bopal Road','Ambli Cross Road','Near Ambli Metro'],
+    'Ashram Road':      ['Ashram Road Main','Income Tax','Ellis Bridge','Navrangpura'],
+    'Bavla':            ['Bavla Chokdi','Bavla GIDC','Bavla Village','Near Bavla Highway'],
+    'Bhadaj':           ['Bhadaj Village','Bhadaj Road','Near Bhadaj Lake'],
+    'Bhat':             ['Bhat Village','Bhat GIDC','Near Bhat Flyover'],
+    'Bhuyangdev':       ['Bhuyangdev Cross Road','Bhuyangdev Society','Near Bhuyangdev Temple'],
+    'Bodakdev':         ['Bodakdev Cross Road','100 Feet Road Bodakdev','Sindhu Bhavan Road','Judges Bungalow Road'],
+    'Bopal':            ['Bopal Chokdi','South Bopal','Ambli Bopal Road','Shilaj','Ghuma','Near Bopal Metro'],
+    'CG Road':          ['Navrangpura','Ellisbridge','Paldi','Ambawadi','Swastik Cross Road','Panchvati'],
+    'Chanakyapuri':     ['Chanakyapuri Society','Chanakyapuri Cross Road','Near Chanakyapuri Park'],
+    'Chandkheda':       ['Chandkheda Gam','Sola Bhagwat','Visat Cross Road','Tragad','Near Chandkheda Metro'],
+    'Chandlodia':       ['Chandlodia Village','Chandlodia Cross Road','Near Chandlodia Lake'],
+    'Changodar':        ['Changodar GIDC','Changodar Village','Near Changodar Highway'],
+    'Dholera':          ['Dholera SIR','Dholera Village','Dholera Smart City Zone'],
+    'Drive In Road':    ['Drive In Road Main','Near Drive In Cinema','Memnagar Cross Road'],
+    'Ellisbridge':      ['Ellisbridge Main','Ashram Road','Paldi Cross Road','Near Ellisbridge Gymkhana'],
+    'Ghatlodia':        ['Ghatlodia Cross Road','Ghatlodia Society','Near Ghatlodia Lake','Sola Road'],
+    'Ghuma':            ['Ghuma Village','Ghuma Cross Road','Near Ghuma Lake'],
+    'Gift City':        ['GIFT City Block 1','GIFT City Block 2','GIFT City SEZ','Infocity Road','GIFT City Phase 2'],
+    'Gota':             ['Gota Cross Road','Gota Village','Near Gota Flyover','SG Highway Gota'],
+    'Gulbai Tekra':     ['Gulbai Tekra Main','Near Gulbai Tekra Market','Paldi Road'],
+    'Gurukul':          ['Gurukul Road','Gurukul Cross Road','Drive In Road','Near Gurukul School'],
+    'Hebatpur Road':    ['Hebatpur Village','Hebatpur Cross Road','Near Hebatpur Lake'],
+    'Income Tax':       ['Income Tax Circle','Ashram Road','Near Income Tax Office','Ellisbridge'],
+    'Iscon Ambli Road': ['Iscon Cross Road','Iscon Ambli Road','Bopal Road','Near Iscon Temple'],
+    'Jagatpur':         ['Jagatpur Village','Jagatpur Road','Near Jagatpur GIDC'],
+    'Jivrajpark':       ['Jivrajpark Cross Road','Jivrajpark Society','Near Jivrajpark Metro'],
+    'Jodhpur':          ['Jodhpur Cross Road','Jodhpur Village','Satellite Road','Near Jodhpur Park'],
+    'Kalol':            ['Kalol Town','Kalol GIDC','Near Kalol Highway'],
+    'Koba':             ['Koba Circle','Koba Village','Near Koba Highway','Koba GIDC'],
+    'Koteshwar':        ['Koteshwar Village','Koteshwar Road','Near Koteshwar Temple'],
+    'Kudasan':          ['Kudasan Village','Kudasan Cross Road','Near Kudasan Highway'],
+    'Law Garden':       ['Law Garden Main','Near Law Garden Market','Ellisbridge','Netaji Road'],
+    'Makarba':          ['Makarba Village','Makarba Cross Road','Near Makarba Lake','SG Highway'],
+    'Manekbaug':        ['Manekbaug Society','Manekbaug Cross Road','Near Manekbaug Hall'],
+    'Memnagar':         ['Memnagar Fire Station','Gurukul Road','Drive In Road','Navrangpura','Memnagar Cross Road'],
+    'Mithakhali':       ['Mithakhali Cross Road','Mithakhali Six Roads','Near Mithakhali Market'],
+    'Motera':           ['Motera Stadium Road','Motera Village','Near Motera Metro','Sabarmati'],
+    'Nana Chiloda':     ['Nana Chiloda Village','Nana Chiloda Road','Near Nana Chiloda GIDC'],
+    'Naranpura':        ['Naranpura Cross Road','Naranpura Society','Near Naranpura Market'],
+    'Navrangpura':      ['CG Road','Navrangpura Cross Road','Swastik Cross Road','Panchvati','Near Navrangpura Market'],
+    'Nehru Nagar':      ['Nehru Nagar Cross Road','Nehru Nagar Society','Near Nehru Nagar Market'],
+    'New CG Road':      ['New CG Road Main','Near New CG Road Market','Chandkheda'],
+    'New Ranip':        ['New Ranip Cross Road','New Ranip Society','Near New Ranip Market'],
+    'New Wadaj':        ['New Wadaj Cross Road','New Wadaj Society','Near New Wadaj Market'],
+    'Nirnay Nagar':     ['Nirnay Nagar Cross Road','Nirnay Nagar Society','Near Nirnay Nagar Park'],
+    'Ognaj':            ['Ognaj Village','Ognaj Cross Road','Near Ognaj Lake'],
+    'Paldi':            ['Paldi Cross Road','Paldi Society','Near Paldi Market','Ellisbridge'],
+    'Palodia':          ['Palodia Village','Palodia Cross Road','Near Palodia Lake'],
+    'Pethapur':         ['Pethapur Village','Pethapur Road','Near Pethapur Highway'],
+    'Prahladnagar':     ['Prahlad Nagar Cross Road','Commerce Six Roads','Anand Nagar Cross Road','Satellite Road','100 Feet Road Prahlad Nagar'],
+    'Ramdevnagar':      ['Ramdevnagar Cross Road','Ramdevnagar Society','Near Ramdevnagar Market'],
+    'Rancharda':        ['Rancharda Village','Rancharda Cross Road','Near Rancharda Lake'],
+    'Randesan':         ['Randesan Village','Randesan Cross Road','Near Randesan Highway'],
+    'Ranip':            ['Ranip Cross Road','Ranip Society','Near Ranip Market','New Ranip'],
+    'Raysan':           ['Raysan Village','Raysan Cross Road','Near Raysan Lake'],
+    'Sabarmati':        ['Sabarmati Ashram Road','Sabarmati Cross Road','Near Sabarmati River','Motera'],
+    'Sanand':           ['Sanand GIDC','Sanand Town','Near Sanand Highway','Sanand Village'],
+    'Sanathal':         ['Sanathal Village','Sanathal Cross Road','Near Sanathal Lake'],
+    'Santej':           ['Santej Village','Santej Cross Road','Near Santej Highway'],
+    'Sargasan':         ['Sargasan Cross Road','Sargasan Village','Near Sargasan Highway'],
+    'Sarkhej':          ['Sarkhej Cross Road','Sarkhej Village','Near Sarkhej Roza','Sarkhej Highway'],
+    'Satellite':        ['Satellite Main Road','Jodhpur Cross Road','Ambawadi','Nehru Nagar','Judges Bungalow Road','Commerce Six Roads'],
+    'Science City':     ['Science City Road','Near Science City','Sola Road','Thaltej'],
+    'SG Road':          ['SG Highway Main','Sola','Gota','Motera','Ranip','Near SG Highway Metro'],
+    'Shahibaug':        ['Shahibaug Cross Road','Shahibaug Society','Near Shahibaug Zoo'],
+    'Shastrinagar':     ['Shastrinagar Cross Road','Shastrinagar Society','Near Shastrinagar Market'],
+    'Shela':            ['Shela Village','Shela Chokdi','Ambli Road Shela','Near Shela Lake'],
+    'Shilaj':           ['Shilaj Village','Shilaj Cross Road','Near Shilaj Lake','Ambli Bopal Road'],
+    'Shivranjani':      ['Shivranjani Cross Road','Shivranjani Society','Near Shivranjani Metro'],
+    'Shyamal':          ['Shyamal Cross Road','Shyamal Society','Near Shyamal Market'],
+    'Thaltej':          ['Thaltej Cross Road','SG Highway Thaltej','Sola Road','Science City Road','Near Thaltej Metro'],
+    'Thol':             ['Thol Village','Thol Lake Road','Near Thol Bird Sanctuary'],
+    'Tragad':           ['Tragad Village','Tragad Cross Road','Near Tragad Lake'],
+    'Usmanpura':        ['Usmanpura Cross Road','Usmanpura Society','Near Usmanpura Market'],
+    'Vaishno Devi':     ['Vaishno Devi Circle','Near Vaishno Devi Temple','SG Highway'],
+    'Vasna':            ['Vasna Cross Road','Vasna Society','Near Vasna Market','Paldi'],
+    'Vastrapur':        ['Vastrapur Lake','Vastrapur Cross Road','Judges Bungalow','Bodakdev','Near Vastrapur Metro'],
+    'Vavol':            ['Vavol Village','Vavol Cross Road','Near Vavol Lake'],
+    'Vejalpur':         ['Vejalpur Cross Road','Vejalpur Society','Near Vejalpur Market'],
+    'Zundal':           ['Zundal Village','Zundal Cross Road','Near Zundal Highway']
   },
   'Gandhinagar': {
     'Giftcity':  ['GIFT City Block 1','GIFT City Block 2','GIFT City SEZ'],

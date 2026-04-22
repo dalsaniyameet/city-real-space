@@ -26,10 +26,28 @@ router.post('/', protect, upload.single('file'), async function(req, res) {
   if (!req.file) return res.status(400).json({ success: false, message: 'No file uploaded' });
 
   try {
-    // Buffer ko Cloudinary pe upload karo
+    // Buffer ko Cloudinary pe upload karo with watermark
     const result = await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
-        { folder: 'cityrealspace', resource_type: 'image' },
+        {
+          folder: 'cityrealspace',
+          resource_type: 'image',
+          transformation: [
+            {
+              overlay: {
+                font_family: 'Arial',
+                font_size: 28,
+                font_weight: 'bold',
+                text: 'cityrealspace.com'
+              },
+              color: 'white',
+              opacity: 70,
+              gravity: 'south_east',
+              x: 12,
+              y: 12
+            }
+          ]
+        },
         (error, result) => {
           if (error) reject(error);
           else resolve(result);

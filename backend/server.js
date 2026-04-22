@@ -110,49 +110,47 @@ app.use((req, res, next) => {
 // NOTE: Must be before express.static to prevent static file from intercepting
 app.get('/sitemap.xml', async (req, res) => {
   res.setHeader('Content-Type', 'application/xml');
-  res.setHeader('Cache-Control', 'public, max-age=3600'); // 1 hour cache
+  res.setHeader('Cache-Control', 'public, max-age=3600');
   try {
     const Property = require('./models/Property');
-    // Approved properties — slug ho ya na ho, dono include karo
     const properties = await Property.find({ isApproved: true })
       .select('slug location createdAt updatedAt type status')
       .lean();
 
     const base = 'https://www.cityrealspace.com';
+    const today = new Date().toISOString().split('T')[0];
 
     const staticUrls = [
-      { loc: '/', priority: '1.0', changefreq: 'daily' },
-      { loc: '/properties', priority: '0.9', changefreq: 'daily' },
-      { loc: '/buy', priority: '0.9', changefreq: 'daily' },
-      { loc: '/rent', priority: '0.9', changefreq: 'daily' },
-      { loc: '/new-launch', priority: '0.8', changefreq: 'daily' },
-      { loc: '/resale', priority: '0.8', changefreq: 'daily' },
-      { loc: '/land', priority: '0.7', changefreq: 'daily' },
-      { loc: '/prelease', priority: '0.7', changefreq: 'daily' },
-      { loc: '/blog', priority: '0.8', changefreq: 'daily' },
-      { loc: '/about', priority: '0.7', changefreq: 'weekly' },
-      { loc: '/contact', priority: '0.7', changefreq: 'weekly' },
-      { loc: '/post-property', priority: '0.8', changefreq: 'daily' },
-      { loc: '/faq', priority: '0.6', changefreq: 'weekly' },
-      { loc: '/careers', priority: '0.5', changefreq: 'weekly' },
-      { loc: '/privacy', priority: '0.4', changefreq: 'yearly' },
-      { loc: '/terms', priority: '0.4', changefreq: 'yearly' },
-
+      { loc: '/',             priority: '1.0', changefreq: 'daily',   lastmod: today },
+      { loc: '/properties',   priority: '0.9', changefreq: 'daily',   lastmod: today },
+      { loc: '/buy',          priority: '0.9', changefreq: 'daily',   lastmod: today },
+      { loc: '/rent',         priority: '0.9', changefreq: 'daily',   lastmod: today },
+      { loc: '/new-launch',   priority: '0.8', changefreq: 'daily',   lastmod: today },
+      { loc: '/resale',       priority: '0.8', changefreq: 'daily',   lastmod: today },
+      { loc: '/land',         priority: '0.7', changefreq: 'daily',   lastmod: today },
+      { loc: '/prelease',     priority: '0.7', changefreq: 'daily',   lastmod: today },
+      { loc: '/blog',         priority: '0.8', changefreq: 'weekly',  lastmod: today },
+      { loc: '/post-property',priority: '0.8', changefreq: 'weekly',  lastmod: today },
+      { loc: '/about',        priority: '0.7', changefreq: 'monthly', lastmod: today },
+      { loc: '/contact',      priority: '0.7', changefreq: 'monthly', lastmod: today },
+      { loc: '/faq',          priority: '0.6', changefreq: 'monthly', lastmod: today },
+      { loc: '/careers',      priority: '0.5', changefreq: 'monthly', lastmod: today },
+      { loc: '/privacy',      priority: '0.4', changefreq: 'yearly',  lastmod: today },
+      { loc: '/terms',        priority: '0.4', changefreq: 'yearly',  lastmod: today },
     ];
 
     const staticXml = staticUrls.map(u =>
-      `  <url><loc>${base}${u.loc}</loc><priority>${u.priority}</priority><changefreq>${u.changefreq}</changefreq></url>`
+      `  <url><loc>${base}${u.loc}</loc><lastmod>${u.lastmod}</lastmod><priority>${u.priority}</priority><changefreq>${u.changefreq}</changefreq></url>`
     ).join('\n');
 
     const propXml = properties.map(p => {
       const city = (p.location?.city || 'ahmedabad').toLowerCase().replace(/\s+/g, '-');
       const area = (p.location?.area || 'gujarat').toLowerCase().replace(/\s+/g, '-');
-      const lastmod = (p.updatedAt || p.createdAt) ? (p.updatedAt || p.createdAt).toISOString().split('T')[0] : '';
-      // Slug ho to SEO URL, warna ID-based URL
+      const lastmod = (p.updatedAt || p.createdAt) ? (p.updatedAt || p.createdAt).toISOString().split('T')[0] : today;
       const propLoc = p.slug
         ? `${base}/property/${city}/${area}/${p.slug}`
         : `${base}/property-detail?id=${p._id}`;
-      return `  <url><loc>${propLoc}</loc><priority>0.8</priority><changefreq>weekly</changefreq>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`;
+      return `  <url><loc>${propLoc}</loc><lastmod>${lastmod}</lastmod><priority>0.8</priority><changefreq>weekly</changefreq></url>`;
     }).join('\n');
 
     res.send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticXml}\n${propXml}\n</urlset>`);
@@ -220,6 +218,7 @@ app.use('/api/contact',    require('./routes/contact'));
 app.use('/api/admin',      require('./routes/admin'));
 app.use('/api/blogs',      require('./routes/blogs'));
 app.use('/api/upload',     require('./routes/upload'));
+app.use('/api/nearby',     require('./routes/nearby'));
 
 // SEO-friendly property URLs — /property/:city/:area/:slug
 app.get('/property/:city/:area/:slug', (req, res) => {

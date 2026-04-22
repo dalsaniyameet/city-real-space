@@ -1,13 +1,13 @@
-const API = (function() {
+﻿const API = (function() {
   if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     return 'http://localhost:5000/api';
   }
   return 'https://city-real-space.vercel.app/api';
 })();
 
-console.log('🔒 Admin Panel Script - API Endpoint:', API);
+console.log('ðŸ”’ Admin Panel Script - API Endpoint:', API);
 
-// ===== CITY → LOCALITY DATA =====
+// ===== CITY â†’ LOCALITY DATA =====
 const cityLocalities = {
   'Ahmedabad': {
     '100 Feet Road':   ['100 Feet Road Satellite','100 Feet Road Bodakdev','100 Feet Road Prahlad Nagar','100 Feet Road Anand Nagar'],
@@ -130,7 +130,7 @@ const cityLocalities = {
   }
 };
 
-// City change → populate locality
+// City change â†’ populate locality
 document.getElementById('pCitySelect').addEventListener('change', function() {
   const city = this.value;
   const areaEl = document.getElementById('pAreaSelect');
@@ -144,7 +144,7 @@ document.getElementById('pCitySelect').addEventListener('change', function() {
   document.getElementById('projectDropdown').style.display = 'none';
 });
 
-// Locality change → populate sub-area + projects
+// Locality change â†’ populate sub-area + projects
 document.getElementById('pAreaSelect').addEventListener('change', function() {
   const city  = document.getElementById('pCitySelect').value;
   const area  = this.value;
@@ -162,14 +162,14 @@ document.getElementById('pAreaSelect').addEventListener('change', function() {
   document.getElementById('projectDropdown').style.display = 'none';
 });
 
-// Sub-area select → fill text input
+// Sub-area select â†’ fill text input
 document.getElementById('pSubAreaSelect').addEventListener('change', function() {
   if (this.value && this.value !== '__other__') {
     document.getElementById('pSubArea') && (document.getElementById('pSubArea').value = this.value);
   }
 });
 
-// Project smart combo — shows ALL projects from all cities/areas
+// Project smart combo â€” shows ALL projects from all cities/areas
 function onProjectInput(query) {
   var city = document.getElementById('pCitySelect').value;
   var area = document.getElementById('pAreaSelect').value;
@@ -208,14 +208,14 @@ function onProjectInput(query) {
       + '<i class="fa-solid fa-building" style="color:#FF4D4D;margin-right:8px;font-size:0.75rem;"></i>' + p + '</div>';
   }).join('');
 
-  // If typed something and no match — show "Use: <typed>" option
+  // If typed something and no match â€” show "Use: <typed>" option
   if (q && filtered.length === 0) {
     items = '<div onclick="selectProject(\'' + query.replace(/'/g, "\\'") + '\')" ' +
       'style="padding:10px 14px;cursor:pointer;font-size:0.85rem;color:#E53935;border-bottom:1px solid #f5f5f5;transition:background 0.15s;" ' +
       'onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'\'">'
       + '<i class="fa-solid fa-plus" style="color:#E53935;margin-right:8px;font-size:0.75rem;"></i>Add "' + query + '" manually</div>';
   } else if (q && !filtered.some(function(p) { return p.toLowerCase() === q; })) {
-    // Typed something, some matches exist but exact not found — add option at bottom
+    // Typed something, some matches exist but exact not found â€” add option at bottom
     items += '<div onclick="selectProject(\'' + query.replace(/'/g, "\\'") + '\')" ' +
       'style="padding:10px 14px;cursor:pointer;font-size:0.85rem;color:#E53935;transition:background 0.15s;background:#fff8f8;" ' +
       'onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'#fff8f8\'">' +
@@ -239,7 +239,7 @@ document.addEventListener('click', function(e) {
   if (dd && inp && !dd.contains(e.target) && e.target !== inp) dd.style.display = 'none';
 });
 
-// cityData reference for projects — real Ahmedabad societies/projects
+// cityData reference for projects â€” real Ahmedabad societies/projects
 const cityData = {
   'Ahmedabad': {
     '100 Feet Road':    { projects: ['Shivalik Sharda','Rajpath Rangoli','Safal Profitaire','Iscon Platinum','Goyal Intercity'] },
@@ -361,7 +361,7 @@ const cityData = {
   }
 };
 
-// ===== AUTH GUARD — instant check before anything loads =====
+// ===== AUTH GUARD â€” instant check before anything loads =====
 const adminToken = localStorage.getItem('adminToken');
 const adminUser  = JSON.parse(localStorage.getItem('adminUser') || 'null');
 if (!adminToken || !adminUser || adminUser.role !== 'admin') {
@@ -369,7 +369,7 @@ if (!adminToken || !adminUser || adminUser.role !== 'admin') {
   throw new Error('Unauthorized');
 }
 
-// ===== SESSION TIMEOUT — 24 hours =====
+// ===== SESSION TIMEOUT â€” 24 hours =====
 const SESSION_TIMEOUT = 24 * 60 * 60 * 1000;
 let _sessionTimer;
 
@@ -380,7 +380,7 @@ function resetSessionTimer() {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminUser');
     localStorage.removeItem('adminLastActive');
-    alert('⏰ Session expired due to inactivity. Please login again.');
+    alert('â° Session expired due to inactivity. Please login again.');
     window.location.replace('login.html');
   }, SESSION_TIMEOUT);
 }
@@ -406,7 +406,7 @@ if (lastActive && (Date.now() - lastActive) > SESSION_TIMEOUT) {
       localStorage.removeItem('adminLastActive');
       window.location.replace('login.html');
     }
-  } catch(e) { /* network error — keep session */ }
+  } catch(e) { /* network error â€” keep session */ }
 })();
 
 ['mousemove','keydown','click','scroll','touchstart'].forEach(function(evt) {
@@ -620,15 +620,15 @@ function renderPropRow(p) {
   var score = calcPropScore(p);
   var sc = score >= 75 ? '#10b981' : score >= 50 ? '#3b82f6' : score >= 25 ? '#f59e0b' : '#ef4444';
   var sb = score >= 75 ? 'rgba(16,185,129,0.12)' : score >= 50 ? 'rgba(59,130,246,0.12)' : score >= 25 ? 'rgba(245,158,11,0.12)' : 'rgba(239,68,68,0.12)';
-  var sl = score >= 75 ? 'ðŸ”¥' : score >= 50 ? 'âš¡' : score >= 25 ? 'âš ï¸' : 'ðŸ“‰';
+  var sl = score >= 75 ? 'Ã°Å¸â€Â¥' : score >= 50 ? 'Ã¢Å¡Â¡' : score >= 25 ? 'Ã¢Å¡Â Ã¯Â¸Â' : 'Ã°Å¸â€œâ€°';
   var scoreBadge = '<div style="display:inline-flex;align-items:center;gap:4px;background:' + sb + ';color:' + sc + ';font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;margin-top:3px;">' + sl + ' ' + score + '/100</div>';
   return '<tr>' +
     '<td><div style="display:flex;align-items:center;gap:10px">' +
     (p.images && p.images[0] ? '<img src="' + p.images[0] + '" class="prop-thumb" alt=""/>' : '<div style="width:48px;height:36px;background:rgba(255,255,255,0.05);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#555"><i class="fa-solid fa-image"></i></div>') +
-    '<div class="prop-info"><strong>' + p.title + '</strong><span>' + (p.isFeatured ? 'ðŸ”¥ ' : '') + (p.agent && p.agent.name ? p.agent.name : '') + '</span>' + scoreBadge + '</div></div></td>' +
+    '<div class="prop-info"><strong>' + p.title + '</strong><span>' + (p.isFeatured ? 'Ã°Å¸â€Â¥ ' : '') + (p.agent && p.agent.name ? p.agent.name : '') + '</span>' + scoreBadge + '</div></div></td>' +
     '<td style="white-space:normal">' + catBadge + '</td>' +
-    '<td>' + (p.location ? p.location.area + ', ' + p.location.city : 'â€”') + '</td>' +
-    '<td><strong>' + (p.priceLabel || 'â‚¹' + p.price) + '</strong></td>' +
+    '<td>' + (p.location ? p.location.area + ', ' + p.location.city : 'Ã¢â‚¬â€') + '</td>' +
+    '<td><strong>' + (p.priceLabel || 'Ã¢â€šÂ¹' + p.price) + '</strong></td>' +
     '<td><span class="badge ' + (p.status === 'for-sale' ? 'badge-green' : p.status === 'for-rent' ? 'badge-blue' : 'badge-orange') + '">' + p.status + '</span></td>' +
     '<td><span class="badge ' + (p.isApproved ? 'badge-green' : 'badge-orange') + '">' + (p.isApproved ? 'Approved' : 'Pending') + '</span></td>' +
     '<td><div class="act-btns">' +
@@ -678,7 +678,7 @@ function applyPropFilter(cat) {
   const tbody = document.getElementById('propTbody');
   tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px"><i class="fa-solid fa-spinner fa-spin" style="color:var(--accent);font-size:1.5rem"></i></td></tr>';
   const paramMap = { residential: '?category=residential', commercial: '?category=commercial', trending: '?featured=true' };
-  const emptyMsg = { residential: 'No residential properties found.', commercial: 'No commercial properties found.', trending: 'No trending properties. Click 🔥 on any property to mark it trending.' };
+  const emptyMsg = { residential: 'No residential properties found.', commercial: 'No commercial properties found.', trending: 'No trending properties. Click ðŸ”¥ on any property to mark it trending.' };
   api('GET', '/properties' + (paramMap[cat] || '')).then(function(data) {
     if (!data.success || !data.properties || !data.properties.length) {
       tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="fa-solid fa-building"></i><p>' + (emptyMsg[cat] || 'No properties found.') + '</p></div></td></tr>';
@@ -707,6 +707,24 @@ document.getElementById('addPropBtn').addEventListener('click', function() {
   document.getElementById('pApproved').checked = true;
   document.getElementById('pImage').value = '';
   document.getElementById('pImagePreview').innerHTML = '';
+  var ppsfReset = document.getElementById('pPricePerSqft');
+  if (ppsfReset) { ppsfReset.value = ''; ppsfReset.dataset.manual = '0'; }
+  var ppsfHint = document.getElementById('pricePerSqftHint');
+
+
+  var plReset = document.getElementById('pPriceLabel'); if (plReset) { plReset.value = ''; plReset.dataset.manual = ''; }
+
+
+  var unitReset = document.getElementById('pPriceUnit');
+  if (unitReset) unitReset.value = 'cr';
+  // RERA default
+  var reraReset = document.getElementById('pReraNo');
+  if (reraReset) reraReset.value = 'NTC Reg No: 12376';
+  // Possession default + auto date
+  var possReset = document.getElementById('pPossession');
+  if (possReset) { possReset.value = 'Ready to Move'; autoAvailDate('Ready to Move'); }
+  var avReset = document.getElementById('pAvailDate');
+  if (avReset) avReset.dataset.manual = '';
   // Reset dynamic dropdowns
   document.getElementById('pAreaSelect').innerHTML = '<option value="">-- Select City First --</option>';
   document.getElementById('pSubAreaSelect').innerHTML = '<option value="">-- Select Locality First --</option>';
@@ -735,6 +753,28 @@ function editProperty(p) {
   document.getElementById('pTitle').value   = p.title || '';
   document.getElementById('pPriceLabel').value = p.priceLabel || '';
   document.getElementById('pPrice').value   = p.price || '';
+  if (p.price) {
+    var ap = p.price;
+    var unitEl2 = document.getElementById('pPriceUnit');
+    var priceEl2 = document.getElementById('pPrice');
+    if (ap >= 10000000) {
+      if (unitEl2) unitEl2.value = 'cr';
+      if (priceEl2) priceEl2.value = parseFloat((ap/10000000).toFixed(4).replace(/\.?0+$/,''));
+    } else if (ap >= 100000) {
+      if (unitEl2) unitEl2.value = 'lakh';
+      if (priceEl2) priceEl2.value = parseFloat((ap/100000).toFixed(4).replace(/\.?0+$/,''));
+    } else if (ap >= 1000) {
+      if (unitEl2) unitEl2.value = 'k';
+      if (priceEl2) priceEl2.value = parseFloat((ap/1000).toFixed(2).replace(/\.?0+$/,''));
+    } else {
+      if (unitEl2) unitEl2.value = 'rs';
+      if (priceEl2) priceEl2.value = ap;
+    }
+    _actualPrice = ap;
+    var plEl = document.getElementById('pPriceLabel');
+    if (plEl) { plEl.value = p.priceLabel || ''; plEl.dataset.manual = p.priceLabel ? '1' : ''; }
+    autoPriceLabel();
+  }
   document.getElementById('pType').value    = p.type  || '';
   document.getElementById('pDesc').value    = p.description || '';
   document.getElementById('pFeatured').checked = p.isFeatured  || false;
@@ -744,6 +784,66 @@ function editProperty(p) {
   document.getElementById('pToken').value      = ex.tokenAmount || '';
   document.getElementById('pPossession').value = ex.possession  || 'Ready to Move';
   document.getElementById('pReraNo') && (document.getElementById('pReraNo').value = ex.reraNo || '');
+
+  // ===== STEP 3 MISSING FIELDS =====
+  // Deposit toggle
+  var depositVal = ex.deposit || 'None';
+  document.getElementById('pDeposit') && (document.getElementById('pDeposit').value = depositVal);
+  document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+    var oc = b.getAttribute('onclick') || '';
+    if (oc.indexOf("'pDeposit'") !== -1) b.classList.toggle('active', oc.indexOf("'" + depositVal + "'") !== -1);
+  });
+  // Availability date
+  document.getElementById('pAvailDate') && (document.getElementById('pAvailDate').value = ex.availDate || ex.availFrom || '');
+  var avEditEl = document.getElementById('pAvailDate');
+  if (avEditEl) avEditEl.dataset.manual = avEditEl.value ? '1' : '';
+  // Floor / Total Floors (step 3 fields)
+  document.getElementById('pFloor')       && (document.getElementById('pFloor').value       = ex.floor       || '');
+  document.getElementById('pTotalFloors') && (document.getElementById('pTotalFloors').value = ex.totalFloors || '');
+  // Sell pricing
+  var allInc = ex.allInclusive || 'Yes';
+  var negot  = ex.negotiable   || 'Yes';
+  var taxCh  = ex.taxCharges   || 'Included';
+  document.getElementById('pAllInclusive')     && (document.getElementById('pAllInclusive').value     = allInc);
+  document.getElementById('pNegotiable')       && (document.getElementById('pNegotiable').value       = negot);
+  document.getElementById('pTaxCharges')       && (document.getElementById('pTaxCharges').value       = taxCh);
+  document.getElementById('pBookingAmount')    && (document.getElementById('pBookingAmount').value    = ex.bookingAmount    || '');
+  document.getElementById('pMaintenance')      && (document.getElementById('pMaintenance').value      = ex.maintenance      || '');
+  document.getElementById('pAnnualDues')       && (document.getElementById('pAnnualDues').value       = ex.annualDues       || '');
+  document.getElementById('pMembershipCharge') && (document.getElementById('pMembershipCharge').value = ex.membershipCharge || '');
+  // Sell pricing toggles
+  [['pAllInclusive', allInc], ['pNegotiable', negot], ['pTaxCharges', taxCh]].forEach(function(pair) {
+    document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+      var oc = b.getAttribute('onclick') || '';
+      if (oc.indexOf("'" + pair[0] + "'") !== -1) b.classList.toggle('active', oc.indexOf("'" + pair[1] + "'") !== -1);
+    });
+  });
+  // Rent pricing
+  document.getElementById('rMaintenance')  && (document.getElementById('rMaintenance').value  = ex.maintenance_rent || '');
+  document.getElementById('rLockIn')       && (document.getElementById('rLockIn').value       = ex.lockIn           || '');
+  document.getElementById('rNoticePeriod') && (document.getElementById('rNoticePeriod').value = ex.noticePeriod     || '');
+  document.getElementById('rRentIncrease') && (document.getElementById('rRentIncrease').value = ex.rentIncrease     || '');
+  var brokVal = ex.brokerage || 'None';
+  document.getElementById('rBrokerage') && (document.getElementById('rBrokerage').value = brokVal);
+  document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+    var oc = b.getAttribute('onclick') || '';
+    if (oc.indexOf("'rBrokerage'") !== -1) b.classList.toggle('active', oc.indexOf("'" + brokVal + "'") !== -1);
+  });
+  // Commercial lease terms
+  document.getElementById('cLockIn')       && (document.getElementById('cLockIn').value       = ex.cLockIn       || ex.lockIn       || '');
+  document.getElementById('cNoticePeriod') && (document.getElementById('cNoticePeriod').value = ex.cNoticePeriod || ex.noticePeriod || '');
+  document.getElementById('cRentIncrease') && (document.getElementById('cRentIncrease').value = ex.cRentIncrease || ex.rentIncrease || '');
+  var cBrokVal = ex.cBrokerage || ex.brokerage || 'None';
+  document.getElementById('cBrokerage') && (document.getElementById('cBrokerage').value = cBrokVal);
+  document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+    var oc = b.getAttribute('onclick') || '';
+    if (oc.indexOf("'cBrokerage'") !== -1) b.classList.toggle('active', oc.indexOf("'" + cBrokVal + "'") !== -1);
+  });
+  // Step 4 fields
+  document.getElementById('pVideoUrl')     && (document.getElementById('pVideoUrl').value     = p.videoUrl     || '');
+  document.getElementById('pPricePerSqft') && (document.getElementById('pPricePerSqft').value = p.pricePerSqft || '');
+  var ppsfEl = document.getElementById('pPricePerSqft');
+  if (ppsfEl) ppsfEl.dataset.manual = p.pricePerSqft ? '1' : '0';
 
   // Commercial lift fields
   // Office area fields
@@ -787,11 +887,140 @@ function editProperty(p) {
   // Restore pType after filterPropertyTypeByCategory resets it
   var pTypeEl = document.getElementById('pType');
   if (pTypeEl) {
-    // Re-enable all options first
     pTypeEl.querySelectorAll('option,optgroup').forEach(function(o) { o.disabled = false; o.style.display = ''; });
     pTypeEl.value = p.type || '';
   }
   updateAdminTypeFields();
+
+  // ===== Fill all residential fields AFTER type fields are shown =====
+  setTimeout(function() {
+    // BHK chips
+    var bedsVal2 = String(p.specs && p.specs.beds ? (p.specs.beds >= 4 ? '4' : p.specs.beds) : '');
+    document.getElementById('pBeds').value = bedsVal2;
+    document.querySelectorAll('#bhkChips .hs-chip').forEach(function(c) {
+      c.classList.toggle('active', c.textContent.trim().startsWith(bedsVal2));
+    });
+    function setChip2(chipsId, val) {
+      var el = document.getElementById(chipsId); if (!el) return;
+      el.value = String(val);
+      var chips = el.closest('.hs-field') ? el.closest('.hs-field').querySelectorAll('.hs-chip') : [];
+      chips.forEach(function(c) {
+        c.classList.toggle('active',
+          c.textContent.trim() === String(val) ||
+          (String(val) >= '4' && c.textContent.trim() === '4+') ||
+          (String(val) >= '5' && c.textContent.trim() === '5+')
+        );
+      });
+    }
+    setChip2('rBeds',      ex.beds      || (p.specs && p.specs.beds  ? p.specs.beds  : ''));
+    setChip2('rBaths',     ex.baths     || (p.specs && p.specs.baths ? p.specs.baths : ''));
+    setChip2('rBalconies', ex.balconies || '0');
+    // Area
+    var rCarpetEl = document.getElementById('rCarpet'); if (rCarpetEl) rCarpetEl.value = ex.carpetArea || '';
+    var rSBAEl    = document.getElementById('rSBA');    if (rSBAEl)    rSBAEl.value    = ex.superBuiltUp || (p.specs && p.specs.sqft ? p.specs.sqft : '');
+    var pSqftEl   = document.getElementById('pSqft');   if (pSqftEl)   pSqftEl.value   = ex.superBuiltUp || (p.specs && p.specs.sqft ? p.specs.sqft : '');
+    // Floor
+    var rFloorEl = document.getElementById('rFloor'); if (rFloorEl) rFloorEl.value = ex.floor || '';
+    var rTFEl    = document.getElementById('rTotalFloors'); if (rTFEl) rTFEl.value = ex.totalFloors || '';
+    document.getElementById('pFloor')       && (document.getElementById('pFloor').value       = ex.floor       || '');
+    document.getElementById('pTotalFloors') && (document.getElementById('pTotalFloors').value = ex.totalFloors || '');
+    // Lift
+    var liftVal2 = ex.lift || 'Available';
+    document.getElementById('rLift') && (document.getElementById('rLift').value = liftVal2);
+    document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+      var oc = b.getAttribute('onclick') || '';
+      if (oc.indexOf("'rLift'") !== -1) b.classList.toggle('active', oc.indexOf("'" + liftVal2 + "'") !== -1);
+    });
+    // Parking
+    var covP2 = ex.coveredParking || '0', openP2 = ex.openParking || '0';
+    var covEl2 = document.getElementById('rCoveredParking');
+    if (covEl2) { covEl2.value = covP2; var cd2 = document.getElementById('rCoveredParkingDisplay'); if (cd2) cd2.textContent = covP2; }
+    var opEl2 = document.getElementById('rOpenParking');
+    if (opEl2)  { opEl2.value = openP2; var od2 = document.getElementById('rOpenParkingDisplay');    if (od2) od2.textContent = openP2; }
+    // Facing / Ownership / Age
+    var rFacingEl = document.getElementById('rFacing'); if (rFacingEl) rFacingEl.value = ex.facing || '';
+    var rOwnEl    = document.getElementById('rOwnership'); if (rOwnEl) rOwnEl.value = ex.ownership || '';
+    var rAgeEl    = document.getElementById('rAge'); if (rAgeEl) rAgeEl.value = ex.ageOfProperty || '';
+    document.getElementById('pAgeOfProperty') && (document.getElementById('pAgeOfProperty').value = ex.ageOfProperty || '');
+    // Furnishing
+    var furnVal2 = ex.furnished || ex.oFurnishing || 'Unfurnished';
+    document.getElementById('rFurnishing') && (document.getElementById('rFurnishing').value = furnVal2);
+    document.getElementById('pFurnished')  && (document.getElementById('pFurnished').value  = furnVal2);
+    document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+      var oc = b.getAttribute('onclick') || '';
+      if (oc.indexOf('setResFurnishing') !== -1) b.classList.toggle('active', oc.indexOf("'" + furnVal2 + "'") !== -1);
+    });
+    var fi2 = document.getElementById('furnishingItems');
+    if (fi2) fi2.style.display = (furnVal2 === 'Unfurnished') ? 'none' : 'block';
+    // Available From / Suitable For
+    var rAFEl = document.getElementById('rAvailFrom'); if (rAFEl) rAFEl.value = ex.availFrom || '';
+    var rSFEl = document.getElementById('rSuitableFor');
+    if (rSFEl) {
+      rSFEl.value = ex.suitableFor || 'Family';
+      document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+        var oc = b.getAttribute('onclick') || '';
+        if (oc.indexOf("'rSuitableFor'") !== -1) b.classList.toggle('active', oc.indexOf("'" + (ex.suitableFor||'Family') + "'") !== -1);
+      });
+    }
+    // Amenity toggles
+    function setToggle2(fieldId, val) {
+      var el = document.getElementById(fieldId); if (!el || !val) return;
+      el.value = val;
+      document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
+        var oc = b.getAttribute('onclick') || '';
+        if (oc.indexOf("'" + fieldId + "'") !== -1) b.classList.toggle('active', oc.indexOf("'" + val + "'") !== -1);
+      });
+    }
+    setToggle2('rSecurity',    ex.security    || 'Yes');
+    setToggle2('rCCTV',        ex.cctv        || 'Yes');
+    setToggle2('rWater',       ex.waterSupply || '24x7');
+    setToggle2('rPowerBackup', ex.powerBackup || 'Yes');
+    setToggle2('rGarden',      ex.garden      || 'Not Available');
+    setToggle2('rGymPool',     ex.gymPool     || 'Not Available');
+    // Amenities checkboxes
+    initAmenitiesGrid(p.amenities || []);
+
+    // ===== OFFICE FIELDS FILL =====
+    if (p.type === 'office' || p.type === 'coworking') {
+      var el = function(id){ return document.getElementById(id); };
+      el('oCarpet') && (el('oCarpet').value = ex.oCarpet || ex.carpetArea || '');
+      el('oSBA')    && (el('oSBA').value    = ex.oSBA    || ex.superBuiltUp || (p.specs&&p.specs.sqft?p.specs.sqft:'') || '');
+      el('oCabins')          && (el('oCabins').value          = ex.oCabins          || '');
+      el('oMinSeats')        && (el('oMinSeats').value        = ex.oMinSeats        || '');
+      el('oMaxSeats')        && (el('oMaxSeats').value        = ex.oMaxSeats        || '');
+      el('oWorkstations')    && (el('oWorkstations').value    = ex.oWorkstations    || '');
+      el('oConferenceRooms') && (el('oConferenceRooms').value = ex.oConferenceRooms || '');
+      el('oStaircase')       && (el('oStaircase').value       = ex.oStaircase       || '');
+      el('oTotalFloors')     && (el('oTotalFloors').value     = ex.oTotalFloors     || ex.commTotalFloors || '');
+      el('oYourFloor')       && (el('oYourFloor').value       = ex.oYourFloor       || ex.commYourFloor  || '');
+      el('oLiftCommon')      && (el('oLiftCommon').value      = ex.officeLiftPassenger || '');
+      el('oLiftOwner')       && (el('oLiftOwner').value       = ex.officeLiftService   || '');
+      el('oLiftOwnerPrivate')&& (el('oLiftOwnerPrivate').value= ex.officeLiftOwner     || '');
+      el('oOwnership')  && (el('oOwnership').value  = ex.oOwnership  || '');
+      el('oPrevUsed')   && (el('oPrevUsed').value   = ex.oPrevUsed   || '');
+      el('oSuitableFor')&& (el('oSuitableFor').value= ex.oSuitableFor|| '');
+      el('oWashMale')   && (el('oWashMale').checked   = ex.oWashMale   || false);
+      el('oWashFemale') && (el('oWashFemale').checked = ex.oWashFemale || false);
+      el('oWashCommon') && (el('oWashCommon').checked = ex.oWashCommon || false);
+      var meetVal = String(ex.oMeetingRooms || '0');
+      el('oMeetingRooms') && (el('oMeetingRooms').value = meetVal);
+      var tgls = [['oReception',ex.oReception||'No'],['oPantry',ex.oPantry||'No'],['oFurnishing',ex.oFurnishing||'Unfurnished'],['oAC',ex.oAC||'None'],['oParking',ex.oParking||'Not Available'],['oFireNOC',ex.oFireNOC||'No'],['oOccupancy',ex.oOccupancy||'No'],['oUPS',ex.oUPS||'No']];
+      tgls.forEach(function(t){
+        el(t[0]) && (el(t[0]).value = t[1]);
+        document.querySelectorAll('.hs-toggle-btn').forEach(function(b){
+          var oc=b.getAttribute('onclick')||'';
+          if(oc.indexOf(t[0])!==-1) b.classList.toggle('active',oc.indexOf(t[1])!==-1);
+        });
+      });
+      document.querySelectorAll('.hs-toggle-btn').forEach(function(b){
+        var oc=b.getAttribute('onclick')||'';
+        if(oc.indexOf('setMeetingRooms')!==-1) b.classList.toggle('active',oc.indexOf(meetVal)!==-1);
+      });
+    }
+
+    // Score update
+    updateAdminScore();
+  }, 150);
 
   // Status toggle
   var status = p.status || 'for-sale';
@@ -801,7 +1030,7 @@ function editProperty(p) {
     if (oc.indexOf("'pStatus'") !== -1) b.classList.toggle('active', oc.indexOf("'" + status + "'") !== -1);
   });
 
-  // City â†’ Locality â†’ SubArea
+  // City Ã¢â€ â€™ Locality Ã¢â€ â€™ SubArea
   var city    = p.location ? p.location.city : '';
   var area    = p.location ? p.location.area : '';
   var subArea = ex.subArea || '';
@@ -820,114 +1049,6 @@ function editProperty(p) {
     '<option value="__other__">Other (Type Manually)</option>';
   subEl.value = subArea;
   document.getElementById('pProject').value = ex.project || '';
-
-  // BHK chips
-  var bedsVal = String(p.specs && p.specs.beds ? (p.specs.beds >= 4 ? '4' : p.specs.beds) : '');
-  document.getElementById('pBeds').value = bedsVal;
-  document.querySelectorAll('#bhkChips .hs-chip').forEach(function(c) {
-    c.classList.toggle('active', c.textContent.trim().startsWith(bedsVal));
-  });
-
-  // Residential fields
-  function setChip(chipsId, val) {
-    var el = document.getElementById(chipsId);
-    if (!el) return;
-    el.value = val;
-    var chips = el.closest('.hs-field') ? el.closest('.hs-field').querySelectorAll('.hs-chip') : [];
-    chips.forEach(function(c) { c.classList.toggle('active', c.textContent.trim() === String(val) || (String(val) >= '4' && c.textContent.trim() === '4+') || (String(val) >= '5' && c.textContent.trim() === '5+')); });
-  }
-
-  setChip('rBeds',      ex.beds      || (p.specs && p.specs.beds  ? p.specs.beds  : ''));
-  setChip('rBaths',     ex.baths     || (p.specs && p.specs.baths ? p.specs.baths : ''));
-  setChip('rBalconies', ex.balconies || '0');
-
-  var rCarpet = document.getElementById('rCarpet'); if (rCarpet) rCarpet.value = ex.carpetArea || '';
-  var rSBA    = document.getElementById('rSBA');    if (rSBA)    rSBA.value    = ex.superBuiltUp || (p.specs && p.specs.sqft ? p.specs.sqft : '');
-  var pSqft   = document.getElementById('pSqft');   if (pSqft)   pSqft.value   = ex.superBuiltUp || (p.specs && p.specs.sqft ? p.specs.sqft : '');
-
-  // Floor / Lift
-  var rFloor = document.getElementById('rFloor'); if (rFloor) rFloor.value = ex.floor || '';
-  var rTF    = document.getElementById('rTotalFloors'); if (rTF) rTF.value = ex.totalFloors || '';
-  document.getElementById('pFloor') && (document.getElementById('pFloor').value = ex.floor || '');
-  document.getElementById('pTotalFloors') && (document.getElementById('pTotalFloors').value = ex.totalFloors || '');
-
-  // Lift toggle
-  var liftVal = ex.lift || 'Available';
-  document.getElementById('rLift') && (document.getElementById('rLift').value = liftVal);
-  document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
-    var oc = b.getAttribute('onclick') || '';
-    if (oc.indexOf("'rLift'") !== -1) b.classList.toggle('active', oc.indexOf("'" + liftVal + "'") !== -1);
-  });
-
-  // Parking counters
-  var covP = ex.coveredParking || '0', openP = ex.openParking || '0';
-  var covEl = document.getElementById('rCoveredParking'); if (covEl) { covEl.value = covP; var cd = document.getElementById('rCoveredParkingDisplay'); if (cd) cd.textContent = covP; }
-  var opEl  = document.getElementById('rOpenParking');    if (opEl)  { opEl.value  = openP; var od = document.getElementById('rOpenParkingDisplay');    if (od) od.textContent = openP; }
-
-  // Facing / Ownership / Age
-  var rFacing = document.getElementById('rFacing'); if (rFacing) rFacing.value = ex.facing || '';
-  var rOwn    = document.getElementById('rOwnership'); if (rOwn) rOwn.value = ex.ownership || '';
-  var rAge    = document.getElementById('rAge'); if (rAge) rAge.value = ex.ageOfProperty || '';
-  document.getElementById('pAgeOfProperty') && (document.getElementById('pAgeOfProperty').value = ex.ageOfProperty || '');
-
-  // Furnishing
-  var furnVal = ex.furnished || ex.oFurnishing || 'Unfurnished';
-  document.getElementById('rFurnishing') && (document.getElementById('rFurnishing').value = furnVal);
-  document.getElementById('pFurnished')  && (document.getElementById('pFurnished').value  = furnVal);
-  document.getElementById('oFurnishing') && (document.getElementById('oFurnishing').value = furnVal);
-  document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
-    var oc = b.getAttribute('onclick') || '';
-    if (oc.indexOf('setResFurnishing') !== -1 || oc.indexOf("'oFurnishing'") !== -1) b.classList.toggle('active', oc.indexOf("'" + furnVal + "'") !== -1);
-  });
-  var fi = document.getElementById('furnishingItems');
-  if (fi) fi.style.display = (furnVal === 'Unfurnished') ? 'none' : 'block';
-
-  // Available From / Suitable For
-  var rAF = document.getElementById('rAvailFrom'); if (rAF) rAF.value = ex.availFrom || '';
-  var rSF = document.getElementById('rSuitableFor'); if (rSF) {
-    rSF.value = ex.suitableFor || 'Family';
-    document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
-      var oc = b.getAttribute('onclick') || '';
-      if (oc.indexOf("'rSuitableFor'") !== -1) b.classList.toggle('active', oc.indexOf("'" + (ex.suitableFor||'Family') + "'") !== -1);
-    });
-  }
-
-  // Amenity toggles helper
-  function setToggle(fieldId, val) {
-    var el = document.getElementById(fieldId); if (!el || !val) return;
-    el.value = val;
-    document.querySelectorAll('.hs-toggle-btn').forEach(function(b) {
-      var oc = b.getAttribute('onclick') || '';
-      if (oc.indexOf("'" + fieldId + "'") !== -1) b.classList.toggle('active', oc.indexOf("'" + val + "'") !== -1);
-    });
-  }
-  setToggle('rSecurity',    ex.security    || 'Yes');
-  setToggle('rCCTV',        ex.cctv        || 'Yes');
-  setToggle('rWater',       ex.waterSupply || '24x7');
-  setToggle('rPowerBackup', ex.powerBackup || 'Yes');
-  setToggle('rGarden',      ex.garden      || 'Not Available');
-  setToggle('rGymPool',     ex.gymPool     || 'Not Available');
-
-  // Sell pricing
-  setToggle('pAllInclusive', ex.allInclusive || 'Yes');
-  setToggle('pNegotiable',   ex.negotiable   || 'Yes');
-  setToggle('pTaxCharges',   ex.taxCharges   || 'Included');
-  document.getElementById('pBookingAmount')    && (document.getElementById('pBookingAmount').value    = ex.bookingAmount    || '');
-  document.getElementById('pMaintenance')      && (document.getElementById('pMaintenance').value      = ex.maintenance      || '');
-  document.getElementById('pAnnualDues')       && (document.getElementById('pAnnualDues').value       = ex.annualDues       || '');
-  document.getElementById('pMembershipCharge') && (document.getElementById('pMembershipCharge').value = ex.membershipCharge || '');
-
-  // Rent pricing
-  document.getElementById('rMaintenance')  && (document.getElementById('rMaintenance').value  = ex.maintenance_rent || '');
-  document.getElementById('rLockIn')       && (document.getElementById('rLockIn').value       = ex.lockIn           || '');
-  document.getElementById('rNoticePeriod') && (document.getElementById('rNoticePeriod').value = ex.noticePeriod     || '');
-  setToggle('rBrokerage', ex.brokerage || 'None');
-
-  // Stepper reset to step 1
-  document.querySelectorAll('.step-panel').forEach(function(s) { s.classList.remove('active','slide-back'); });
-  document.querySelectorAll('.stepper-step').forEach(function(t) { t.classList.remove('active','done'); });
-  document.getElementById('step-1').classList.add('active');
-  document.getElementById('step-tab-1').classList.add('active');
   updateStepperProgress(1);
 
   // Type fields + amenities
@@ -1021,7 +1142,7 @@ document.getElementById('propForm').addEventListener('submit', async function(e)
   const body = {
     title: document.getElementById('pTitle').value,
     priceLabel: document.getElementById('pPriceLabel').value,
-    price: Number(document.getElementById('pPrice').value),
+    price: _actualPrice > 0 ? _actualPrice : Number(document.getElementById('pPrice').value),
     type: document.getElementById('pType').value,
     category: document.getElementById('pCategory').value,
     status: document.getElementById('pStatus').value,
@@ -1056,7 +1177,13 @@ document.getElementById('propForm').addEventListener('submit', async function(e)
       superBuiltUp: Number(document.getElementById('rSBA').value)    || Number((document.getElementById('oSBA')||{value:0}).value)    || 0,
       floor:        document.getElementById('rFloor') ? document.getElementById('rFloor').value : '',
       totalFloors:  document.getElementById('rTotalFloors') ? document.getElementById('rTotalFloors').value : '',
-      furnished:    (document.getElementById('rFurnishing') ? document.getElementById('rFurnishing').value : '') || (document.getElementById('pFurnished') ? document.getElementById('pFurnished').value : '') || (document.getElementById('oFurnishing') ? document.getElementById('oFurnishing').value : '') || 'Unfurnished',
+      furnished:    (function(){
+        var cat = document.getElementById('pCategory') ? document.getElementById('pCategory').value : 'residential';
+        if (cat === 'commercial') {
+          return (document.getElementById('oFurnishing') ? document.getElementById('oFurnishing').value : '') || 'Unfurnished';
+        }
+        return (document.getElementById('rFurnishing') ? document.getElementById('rFurnishing').value : '') || (document.getElementById('pFurnished') ? document.getElementById('pFurnished').value : '') || 'Unfurnished';
+      })(),
       facing:       document.getElementById('rFacing').value,
       ownership:    document.getElementById('rOwnership').value,
       lift:         document.getElementById('rLift').value,
@@ -1146,7 +1273,7 @@ async function approveProperty(id) {
 async function toggleTrending(id, isFeatured) {
   const data = await api('PUT', '/properties/' + id, { isFeatured: !isFeatured });
   if (data.success) {
-    toast(isFeatured ? 'Removed from Trending!' : '🔥 Added to Trending!');
+    toast(isFeatured ? 'Removed from Trending!' : 'ðŸ”¥ Added to Trending!');
     loadProperties(currentPropFilter);
     loadStats();
   } else toast(data.message || 'Error', 'error');
@@ -1181,7 +1308,7 @@ async function loadTrendingProperties() {
   const data = await api('GET', '/properties?featured=true');
   const tbody = document.getElementById('propTbody');
   if (!data.success || !data.properties.length) {
-    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fa-solid fa-fire"></i><p>No trending properties yet.<br><small>Click 🔥 fire button on any property to mark it trending.</small></p></div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fa-solid fa-fire"></i><p>No trending properties yet.<br><small>Click ðŸ”¥ fire button on any property to mark it trending.</small></p></div></td></tr>';
     return;
   }
   data.properties.forEach(function(p) { propsCache[p._id] = p; });
@@ -1218,17 +1345,17 @@ async function loadSubmissions() {
   const pending = data.properties.filter(function(p){return !p.isApproved;}).length;
   document.getElementById('subBadge').textContent = pending || '';
   tbody.innerHTML = data.properties.map(function(p) {
-    const postedName = p.postedBy ? ((p.postedBy.firstName || '') + ' ' + (p.postedBy.lastName || '')).trim() || p.postedBy.name || '—' : '—';
-    const postedPhone = p.postedBy ? (p.postedBy.phone || '—') : '—';
+    const postedName = p.postedBy ? ((p.postedBy.firstName || '') + ' ' + (p.postedBy.lastName || '')).trim() || p.postedBy.name || 'â€”' : 'â€”';
+    const postedPhone = p.postedBy ? (p.postedBy.phone || 'â€”') : 'â€”';
     const postedRole  = p.postedBy ? (p.postedBy.role || '') : '';
     return '<tr>' +
       '<td><div style="display:flex;align-items:center;gap:10px">' +
       (p.images && p.images[0] ? '<img src="' + p.images[0] + '" class="prop-thumb"/>' : '<div style="width:48px;height:36px;background:#f0f0f0;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#ccc"><i class="fa-solid fa-image"></i></div>') +
-      '<div class="prop-info"><strong>' + (p.title || 'Untitled') + '</strong><span style="color:var(--text3);font-size:0.7rem">' + (p.type || '') + (p.category ? ' • ' + p.category : '') + '</span></div></div></td>' +
+      '<div class="prop-info"><strong>' + (p.title || 'Untitled') + '</strong><span style="color:var(--text3);font-size:0.7rem">' + (p.type || '') + (p.category ? ' â€¢ ' + p.category : '') + '</span></div></div></td>' +
       '<td><strong style="color:var(--text)">' + postedName + '</strong>' + (postedRole ? '<br><span style="font-size:0.68rem;color:var(--text3)">' + postedRole + '</span>' : '') + '</td>' +
       '<td><a href="tel:' + postedPhone + '" style="color:#60a5fa;font-weight:600;font-size:0.82rem">' + postedPhone + '</a></td>' +
-      '<td>' + (p.location ? (p.location.area || '') + (p.location.city ? ', ' + p.location.city : '') : '—') + '</td>' +
-      '<td><strong>' + (p.priceLabel || (p.price ? '₹' + Number(p.price).toLocaleString('en-IN') : '—')) + '</strong></td>' +
+      '<td>' + (p.location ? (p.location.area || '') + (p.location.city ? ', ' + p.location.city : '') : 'â€”') + '</td>' +
+      '<td><strong>' + (p.priceLabel || (p.price ? 'â‚¹' + Number(p.price).toLocaleString('en-IN') : 'â€”')) + '</strong></td>' +
       '<td>' + listingBadgeHtml(p) + '</td>' +
       '<td><span class="badge ' + (p.isApproved ? 'badge-green' : 'badge-orange') + '">' + (p.isApproved ? 'Approved' : 'Pending') + '</span></td>' +
       '<td>' + fmtDate(p.createdAt) + '</td>' +
@@ -1242,7 +1369,7 @@ async function loadSubmissions() {
 
 async function approveSubmission(id) {
   const data = await api('PUT', '/properties/' + id + '/approve');
-  if (data.success) { toast('Approved! ✅'); loadSubmissions(); loadStats(); loadNotifications(); }
+  if (data.success) { toast('Approved! âœ…'); loadSubmissions(); loadStats(); loadNotifications(); }
   else toast(data.message || 'Error', 'error');
 }
 
@@ -1277,10 +1404,10 @@ async function loadBlogs() {
   tbody.innerHTML = data.blogs.map(function(b) {
     const seoScore = calcBlogSeoScore(b);
     const scoreBadge = seoScore >= 80
-      ? '<span style="background:#e8f5e9;color:#2e7d32;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid #a5d6a7;">🟢 ' + seoScore + '</span>'
+      ? '<span style="background:#e8f5e9;color:#2e7d32;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid #a5d6a7;">ðŸŸ¢ ' + seoScore + '</span>'
       : seoScore >= 50
-      ? '<span style="background:#fff3e0;color:#e65100;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid #ffcc80;">🟡 ' + seoScore + '</span>'
-      : '<span style="background:#ffebee;color:#c62828;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid #ef9a9a;">🔴 ' + seoScore + '</span>';
+      ? '<span style="background:#fff3e0;color:#e65100;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid #ffcc80;">ðŸŸ¡ ' + seoScore + '</span>'
+      : '<span style="background:#ffebee;color:#c62828;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid #ef9a9a;">ðŸ”´ ' + seoScore + '</span>';
     return '<tr>' +
       '<td><div style="display:flex;align-items:center;gap:10px">' +
       (b.image ? '<img src="' + b.image + '" style="width:48px;height:36px;border-radius:6px;object-fit:cover;flex-shrink:0"/>' : '<div style="width:48px;height:36px;background:#f0f0f0;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#ccc"><i class="fa-solid fa-image"></i></div>') +
@@ -1543,7 +1670,7 @@ function updateBlogSeoScore() {
   const pb = document.getElementById('bSeoPublishBtn');
   if (score >= 75) {
     pb.style.cssText = 'width:100%;padding:10px;border-radius:10px;border:none;font-size:0.75rem;font-weight:700;font-family:Poppins,sans-serif;cursor:pointer;background:linear-gradient(135deg,#10b981,#059669);color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;transition:all 0.3s;box-shadow:0 4px 18px rgba(16,185,129,0.4);';
-    pb.innerHTML = '<i class="fa-solid fa-fire"></i> SEO Ready — Publish!';
+    pb.innerHTML = '<i class="fa-solid fa-fire"></i> SEO Ready â€” Publish!';
   } else if (score >= 50) {
     pb.style.cssText = 'width:100%;padding:10px;border-radius:10px;border:none;font-size:0.75rem;font-weight:700;font-family:Poppins,sans-serif;cursor:pointer;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;transition:all 0.3s;';
     pb.innerHTML = '<i class="fa-solid fa-rocket"></i> Ready to Publish';
@@ -1574,27 +1701,27 @@ async function loadInquiries(filter) {
     const isOffer = i.lookingFor === 'Get Offer';
     const propName = i.propertyName || i.propertyTitle || i.propertyType || '';
     return '<tr>' +
-      '<td><strong style="color:#E53935">' + (i.refId || '—') + '</strong></td>' +
+      '<td><strong style="color:#E53935">' + (i.refId || 'â€”') + '</strong></td>' +
       '<td><strong>' + i.name + '</strong><br><small style="color:#aaa">' + (i.email || '') + '</small></td>' +
       '<td><a href="tel:+91' + i.phone + '" style="color:#1565c0;font-weight:600;display:flex;align-items:center;gap:5px"><i class="fa-solid fa-phone" style="font-size:0.7rem"></i>+91 ' + i.phone + '</a></td>' +
-      '<td><span class="badge ' + (isOffer ? 'badge-orange' : 'badge-blue') + '">' + (i.lookingFor || '—') + '</span></td>' +
+      '<td><span class="badge ' + (isOffer ? 'badge-orange' : 'badge-blue') + '">' + (i.lookingFor || 'â€”') + '</span></td>' +
       '<td>' + (propName
         ? '<div style="background:#fff8e1;border:1.5px solid #ffe082;border-radius:8px;padding:6px 10px;max-width:180px">' +
           '<div style="font-size:0.7rem;color:#f57f17;font-weight:700;margin-bottom:2px"><i class="fa-solid fa-building" style="margin-right:4px"></i>PROPERTY</div>' +
           '<div style="font-size:0.82rem;color:#333;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="' + propName + '">' + propName + '</div>' +
           (i.city ? '<div style="font-size:0.72rem;color:#888;margin-top:2px"><i class="fa-solid fa-location-dot" style="color:#E53935;margin-right:3px"></i>' + i.city + '</div>' : '') +
           '</div>'
-        : '<span style="color:#aaa">—</span>') + '</td>' +
-      '<td>' + (i.city || '—') + '</td>' +
-      '<td>' + (i.budget || '—') + '</td>' +
+        : '<span style="color:#aaa">â€”</span>') + '</td>' +
+      '<td>' + (i.city || 'â€”') + '</td>' +
+      '<td>' + (i.budget || 'â€”') + '</td>' +
       '<td><select onchange="updateInqStatus(\'' + i._id + '\', this.value)" style="border:1.5px solid #e8e8e8;border-radius:7px;padding:4px 8px;font-size:0.78rem;font-family:Poppins,sans-serif;outline:none;cursor:pointer;">' +
-      '<option value="new"' + (i.status==='new'?' selected':'') + '>🔴 New</option>' +
-      '<option value="contacted"' + (i.status==='contacted'?' selected':'') + '>🟡 Contacted</option>' +
-      '<option value="closed"' + (i.status==='closed'?' selected':'') + '>🟢 Closed</option>' +
+      '<option value="new"' + (i.status==='new'?' selected':'') + '>ðŸ”´ New</option>' +
+      '<option value="contacted"' + (i.status==='contacted'?' selected':'') + '>ðŸŸ¡ Contacted</option>' +
+      '<option value="closed"' + (i.status==='closed'?' selected':'') + '>ðŸŸ¢ Closed</option>' +
       '</select></td>' +
-      '<td>' + (i.createdAt ? fmtDate(i.createdAt) : '—') + '</td>' +
+      '<td>' + (i.createdAt ? fmtDate(i.createdAt) : 'â€”') + '</td>' +
       '<td><div class="act-btns">' +
-      '<a href="https://wa.me/91' + i.phone + '?text=' + encodeURIComponent('Hi ' + i.name + ', regarding your inquiry' + (propName ? ' for "' + propName + '"' : '') + ' — City Real Space team is here to help!') + '" target="_blank" class="act-btn approve" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>' +
+      '<a href="https://wa.me/91' + i.phone + '?text=' + encodeURIComponent('Hi ' + i.name + ', regarding your inquiry' + (propName ? ' for "' + propName + '"' : '') + ' â€” City Real Space team is here to help!') + '" target="_blank" class="act-btn approve" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>' +
       '<button class="act-btn del" onclick="deleteInquiry(\'' + i._id + '\')"><i class="fa-solid fa-trash"></i></button>' +
       '</div></td>' +
       '</tr>';
@@ -1642,14 +1769,14 @@ async function loadRequirements() {
       return '<tr>' +
         '<td><strong>' + r.name + '</strong></td>' +
         '<td><a href="tel:+91' + r.phone + '" style="color:#1565c0;font-weight:600;display:flex;align-items:center;gap:5px"><i class="fa-solid fa-phone" style="font-size:0.7rem"></i> +91 ' + r.phone + '</a></td>' +
-        '<td>' + (r.propertyType || '—') + '</td>' +
-        '<td>' + (r.budget || '—') + '</td>' +
-        '<td>' + (r.city || '—') + '</td>' +
-        '<td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (r.message || '—') + '</td>' +
+        '<td>' + (r.propertyType || 'â€”') + '</td>' +
+        '<td>' + (r.budget || 'â€”') + '</td>' +
+        '<td>' + (r.city || 'â€”') + '</td>' +
+        '<td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (r.message || 'â€”') + '</td>' +
         '<td><select onchange="updateInqStatus(\'' + r._id + '\',this.value)" style="border:1.5px solid #e8e8e8;border-radius:7px;padding:4px 8px;font-size:0.78rem;font-family:Poppins,sans-serif;outline:none;cursor:pointer">' +
-        '<option value="new"' + (r.status === 'new' ? ' selected' : '') + '>🔴 New</option>' +
-        '<option value="contacted"' + (r.status === 'contacted' ? ' selected' : '') + '>🟡 Contacted</option>' +
-        '<option value="closed"' + (r.status === 'closed' ? ' selected' : '') + '>🟢 Closed</option>' +
+        '<option value="new"' + (r.status === 'new' ? ' selected' : '') + '>ðŸ”´ New</option>' +
+        '<option value="contacted"' + (r.status === 'contacted' ? ' selected' : '') + '>ðŸŸ¡ Contacted</option>' +
+        '<option value="closed"' + (r.status === 'closed' ? ' selected' : '') + '>ðŸŸ¢ Closed</option>' +
         '</select></td>' +
         '<td>' + fmtDate(r.createdAt) + '</td>' +
         '<td><div class="act-btns">' +
@@ -1679,7 +1806,7 @@ function addPropertyForReq(encName, phone, encType, encCity, encBudget) {
   // Switch to properties page first, then open modal
   goPage('properties');
   setTimeout(function() {
-    document.getElementById('propModalTitle').textContent = 'Add Property — For ' + name;
+    document.getElementById('propModalTitle').textContent = 'Add Property â€” For ' + name;
     document.getElementById('propForm').reset();
     document.getElementById('propId').value = '';
     document.getElementById('pApproved').checked = true;
@@ -1740,7 +1867,7 @@ async function loadUsers() {
       '<td>' + u.email + '</td>' +
       '<td>' + u.phone + '</td>' +
       '<td><span class="badge badge-blue">' + u.role + '</span></td>' +
-      '<td>' + (u.city || '—') + '</td>' +
+      '<td>' + (u.city || 'â€”') + '</td>' +
       '<td>' + fmtDate(u.createdAt) + '</td>' +
       '<td><div class="act-btns"><button class="act-btn del" onclick="deleteUser(\'' + u._id + '\')"><i class="fa-solid fa-trash"></i></button></div></td>' +
       '</tr>';
@@ -1764,18 +1891,18 @@ const BHK_SQFT = {
 };
 
 const TYPE_AREA_LABEL = {
-  apartment:       '📐 Super Built-up Area (sq.ft)',
-  villa:           '📐 Built-up Area (sq.ft)',
-  bungalow:        '📐 Built-up Area (sq.ft)',
-  rowhouse:        '📐 Built-up Area (sq.ft)',
-  plot:            '📐 Plot Area (sq.ft)',
-  office:          '📐 Carpet Area (sq.ft)',
-  shop:            '📐 Carpet Area (sq.ft)',
-  showroom:        '📐 Carpet Area (sq.ft)',
-  warehouse:       '📐 Built-up Area (sq.ft)',
-  factory:         '📐 Built-up / Plot Area (sq.ft)',
-  coworking:       '📐 Carpet Area (sq.ft)',
-  industrial_land: '📐 Land Area (sq.ft)',
+  apartment:       'ðŸ“ Super Built-up Area (sq.ft)',
+  villa:           'ðŸ“ Built-up Area (sq.ft)',
+  bungalow:        'ðŸ“ Built-up Area (sq.ft)',
+  rowhouse:        'ðŸ“ Built-up Area (sq.ft)',
+  plot:            'ðŸ“ Plot Area (sq.ft)',
+  office:          'ðŸ“ Carpet Area (sq.ft)',
+  shop:            'ðŸ“ Carpet Area (sq.ft)',
+  showroom:        'ðŸ“ Carpet Area (sq.ft)',
+  warehouse:       'ðŸ“ Built-up Area (sq.ft)',
+  factory:         'ðŸ“ Built-up / Plot Area (sq.ft)',
+  coworking:       'ðŸ“ Carpet Area (sq.ft)',
+  industrial_land: 'ðŸ“ Land Area (sq.ft)',
 };
 
 function onAdminTypeChange() {
@@ -1811,6 +1938,172 @@ const BHK_AUTO = {
   },
 };
 
+// ===== COMMERCIAL oSBA → oCarpet + PricePerSqft AUTO =====
+document.addEventListener('DOMContentLoaded', function() {
+  var oSBAEl = document.getElementById('oSBA');
+  if (oSBAEl) {
+    oSBAEl.addEventListener('input', function() {
+      autoCommCarpet(this.value);
+      var pSqft = document.getElementById('pSqft');
+      if (pSqft) pSqft.value = this.value;
+      calcPricePerSqft();
+      updateAdminScore();
+    });
+  }
+  var oCarpetEl = document.getElementById('oCarpet');
+  if (oCarpetEl) {
+    oCarpetEl.addEventListener('input', function() {
+      this.dataset.manual = 1;
+      calcPricePerSqft();
+    });
+  }
+});
+
+// ===== AUTO COMMERCIAL CARPET FROM SBA =====
+function autoCommCarpet(sbaVal) {
+  var sba = parseFloat(sbaVal);
+  var carpetEl = document.getElementById('oCarpet');
+  if (!carpetEl || carpetEl.dataset.manual == '1') return;
+  if (!sba) { carpetEl.value = ''; return; }
+  // Real estate standard: Carpet = SBA x 0.70 (30% loading factor)
+  carpetEl.value = Math.round(sba * 0.70);
+}
+
+// ===== AUTO PRICE PER SQFT =====
+function calcPricePerSqft() {
+  var priceEl = document.getElementById('pPricePerSqft');
+  var hint    = document.getElementById('pricePerSqftHint');
+  if (!priceEl || priceEl.dataset.manual == '1') return;
+
+  // Rent property ke liye auto-calculate mat karo
+  var status = document.getElementById('pStatus') ? document.getElementById('pStatus').value : 'for-sale';
+  if (status === 'for-rent') { priceEl.value = ''; if (hint) hint.style.display = 'none'; return; }
+
+  var price = _actualPrice > 0 ? _actualPrice : Number(document.getElementById('pPrice') ? document.getElementById('pPrice').value : 0);
+
+  // SBA: residential rSBA, commercial oSBA, fallback pSqft
+  var sqft = Number(document.getElementById('rSBA')  ? document.getElementById('rSBA').value  : 0) ||
+             Number(document.getElementById('oSBA')  ? document.getElementById('oSBA').value  : 0) ||
+             Number(document.getElementById('pSqft') ? document.getElementById('pSqft').value : 0);
+
+  if (!price || !sqft) { if (hint) hint.style.display = 'none'; return; }
+
+  var ppsf = Math.round(price / sqft);
+  priceEl.value = ppsf;
+
+  var segment = ppsf < 3000  ? 'Budget segment' :
+                ppsf < 5000  ? 'Mid segment' :
+                ppsf < 8000  ? 'Premium segment' :
+                ppsf < 15000 ? 'Luxury segment' : 'Ultra Luxury';
+
+  var msg = '\u20b9' + ppsf.toLocaleString('en-IN') + '/sq.ft  •  ' + price.toLocaleString('en-IN') + ' ÷ ' + sqft + ' sqft  •  ' + segment;
+  if (hint) { hint.textContent = msg; hint.style.display = 'block'; }
+}
+
+// ===== AUTO AVAILABILITY DATE FROM POSSESSION =====
+function autoAvailDate(possession) {
+  var dateEl = document.getElementById('pAvailDate');
+  var hint   = document.getElementById('availDateHint');
+  if (!dateEl) return;
+
+  // Agar user ne manually date set ki ho to override mat karo
+  if (dateEl.dataset.manual) return;
+
+  var today = new Date();
+  var d;
+  var msg = '';
+
+  if (possession === 'Ready to Move') {
+    // Aaj se 7 din baad — immediate possession
+    d = new Date(today);
+    d.setDate(d.getDate() + 7);
+    msg = 'Ready to Move — 7 din mein available';
+  } else if (possession === 'Under Construction') {
+    // 18 months baad — typical UC delivery
+    d = new Date(today);
+    d.setMonth(d.getMonth() + 18);
+    msg = 'Under Construction — ~18 months mein possession';
+  } else if (possession === 'New Launch') {
+    // 24 months baad — new launch
+    d = new Date(today);
+    d.setMonth(d.getMonth() + 24);
+    msg = 'New Launch — ~24 months mein possession';
+  }
+
+  if (d) {
+    var yyyy = d.getFullYear();
+    var mm   = String(d.getMonth() + 1).padStart(2, '0');
+    var dd   = String(d.getDate()).padStart(2, '0');
+    dateEl.value = yyyy + '-' + mm + '-' + dd;
+    if (hint) { hint.textContent = msg; hint.style.display = 'block'; }
+  }
+}
+
+// Mark availDate as manually set if user types
+document.addEventListener('DOMContentLoaded', function() {
+  var avEl = document.getElementById('pAvailDate');
+  if (avEl) avEl.addEventListener('change', function() { this.dataset.manual = '1'; });
+  // Auto-set RERA if empty on modal open
+  var reraEl = document.getElementById('pReraNo');
+  if (reraEl && !reraEl.value) reraEl.value = 'NTC Reg No: 12376';
+});
+
+// ===== AUTO PRICE LABEL =====
+function autoPriceLabel() {
+  var val = document.getElementById('pPrice') ? document.getElementById('pPrice').value : '';
+  var unit = document.getElementById('pPriceUnit') ? document.getElementById('pPriceUnit').value : 'rs';
+  var n = parseFloat(val);
+  var helper = document.getElementById('priceHelper');
+  var helperText = document.getElementById('priceHelperText');
+  var labelEl = document.getElementById('pPriceLabel');
+  if (!helper || !helperText) return;
+  if (!n || isNaN(n)) { helper.style.display = 'none'; return; }
+
+  var status = document.getElementById('pStatus') ? document.getElementById('pStatus').value : 'for-sale';
+  var isRent = status === 'for-rent';
+
+  // Convert to actual rupees based on unit
+  var actualAmount = n;
+  if (unit === 'cr')    actualAmount = n * 10000000;
+  else if (unit === 'lakh') actualAmount = n * 100000;
+  else if (unit === 'k')    actualAmount = n * 1000;
+
+  // Set actual value in hidden field for saving
+  document.getElementById('pPrice').dataset.actual = actualAmount;
+
+  // Human readable label
+  var label = '';
+  if (unit === 'cr')         label = '\u20b9' + n + ' Cr';
+  else if (unit === 'lakh')  label = '\u20b9' + n + ' Lakh';
+  else if (unit === 'k')     label = '\u20b9' + n + 'K';
+  else {
+    // Auto-detect for raw rupees
+    if (actualAmount >= 10000000)     label = '\u20b9' + (actualAmount/10000000).toFixed(2).replace(/\.?0+$/,'') + ' Cr';
+    else if (actualAmount >= 100000)  label = '\u20b9' + (actualAmount/100000).toFixed(2).replace(/\.?0+$/,'') + ' Lakh';
+    else if (actualAmount >= 1000)    label = '\u20b9' + (actualAmount/1000).toFixed(1).replace(/\.?0+$/,'') + 'K';
+    else                              label = '\u20b9' + actualAmount.toLocaleString('en-IN');
+  }
+  if (isRent) label += '/mo';
+
+  // Helper text â€” full breakdown
+  var breakdown = '\u20b9' + actualAmount.toLocaleString('en-IN');
+  if (unit === 'cr')        breakdown += ' (' + n + ' Crore)';
+  else if (unit === 'lakh') breakdown += ' (' + n + ' Lakh)';
+  else if (unit === 'k')    breakdown += ' (' + n + ' Thousand)';
+
+  helperText.textContent = breakdown;
+  helper.style.display = 'flex';
+
+  // Auto-fill label only if user hasn't manually typed
+  if (labelEl && !labelEl.dataset.manual) {
+    labelEl.value = label;
+  }
+
+  // Update actual price field value for saving
+  _actualPrice = actualAmount;
+  updateAdminScore();
+}
+
 function adjParking(fieldId, delta) {
   var inp = document.getElementById(fieldId);
   if (!inp) return;
@@ -1833,6 +2126,7 @@ function syncSBAtoMain() {
   var sba = document.getElementById('rSBA');
   var pSqft = document.getElementById('pSqft');
   if (pSqft && sba) pSqft.value = sba.value;
+  calcPricePerSqft();
   updateAdminScore();
 }
 
@@ -1899,7 +2193,7 @@ function hsChipBhk(chip, val) {
     // --- Show area hint banner ---
     var hint = document.getElementById('sqftHint');
     if (hint) {
-      hint.textContent = '💡 ' + val + ' BHK ' + (type||'') + ': Carpet ' + data.carpet[0] + '–' + data.carpet[1] + ' | SBA ' + data.sba[0] + '–' + data.sba[1] + ' sq.ft';
+      hint.textContent = 'ðŸ’¡ ' + val + ' BHK ' + (type||'') + ': Carpet ' + data.carpet[0] + 'â€“' + data.carpet[1] + ' | SBA ' + data.sba[0] + 'â€“' + data.sba[1] + ' sq.ft';
       hint.style.display = 'block';
     }
   }
@@ -1925,13 +2219,13 @@ function showSqftSuggest() {
   const mid = Math.round((lo + hi) / 2);
   const suggestions = [lo, mid, hi];
 
-  hint.textContent = '💡 Typical ' + beds + ' BHK ' + (type||'') + ': ' + lo + '–' + hi + ' sq.ft';
+  hint.textContent = 'ðŸ’¡ Typical ' + beds + ' BHK ' + (type||'') + ': ' + lo + 'â€“' + hi + ' sq.ft';
   hint.style.display = 'block';
 
   box.innerHTML = suggestions.map(s =>
     '<div onclick="document.getElementById(\'pSqft\').value=' + s + ';document.getElementById(\'sqftSuggest\').style.display=\'none\';updateAdminScore()" ' +
     'style="padding:8px 14px;cursor:pointer;font-size:0.82rem;font-weight:600;color:#FF4D4D;border-bottom:1px solid #fff5f5;transition:background 0.15s" ' +
-    'onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'\'">📐 ' + s + ' sq.ft</div>'
+    'onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'\'">ðŸ“ ' + s + ' sq.ft</div>'
   ).join('');
   box.style.display = 'block';
 
@@ -2092,7 +2386,7 @@ function updateAdminScore() {
   if (btn) {
     if (score >= 75) {
       btn.className = 'asc-publish-btn high-listing';
-      btn.innerHTML = '<i class="fas fa-fire"></i> High Listing — Publish!';
+      btn.innerHTML = '<i class="fas fa-fire"></i> High Listing â€” Publish!';
     } else if (score >= 50) {
       btn.className = 'asc-publish-btn ready';
       btn.innerHTML = '<i class="fas fa-rocket"></i> Ready to Publish';
@@ -2148,6 +2442,14 @@ function ascBurstConfetti(panel) {
   if (el) { el.addEventListener('input', updateAdminScore); el.addEventListener('change', updateAdminScore); }
 });
 
+// pPriceLabel manual flag
+var pPriceLabelEl = document.getElementById('pPriceLabel');
+if (pPriceLabelEl) {
+  pPriceLabelEl.addEventListener('input', function() {
+    this.dataset.manual = this.value ? '1' : '';
+  });
+}
+
 // Watch image preview changes via MutationObserver
 const pImgObserver = new MutationObserver(updateAdminScore);
 pImgObserver.observe(document.getElementById('pImagePreview'), { childList: true });
@@ -2171,13 +2473,13 @@ async function loadContacts() {
       return '<tr>' +
         '<td><strong>' + c.name + '</strong></td>' +
         '<td>' + c.phone + '</td>' +
-        '<td>' + (c.email || '—') + '</td>' +
-        '<td>' + (c.subject || '—') + '</td>' +
+        '<td>' + (c.email || 'â€”') + '</td>' +
+        '<td>' + (c.subject || 'â€”') + '</td>' +
         '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + c.message + '</td>' +
         '<td><select onchange="updateContactStatus(\'' + c._id + '\',this.value)" style="border:1.5px solid #e0e0e0;border-radius:7px;padding:4px 8px;font-size:0.78rem;font-family:Poppins,sans-serif;outline:none;cursor:pointer;">' +
-        '<option value="new"'     + (c.status==='new'     ? ' selected':'') + '>🔴 New</option>' +
-        '<option value="read"'    + (c.status==='read'    ? ' selected':'') + '>🟡 Read</option>' +
-        '<option value="replied"' + (c.status==='replied' ? ' selected':'') + '>🟢 Replied</option>' +
+        '<option value="new"'     + (c.status==='new'     ? ' selected':'') + '>ðŸ”´ New</option>' +
+        '<option value="read"'    + (c.status==='read'    ? ' selected':'') + '>ðŸŸ¡ Read</option>' +
+        '<option value="replied"' + (c.status==='replied' ? ' selected':'') + '>ðŸŸ¢ Replied</option>' +
         '</select></td>' +
         '<td>' + fmtDate(c.createdAt) + '</td>' +
         '<td><div class="act-btns">' +
@@ -2205,80 +2507,80 @@ async function deleteContact(id) {
     headers: { 'Authorization': 'Bearer ' + adminToken }
   });
   const data = await res.json();
-  if (data.success) { toast('Deleted! ✅'); loadContacts(); }
+  if (data.success) { toast('Deleted! âœ…'); loadContacts(); }
   else toast('Error: ' + (data.message || 'Delete failed'), 'error');
 }
 
 // ===== AMENITIES GRID =====
 const AMENITIES_BY_TYPE = {
   apartment: [
-    { icon: '🛗', label: 'Lift' },
-    { icon: '🏊', label: 'Swimming Pool' },
-    { icon: '🏋️', label: 'Gymnasium' },
-    { icon: '🔒', label: '24/7 Security' },
-    { icon: '🅿️', label: 'Covered Parking' },
-    { icon: '⚡', label: 'Power Backup' },
-    { icon: '🌿', label: 'Garden / Park' },
-    { icon: '🎮', label: 'Clubhouse' },
-    { icon: '🏃', label: 'Jogging Track' },
-    { icon: '📡', label: 'Intercom' },
-    { icon: '🌊', label: 'Water Supply 24/7' },
-    { icon: '🔥', label: 'Gas Pipeline' },
-    { icon: '🧹', label: 'Housekeeping' },
-    { icon: '🛝', label: 'Kids Play Area' },
-    { icon: '🎾', label: 'Sports Court' },
-    { icon: '🐾', label: 'Pet Friendly' },
-    { icon: '📶', label: 'High Speed Internet' },
-    { icon: '🚿', label: 'Rainwater Harvesting' },
+    { icon: 'ðŸ›—', label: 'Lift' },
+    { icon: 'ðŸŠ', label: 'Swimming Pool' },
+    { icon: 'ðŸ‹ï¸', label: 'Gymnasium' },
+    { icon: 'ðŸ”’', label: '24/7 Security' },
+    { icon: 'ðŸ…¿ï¸', label: 'Covered Parking' },
+    { icon: 'âš¡', label: 'Power Backup' },
+    { icon: 'ðŸŒ¿', label: 'Garden / Park' },
+    { icon: 'ðŸŽ®', label: 'Clubhouse' },
+    { icon: 'ðŸƒ', label: 'Jogging Track' },
+    { icon: 'ðŸ“¡', label: 'Intercom' },
+    { icon: 'ðŸŒŠ', label: 'Water Supply 24/7' },
+    { icon: 'ðŸ”¥', label: 'Gas Pipeline' },
+    { icon: 'ðŸ§¹', label: 'Housekeeping' },
+    { icon: 'ðŸ›', label: 'Kids Play Area' },
+    { icon: 'ðŸŽ¾', label: 'Sports Court' },
+    { icon: 'ðŸ¾', label: 'Pet Friendly' },
+    { icon: 'ðŸ“¶', label: 'High Speed Internet' },
+    { icon: 'ðŸš¿', label: 'Rainwater Harvesting' },
   ],
   villa: [
-    { icon: '🌿', label: 'Private Garden' },
-    { icon: '🏊', label: 'Private Pool' },
-    { icon: '🅿️', label: 'Private Parking' },
-    { icon: '🔒', label: '24/7 Security' },
-    { icon: '⚡', label: 'Power Backup' },
-    { icon: '🏋️', label: 'Home Gym' },
-    { icon: '🎮', label: 'Clubhouse' },
-    { icon: '🔥', label: 'Gas Pipeline' },
-    { icon: '🌊', label: 'Water Supply 24/7' },
-    { icon: '📡', label: 'Intercom' },
-    { icon: '🐾', label: 'Pet Friendly' },
-    { icon: '📶', label: 'High Speed Internet' },
-    { icon: '🛝', label: 'Kids Play Area' },
-    { icon: '🎾', label: 'Sports Court' },
+    { icon: 'ðŸŒ¿', label: 'Private Garden' },
+    { icon: 'ðŸŠ', label: 'Private Pool' },
+    { icon: 'ðŸ…¿ï¸', label: 'Private Parking' },
+    { icon: 'ðŸ”’', label: '24/7 Security' },
+    { icon: 'âš¡', label: 'Power Backup' },
+    { icon: 'ðŸ‹ï¸', label: 'Home Gym' },
+    { icon: 'ðŸŽ®', label: 'Clubhouse' },
+    { icon: 'ðŸ”¥', label: 'Gas Pipeline' },
+    { icon: 'ðŸŒŠ', label: 'Water Supply 24/7' },
+    { icon: 'ðŸ“¡', label: 'Intercom' },
+    { icon: 'ðŸ¾', label: 'Pet Friendly' },
+    { icon: 'ðŸ“¶', label: 'High Speed Internet' },
+    { icon: 'ðŸ›', label: 'Kids Play Area' },
+    { icon: 'ðŸŽ¾', label: 'Sports Court' },
   ],
   bungalow: [
-    { icon: '🌿', label: 'Private Garden' },
-    { icon: '🅿️', label: 'Private Parking' },
-    { icon: '🔒', label: '24/7 Security' },
-    { icon: '⚡', label: 'Power Backup' },
-    { icon: '🔥', label: 'Gas Pipeline' },
-    { icon: '🌊', label: 'Water Supply 24/7' },
-    { icon: '📡', label: 'Intercom' },
-    { icon: '🐾', label: 'Pet Friendly' },
-    { icon: '📶', label: 'High Speed Internet' },
-    { icon: '🏊', label: 'Swimming Pool' },
+    { icon: 'ðŸŒ¿', label: 'Private Garden' },
+    { icon: 'ðŸ…¿ï¸', label: 'Private Parking' },
+    { icon: 'ðŸ”’', label: '24/7 Security' },
+    { icon: 'âš¡', label: 'Power Backup' },
+    { icon: 'ðŸ”¥', label: 'Gas Pipeline' },
+    { icon: 'ðŸŒŠ', label: 'Water Supply 24/7' },
+    { icon: 'ðŸ“¡', label: 'Intercom' },
+    { icon: 'ðŸ¾', label: 'Pet Friendly' },
+    { icon: 'ðŸ“¶', label: 'High Speed Internet' },
+    { icon: 'ðŸŠ', label: 'Swimming Pool' },
   ],
   rowhouse: [
-    { icon: '🌿', label: 'Garden' },
-    { icon: '🅿️', label: 'Parking' },
-    { icon: '🔒', label: '24/7 Security' },
-    { icon: '⚡', label: 'Power Backup' },
-    { icon: '🔥', label: 'Gas Pipeline' },
-    { icon: '🌊', label: 'Water Supply 24/7' },
-    { icon: '📡', label: 'Intercom' },
-    { icon: '🎮', label: 'Clubhouse' },
-    { icon: '🛝', label: 'Kids Play Area' },
-    { icon: '📶', label: 'High Speed Internet' },
+    { icon: 'ðŸŒ¿', label: 'Garden' },
+    { icon: 'ðŸ…¿ï¸', label: 'Parking' },
+    { icon: 'ðŸ”’', label: '24/7 Security' },
+    { icon: 'âš¡', label: 'Power Backup' },
+    { icon: 'ðŸ”¥', label: 'Gas Pipeline' },
+    { icon: 'ðŸŒŠ', label: 'Water Supply 24/7' },
+    { icon: 'ðŸ“¡', label: 'Intercom' },
+    { icon: 'ðŸŽ®', label: 'Clubhouse' },
+    { icon: 'ðŸ›', label: 'Kids Play Area' },
+    { icon: 'ðŸ“¶', label: 'High Speed Internet' },
   ],
   plot: [
-    { icon: '🌊', label: 'Water Connection' },
-    { icon: '⚡', label: 'Electricity Connection' },
-    { icon: '🛣️', label: 'Road Access' },
-    { icon: '🔒', label: 'Gated Community' },
-    { icon: '🌿', label: 'Landscaping' },
-    { icon: '🚿', label: 'Drainage' },
-    { icon: '📶', label: 'Internet Ready' },
+    { icon: 'ðŸŒŠ', label: 'Water Connection' },
+    { icon: 'âš¡', label: 'Electricity Connection' },
+    { icon: 'ðŸ›£ï¸', label: 'Road Access' },
+    { icon: 'ðŸ”’', label: 'Gated Community' },
+    { icon: 'ðŸŒ¿', label: 'Landscaping' },
+    { icon: 'ðŸš¿', label: 'Drainage' },
+    { icon: 'ðŸ“¶', label: 'Internet Ready' },
   ],
   office: [
     { icon: '<i class="fa-solid fa-square-parking"></i>', label: 'Parking' },
@@ -2312,77 +2614,77 @@ const AMENITIES_BY_TYPE = {
     { icon: '<i class="fa-solid fa-om"></i>', label: 'Vaastu Compliant' },
   ],
   shop: [
-    { icon: '🅿️', label: 'Parking' },
-    { icon: '⚡', label: 'Power Backup' },
-    { icon: '🔒', label: 'Security' },
-    { icon: '❄️', label: 'AC' },
-    { icon: '🎥', label: 'CCTV' },
-    { icon: '🛗', label: 'Lift' },
-    { icon: '🔥', label: 'Fire Safety' },
-    { icon: '📶', label: 'Internet Ready' },
-    { icon: '🚿', label: 'Washroom' },
+    { icon: 'ðŸ…¿ï¸', label: 'Parking' },
+    { icon: 'âš¡', label: 'Power Backup' },
+    { icon: 'ðŸ”’', label: 'Security' },
+    { icon: 'â„ï¸', label: 'AC' },
+    { icon: 'ðŸŽ¥', label: 'CCTV' },
+    { icon: 'ðŸ›—', label: 'Lift' },
+    { icon: 'ðŸ”¥', label: 'Fire Safety' },
+    { icon: 'ðŸ“¶', label: 'Internet Ready' },
+    { icon: 'ðŸš¿', label: 'Washroom' },
   ],
   warehouse: [
-    { icon: '🅿️', label: 'Loading Dock' },
-    { icon: '⚡', label: '3-Phase Power' },
-    { icon: '🔒', label: '24/7 Security' },
-    { icon: '🎥', label: 'CCTV' },
-    { icon: '🔥', label: 'Fire Safety' },
-    { icon: '🚿', label: 'Washroom' },
-    { icon: '🛣️', label: 'Highway Access' },
-    { icon: '📦', label: 'Storage Racks' },
-    { icon: '❄️', label: 'Cold Storage' },
+    { icon: 'ðŸ…¿ï¸', label: 'Loading Dock' },
+    { icon: 'âš¡', label: '3-Phase Power' },
+    { icon: 'ðŸ”’', label: '24/7 Security' },
+    { icon: 'ðŸŽ¥', label: 'CCTV' },
+    { icon: 'ðŸ”¥', label: 'Fire Safety' },
+    { icon: 'ðŸš¿', label: 'Washroom' },
+    { icon: 'ðŸ›£ï¸', label: 'Highway Access' },
+    { icon: 'ðŸ“¦', label: 'Storage Racks' },
+    { icon: 'â„ï¸', label: 'Cold Storage' },
   ],
   showroom: [
-    { icon: '🅿️', label: 'Parking' },
-    { icon: '⚡', label: 'Power Backup' },
-    { icon: '🔒', label: 'Security' },
-    { icon: '❄️', label: 'Central AC' },
-    { icon: '🎥', label: 'CCTV' },
-    { icon: '🛗', label: 'Lift' },
-    { icon: '🔥', label: 'Fire Safety' },
-    { icon: '📶', label: 'High Speed Internet' },
-    { icon: '🚿', label: 'Washroom' },
-    { icon: '🏢', label: 'Reception Area' },
-    { icon: '💡', label: 'Display Lighting' },
-    { icon: '♿', label: 'Wheelchair Access' },
+    { icon: 'ðŸ…¿ï¸', label: 'Parking' },
+    { icon: 'âš¡', label: 'Power Backup' },
+    { icon: 'ðŸ”’', label: 'Security' },
+    { icon: 'â„ï¸', label: 'Central AC' },
+    { icon: 'ðŸŽ¥', label: 'CCTV' },
+    { icon: 'ðŸ›—', label: 'Lift' },
+    { icon: 'ðŸ”¥', label: 'Fire Safety' },
+    { icon: 'ðŸ“¶', label: 'High Speed Internet' },
+    { icon: 'ðŸš¿', label: 'Washroom' },
+    { icon: 'ðŸ¢', label: 'Reception Area' },
+    { icon: 'ðŸ’¡', label: 'Display Lighting' },
+    { icon: 'â™¿', label: 'Wheelchair Access' },
   ],
   factory: [
-    { icon: '⚡', label: '3-Phase Power' },
-    { icon: '🅿️', label: 'Loading / Unloading' },
-    { icon: '🔒', label: '24/7 Security' },
-    { icon: '🎥', label: 'CCTV' },
-    { icon: '🔥', label: 'Fire Safety' },
-    { icon: '🚿', label: 'Washroom' },
-    { icon: '🛣️', label: 'Highway Access' },
-    { icon: '🌊', label: 'Water Supply' },
-    { icon: '🏭', label: 'Overhead Crane' },
-    { icon: '📦', label: 'Storage Area' },
-    { icon: '♻️', label: 'Effluent Treatment' },
+    { icon: 'âš¡', label: '3-Phase Power' },
+    { icon: 'ðŸ…¿ï¸', label: 'Loading / Unloading' },
+    { icon: 'ðŸ”’', label: '24/7 Security' },
+    { icon: 'ðŸŽ¥', label: 'CCTV' },
+    { icon: 'ðŸ”¥', label: 'Fire Safety' },
+    { icon: 'ðŸš¿', label: 'Washroom' },
+    { icon: 'ðŸ›£ï¸', label: 'Highway Access' },
+    { icon: 'ðŸŒŠ', label: 'Water Supply' },
+    { icon: 'ðŸ­', label: 'Overhead Crane' },
+    { icon: 'ðŸ“¦', label: 'Storage Area' },
+    { icon: 'â™»ï¸', label: 'Effluent Treatment' },
   ],
   coworking: [
-    { icon: '📶', label: 'High Speed Internet' },
-    { icon: '❄️', label: 'Central AC' },
-    { icon: '🅿️', label: 'Parking' },
-    { icon: '🛗', label: 'Lift' },
-    { icon: '⚡', label: 'Power Backup' },
-    { icon: '🔒', label: '24/7 Security' },
-    { icon: '🎥', label: 'CCTV' },
-    { icon: '🍽️', label: 'Cafeteria' },
-    { icon: '🖨️', label: 'Printer / Scanner' },
-    { icon: '📹', label: 'Conference Room' },
-    { icon: '🛋️', label: 'Lounge Area' },
-    { icon: '🔥', label: 'Fire Safety' },
+    { icon: 'ðŸ“¶', label: 'High Speed Internet' },
+    { icon: 'â„ï¸', label: 'Central AC' },
+    { icon: 'ðŸ…¿ï¸', label: 'Parking' },
+    { icon: 'ðŸ›—', label: 'Lift' },
+    { icon: 'âš¡', label: 'Power Backup' },
+    { icon: 'ðŸ”’', label: '24/7 Security' },
+    { icon: 'ðŸŽ¥', label: 'CCTV' },
+    { icon: 'ðŸ½ï¸', label: 'Cafeteria' },
+    { icon: 'ðŸ–¨ï¸', label: 'Printer / Scanner' },
+    { icon: 'ðŸ“¹', label: 'Conference Room' },
+    { icon: 'ðŸ›‹ï¸', label: 'Lounge Area' },
+    { icon: 'ðŸ”¥', label: 'Fire Safety' },
   ],
   industrial_land: [
-    { icon: '🌊', label: 'Water Connection' },
-    { icon: '⚡', label: '3-Phase Power' },
-    { icon: '🛣️', label: 'Road Access' },
-    { icon: '🔒', label: 'Gated / Fenced' },
-    { icon: '🚿', label: 'Drainage' },
-    { icon: '🏭', label: 'GIDC Zone' },
-    { icon: '📦', label: 'Warehouse Permitted' },
-    { icon: '♻️', label: 'ETP Facility' },
+    { icon: 'ðŸŒŠ', label: 'Water Connection' },
+    { icon: 'âš¡', label: '3-Phase Power' },
+    { icon: 'ðŸ›£ï¸', label: 'Road Access' },
+    { icon: 'ðŸ”’', label: 'Gated / Fenced' },
+    { icon: 'ðŸš¿', label: 'Drainage' },
+    { icon: 'ðŸ­', label: 'GIDC Zone' },
+    { icon: 'ðŸ“¦', label: 'Warehouse Permitted' },
+    { icon: 'â™»ï¸', label: 'ETP Facility' },
   ],
 };
 
@@ -2613,10 +2915,10 @@ function buildReviewGrid() {
   var isRes = ['apartment','villa','bungalow','rowhouse'].indexOf(type) !== -1;
 
   function priceStr(p) {
-    if (!p) return 'â€”';
-    if (p >= 10000000) return 'â‚¹' + (p/10000000).toFixed(2) + ' Cr';
-    if (p >= 100000)   return 'â‚¹' + (p/100000).toFixed(2) + ' L';
-    return 'â‚¹' + p.toLocaleString('en-IN');
+    if (!p) return 'Ã¢â‚¬â€';
+    if (p >= 10000000) return 'Ã¢â€šÂ¹' + (p/10000000).toFixed(2) + ' Cr';
+    if (p >= 100000)   return 'Ã¢â€šÂ¹' + (p/100000).toFixed(2) + ' L';
+    return 'Ã¢â€šÂ¹' + p.toLocaleString('en-IN');
   }
 
   function row(icon, label, value, hi) {
@@ -2628,7 +2930,7 @@ function buildReviewGrid() {
       '<span style="font-size:1rem;flex-shrink:0;">' + icon + '</span>' +
       '<div style="flex:1;min-width:0;">' +
         '<div style="font-size:0.68rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.5px;">' + label + '</div>' +
-        '<div style="font-size:0.88rem;font-weight:700;color:' + vc + ';margin-top:2px;">' + (value || '<span style="color:#ccc;font-weight:400;">â€”</span>') + '</div>' +
+        '<div style="font-size:0.88rem;font-weight:700;color:' + vc + ';margin-top:2px;">' + (value || '<span style="color:#ccc;font-weight:400;">Ã¢â‚¬â€</span>') + '</div>' +
       '</div></div>';
   }
 
@@ -2643,12 +2945,12 @@ function buildReviewGrid() {
 
   // Header
   html += '<div style="background:linear-gradient(135deg,#E53935,#b71c1c);border-radius:14px;padding:16px 18px;margin-bottom:16px;color:#fff;">' +
-    '<div style="font-size:0.68rem;font-weight:700;opacity:0.7;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">ðŸ“‹ Review Before Posting</div>' +
+    '<div style="font-size:0.68rem;font-weight:700;opacity:0.7;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Ã°Å¸â€œâ€¹ Review Before Posting</div>' +
     '<div style="font-size:1rem;font-weight:800;margin-bottom:10px;line-height:1.4;">' + (title || '<span style="opacity:0.5">Title not set</span>') + '</div>' +
     '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">' +
-      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">' + (statusMap[status]||status||'â€”') + '</span>' +
-      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">' + (typeMap[type]||type||'â€”') + '</span>' +
-      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">ðŸ“¸ ' + photos + ' Photos</span>' +
+      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">' + (statusMap[status]||status||'Ã¢â‚¬â€') + '</span>' +
+      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">' + (typeMap[type]||type||'Ã¢â‚¬â€') + '</span>' +
+      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">Ã°Å¸â€œÂ¸ ' + photos + ' Photos</span>' +
     '</div>' +
     '<div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;">' +
       '<span style="font-size:0.72rem;font-weight:600;">Listing Score</span>' +
@@ -2660,71 +2962,71 @@ function buildReviewGrid() {
   '</div>';
 
   // Location
-  html += sec('ðŸ“ Location',
-    row('ðŸ™ï¸', 'City', city) +
-    row('ðŸ“Œ', 'Locality', area) +
-    (subArea && subArea !== '__other__' ? row('ðŸ—ºï¸', 'Sub Area', subArea) : '') +
-    (project ? row('ðŸ—ï¸', 'Building / Society', project) : '')
+  html += sec('Ã°Å¸â€œÂ Location',
+    row('Ã°Å¸Ââ„¢Ã¯Â¸Â', 'City', city) +
+    row('Ã°Å¸â€œÅ’', 'Locality', area) +
+    (subArea && subArea !== '__other__' ? row('Ã°Å¸â€”ÂºÃ¯Â¸Â', 'Sub Area', subArea) : '') +
+    (project ? row('Ã°Å¸Ââ€”Ã¯Â¸Â', 'Building / Society', project) : '')
   );
 
   // Property Info
-  var propInfo = row('ðŸ ', 'Property Type', typeMap[type]||type, true) +
-    row('ðŸ“‹', 'Listing Type', statusMap[status]||status, true);
-  if (isRes && bhk) propInfo += row('ðŸ›ï¸', 'BHK', bhk + ' BHK', false);
-  if (isRes) propInfo += row('ðŸ›Œ', 'Bedrooms', beds) + row('ðŸš¿', 'Bathrooms', baths) + row('ðŸ ', 'Balconies', balc);
-  html += sec('ðŸ  Property Info', propInfo);
+  var propInfo = row('Ã°Å¸ÂÂ ', 'Property Type', typeMap[type]||type, true) +
+    row('Ã°Å¸â€œâ€¹', 'Listing Type', statusMap[status]||status, true);
+  if (isRes && bhk) propInfo += row('Ã°Å¸â€ºÂÃ¯Â¸Â', 'BHK', bhk + ' BHK', false);
+  if (isRes) propInfo += row('Ã°Å¸â€ºÅ’', 'Bedrooms', beds) + row('Ã°Å¸Å¡Â¿', 'Bathrooms', baths) + row('Ã°Å¸ÂÂ ', 'Balconies', balc);
+  html += sec('Ã°Å¸ÂÂ  Property Info', propInfo);
 
   // Area
   if (isRes && (carpet || sba)) {
     var loading = (carpet && sba) ? Math.round((Number(sba)/Number(carpet) - 1)*100) + '%' : '';
-    html += sec('ðŸ“ Area Details',
-      row('ðŸ“', 'Carpet Area', carpet ? carpet + ' sq.ft' : '') +
-      row('ðŸ“', 'Super Built-up Area', sba ? sba + ' sq.ft' : '') +
-      (loading ? row('ðŸ“Š', 'Loading Factor', loading) : '')
+    html += sec('Ã°Å¸â€œÂ Area Details',
+      row('Ã°Å¸â€œÂ', 'Carpet Area', carpet ? carpet + ' sq.ft' : '') +
+      row('Ã°Å¸â€œÂ', 'Super Built-up Area', sba ? sba + ' sq.ft' : '') +
+      (loading ? row('Ã°Å¸â€œÅ ', 'Loading Factor', loading) : '')
     );
   }
 
   // Building
   if (isRes) {
-    html += sec('ðŸ¢ Building Details',
-      row('ðŸ¢', 'Floor', floor ? 'Floor ' + floor + (totalFloors ? ' / ' + totalFloors : '') : '') +
-      row('ðŸ›—', 'Lift', lift) +
-      row('ðŸš—', 'Parking', covPark + ' Covered + ' + openPark + ' Open') +
-      row('ðŸ§­', 'Facing', facing) +
-      row('ðŸ“‹', 'Ownership', ownership) +
-      row('ðŸ—ï¸', 'Property Age', age) +
-      row('ðŸ›‹ï¸', 'Furnishing', furnish)
+    html += sec('Ã°Å¸ÂÂ¢ Building Details',
+      row('Ã°Å¸ÂÂ¢', 'Floor', floor ? 'Floor ' + floor + (totalFloors ? ' / ' + totalFloors : '') : '') +
+      row('Ã°Å¸â€ºâ€”', 'Lift', lift) +
+      row('Ã°Å¸Å¡â€”', 'Parking', covPark + ' Covered + ' + openPark + ' Open') +
+      row('Ã°Å¸Â§Â­', 'Facing', facing) +
+      row('Ã°Å¸â€œâ€¹', 'Ownership', ownership) +
+      row('Ã°Å¸Ââ€”Ã¯Â¸Â', 'Property Age', age) +
+      row('Ã°Å¸â€ºâ€¹Ã¯Â¸Â', 'Furnishing', furnish)
     );
   }
 
   // Pricing
-  html += sec('ðŸ’° Pricing',
-    row('ðŸ’°', 'Expected Price', priceStr(price) + (priceLabel ? '  (' + priceLabel + ')' : ''), true) +
-    (possession ? row('ðŸ”‘', 'Possession', possession) : '') +
-    (rera ? row('ðŸ“œ', 'RERA No.', rera) : '')
+  html += sec('Ã°Å¸â€™Â° Pricing',
+    row('Ã°Å¸â€™Â°', 'Expected Price', priceStr(price) + (priceLabel ? '  (' + priceLabel + ')' : ''), true) +
+    (possession ? row('Ã°Å¸â€â€˜', 'Possession', possession) : '') +
+    (rera ? row('Ã°Å¸â€œÅ“', 'RERA No.', rera) : '')
   );
 
   // Amenities
   if (amenities.length) {
-    html += sec('âœ… Amenities (' + amenities.length + ')',
+    html += sec('Ã¢Å“â€¦ Amenities (' + amenities.length + ')',
       '<div style="display:flex;flex-wrap:wrap;gap:6px;padding:4px 0;">' +
       amenities.map(function(a) {
-        return '<span style="background:#e8f5e9;color:#2e7d32;font-size:0.73rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid #c8e6c9;">âœ“ ' + a + '</span>';
+        return '<span style="background:#e8f5e9;color:#2e7d32;font-size:0.73rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid #c8e6c9;">Ã¢Å“â€œ ' + a + '</span>';
       }).join('') + '</div>'
     );
   }
 
   // Agent
   if (agent) {
-    html += sec('ðŸ‘¤ Agent Details',
-      row('ðŸ‘¤', 'Agent Name', agent) +
-      row('ðŸ“ž', 'Phone', agentPh)
+    html += sec('Ã°Å¸â€˜Â¤ Agent Details',
+      row('Ã°Å¸â€˜Â¤', 'Agent Name', agent) +
+      row('Ã°Å¸â€œÅ¾', 'Phone', agentPh)
     );
   }
 
   // Description
   if (desc) {
-    html += sec('ðŸ“ Description Preview',
+    html += sec('Ã°Å¸â€œÂ Description Preview',
       '<div style="background:#f8f9fb;border:1.5px solid #f0f0f0;border-radius:10px;padding:12px 14px;font-size:0.82rem;color:#555;line-height:1.7;">' +
       desc.substring(0,250) + (desc.length > 250 ? '...' : '') + '</div>'
     );
@@ -2840,7 +3142,7 @@ function startAutoSave() {
 }
 startAutoSave();
 
-// On page load â€” check for auto-saved draft
+// On page load Ã¢â‚¬â€ check for auto-saved draft
 window.addEventListener('load', function() {
   var autoSave = localStorage.getItem('adminAutoSaveDraft');
   if (!autoSave) return;
@@ -2975,7 +3277,7 @@ function showDraftSavedToast() {
   var t = document.createElement('div');
   t.id = 'draftSavedToast';
   t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);z-index:99999;background:linear-gradient(135deg,#064e3b,#065f46);border:1.5px solid rgba(16,185,129,0.4);border-radius:16px;padding:16px 24px;box-shadow:0 20px 60px rgba(0,0,0,0.4);display:flex;align-items:center;gap:12px;font-family:Poppins,sans-serif;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s;opacity:0;';
-  t.innerHTML = '<div style="width:38px;height:38px;background:rgba(16,185,129,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">ðŸ’¾</div>' +
+  t.innerHTML = '<div style="width:38px;height:38px;background:rgba(16,185,129,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">Ã°Å¸â€™Â¾</div>' +
     '<div>' +
       '<div style="font-size:0.88rem;font-weight:700;color:#6ee7b7;">Draft Saved!</div>' +
       '<div style="font-size:0.75rem;color:rgba(110,231,183,0.6);margin-top:1px;">All details saved. Continue anytime.</div>' +
@@ -2995,13 +3297,13 @@ function loadDrafts() {
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text3)"><i class="fa-regular fa-floppy-disk" style="font-size:2.5rem;display:block;margin-bottom:12px;opacity:0.3"></i><p style="font-size:0.9rem">No saved drafts yet.<br><small>Click "Save Draft" while adding a property.</small></p></div>';
     return;
   }
-  var typeIcon  = { apartment:'ðŸ¢', villa:'ðŸ¡', bungalow:'ðŸ ', rowhouse:'ðŸ˜ï¸', plot:'ðŸŒ¿', office:'ðŸ¢', shop:'ðŸª', showroom:'ðŸš—', warehouse:'ðŸ­', factory:'âš™ï¸', coworking:'ðŸ’»', industrial_land:'ðŸŒ' };
+  var typeIcon  = { apartment:'Ã°Å¸ÂÂ¢', villa:'Ã°Å¸ÂÂ¡', bungalow:'Ã°Å¸ÂÂ ', rowhouse:'Ã°Å¸ÂËœÃ¯Â¸Â', plot:'Ã°Å¸Å’Â¿', office:'Ã°Å¸ÂÂ¢', shop:'Ã°Å¸ÂÂª', showroom:'Ã°Å¸Å¡â€”', warehouse:'Ã°Å¸ÂÂ­', factory:'Ã¢Å¡â„¢Ã¯Â¸Â', coworking:'Ã°Å¸â€™Â»', industrial_land:'Ã°Å¸Å’Â' };
   var typeLabel = { apartment:'Apartment', villa:'Villa', bungalow:'Bungalow', rowhouse:'Row House', plot:'Plot', office:'Office', shop:'Shop', showroom:'Showroom', warehouse:'Warehouse', factory:'Factory', coworking:'Co-working', industrial_land:'Industrial Land' };
   grid.innerHTML = drafts.map(function(d, idx) {
-    var icon   = typeIcon[d.type]  || 'ðŸ ';
+    var icon   = typeIcon[d.type]  || 'Ã°Å¸ÂÂ ';
     var tLabel = typeLabel[d.type] || d.type || 'Property';
-    var loc    = [d.area, d.city].filter(Boolean).join(', ') || 'â€”';
-    var price  = d.price ? 'â‚¹' + Number(d.price).toLocaleString('en-IN') : 'â€”';
+    var loc    = [d.area, d.city].filter(Boolean).join(', ') || 'Ã¢â‚¬â€';
+    var price  = d.price ? 'Ã¢â€šÂ¹' + Number(d.price).toLocaleString('en-IN') : 'Ã¢â‚¬â€';
     var beds   = d.rBeds || d.beds ? (d.rBeds || d.beds) + ' BHK' : '';
     var sqft   = d.superBuiltUp || d.sqft ? (d.superBuiltUp || d.sqft) + ' sq.ft' : '';
     var saved  = new Date(d.savedAt).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
@@ -3030,8 +3332,8 @@ function loadDrafts() {
       '</div>' +
       '<div style="display:flex;flex-direction:column;gap:6px">' +
         '<div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)"><i class="fa-solid fa-location-dot" style="color:var(--accent);width:14px"></i>' + loc + '</div>' +
-        (price !== 'â€”' ? '<div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)"><i class="fa-solid fa-indian-rupee-sign" style="color:#10b981;width:14px"></i>' + price + '</div>' : '') +
-        ([beds, sqft].filter(Boolean).length ? '<div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)"><i class="fa-solid fa-ruler-combined" style="color:#f59e0b;width:14px"></i>' + [beds, sqft].filter(Boolean).join(' â€¢ ') + '</div>' : '') +
+        (price !== 'Ã¢â‚¬â€' ? '<div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)"><i class="fa-solid fa-indian-rupee-sign" style="color:#10b981;width:14px"></i>' + price + '</div>' : '') +
+        ([beds, sqft].filter(Boolean).length ? '<div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)"><i class="fa-solid fa-ruler-combined" style="color:#f59e0b;width:14px"></i>' + [beds, sqft].filter(Boolean).join(' Ã¢â‚¬Â¢ ') + '</div>' : '') +
         (d.desc ? '<div style="font-size:0.72rem;color:var(--text3);line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">' + d.desc.substring(0,100) + (d.desc.length > 100 ? '...' : '') + '</div>' : '') +
       '</div>' +
       '<div style="display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border)">' +
@@ -3212,7 +3514,7 @@ async function loadNotifications() {
           color: '#10b981',
           bg: 'rgba(16,185,129,0.12)',
           title: 'New Inquiry',
-          sub: (i.name || 'Someone') + ' — ' + (i.lookingFor || 'Property inquiry'),
+          sub: (i.name || 'Someone') + ' â€” ' + (i.lookingFor || 'Property inquiry'),
           time: i.createdAt,
           action: function() { goPage('inquiries'); toggleNotifPanel(); }
         });
@@ -3282,7 +3584,7 @@ function clearNotifs() {
 async function sendTestWA() {
   try {
     const data = await api('POST', '/send-wa', { message: 'Test notification from City Real Space Admin Panel!' });
-    if (data.success) toast('WhatsApp sent! ✅');
+    if (data.success) toast('WhatsApp sent! âœ…');
     else toast(data.message || 'WA Error', 'error');
   } catch(e) { toast('Error sending WA', 'error'); }
 }
@@ -3390,13 +3692,13 @@ async function loadContacts() {
       return '<tr>' +
         '<td><strong style="color:var(--text)">' + c.name + '</strong></td>' +
         '<td>' + c.phone + '</td>' +
-        '<td>' + (c.email || '—') + '</td>' +
-        '<td>' + (c.subject || '—') + '</td>' +
+        '<td>' + (c.email || 'â€”') + '</td>' +
+        '<td>' + (c.subject || 'â€”') + '</td>' +
         '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + c.message + '</td>' +
         '<td><select onchange="updateContactStatus(\'' + c._id + '\', this.value)" style="border:1.5px solid #e8e8e8;border-radius:7px;padding:4px 8px;font-size:0.78rem;font-family:Poppins,sans-serif;outline:none;cursor:pointer;">' +
-        '<option value="new"'     + (c.status==='new'     ? ' selected' : '') + '>🔴 New</option>' +
-        '<option value="read"'    + (c.status==='read'    ? ' selected' : '') + '>🟡 Read</option>' +
-        '<option value="replied"' + (c.status==='replied' ? ' selected' : '') + '>🟢 Replied</option>' +
+        '<option value="new"'     + (c.status==='new'     ? ' selected' : '') + '>ðŸ”´ New</option>' +
+        '<option value="read"'    + (c.status==='read'    ? ' selected' : '') + '>ðŸŸ¡ Read</option>' +
+        '<option value="replied"' + (c.status==='replied' ? ' selected' : '') + '>ðŸŸ¢ Replied</option>' +
         '</select></td>' +
         '<td>' + fmtDate(c.createdAt) + '</td>' +
         '<td><div class="act-btns">' +
@@ -3488,6 +3790,8 @@ function setMeetingRooms(btn, val) {
     if (rd) rd.style.display = (isRes && isRent) ? 'block' : 'none';
     var sd = document.getElementById('sellPricingSection');
     if (sd) sd.style.display = (isRes && !isRent) ? 'block' : 'none';
+    var sfRow = document.getElementById('rSuitableForRow');
+    if (sfRow) sfRow.style.display = (isRes && isRent) ? '' : 'none';
   };
 
   // Also trigger on status change
@@ -3515,6 +3819,8 @@ window.hsToggle = function(btn, fieldId, val) {
     if (rd) rd.style.display = (isRes && val === 'for-rent') ? 'block' : 'none';
     var sd = document.getElementById('sellPricingSection');
     if (sd) sd.style.display = (isRes && (val === 'for-sale' || val === 'new-launch')) ? 'block' : 'none';
+    var sfRow = document.getElementById('rSuitableForRow');
+    if (sfRow) sfRow.style.display = (isRes && val === 'for-rent') ? '' : 'none';
   }
 };
 
@@ -3542,3 +3848,6 @@ function calcSBA() {
   if (pSqft && !pSqft.value && sba.value) pSqft.value = sba.value;
   updateAdminScore();
 }
+
+
+

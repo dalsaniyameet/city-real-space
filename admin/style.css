@@ -507,58 +507,9 @@ body::after{
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:6px;}
 ::-webkit-scrollbar-thumb:hover{background:var(--text3);}
 
-/* ===== CUSTOM CURSOR ===== */
-* { cursor: none !important; }
-
-.cursor-dot {
-  position: fixed;
-  width: 8px;
-  height: 8px;
-  background: #E53935;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s, background 0.2s, width 0.2s, height 0.2s;
-  box-shadow: 0 0 10px rgba(229,57,53,0.8), 0 0 20px rgba(229,57,53,0.4);
-}
-
-.cursor-ring {
-  position: fixed;
-  width: 36px;
-  height: 36px;
-  border: 2px solid rgba(229,57,53,0.5);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99998;
-  transform: translate(-50%, -50%);
-  transition: transform 0.12s ease, width 0.25s ease, height 0.25s ease, border-color 0.25s, background 0.25s;
-}
-
-body.cursor-hover .cursor-dot {
-  width: 12px;
-  height: 12px;
-  background: #D4A017;
-  box-shadow: 0 0 16px rgba(212,160,23,0.9), 0 0 32px rgba(229,57,53,0.5);
-}
-
-body.cursor-hover .cursor-ring {
-  width: 50px;
-  height: 50px;
-  border-color: rgba(212,160,23,0.6);
-  background: rgba(229,57,53,0.06);
-}
-
-body.cursor-click .cursor-dot {
-  transform: translate(-50%, -50%) scale(0.6);
-  background: #D4A017;
-  box-shadow: 0 0 20px rgba(212,160,23,0.9);
-}
-
-body.cursor-click .cursor-ring {
-  transform: translate(-50%, -50%) scale(0.85);
-  border-color: rgba(212,160,23,0.7);
-}
+/* ===== CUSTOM CURSOR — DISABLED FOR PERFORMANCE ===== */
+* { cursor: default !important; }
+.cursor-dot, .cursor-ring { display: none !important; }
 
 /* ===== CURSOR SPOTLIGHT EFFECT ===== */
 .stat-card,
@@ -1247,8 +1198,16 @@ body.cursor-click .cursor-ring {
   margin-bottom: 10px;
 }
 
+/* ===== PERFORMANCE: Reduce heavy animations ===== */
+.sb-logo-img { animation: none !important; }
+.sb-logo-ring, .sb-logo-ring2 { animation: none !important; }
+@keyframes bellRing { 0%,100%{transform:rotate(0)} }
+@keyframes badge-pulse { 0%,100%{transform:scale(1)} }
+@keyframes pulse-logo { 0%,100%{box-shadow:0 4px 15px rgba(229,57,53,0.4)} }
+.stat-card { animation: none !important; }
+.modal-box.hs-modal { animation: none !important; }
 /* ===== CURSOR FIX: prevent blocking clicks ===== */
-.cursor-dot, .cursor-ring { pointer-events: none !important; }
+.cursor-dot, .cursor-ring { pointer-events: none !important; display: none !important; }
 
 /* ===== PHOTO PREVIEW ENHANCED ===== */
 .hs-photo-preview {

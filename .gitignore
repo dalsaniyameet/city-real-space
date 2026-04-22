@@ -5,3 +5,18 @@ backend/server.log
 backend/server_output.txt
 .env
 *.log
+
+# Fix/utility scripts - not needed in production
+fix_footer.js
+fix_oSBA.py
+fix_office.js
+fix_sqft.js
+fix_sqft.js
+scan.js
+fixall.js
+replace_comm.py
+
+# Temp files
+out.txt
+pos.txt
+0
