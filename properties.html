@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -17,10 +17,26 @@
   <meta name="twitter:title" content="Search Properties in Ahmedabad | City Real Space"/>
   <meta name="twitter:description" content="Search 1000+ verified properties in Ahmedabad. Filter by area, budget, BHK. RERA registered."/>
   <meta name="twitter:image" content="https://www.cityrealspace.com/images/logo.jpeg"/>
-  <link rel="icon" type="image/jpeg" href="images/logo.jpeg"/>
-  <link rel="apple-touch-icon" href="images/logo.jpeg"/>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="stylesheet" href="responsive.css"/>
+  <meta property="og:site_name" content="City Real Space"/>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Search Properties in Ahmedabad",
+    "url": "https://www.cityrealspace.com/properties",
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.cityrealspace.com/"},
+        {"@type": "ListItem", "position": 2, "name": "Properties", "item": "https://www.cityrealspace.com/properties"}
+      ]
+    }
+  }
+  </script>
+  <link rel="icon" type="image/jpeg" href="/images/logo.jpeg"/>
+  <link rel="apple-touch-icon" href="/images/logo.jpeg"/>
+  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="/responsive.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
@@ -138,42 +154,42 @@
 
 <header class="header" id="header">
   <div class="container header-inner">
-    <a href="index.html" class="logo">
-      <img src="images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;"/>
+    <a href="/" class="logo">
+      <img src="/images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;"/>
     </a>
     <nav class="nav" id="nav">
-      <a href="index.html">Home</a>
+      <a href="/">Home</a>
       <div class="nav-dropdown">
         <a href="#" class="nav-drop-btn">Buy <i class="fa-solid fa-chevron-down"></i></a>
         <div class="nav-drop-menu">
-          <a href="properties.html">All</a>
-          <a href="rent.html">Rent</a>
-          <a href="resale.html">Resale</a>
-          <a href="land.html">Land</a>
+          <a href="/properties">All</a>
+          <a href="/rent">Rent</a>
+          <a href="/resale">Resale</a>
+          <a href="/land">Land</a>
         </div>
       </div>
       <div class="nav-dropdown">
         <a href="#" class="nav-drop-btn">Sell <i class="fa-solid fa-chevron-down"></i></a>
         <div class="nav-drop-menu">
-          <a href="post-property.html">List Property</a>
-          <a href="post-property.html">List Project</a>
+          <a href="/post-property">List Property</a>
+          <a href="/post-property">List Project</a>
         </div>
       </div>
-      <a href="new-launch.html">New Launch</a>
-      <a href="prelease.html">Prelease</a>
-      <a href="about.html">About</a>
-      <a href="blog.html">Blog</a>
-      <a href="contact.html">Contact</a>
+      <a href="/new-launch">New Launch</a>
+      <a href="/prelease">Prelease</a>
+      <a href="/about">About</a>
+      <a href="/blog">Blog</a>
+      <a href="/contact">Contact</a>
     </nav>
     <div class="header-actions">
       <div id="userMenu" style="display:none;position:relative">
         <button class="btn-login" id="userMenuBtn"><i class="fa-solid fa-user"></i> <span id="userNameDisplay"></span> <i class="fa-solid fa-chevron-down" style="font-size:0.7rem"></i></button>
         <div id="userDropdown" style="display:none;position:absolute;right:0;top:110%;background:#fff;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.15);min-width:180px;z-index:999;overflow:hidden;border:1px solid #f0f0f0">
-          <a href="dashboard.html" style="display:flex;align-items:center;gap:8px;padding:12px 16px;font-size:0.85rem;color:#333;font-weight:600;border-bottom:1px solid #f5f5f5;"><i class="fa-solid fa-gauge" style="color:#E53935"></i> My Dashboard</a>
+          <a href="/dashboard" style="display:flex;align-items:center;gap:8px;padding:12px 16px;font-size:0.85rem;color:#333;font-weight:600;border-bottom:1px solid #f5f5f5;"><i class="fa-solid fa-gauge" style="color:#E53935"></i> My Dashboard</a>
           <button onclick="handleLogout()" style="width:100%;padding:12px 16px;border:none;background:none;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.85rem;color:#E53935;font-weight:600;text-align:left;display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
         </div>
       </div>
-      <a href="login.html" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> Login</a>
+      <a href="/login" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> Login</a>
       <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
     </div>
   </div>
@@ -186,18 +202,18 @@
     <button onclick="closeMobileNav()" style="background:#f5f5f5;border:none;width:36px;height:36px;border-radius:50%;font-size:1.1rem;cursor:pointer;color:#333;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-xmark"></i></button>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden">
-    <a href="index.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-house" style="color:#E53935;width:18px"></i>Home</a>
-    <a href="properties.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-building" style="color:#E53935;width:18px"></i>Properties</a>
-    <a href="buy.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-tag" style="color:#E53935;width:18px"></i>Buy</a>
-    <a href="rent.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-key" style="color:#E53935;width:18px"></i>Rent</a>
-    <a href="new-launch.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-rocket" style="color:#E53935;width:18px"></i>New Launch</a>
-    <a href="resale.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-rotate" style="color:#E53935;width:18px"></i>Resale</a>
-    <a href="land.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-map" style="color:#E53935;width:18px"></i>Land</a>
-    <a href="prelease.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-handshake" style="color:#E53935;width:18px"></i>Prelease</a>
-    <a href="post-property.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-plus" style="color:#E53935;width:18px"></i>Post Property</a>
-    <a href="about.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-circle-info" style="color:#E53935;width:18px"></i>About</a>
-    <a href="blog.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-newspaper" style="color:#E53935;width:18px"></i>Blog</a>
-    <a href="contact.html" style="padding:22px 16px;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-phone" style="color:#E53935;width:18px"></i>Contact</a>
+    <a href="/" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-house" style="color:#E53935;width:18px"></i>Home</a>
+    <a href="/properties" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-building" style="color:#E53935;width:18px"></i>Properties</a>
+    <a href="/buy" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-tag" style="color:#E53935;width:18px"></i>Buy</a>
+    <a href="/rent" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-key" style="color:#E53935;width:18px"></i>Rent</a>
+    <a href="/new-launch" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-rocket" style="color:#E53935;width:18px"></i>New Launch</a>
+    <a href="/resale" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-rotate" style="color:#E53935;width:18px"></i>Resale</a>
+    <a href="/land" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-map" style="color:#E53935;width:18px"></i>Land</a>
+    <a href="/prelease" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-handshake" style="color:#E53935;width:18px"></i>Prelease</a>
+    <a href="/post-property" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-plus" style="color:#E53935;width:18px"></i>Post Property</a>
+    <a href="/about" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-circle-info" style="color:#E53935;width:18px"></i>About</a>
+    <a href="/blog" style="padding:22px 16px;border-right:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-newspaper" style="color:#E53935;width:18px"></i>Blog</a>
+    <a href="/contact" style="padding:22px 16px;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-phone" style="color:#E53935;width:18px"></i>Contact</a>
   </div>
 </div>
 <script>function closeMobileNav(){var n=document.getElementById('mobileNav');if(n)n.style.display='none';var b=document.getElementById('hamburger');if(b)b.innerHTML='<i class="fa-solid fa-bars"></i>';document.body.style.overflow='';}</script>
@@ -857,7 +873,7 @@ function showEmptyState(grid) {
     <div id="reqBox" style="background:#fff;width:100%;max-width:780px;height:100%;overflow-y:auto;box-shadow:-8px 0 40px rgba(0,0,0,0.25);transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);position:relative;display:flex;flex-direction:row">
       <!-- Left: Woman Image -->
       <div style="width:280px;min-width:280px;background:#0D1B2A;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;flex-shrink:0" class="req-img-panel">
-        <img src="images/agent.jpg" alt="Agent" style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:92%;width:auto;max-width:none;opacity:0.95"/>
+        <img src="/images/agent.jpg" alt="Agent" style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:92%;width:auto;max-width:none;opacity:0.95"/>
         <div style="position:relative;z-index:1;padding:28px 24px;background:linear-gradient(to top,rgba(13,27,42,0.95) 0%,transparent 100%)">
           <div style="display:inline-block;background:#E53935;color:#fff;font-size:0.7rem;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:10px;letter-spacing:0.5px">FREE SERVICE</div>
           <p style="color:#fff;font-size:1.1rem;font-weight:800;margin:0 0 6px;line-height:1.4">Can't find your dream property?</p>
@@ -1133,7 +1149,7 @@ function showLoginToast(msg) {
   let t = document.querySelector('.auth-toast');
   if (!t) { t = document.createElement('div'); t.className = 'auth-toast'; document.body.appendChild(t); }
   t.style.background = '#1565c0';
-  t.innerHTML = '<i class="fa-solid fa-user"></i> ' + msg + ' &nbsp;<a href="login.html" style="color:#fff;font-weight:700;text-decoration:underline;">Login / Register</a>';
+  t.innerHTML = '<i class="fa-solid fa-user"></i> ' + msg + ' &nbsp;<a href="/login" style="color:#fff;font-weight:700;text-decoration:underline;">Login / Register</a>';
   t.classList.add('show');
   setTimeout(() => { t.classList.remove('show'); t.style.background = ''; }, 4000);
 }
@@ -1144,8 +1160,8 @@ function showLoginToast(msg) {
   <div class="footer-top">
     <div class="container footer-grid">
       <div class="footer-col">
-        <a href="index.html" class="footer-logo" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
-          <img src="images/logo.jpeg" alt="City Real Space" style="height:52px;width:52px;object-fit:contain;border-radius:10px;background:#fff;padding:4px;"/>
+        <a href="/" class="footer-logo" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
+          <img src="/images/logo.jpeg" alt="City Real Space" style="height:52px;width:52px;object-fit:contain;border-radius:10px;background:#fff;padding:4px;"/>
           <span style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1.2;">City <span style="color:#FFC107;">Real</span> Space</span>
         </a>
         <p class="footer-about">Ahmedabad's most trusted real estate platform. We connect buyers, sellers and investors with verified properties across Gujarat.</p>
@@ -1159,13 +1175,13 @@ function showLoginToast(msg) {
       <div class="footer-col">
         <h4>Our Services</h4>
         <ul>
-          <li><a href="properties.html?status=for-sale"><i class="fa-solid fa-chevron-right"></i> Buy Property</a></li>
-          <li><a href="properties.html?status=for-sale&type=apartment"><i class="fa-solid fa-chevron-right"></i> Resale</a></li>
-          <li><a href="properties.html?status=for-sale&type=plot"><i class="fa-solid fa-chevron-right"></i> Land</a></li>
-          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell â€“ List Property</a></li>
-          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell â€“ List Project</a></li>
-          <li><a href="properties.html?status=new-launch"><i class="fa-solid fa-chevron-right"></i> New Launch</a></li>
-          <li><a href="properties.html?status=for-rent"><i class="fa-solid fa-chevron-right"></i> Prelease</a></li>
+          <li><a href="/properties?status=for-sale"><i class="fa-solid fa-chevron-right"></i> Buy Property</a></li>
+          <li><a href="/properties?status=for-sale&type=apartment"><i class="fa-solid fa-chevron-right"></i> Resale</a></li>
+          <li><a href="/properties?status=for-sale&type=plot"><i class="fa-solid fa-chevron-right"></i> Land</a></li>
+          <li><a href="/post-property"><i class="fa-solid fa-chevron-right"></i> Sell â€“ List Property</a></li>
+          <li><a href="/post-property"><i class="fa-solid fa-chevron-right"></i> Sell â€“ List Project</a></li>
+          <li><a href="/properties?status=new-launch"><i class="fa-solid fa-chevron-right"></i> New Launch</a></li>
+          <li><a href="/properties?status=for-rent"><i class="fa-solid fa-chevron-right"></i> Prelease</a></li>
           <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Property Valuation</a></li>
           <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Home Loans</a></li>
         </ul>
@@ -1173,11 +1189,11 @@ function showLoginToast(msg) {
       <div class="footer-col">
         <h4>Quick Links</h4>
         <ul>
-          <li><a href="faq.html"><i class="fa-solid fa-chevron-right"></i> FAQ</a></li>
-          <li><a href="privacy.html"><i class="fa-solid fa-chevron-right"></i> Privacy Policy</a></li>
-          <li><a href="blog.html"><i class="fa-solid fa-chevron-right"></i> Blog</a></li>
-          <li><a href="about.html"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
-          <li><a href="contact.html"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
+          <li><a href="/faq"><i class="fa-solid fa-chevron-right"></i> FAQ</a></li>
+          <li><a href="/privacy"><i class="fa-solid fa-chevron-right"></i> Privacy Policy</a></li>
+          <li><a href="/blog"><i class="fa-solid fa-chevron-right"></i> Blog</a></li>
+          <li><a href="/about"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
+          <li><a href="/contact"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1233,7 +1249,7 @@ function showLoginToast(msg) {
   </div>
 </div>
 
-<script src="cursor.js"></script>
+<script src="/cursor.js"></script>
 <script>
 // ===== PROPERTY COMPARISON =====
 const MAX_COMPARE = 3;

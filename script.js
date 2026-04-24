@@ -63,6 +63,20 @@ if (userMenuBtn) {
 
 checkAuthState();
 
+// ===== AUTO LOGIN POPUP FOR GUEST USERS =====
+(function() {
+  const token = localStorage.getItem('token');
+  const shown = sessionStorage.getItem('loginPopupShown');
+  if (token || shown) return; // already logged in or already shown this session
+  setTimeout(function() {
+    const overlay = document.getElementById('authOverlay');
+    if (!overlay) return;
+    sessionStorage.setItem('loginPopupShown', '1');
+    overlay.classList.add('open');
+    if (typeof switchTab === 'function') switchTab('register');
+  }, 20000); // 20 seconds baad show karo
+})();
+
 // ===== EMPTY STATE HTML =====
 const emptyState = (msg) => `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#aaa;"><i class="fa-solid fa-building" style="font-size:3rem;margin-bottom:16px;display:block;opacity:0.3"></i><p style="font-size:1rem;font-weight:600;color:#bbb;">${msg || 'No properties available right now.'}</p><p style="font-size:0.82rem;margin-top:6px;">Check back soon or <a href="contact.html" style="color:#E53935;font-weight:700;">contact us</a> for latest listings.</p></div>`;
 const emptySlide = (msg) => `<div style="min-width:100%;text-align:center;padding:60px 20px;color:#aaa;"><i class="fa-solid fa-building" style="font-size:3rem;margin-bottom:16px;display:block;opacity:0.3"></i><p style="font-size:1rem;font-weight:600;color:#bbb;">${msg || 'No properties available right now.'}</p></div>`;

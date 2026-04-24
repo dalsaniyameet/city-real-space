@@ -1,7 +1,8 @@
 /* ===== CUSTOM CURSOR ===== */
 * { cursor: none !important; }
+input, textarea, select, [contenteditable] { cursor: text !important; }
 .cursor-dot {
-  position: fixed; top: 0; left: 0; z-index: 99999;
+  position: fixed; top: 0; left: 0; z-index: 999999;
   width: 10px; height: 10px; border-radius: 50%;
   background: #FFC107;
   pointer-events: none;
@@ -9,7 +10,7 @@
   transition: transform 0.1s ease, background 0.2s ease, width 0.2s ease, height 0.2s ease;
 }
 .cursor-ring {
-  position: fixed; top: 0; left: 0; z-index: 99998;
+  position: fixed; top: 0; left: 0; z-index: 999998;
   width: 36px; height: 36px; border-radius: 50%;
   border: 2px solid rgba(255,193,7,0.7);
   pointer-events: none;

@@ -170,6 +170,15 @@ app.get('/robots.txt', (req, res) => {
 app.get('/google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html', (req, res) => {
   res.send('google-site-verification: google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html');
 });
+app.get('/api/gsc-verify', (req, res) => {
+  res.send('google-site-verification: google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html');
+});
+
+// Robots.txt alias
+app.get('/api/robots', (req, res) => {
+  res.setHeader('Content-Type', 'text/plain');
+  res.sendFile(path.join(__dirname, '../robots.txt'));
+});
 
 // Frontend path — Vercel pe __dirname = /var/task/backend, so go up one level
 const FRONTEND = path.join(__dirname, '../');
@@ -220,13 +229,38 @@ app.use('/api/blogs',      require('./routes/blogs'));
 app.use('/api/upload',     require('./routes/upload'));
 app.use('/api/nearby',     require('./routes/nearby'));
 
-// SEO-friendly property URLs — /property/:city/:area/:slug
-app.get('/property/:city/:area/:slug', (req, res) => {
-  res.sendFile(path.join(FRONTEND, 'property-detail.html'));
+// Blog detail SEO URL — /blog/:slug
+app.get('/blog/:slug', (req, res) => {
+  res.sendFile(path.join(FRONTEND, 'blog-detail.html'));
 });
-app.get('/property/:slug', (req, res) => {
-  res.sendFile(path.join(FRONTEND, 'property-detail.html'));
-});
+
+// Frontend page routes
+const pages = ['blog', 'blog-detail', 'about', 'contact', 'properties', 'buy', 'rent', 'new-launch', 'resale', 'land', 'prelease', 'post-property', 'faq', 'careers', 'privacy', 'terms', 'login', 'register', 'dashboard'];
+pages.forEach(p => app.get(`/${p}`, (req, res) => res.sendFile(path.join(FRONTEND, `${p}.html`))));
+
+// SEO-friendly property URLs — inject correct canonical server-side so Google sees it without JS
+const fs = require('fs');
+function servePropertyDetail(req, res) {
+  const slug = req.params.slug;
+  const city = (req.params.city || 'ahmedabad').toLowerCase().replace(/\s+/g, '-');
+  const area = (req.params.area || 'gujarat').toLowerCase().replace(/\s+/g, '-');
+  const canonicalUrl = req.params.area
+    ? `https://www.cityrealspace.com/property/${city}/${area}/${slug}`
+    : `https://www.cityrealspace.com/property/${slug}`;
+  try {
+    let html = fs.readFileSync(path.join(FRONTEND, 'property-detail.html'), 'utf8');
+    html = html.replace(
+      /(<link rel="canonical" href=")[^"]*(")[^>]*(>)/,
+      `$1${canonicalUrl}$2 id="canonicalTag">`
+    );
+    res.setHeader('Content-Type', 'text/html');
+    res.send(html);
+  } catch (e) {
+    res.sendFile(path.join(FRONTEND, 'property-detail.html'));
+  }
+}
+app.get('/property/:city/:area/:slug', servePropertyDetail);
+app.get('/property/:slug', servePropertyDetail);
 
 // Health check
 app.get('/api/health', (req, res) => {

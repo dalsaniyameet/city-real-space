@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -8,10 +8,10 @@
   <meta name="description" content="Learn about City Real Space - Ahmedabad's most trusted real estate company. RERA registered, NTC Reg No: 12376. 25+ years of experience, 350+ expert agents."/>
   <meta name="robots" content="index, follow"/>
   <meta property="og:title" content="About City Real Space | Trusted Real Estate in Ahmedabad"/>
-  <link rel="icon" type="image/jpeg" href="images/logo.jpeg"/>
-  <link rel="apple-touch-icon" href="images/logo.jpeg"/>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="stylesheet" href="responsive.css"/>
+  <link rel="icon" type="image/jpeg" href="/images/logo.jpeg"/>
+  <link rel="apple-touch-icon" href="/images/logo.jpeg"/>
+  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="/responsive.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
@@ -73,7 +73,7 @@
   </script>
 </head>
 <body>
-<script src="splash.js"></script>
+<script src="/splash.js"></script>
 
 <!-- NTC REG BAR -->
 <div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;">
@@ -86,43 +86,43 @@
 <!-- HEADER -->
 <header class="header" id="header">
   <div class="container header-inner">
-    <a href="index.html" class="logo">
-      <img src="images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;"/>
+    <a href="/" class="logo">
+      <img src="/images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;"/>
     </a>
     <nav class="nav" id="nav">
-      <a href="index.html">Home</a>
+      <a href="/">Home</a>
       <div class="nav-dropdown">
         <a href="#" class="nav-drop-btn">Buy <i class="fa-solid fa-chevron-down"></i></a>
         <div class="nav-drop-menu">
-          <a href="properties.html">All</a>
-          <a href="rent.html">Rent</a>
-          <a href="resale.html">Resale</a>
-          <a href="land.html">Land</a>
+          <a href="/properties">All</a>
+          <a href="/rent">Rent</a>
+          <a href="/resale">Resale</a>
+          <a href="/land">Land</a>
         </div>
       </div>
       <div class="nav-dropdown">
         <a href="#" class="nav-drop-btn">Sell <i class="fa-solid fa-chevron-down"></i></a>
         <div class="nav-drop-menu">
-          <a href="post-property.html">List Property</a>
-          <a href="post-property.html">List Project</a>
+          <a href="/post-property">List Property</a>
+          <a href="/post-property">List Project</a>
         </div>
       </div>
-      <a href="new-launch.html">New Launch</a>
-      <a href="prelease.html">Prelease</a>
-      <a href="about.html" class="active">About</a>
-      <a href="blog.html">Blog</a>
-      <a href="contact.html">Contact</a>
+      <a href="/new-launch">New Launch</a>
+      <a href="/prelease">Prelease</a>
+      <a href="/about" class="active">About</a>
+      <a href="/blog">Blog</a>
+      <a href="/contact">Contact</a>
     </nav>
     <div class="header-actions">
       <button class="fav-btn" title="Favorites"><i class="fa-regular fa-heart"></i><span class="fav-count">0</span></button>
       <div id="userMenu" style="display:none;position:relative">
         <button class="btn-login" id="userMenuBtn"><i class="fa-solid fa-user"></i> <span id="userNameDisplay"></span> <i class="fa-solid fa-chevron-down" style="font-size:0.7rem"></i></button>
         <div id="userDropdown" style="display:none;position:absolute;right:0;top:110%;background:#fff;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.15);min-width:160px;z-index:999;overflow:hidden">
-          <a href="dashboard.html" style="display:flex;align-items:center;gap:8px;padding:12px 16px;font-size:0.85rem;color:#333;font-weight:600;border-bottom:1px solid #f5f5f5;"><i class="fa-solid fa-gauge" style="color:#E53935"></i> My Dashboard</a>
+          <a href="/dashboard" style="display:flex;align-items:center;gap:8px;padding:12px 16px;font-size:0.85rem;color:#333;font-weight:600;border-bottom:1px solid #f5f5f5;"><i class="fa-solid fa-gauge" style="color:#E53935"></i> My Dashboard</a>
           <button onclick="handleLogout()" style="width:100%;padding:12px 16px;border:none;background:none;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.85rem;color:#E53935;font-weight:600;text-align:left"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
         </div>
       </div>
-      <a href="login.html" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> Login / Register</a>
+      <a href="/login" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> Login / Register</a>
       <button class="btn-inquiry">Inquiry <i class="fa-solid fa-arrow-right"></i></button>
       <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
     </div>
@@ -136,18 +136,18 @@
     <button onclick="closeMobileNav()" style="background:#f5f5f5;border:none;width:36px;height:36px;border-radius:50%;font-size:1.1rem;cursor:pointer;color:#333;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-xmark"></i></button>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden">
-    <a href="index.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-house" style="color:#E53935;width:18px"></i>Home</a>
-    <a href="properties.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-building" style="color:#E53935;width:18px"></i>Properties</a>
-    <a href="buy.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-tag" style="color:#E53935;width:18px"></i>Buy</a>
-    <a href="rent.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-key" style="color:#E53935;width:18px"></i>Rent</a>
-    <a href="new-launch.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-rocket" style="color:#E53935;width:18px"></i>New Launch</a>
-    <a href="resale.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-rotate" style="color:#E53935;width:18px"></i>Resale</a>
-    <a href="land.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-map" style="color:#E53935;width:18px"></i>Land</a>
-    <a href="prelease.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-handshake" style="color:#E53935;width:18px"></i>Prelease</a>
-    <a href="post-property.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-plus" style="color:#E53935;width:18px"></i>Post Property</a>
-    <a href="about.html" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-circle-info" style="color:#E53935;width:18px"></i>About</a>
-    <a href="blog.html" style="padding:22px 16px;border-right:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-newspaper" style="color:#E53935;width:18px"></i>Blog</a>
-    <a href="contact.html" style="padding:22px 16px;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-phone" style="color:#E53935;width:18px"></i>Contact</a>
+    <a href="/" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-house" style="color:#E53935;width:18px"></i>Home</a>
+    <a href="/properties" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-building" style="color:#E53935;width:18px"></i>Properties</a>
+    <a href="/buy" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-tag" style="color:#E53935;width:18px"></i>Buy</a>
+    <a href="/rent" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-key" style="color:#E53935;width:18px"></i>Rent</a>
+    <a href="/new-launch" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-rocket" style="color:#E53935;width:18px"></i>New Launch</a>
+    <a href="/resale" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-rotate" style="color:#E53935;width:18px"></i>Resale</a>
+    <a href="/land" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-map" style="color:#E53935;width:18px"></i>Land</a>
+    <a href="/prelease" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-handshake" style="color:#E53935;width:18px"></i>Prelease</a>
+    <a href="/post-property" style="padding:22px 16px;border-right:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-plus" style="color:#E53935;width:18px"></i>Post Property</a>
+    <a href="/about" style="padding:22px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-circle-info" style="color:#E53935;width:18px"></i>About</a>
+    <a href="/blog" style="padding:22px 16px;border-right:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-newspaper" style="color:#E53935;width:18px"></i>Blog</a>
+    <a href="/contact" style="padding:22px 16px;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-phone" style="color:#E53935;width:18px"></i>Contact</a>
   </div>
 </div>
 <script>function closeMobileNav(){var n=document.getElementById('mobileNav');if(n)n.style.display='none';var b=document.getElementById('hamburger');if(b)b.innerHTML='<i class="fa-solid fa-bars"></i>';document.body.style.overflow='';}</script>
@@ -156,9 +156,9 @@
   <div class="page-hero-content">
     <p class="sec-tag">Who We Are</p>
     <h1>About <span style="color:#FFC107">City Real Space</span></h1>
-    <p>Gujarat's most trusted real estate platform â€” connecting buyers, sellers & investors since 2010.</p>
+    <p>Gujarat's most trusted real estate platform Ã¢â‚¬â€ connecting buyers, sellers & investors since 2010.</p>
     <div class="breadcrumb">
-      <a href="index.html">Home</a>
+      <a href="/">Home</a>
       <i class="fa-solid fa-chevron-right"></i>
       <span>About Us</span>
     </div>
@@ -176,15 +176,15 @@
       <div class="about-text">
         <p class="sec-tag">Our Story</p>
         <h2>We Help You Find Your <span class="yellow">Perfect Property</span></h2>
-        <p>City Real Space was founded in 2010 with a simple mission â€” make property buying transparent, easy and rewarding for every Indian family. Starting from Ahmedabad, we have grown into Gujarat's most trusted real estate platform.</p>
+        <p>City Real Space was founded in 2010 with a simple mission Ã¢â‚¬â€ make property buying transparent, easy and rewarding for every Indian family. Starting from Ahmedabad, we have grown into Gujarat's most trusted real estate platform.</p>
         <p>With 12,500+ verified listings, 350+ expert agents and 8,200+ happy clients, we are committed to delivering the best property experience across Ahmedabad, Gandhinagar, Surat and beyond.</p>
         <div class="about-checks">
           <div class="about-check"><i class="fa-solid fa-circle-check"></i> 100% Verified & RERA Registered Properties</div>
           <div class="about-check"><i class="fa-solid fa-circle-check"></i> Free Property Consultation & Site Visits</div>
           <div class="about-check"><i class="fa-solid fa-circle-check"></i> Dedicated Relationship Manager for Every Client</div>
-          <div class="about-check"><i class="fa-solid fa-circle-check"></i> Best Price Guarantee â€” No Hidden Charges</div>
+          <div class="about-check"><i class="fa-solid fa-circle-check"></i> Best Price Guarantee Ã¢â‚¬â€ No Hidden Charges</div>
         </div>
-        <a href="contact.html" class="btn-primary">Get Free Consultation <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="/contact" class="btn-primary">Get Free Consultation <i class="fa-solid fa-arrow-right"></i></a>
       </div>
     </div>
   </div>
@@ -201,7 +201,7 @@
       </div>
     </div>
     <div class="values-grid">
-      <div class="value-card"><div class="value-icon"><i class="fa-solid fa-shield-halved"></i></div><h4>Trust & Transparency</h4><p>Every listing is verified. No hidden charges, no false promises â€” just honest real estate.</p></div>
+      <div class="value-card"><div class="value-icon"><i class="fa-solid fa-shield-halved"></i></div><h4>Trust & Transparency</h4><p>Every listing is verified. No hidden charges, no false promises Ã¢â‚¬â€ just honest real estate.</p></div>
       <div class="value-card"><div class="value-icon"><i class="fa-solid fa-handshake"></i></div><h4>Client First</h4><p>Your needs come first. We listen, understand and find the best property that fits your budget and lifestyle.</p></div>
       <div class="value-card"><div class="value-icon"><i class="fa-solid fa-chart-line"></i></div><h4>Market Expertise</h4><p>15+ years of deep market knowledge across Ahmedabad and Gujarat real estate.</p></div>
       <div class="value-card"><div class="value-icon"><i class="fa-solid fa-headset"></i></div><h4>24/7 Support</h4><p>Our team is always available to answer your queries and guide you through every step.</p></div>
@@ -239,8 +239,8 @@
       <!-- Amit Parmani - FOUNDER -->
       <div class="tm-card" style="background:linear-gradient(135deg,#1a0a00,#2d1200,#1a0800);border-color:rgba(255,193,7,0.4);" onmouseover="this.style.boxShadow='0 24px 60px rgba(255,193,7,0.3)';this.style.borderColor='rgba(255,193,7,0.7)'" onmouseout="this.style.boxShadow='';this.style.borderColor='rgba(255,193,7,0.4)'">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FFC107,#ff8f00,#FFC107);background-size:200%;animation:shimmerBar 2s linear infinite;"></div>
-        <div style="position:absolute;top:12px;right:12px;font-size:1rem;">ðŸ‘‘</div>
-        <div style="display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#FFC107,#ff8f00);color:#1a0a00;font-size:0.6rem;font-weight:800;padding:3px 9px;border-radius:20px;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;">â­ Founder &amp; Owner</div>
+        <div style="position:absolute;top:12px;right:12px;font-size:1rem;">Ã°Å¸â€˜â€˜</div>
+        <div style="display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#FFC107,#ff8f00);color:#1a0a00;font-size:0.6rem;font-weight:800;padding:3px 9px;border-radius:20px;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;">Ã¢Â­Â Founder &amp; Owner</div>
         <div class="tm-avatar" style="background:linear-gradient(135deg,#FFC107,#ff8f00);--ac:rgba(255,193,7,0.5);width:96px;height:96px;font-size:2.4rem;">A<div class="tm-ring" style="border-color:rgba(255,193,7,0.4);"></div></div>
         <div class="tm-name" style="color:#FFC107;font-size:1.1rem;">Amit Parmani</div>
         <div class="tm-role" style="color:rgba(255,193,7,0.7);">Founder &amp; Managing Director</div>
@@ -266,16 +266,16 @@
 
 
 
-      <!-- Deep Bhai -->
-      <div class="tm-card" onmouseover="this.style.background='rgba(16,185,129,0.08)';this.style.borderColor='rgba(16,185,129,0.4)';this.style.boxShadow='0 20px 50px rgba(16,185,129,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.boxShadow=''">
-        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#059669);"></div>
-        <div class="tm-avatar" style="background:linear-gradient(135deg,#10b981,#059669);--ac:rgba(16,185,129,0.5);">D<div class="tm-ring" style="border-color:rgba(16,185,129,0.3);"></div></div>
-        <div class="tm-name">Deep Bhai</div>
-        <div class="tm-role" style="color:#34d399;">Sales Executive</div>
- <div class=tm-desc>Expert in residential &amp; commercial property sales across Ahmedabad.</div>
+      <!-- Meet Dalsaniya -->
+      <div class="tm-card" onmouseover="this.style.background='rgba(16,185,129,0.08)';this.style.borderColor='rgba(99,102,241,0.4)';this.style.boxShadow='0 20px 50px rgba(99,102,241,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#6366f1,#8b5cf6);"></div>
+        <div class="tm-avatar" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);--ac:rgba(99,102,241,0.5);">D<div class="tm-ring" style="border-color:rgba(99,102,241,0.3);"></div></div>
+        <div class="tm-name">Meet Dalsaniya</div>
+        <div class="tm-role" style="color:#34d399;">SEO &amp; Digital Marketing</div>
+ <div class=tm-desc>Driving online visibility &amp; digital growth through SEO, social media &amp; performance marketing.</div>
         <span class="tm-tag" style="background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.3);">Commercial</span>
         <div style="margin-top:12px;">
-          <a href="tel:+919825031247" style="display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);color:#34d399;padding:7px 12px;border-radius:10px;font-size:0.75rem;font-weight:700;text-decoration:none;"><i class="fa-solid fa-phone"></i> Call Now</a>
+          <a href="tel:+919825031247" style="display:flex;align-items:center;justify-content:center;gap:6px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);color:#34d399;padding:7px 12px;border-radius:10px;font-size:0.75rem;font-weight:700;text-decoration:none;"><i class="fa-solid fa-phone"></i> Call Now</a>
         </div>
       </div>
 
@@ -288,8 +288,8 @@
   <div class="footer-top">
     <div class="container footer-grid">
       <div class="footer-col">
-        <a href="index.html" class="footer-logo" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
-          <img src="images/logo.jpeg" alt="City Real Space" style="height:52px;width:52px;object-fit:contain;border-radius:10px;background:#fff;padding:4px;"/>
+        <a href="/" class="footer-logo" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
+          <img src="/images/logo.jpeg" alt="City Real Space" style="height:52px;width:52px;object-fit:contain;border-radius:10px;background:#fff;padding:4px;"/>
           <span style="font-size:1.1rem;font-weight:800;color:#fff;line-height:1.2;">City <span style="color:#FFC107;">Real</span> Space</span>
         </a>
         <p class="footer-about">Ahmedabad's most trusted real estate platform. We connect buyers, sellers and investors with verified properties across Gujarat.</p>
@@ -303,13 +303,13 @@
       <div class="footer-col">
         <h4>Our Services</h4>
         <ul>
-          <li><a href="buy.html"><i class="fa-solid fa-chevron-right"></i> Buy Property</a></li>
-          <li><a href="resale.html"><i class="fa-solid fa-chevron-right"></i> Resale</a></li>
-          <li><a href="land.html"><i class="fa-solid fa-chevron-right"></i> Land</a></li>
-          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell â€“ List Property</a></li>
-          <li><a href="post-property.html"><i class="fa-solid fa-chevron-right"></i> Sell â€“ List Project</a></li>
-          <li><a href="new-launch.html"><i class="fa-solid fa-chevron-right"></i> New Launch</a></li>
-          <li><a href="prelease.html"><i class="fa-solid fa-chevron-right"></i> Prelease</a></li>
+          <li><a href="/buy"><i class="fa-solid fa-chevron-right"></i> Buy Property</a></li>
+          <li><a href="/resale"><i class="fa-solid fa-chevron-right"></i> Resale</a></li>
+          <li><a href="/land"><i class="fa-solid fa-chevron-right"></i> Land</a></li>
+          <li><a href="/post-property"><i class="fa-solid fa-chevron-right"></i> Sell Ã¢â‚¬â€œ List Property</a></li>
+          <li><a href="/post-property"><i class="fa-solid fa-chevron-right"></i> Sell Ã¢â‚¬â€œ List Project</a></li>
+          <li><a href="/new-launch"><i class="fa-solid fa-chevron-right"></i> New Launch</a></li>
+          <li><a href="/prelease"><i class="fa-solid fa-chevron-right"></i> Prelease</a></li>
           <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Property Valuation</a></li>
           <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Home Loans</a></li>
         </ul>
@@ -317,11 +317,11 @@
       <div class="footer-col">
         <h4>Quick Links</h4>
         <ul>
-          <li><a href="faq.html"><i class="fa-solid fa-chevron-right"></i> FAQ</a></li>
-          <li><a href="privacy.html"><i class="fa-solid fa-chevron-right"></i> Privacy Policy</a></li>
-          <li><a href="blog.html"><i class="fa-solid fa-chevron-right"></i> Blog</a></li>
-          <li><a href="about.html"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
-          <li><a href="contact.html"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
+          <li><a href="/faq"><i class="fa-solid fa-chevron-right"></i> FAQ</a></li>
+          <li><a href="/privacy"><i class="fa-solid fa-chevron-right"></i> Privacy Policy</a></li>
+          <li><a href="/blog"><i class="fa-solid fa-chevron-right"></i> Blog</a></li>
+          <li><a href="/about"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
+          <li><a href="/contact"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -333,24 +333,24 @@
         </div>
         <div class="working-hours">
           <h5><i class="fa-regular fa-clock"></i> Working Hours</h5>
-          <p>Mon â€“ Sat: 9:00 AM â€“ 7:00 PM</p>
-          <p>Sunday: 10:00 AM â€“ 4:00 PM</p>
+          <p>Mon Ã¢â‚¬â€œ Sat: 9:00 AM Ã¢â‚¬â€œ 7:00 PM</p>
+          <p>Sunday: 10:00 AM Ã¢â‚¬â€œ 4:00 PM</p>
         </div>
       </div>
     </div>
   </div>
   <div class="footer-bottom">
     <div class="container">
-      <p>Â© 2026 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p>
+      <p>Ã‚Â© 2026 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p>
     </div>
   </div>
 </footer>
 
 <a href="https://wa.me/919377531247" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
 <button class="back-top" id="backTop"><i class="fa-solid fa-chevron-up"></i></button>
-<script src="cursor.js"></script>
-<script src="bg-animation.js"></script>
-<script src="script.js"></script>
+<script src="/cursor.js"></script>
+<script src="/bg-animation.js"></script>
+<script src="/script.js"></script>
 <script>
   window.addEventListener('scroll', () => {
     document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);

@@ -1,6 +1,5 @@
-// ===== CUSTOM CURSOR (performance optimized) =====
+// ===== CUSTOM CURSOR =====
 (function () {
-  // Mobile pe cursor disable
   if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
 
   const dot  = document.createElement('div'); dot.className  = 'cursor-dot';
@@ -9,11 +8,8 @@
   ring.style.pointerEvents = 'none';
   document.body.append(dot, ring);
 
-  let mouseX = 0, mouseY = 0;
-  let ringX = 0, ringY = 0;
-  let ticking = false;
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
 
-  // dot: direct CSS transform (no layout thrash)
   document.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
@@ -22,7 +18,6 @@
     dot.style.top  = '0';
   }, { passive: true });
 
-  // ring: rAF throttled
   function animateRing() {
     ringX += (mouseX - ringX) * 0.12;
     ringY += (mouseY - ringY) * 0.12;
@@ -33,11 +28,30 @@
   }
   animateRing();
 
+  const inputTags = ['INPUT', 'TEXTAREA', 'SELECT'];
+
   document.addEventListener('mouseover', e => {
-    const isInteractive = e.target.closest('a, button, input, select, textarea, [onclick]');
+    const target = e.target;
+
+    // Input/textarea pe — text cursor dikhao, custom cursor hide karo
+    if (inputTags.includes(target.tagName) || target.isContentEditable) {
+      dot.style.opacity  = '0';
+      ring.style.opacity = '0';
+      document.body.classList.remove('cursor-hover');
+      document.body.style.cursor = '';
+      return;
+    }
+
+    // Wapas dikhao
+    dot.style.opacity  = '1';
+    ring.style.opacity = '1';
+    document.body.style.cursor = 'none';
+
+    // Link/button pe hover effect
+    const isInteractive = target.closest('a, button, [onclick], [role="button"]');
     document.body.classList.toggle('cursor-hover', !!isInteractive);
   }, { passive: true });
 
-  document.addEventListener('mousedown', () => document.body.classList.add('cursor-click'), { passive: true });
+  document.addEventListener('mousedown', () => document.body.classList.add('cursor-click'),    { passive: true });
   document.addEventListener('mouseup',   () => document.body.classList.remove('cursor-click'), { passive: true });
 })();

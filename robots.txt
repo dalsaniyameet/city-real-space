@@ -1,13 +1,40 @@
 User-agent: *
 Allow: /
 
+# Block non-indexable pages
 Disallow: /admin/
 Disallow: /api/
 Disallow: /dashboard
-Disallow: /dashboard.html
 Disallow: /login
-Disallow: /login.html
 Disallow: /register
-Disallow: /register.html
+
+# Block filter/parameter URLs to save crawl budget
+Disallow: /properties?*beds=
+Disallow: /properties?*budget=
+Disallow: /properties?*minPrice=
+Disallow: /properties?*maxPrice=
+Disallow: /properties?*maxprice=
+Disallow: /properties?*sort=
+Disallow: /properties?*bhk=
+Disallow: /properties?*type=
+Disallow: /properties?*furnish=
+Disallow: /properties?*possession=
+Disallow: /properties?*sqft=
+
+# Allow important crawlable filter pages (area/city/status are SEO-valuable)
+Allow: /properties?area=
+Allow: /properties?city=
+Allow: /properties?status=
+
+# Block .html versions (canonical is clean URL)
+Disallow: /*.html$
+
+# Block error pages
+Disallow: /401
+Disallow: /403
+Disallow: /429
+Disallow: /500
+Disallow: /503
+Disallow: /maintenance
 
 Sitemap: https://www.cityrealspace.com/sitemap.xml
