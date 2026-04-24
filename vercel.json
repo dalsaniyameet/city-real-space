@@ -2,6 +2,11 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
+  "builds": [
+    { "src": "api/index.js", "use": "@vercel/node" },
+    { "src": "*.html", "use": "@vercel/static" },
+    { "src": "**/*.{css,js,png,jpg,jpeg,gif,svg,ico,woff,woff2}", "use": "@vercel/static" }
+  ],
   "headers": [
     {
       "source": "/dashboard",
@@ -52,7 +57,7 @@
     { "source": "/sitemap.xml",                          "destination": "/api/sitemap" },
     { "source": "/robots.txt",                           "destination": "/api/robots" },
     { "source": "/google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html", "destination": "/api/gsc-verify" },
-    { "source": "/api/:path*",                           "destination": "/api/:path*" },
+    { "source": "/api/:path*",                           "destination": "/api/index.js" },
     { "source": "/blog/:slug",                          "destination": "/blog-detail" },
     { "source": "/property/:city/:area/:slug",           "destination": "/property-detail" },
     { "source": "/property/:slug",                       "destination": "/property-detail" },
