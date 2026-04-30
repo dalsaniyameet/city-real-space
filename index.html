@@ -1667,18 +1667,10 @@ async function saveProfile() {
 </div>
 <script>
 function openLoginPopup() {
-  const overlay = document.getElementById('loginPopupOverlay');
-  const frame = document.getElementById('loginPopupFrame');
-  frame.src = 'login.html';
-  overlay.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
+  window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
 }
 function closeLoginPopup() {
-  const overlay = document.getElementById('loginPopupOverlay');
-  const frame = document.getElementById('loginPopupFrame');
-  overlay.style.display = 'none';
-  frame.src = '';
-  document.body.style.overflow = '';
+  // not needed - direct redirect
 }
 document.getElementById('loginPopupOverlay').addEventListener('click', function(e) {
   if (e.target === this) closeLoginPopup();
