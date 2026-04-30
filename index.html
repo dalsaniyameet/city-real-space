@@ -1658,29 +1658,14 @@ async function saveProfile() {
 <script src="/bg-animation.js" defer></script>
 <script src="/script.js" defer></script>
 
-<!-- ===== LOGIN POPUP ===== -->
-<div id="loginPopupOverlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(13,27,42,0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px">
-  <div style="position:relative;width:100%;max-width:900px;max-height:92vh;border-radius:20px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.35);">
-    <button onclick="closeLoginPopup()" style="position:fixed;top:14px;right:14px;z-index:99999;width:36px;height:36px;border-radius:50%;border:none;background:#fff;color:#333;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,0.25);font-family:Poppins,sans-serif;"><i class="fa-solid fa-xmark"></i></button>
-    <iframe id="loginPopupFrame" src="" style="width:100%;height:92vh;border:none;display:block;border-radius:20px;"></iframe>
-  </div>
-</div>
+<!-- ===== LOGIN POPUP - REMOVED (using direct redirect now) ===== -->
 <script>
 function openLoginPopup() {
   window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
 }
-function closeLoginPopup() {
-  // not needed - direct redirect
-}
-document.getElementById('loginPopupOverlay').addEventListener('click', function(e) {
-  if (e.target === this) closeLoginPopup();
-});
-// iframe ke andar se login success hone par popup band karo aur page reload karo
+function closeLoginPopup() {}
 window.addEventListener('message', function(e) {
-  if (e.data === 'loginSuccess') {
-    closeLoginPopup();
-    window.location.reload();
-  }
+  if (e.data === 'loginSuccess') window.location.reload();
 });
 </script>
 
