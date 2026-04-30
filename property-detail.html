@@ -186,7 +186,23 @@
     .pd-video-box h4 i{color:#E53935;}
     .pd-video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;}
     .pd-video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:10px;}
-    @media(max-width:900px){.pd-grid{grid-template-columns:1fr;}.pd-sidebar{position:static;}.pd-main-img{height:280px;}}
+    @media(max-width:900px){.pd-grid{grid-template-columns:1fr !important;}.pd-sidebar{position:static !important;top:auto !important;}.pd-main-img{height:280px !important;}}
+    @media(max-width:600px){
+      .pd-grid{grid-template-columns:1fr !important;}
+      .pd-main-img{height:220px !important;}
+      .pd-contact-box,.emi-box,.visit-box,.pd-share{padding:16px !important;}
+      .visit-slots{grid-template-columns:1fr 1fr !important;}
+      .emi-breakdown{grid-template-columns:1fr 1fr !important;}
+      .pt-meta{grid-template-columns:1fr 1fr !important;}
+      .similar-grid{grid-template-columns:1fr !important;}
+      #pdMap{height:220px !important;}
+      #localityCards{grid-template-columns:1fr !important;}
+    }
+    @media(max-width:400px){
+      .visit-slots{grid-template-columns:1fr !important;}
+      .emi-breakdown{grid-template-columns:1fr !important;}
+      .pt-meta{grid-template-columns:1fr !important;}
+    }
 
     /* Section Tabs */
     .pd-tabs-bar { position:sticky; top:33px; z-index:900; background:#fff; border-bottom:2px solid #f0f0f0; margin-bottom:0; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
@@ -489,7 +505,7 @@
         <p class="footer-about">Ahmedabad's most trusted real estate platform.</p>
         <div class="social-links">
           <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="https://wa.me/919377531247" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="https://wa.me/919825031247" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
           <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
       </div>
@@ -527,10 +543,10 @@
   </div>
 </footer>
 
-<a href="https://wa.me/919377531247" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+<a href="https://wa.me/919825031247" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
 <button class="back-top" id="backTop"><i class="fa-solid fa-chevron-up"></i></button>
 
-<script src="/cursor.js"></script>
+
 <script src="/bg-animation.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -1059,7 +1075,7 @@ function renderProperty(p) {
     if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
     fetch(`${API}/properties/${p._id}/contact`, { method: 'POST' }).catch(() => {});
     const msg = encodeURIComponent(`Hi, I am ${name} (+91 ${phone}). I am interested in: ${propTitle} (${propLoc}). Please share more details.`);
-    window.open(`https://wa.me/919377531247?text=${msg}`, '_blank');
+    window.open(`https://wa.me/919825031247?text=${msg}`, '_blank');
   };
 
   document.getElementById('pdCallBtn').onclick = async function() {
@@ -1221,7 +1237,7 @@ function bookVisit() {
   if (!name || !phone) { alert('Please enter your name and phone number first.'); return; }
   const slot = selectedSlot || 'Any convenient time';
   const msg  = encodeURIComponent(`Hi! I want to book a FREE Site Visit.\n\nProperty: ${title}\nLocation: ${loc}\nPreferred Time: ${slot}\n\nMy Name: ${name}\nMy Phone: +91 ${phone}`);
-  window.open('https://wa.me/919377531247?text=' + msg, '_blank');
+  window.open('https://wa.me/919825031247?text=' + msg, '_blank');
 }
 
 // ===== SAVE PROPERTY =====
@@ -1709,5 +1725,6 @@ function renderSimilarCards(grid, list) {
   }).join('');
 }
 </script>
-</body>
+<script src="/cursor.js"></script></body>
 </html>
+

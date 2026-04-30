@@ -26,9 +26,6 @@ Allow: /properties?area=
 Allow: /properties?city=
 Allow: /properties?status=
 
-# Block .html versions (canonical is clean URL)
-Disallow: /*.html$
-
 # Block error pages
 Disallow: /401
 Disallow: /403

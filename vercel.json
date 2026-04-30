@@ -9,6 +9,14 @@
   ],
   "headers": [
     {
+      "source": "/(buy|rent|resale|land|new-launch|prelease|blog|contact|about|faq|careers|privacy|terms|post-property|properties)",
+      "headers": [{"key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=86400"}]
+    },
+    {
+      "source": "/",
+      "headers": [{"key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=86400"}]
+    },
+    {
       "source": "/dashboard",
       "headers": [{"key": "X-Robots-Tag", "value": "noindex, nofollow"}]
     },
@@ -54,8 +62,6 @@
     { "source": "/careers.html",         "destination": "/careers",        "permanent": true }
   ],
   "rewrites": [
-    { "source": "/sitemap.xml",                          "destination": "/api/sitemap" },
-    { "source": "/robots.txt",                           "destination": "/api/robots" },
     { "source": "/google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html", "destination": "/api/gsc-verify" },
     { "source": "/api/:path*",                           "destination": "/api/index.js" },
     { "source": "/blog/:slug",                          "destination": "/blog-detail" },

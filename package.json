@@ -24,5 +24,8 @@
     "node-fetch": "^2.7.0",
     "nodemailer": "^6.10.1",
     "resend": "^6.10.0"
+  },
+  "devDependencies": {
+    "javascript-obfuscator": "^5.4.2"
   }
 }

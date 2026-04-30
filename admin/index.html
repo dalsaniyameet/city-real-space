@@ -882,8 +882,8 @@
               <!-- Area Details -->
               <div style="font-size:0.78rem;font-weight:700;color:#1d4ed8;margin:10px 0 8px;">&#128208; Area Details</div>
               <div class="hs-row cols-2">
-                <div class="hs-field"><label>Carpet Area (sq.ft)</label><input type="number" id="oCarpet" placeholder="e.g. 800"/></div>
-                <div class="hs-field"><label>Super Built-up Area (sq.ft)</label><input type="number" id="oSBA" placeholder="e.g. 1000" oninput="var p=document.getElementById('pSqft');if(p)p.value=this.value;updateAdminScore()"/></div>
+                <div class="hs-field"><label>Carpet Area (sq.ft)</label><input type="number" id="oCarpet" placeholder="Auto: SBA x 0.70" oninput="this.dataset.manual=1;calcPricePerSqft()"/></div>
+                <div class="hs-field"><label>Super Built-up Area (sq.ft)</label><input type="number" id="oSBA" placeholder="e.g. 1400" oninput="autoCommCarpet(this.value);var p=document.getElementById('pSqft');if(p)p.value=this.value;calcPricePerSqft();updateAdminScore()"/></div>
               </div>
 
               <!-- Cabin / Seats -->

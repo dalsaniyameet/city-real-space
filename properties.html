@@ -4,18 +4,18 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="canonical" href="https://www.cityrealspace.com/properties"/>
-  <title>Buy, Sell & Rent Properties in Ahmedabad | Search 12,500+ Listings | City Real Space</title>
-  <meta name="description" content="Search 12,500+ verified properties for sale & rent in Ahmedabad, Gandhinagar, Surat. Filter by area, budget, BHK. Apartments, villas, plots, offices. RERA registered."/>
-  <meta name="keywords" content="buy flat ahmedabad, rent apartment ahmedabad, 2bhk for sale ahmedabad, 3bhk ahmedabad, office space for rent ahmedabad, plot for sale ahmedabad, villa ahmedabad, property search ahmedabad"/>
+  <title>Properties in Ahmedabad | Buy, Sell &amp; Rent Flats, Villas, Offices | City Real Space</title>
+  <meta name="description" content="Search verified properties for sale &amp; rent in Ahmedabad. Browse 2BHK, 3BHK flats, villas, bungalows, office spaces &amp; plots in Prahlad Nagar, Satellite, Bopal, Thaltej &amp; SG Highway. RERA registered."/>
+  <meta name="keywords" content="properties in ahmedabad, flats for sale ahmedabad, 2bhk flat ahmedabad, 3bhk flat ahmedabad, office space for rent ahmedabad, villa for sale ahmedabad, plot for sale ahmedabad, apartment ahmedabad, prahlad nagar flat, satellite ahmedabad property, bopal flat, thaltej property, SG highway office, buy property ahmedabad, rent property ahmedabad"/>
   <meta name="robots" content="index, follow"/>
   <meta property="og:type" content="website"/>
-  <meta property="og:title" content="Search Properties in Ahmedabad | Buy, Sell & Rent | City Real Space"/>
-  <meta property="og:description" content="Search 1000+ verified properties in Ahmedabad. Filter by area, budget, BHK. Apartments, villas, plots, offices. RERA registered."/>
+  <meta property="og:title" content="Properties in Ahmedabad | Buy, Sell &amp; Rent Flats, Villas, Offices | City Real Space"/>
+  <meta property="og:description" content="Search verified properties for sale &amp; rent in Ahmedabad. Browse 2BHK, 3BHK flats, villas, office spaces &amp; plots in Prahlad Nagar, Satellite, Bopal &amp; SG Highway. RERA registered."/>
   <meta property="og:url" content="https://www.cityrealspace.com/properties"/>
   <meta property="og:image" content="https://www.cityrealspace.com/images/logo.jpeg"/>
   <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="Search Properties in Ahmedabad | City Real Space"/>
-  <meta name="twitter:description" content="Search 1000+ verified properties in Ahmedabad. Filter by area, budget, BHK. RERA registered."/>
+  <meta name="twitter:title" content="Properties in Ahmedabad | Buy, Sell &amp; Rent | City Real Space"/>
+  <meta name="twitter:description" content="Search verified properties in Ahmedabad. Browse 2BHK, 3BHK flats, villas, office spaces &amp; plots. RERA registered."/>
   <meta name="twitter:image" content="https://www.cityrealspace.com/images/logo.jpeg"/>
   <meta property="og:site_name" content="City Real Space"/>
   <script type="application/ld+json">
@@ -71,7 +71,14 @@
     .pg-btn { width: 38px; height: 38px; border-radius: 8px; border: 1.5px solid #e8e8e8; background: #fff; color: #555; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: Poppins, sans-serif; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
     .pg-btn.active { background: #E53935; border-color: #E53935; color: #fff; }
     .pg-btn:hover:not(.active) { border-color: #E53935; color: #E53935; }
-    @media(max-width:600px) { .prop-page-wrap { margin-top: 80px; } .fp-grp { min-width: 100%; } .req-img-panel { display: none !important; } }
+    @media(max-width:600px) { 
+      .prop-page-wrap { margin-top: 80px; } 
+      .fp-grp { min-width: 100% !important; width: 100% !important; } 
+      .req-img-panel { display: none !important; }
+      .filter-panel { flex-direction: column !important; }
+      .btn-apply, .btn-clear { width: 100% !important; }
+      .prop-grid { grid-template-columns: 1fr !important; }
+    }
     #reqBox input::placeholder { color: rgba(255,255,255,0.35); }
     /* Compare Button */
     .btn-compare { width:32px;height:32px;border-radius:8px;border:1.5px solid #e8e8e8;background:#fff;color:#888;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.82rem;transition:all 0.2s;flex-shrink:0; }
@@ -965,7 +972,7 @@ function showEmptyState(grid) {
     const d = getReqData();
     if(!d.name||!d.phone){alert('Please enter your name and phone number.');return;}
     const text = 'Hi, I am '+d.name+' (+91 '+d.phone+'). I am looking for: '+(d.type||'Property')+(d.budget?' | Budget: '+d.budget:'')+(d.msg?' | Note: '+d.msg:'')+'.';
-    window.open('https://wa.me/919377531247?text='+encodeURIComponent(text),'_blank');
+    window.open('https://wa.me/919825031247?text='+encodeURIComponent(text),'_blank');
     closeReq();
   });
 
@@ -1099,7 +1106,7 @@ function showEmptyState(grid) {
     const loc=document.getElementById('offerPropLoc').querySelector('span').textContent;
     if(!name||!phone){alert('Please enter your name and phone number.');return;}
     const msg=encodeURIComponent('Hi, I am '+name+' (+91 '+phone+'). Interested in: '+title+' ('+loc+'). Please share best offer.');
-    window.open('https://wa.me/919377531247?text='+msg,'_blank');
+    window.open('https://wa.me/919825031247?text='+msg,'_blank');
     closeOffer();
   });
 
@@ -1167,7 +1174,7 @@ function showLoginToast(msg) {
         <p class="footer-about">Ahmedabad's most trusted real estate platform. We connect buyers, sellers and investors with verified properties across Gujarat.</p>
         <div class="social-links">
           <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="https://wa.me/919377531247" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="https://wa.me/919825031247" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
           <a href="#"><i class="fa-brands fa-instagram"></i></a>
           <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
@@ -1213,12 +1220,12 @@ function showLoginToast(msg) {
   </div>
   <div class="footer-bottom">
     <div class="container">
-      <p>Â© 2026 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p>
+      <p>© 2026 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p>
     </div>
   </div>
 </footer>
 
-<a href="https://wa.me/919377531247" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+<a href="https://wa.me/919825031247" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
 <button class="back-top" id="backTop"><i class="fa-solid fa-chevron-up"></i></button>
 
 <!-- ===== COMPARE DRAWER ===== -->
@@ -1249,7 +1256,7 @@ function showLoginToast(msg) {
   </div>
 </div>
 
-<script src="/cursor.js"></script>
+
 <script>
 // ===== PROPERTY COMPARISON =====
 const MAX_COMPARE = 3;
@@ -1379,7 +1386,7 @@ function buildCompareTable() {
   // Header row â€” property cards
   let thead = '<thead><tr><th>Feature</th>';
   props.forEach(p => {
-    thead += '<th><img src="' + p.img + '" class="cmp-prop-img" alt=""/>' +
+    thead += '<th><img src="' + p.img + '" class="cmp-prop-img" alt="Property in Ahmedabad"/>' +
       '<div class="cmp-prop-name">' + p.title + '</div>' +
       '<div class="cmp-prop-loc"><i class="fa-solid fa-location-dot"></i>' + p.loc + '</div></th>';
   });
@@ -1430,5 +1437,6 @@ function showCmpToast(msg) {
   setTimeout(() => { t.classList.remove('show'); t.style.background = ''; }, 3000);
 }
 </script>
-</body>
+<script src="/cursor.js"></script></body>
 </html>
+
