@@ -195,7 +195,7 @@ app.get('/', (req, res) => {
 
 // Admin panel — login.html & assets freely accessible, index.html needs valid admin JWT
 app.use('/admin', async (req, res, next) => {
-  if (req.path === '/login.html' || req.path === '/style.css' || req.path === '/script.js') {
+  if (req.path === '/login' || req.path === '/login.html' || req.path === '/style.css' || req.path === '/script.js' || req.path === '/admin-script.js') {
     return next();
   }
   if (req.path === '/' || req.path === '/index.html' || req.path === '') {
@@ -217,6 +217,12 @@ app.use('/admin', async (req, res, next) => {
   }
   next();
 });
+// Admin login page — explicit route
+app.get('/admin/login', (req, res) => {
+  res.sendFile(path.join(FRONTEND, 'admin/login.html'));
+});
+
+// Admin panel routes
 app.use('/admin', express.static(path.join(FRONTEND, 'admin')));
 
 // Routes

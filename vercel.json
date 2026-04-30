@@ -69,7 +69,7 @@
     { "source": "/blog/:slug",                          "destination": "/blog-detail" },
     { "source": "/property/:city/:area/:slug",           "destination": "/property-detail" },
     { "source": "/property/:slug",                       "destination": "/property-detail" },
-    { "source": "/admin/login",                          "destination": "/admin/login.html" },
+    { "source": "/admin/login",                          "destination": "/api/index.js" },
     { "source": "/admin",                                "destination": "/api/index.js" },
     { "source": "/admin/:path*",                         "destination": "/api/index.js" }
   ]
