@@ -951,7 +951,7 @@ function editProperty(p) {
       if (oc.indexOf('setResFurnishing') !== -1) b.classList.toggle('active', oc.indexOf("'" + furnVal2 + "'") !== -1);
     });
     var fi2 = document.getElementById('furnishingItems');
-    if (fi2) fi2.style.display = (furnVal2 === 'Unfurnished') ? 'none' : 'block';
+    if (fi2) fi2.style.display = 'block';
     // Available From / Suitable For
     var rAFEl = document.getElementById('rAvailFrom'); if (rAFEl) rAFEl.value = ex.availFrom || '';
     var rSFEl = document.getElementById('rSuitableFor');
@@ -3413,7 +3413,7 @@ function loadDraftData(d) {
             if (oc.indexOf('setResFurnishing') !== -1) b.classList.toggle('active', oc.indexOf("'" + d.furnished + "'") !== -1);
           });
           var fi = document.getElementById('furnishingItems');
-          if (fi) fi.style.display = (d.furnished === 'Unfurnished') ? 'none' : 'block';
+          if (fi) fi.style.display = 'block';
         }
         // Pricing
         s('pPrice', d.price); s('pPriceLabel', d.priceLabel); s('pPossession', d.possession); s('pReraNo', d.reraNo);
@@ -3754,10 +3754,10 @@ async function deleteContact(id) {
     if (cls) cls.style.display = (isComm && !isOffice) ? 'block' : 'none';
     var lt = document.getElementById('leaseTermsSection');
     if (lt) lt.style.display = isComm ? 'block' : 'none';
-    // Show Fire & Legal section only for office SELL
+    // Show Fire & Legal section for office SELL and NEW LAUNCH
     var osf = document.getElementById('officeSellFields');
     var pStatus = document.getElementById('pStatus') ? document.getElementById('pStatus').value : '';
-    if (osf) osf.style.display = (isOffice && pStatus === 'for-sale') ? 'block' : 'none';
+    if (osf) osf.style.display = (isOffice && pStatus !== 'for-rent') ? 'block' : 'none';
     document.querySelectorAll('.hs-field').forEach(function(f) {
       var lbl = f.querySelector('label');
       if (lbl && lbl.textContent.indexOf('Tenant Preference') !== -1) {
@@ -3837,7 +3837,7 @@ function setResFurnishing(btn, val) {
   var pf = document.getElementById('pFurnished');
   if (pf) pf.value = val;
   var items = document.getElementById('furnishingItems');
-  if (items) items.style.display = (val === 'Unfurnished') ? 'none' : 'block';
+  if (items) items.style.display = 'block';
 }
 
 function calcSBA() {

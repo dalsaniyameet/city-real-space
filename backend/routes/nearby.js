@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
 
 function overpassFetch(query) {
   return new Promise((resolve, reject) => {
-    const body = query;
+    const body = 'data=' + encodeURIComponent(query);
     const options = {
       hostname: 'overpass-api.de',
       path: '/api/interpreter',
@@ -45,7 +45,7 @@ function overpassFetch(query) {
       res.on('end', () => { try { resolve(JSON.parse(data)); } catch(e) { reject(e); } });
     });
     req.on('error', reject);
-    req.setTimeout(25000, () => { req.destroy(); reject(new Error('timeout')); });
+    req.setTimeout(8000, () => { req.destroy(); reject(new Error('timeout')); });
     req.write(body);
     req.end();
   });

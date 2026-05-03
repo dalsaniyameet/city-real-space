@@ -882,22 +882,75 @@
               <!-- Area Details -->
               <div style="font-size:0.78rem;font-weight:700;color:#1d4ed8;margin:10px 0 8px;">&#128208; Area Details</div>
               <div class="hs-row cols-2">
-                <div class="hs-field"><label>Carpet Area (sq.ft)</label><input type="number" id="oCarpet" placeholder="Auto: SBA x 0.70" oninput="this.dataset.manual=1;calcPricePerSqft()"/></div>
                 <div class="hs-field"><label>Super Built-up Area (sq.ft)</label><input type="number" id="oSBA" placeholder="e.g. 1400" oninput="autoCommCarpet(this.value);var p=document.getElementById('pSqft');if(p)p.value=this.value;calcPricePerSqft();updateAdminScore()"/></div>
+                <div class="hs-field"><label>Carpet Area (sq.ft)</label><input type="number" id="oCarpet" placeholder="Auto: SBA x 0.70" oninput="this.dataset.manual=1;calcPricePerSqft()"/></div>
               </div>
 
               <!-- Cabin / Seats -->
               <div style="font-size:0.78rem;font-weight:700;color:#1d4ed8;margin:10px 0 8px;">&#128188; Cabin &amp; Seating</div>
-              <div class="hs-row cols-3">
+              <div class="hs-row cols-1">
                 <div class="hs-field"><label>Cabins</label><input type="number" id="oCabins" min="0" placeholder="e.g. 4"/></div>
-                <div class="hs-field"><label>Min Seats</label><input type="number" id="oMinSeats" min="0" placeholder="e.g. 10"/></div>
-                <div class="hs-field"><label>Max Seats</label><input type="number" id="oMaxSeats" min="0" placeholder="e.g. 50"/></div>
               </div>
-              <div class="hs-row cols-2">
-                <div class="hs-field"><label>Workstations</label><input type="number" id="oWorkstations" min="0" placeholder="e.g. 20"/></div>
-                <div class="hs-field"><label>Conference Rooms</label><input type="number" id="oConferenceRooms" min="0" placeholder="e.g. 2"/></div>
+                  <div class="hs-row cols-2">
+                <div class="hs-field">
+                  <label>Workstations</label>
+                  <select id="oWorkstations" style="border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 13px;font-size:0.85rem;font-family:Poppins,sans-serif;width:100%;outline:none;" onchange="autoConferenceRooms()">
+                    <option value="">Select</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                  </select>
+                </div>
+                <div class="hs-field">
+                  <label>Conference Rooms <span id="confRoomHint" style="font-size:0.68rem;color:#3b82f6;font-weight:600;"></span></label>
+                  <select id="oConferenceRooms" style="border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 13px;font-size:0.85rem;font-family:Poppins,sans-serif;width:100%;outline:none;" onchange="this.dataset.manual='1'">
+                    <option value="">Select</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4+</option>
+                  </select>
+                </div>
               </div>
-              <div class="hs-field" style="margin-bottom:14px;"><label>&#128202; Meeting Rooms</label><div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="hs-toggle-btn active" onclick="setMeetingRooms(this,'0')">No</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'1')">1</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'2')">2</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'3')">3</button><button type="button" class="hs-toggle-btn" onclick="setMeetingRooms(this,'4+')">4+</button></div><input type="hidden" id="oMeetingRooms" value="0"/></div>
+              <script>
+              function autoConferenceRooms() {
+                var seats = parseInt(document.getElementById('oWorkstations').value) || 0;
+                var confEl = document.getElementById('oConferenceRooms');
+                var hint   = document.getElementById('confRoomHint');
+                if (!confEl) return;
+                var suggested, hintText;
+                if (seats === 0)        { suggested = '';  hintText = ''; }
+                else if (seats <= 5)    { suggested = '0'; hintText = '(Not Required)'; }
+                else if (seats <= 10)   { suggested = '1'; hintText = '(0–1 Recommended)'; }
+                else if (seats <= 20)   { suggested = '1'; hintText = '(1 Recommended)'; }
+                else if (seats <= 40)   { suggested = '2'; hintText = '(1–2 Suggested)'; }
+                else                    { suggested = '4'; hintText = '(2+ Suggested)'; }
+                if (suggested !== '' && !confEl.dataset.manual) confEl.value = suggested;
+                if (hint) hint.textContent = hintText;
+              }
+              document.getElementById('oConferenceRooms').addEventListener('change', function() {
+                this.dataset.manual = this.value ? '1' : '';
+              });
+              </script>
+              <input type="hidden" id="oMeetingRooms" value="0"/>
 
               <!-- Available Features -->
               <div style="font-size:0.78rem;font-weight:700;color:#1d4ed8;margin:10px 0 8px;">&#9989; Available Features</div>
@@ -918,14 +971,176 @@
                 <div class="hs-field"><label><i class="fa-solid fa-building"></i> Your Floor</label><select id="oYourFloor"><option value="">Select</option><option>Ground</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15+</option></select></div>
               </div>
               <div class="hs-row cols-3">
-                <div class="hs-field"><label><i class="fa-solid fa-elevator"></i> Passenger Lift</label><input type="number" id="oLiftCommon" min="0" max="20" placeholder="e.g. 2"/></div>
-                <div class="hs-field"><label><i class="fa-solid fa-elevator"></i> Service Lift</label><input type="number" id="oLiftOwner" min="0" max="20" placeholder="e.g. 1"/></div>
-                <div class="hs-field"><label><i class="fa-solid fa-elevator"></i> Lift</label><input type="number" id="oLiftOwnerPrivate" min="0" max="20" placeholder="e.g. 1"/></div>
+                <div class="hs-field"><label><i class="fa-solid fa-elevator"></i> Passenger Lift</label>
+                  <select id="oLiftCommon" style="border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 13px;font-size:0.85rem;font-family:Poppins,sans-serif;width:100%;outline:none;">
+                    <option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+                  </select>
+                </div>
+                <div class="hs-field"><label><i class="fa-solid fa-elevator"></i> Service Lift</label>
+                  <select id="oLiftOwner" style="border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 13px;font-size:0.85rem;font-family:Poppins,sans-serif;width:100%;outline:none;">
+                    <option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+                  </select>
+                </div>
+                <div class="hs-field"><label><i class="fa-solid fa-elevator"></i> Owner Lift</label>
+                  <select id="oLiftOwnerPrivate" style="border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 13px;font-size:0.85rem;font-family:Poppins,sans-serif;width:100%;outline:none;">
+                    <option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+                  </select>
+                </div>
               </div>
               <div class="hs-row cols-1">
                 <div class="hs-field"><label><i class="fa-solid fa-stairs"></i> No. of Staircase</label><input type="number" id="oStaircase" min="0" placeholder="e.g. 2"/></div>
               </div>
-              <div class="hs-field" style="margin-bottom:14px;"><label><i class="fa-solid fa-car"></i> Parking</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oParking','Not Available')">Not Available</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oParking','Available')">Available</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oParking','Reserved')">Reserved</button></div><input type="hidden" id="oParking" value="Not Available"/></div>
+                <div class="hs-field" style="margin-bottom:14px;">
+                <label><i class="fa-solid fa-car"></i> Parking</label>
+                <div class="hs-toggle" id="oParkingToggle">
+                  <button type="button" class="hs-toggle-btn active" onclick="setParkingAvail(this,'Not Available')">Not Available</button>
+                  <button type="button" class="hs-toggle-btn" onclick="setParkingAvail(this,'Available')">Available</button>
+                  <button type="button" class="hs-toggle-btn" onclick="setParkingAvail(this,'Reserved')">Reserved</button>
+                </div>
+                <input type="hidden" id="oParking" value="Not Available"/>
+
+                <div id="oParkingDetails" style="display:none;margin-top:12px;background:#f8f9fa;border-radius:10px;padding:14px;border:1.5px solid #e8e8e8;">
+
+                  <!-- Step 2: Total Count -->
+                  <div style="margin-bottom:12px;">
+                    <label style="font-size:0.78rem;font-weight:600;color:#555;display:block;margin-bottom:6px;">Total Parking Slots</label>
+                    <div style="display:flex;gap:8px;">
+                      <select id="oParkingTotal" style="width:100px;border:1.5px solid #e8e8e8;border-radius:8px;padding:9px 12px;font-size:0.85rem;font-family:Poppins,sans-serif;outline:none;" onchange="onParkingTotalChange()">
+                        <option value="">Select</option>
+                        <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                      </select>
+                      <div style="flex:1;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:8px;padding:9px 12px;font-size:0.78rem;color:#1d4ed8;font-weight:600;display:flex;align-items:center;gap:6px;">
+                        <i class="fa-solid fa-circle-info"></i> Select total then distribute below
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Step 3: Distribution -->
+                  <div id="oParkingDistrib" style="display:none;">
+                    <label style="font-size:0.78rem;font-weight:600;color:#555;display:block;margin-bottom:8px;">Parking Distribution</label>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+                      <div style="background:#fff;border:1.5px solid #e8e8e8;border-radius:8px;padding:10px 12px;">
+                        <div style="font-size:0.75rem;font-weight:700;color:#555;margin-bottom:6px;">🅿️ Ground Floor</div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                          <button type="button" onclick="adjParkingDist('oDistGround',-1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;font-weight:700;color:#555;">-</button>
+                          <span id="oDistGroundDisplay" style="min-width:20px;text-align:center;font-size:1rem;font-weight:800;color:#333;">0</span>
+                          <button type="button" onclick="adjParkingDist('oDistGround',1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #3b82f6;background:#eff6ff;font-size:1rem;cursor:pointer;font-weight:700;color:#3b82f6;">+</button>
+                          <input type="hidden" id="oDistGround" value="0"/>
+                        </div>
+                      </div>
+                      <div style="background:#fff;border:1.5px solid #e8e8e8;border-radius:8px;padding:10px 12px;">
+                        <div style="font-size:0.75rem;font-weight:700;color:#555;margin-bottom:6px;">🅱️ Basement -1</div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                          <button type="button" onclick="adjParkingDist('oDistB1',-1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;font-weight:700;color:#555;">-</button>
+                          <span id="oDistB1Display" style="min-width:20px;text-align:center;font-size:1rem;font-weight:800;color:#333;">0</span>
+                          <button type="button" onclick="adjParkingDist('oDistB1',1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #3b82f6;background:#eff6ff;font-size:1rem;cursor:pointer;font-weight:700;color:#3b82f6;">+</button>
+                          <input type="hidden" id="oDistB1" value="0"/>
+                        </div>
+                      </div>
+                      <div style="background:#fff;border:1.5px solid #e8e8e8;border-radius:8px;padding:10px 12px;">
+                        <div style="font-size:0.75rem;font-weight:700;color:#555;margin-bottom:6px;">🅱️ Basement -2</div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                          <button type="button" onclick="adjParkingDist('oDistB2',-1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;font-weight:700;color:#555;">-</button>
+                          <span id="oDistB2Display" style="min-width:20px;text-align:center;font-size:1rem;font-weight:800;color:#333;">0</span>
+                          <button type="button" onclick="adjParkingDist('oDistB2',1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #3b82f6;background:#eff6ff;font-size:1rem;cursor:pointer;font-weight:700;color:#3b82f6;">+</button>
+                          <input type="hidden" id="oDistB2" value="0"/>
+                        </div>
+                      </div>
+                      <div style="background:#fff;border:1.5px solid #e8e8e8;border-radius:8px;padding:10px 12px;">
+                        <div style="font-size:0.75rem;font-weight:700;color:#555;margin-bottom:6px;">🅱️ Basement -3</div>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                          <button type="button" onclick="adjParkingDist('oDistB3',-1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;font-weight:700;color:#555;">-</button>
+                          <span id="oDistB3Display" style="min-width:20px;text-align:center;font-size:1rem;font-weight:800;color:#333;">0</span>
+                          <button type="button" onclick="adjParkingDist('oDistB3',1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #3b82f6;background:#eff6ff;font-size:1rem;cursor:pointer;font-weight:700;color:#3b82f6;">+</button>
+                          <input type="hidden" id="oDistB3" value="0"/>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Validation + Preview -->
+                    <div id="oParkingValidation" style="display:none;padding:8px 12px;border-radius:8px;font-size:0.78rem;font-weight:700;margin-bottom:8px;"></div>
+                    <div id="oParkingPreview" style="background:#fff;border:1.5px solid #3b82f6;border-radius:8px;padding:10px 14px;font-size:0.85rem;font-weight:700;color:#1d4ed8;display:flex;align-items:center;gap:8px;">
+                      <i class="fa-solid fa-car"></i>
+                      <span id="oParkingPreviewText">Fill distribution above...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <script>
+              function setParkingAvail(btn, val) {
+                document.querySelectorAll('#oParkingToggle .hs-toggle-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('oParking').value = val;
+                document.getElementById('oParkingDetails').style.display = val === 'Not Available' ? 'none' : 'block';
+                if (val === 'Not Available') document.getElementById('oParkingDistrib').style.display = 'none';
+                buildParkingText();
+              }
+              function onParkingTotalChange() {
+                const total = parseInt(document.getElementById('oParkingTotal').value) || 0;
+                document.getElementById('oParkingDistrib').style.display = total > 0 ? 'block' : 'none';
+                // Reset distribution
+                ['oDistGround','oDistB1','oDistB2','oDistB3'].forEach(id => {
+                  document.getElementById(id).value = '0';
+                  document.getElementById(id + 'Display').textContent = '0';
+                });
+                buildParkingText();
+              }
+              function adjParkingDist(id, dir) {
+                const total = parseInt(document.getElementById('oParkingTotal').value) || 0;
+                const cur = parseInt(document.getElementById(id).value) || 0;
+                const used = ['oDistGround','oDistB1','oDistB2','oDistB3'].reduce((s,i) => s + (parseInt(document.getElementById(i).value)||0), 0);
+                const newVal = cur + dir;
+                if (newVal < 0 || newVal > 5) return;
+                if (dir > 0 && used >= total) {
+                  const v = document.getElementById('oParkingValidation');
+                  v.style.display = 'block';
+                  v.style.background = '#ffebee'; v.style.color = '#c62828'; v.style.border = '1px solid #ffcdd2';
+                  v.textContent = '⚠️ Total slots = ' + total + '. Cannot exceed!';
+                  setTimeout(() => v.style.display = 'none', 2000);
+                  return;
+                }
+                document.getElementById(id).value = newVal;
+                document.getElementById(id + 'Display').textContent = newVal;
+                buildParkingText();
+              }
+              function buildParkingText() {
+                const avail  = document.getElementById('oParking').value;
+                const total  = parseInt(document.getElementById('oParkingTotal').value) || 0;
+                const g  = parseInt(document.getElementById('oDistGround').value) || 0;
+                const b1 = parseInt(document.getElementById('oDistB1').value) || 0;
+                const b2 = parseInt(document.getElementById('oDistB2').value) || 0;
+                const b3 = parseInt(document.getElementById('oDistB3').value) || 0;
+                const used = g + b1 + b2 + b3;
+                const prev = document.getElementById('oParkingPreviewText');
+                const val  = document.getElementById('oParkingValidation');
+                if (avail === 'Not Available' || total === 0) { if(prev) prev.textContent = 'Not Available'; return; }
+                if (used === 0) { if(prev) prev.textContent = 'Fill distribution above...'; return; }
+                // Validation
+                if (val) {
+                  if (used === total) {
+                    val.style.display = 'block';
+                    val.style.background = '#e8f5e9'; val.style.color = '#2e7d32'; val.style.border = '1px solid #a5d6a7';
+                    val.textContent = '✅ Distribution matches total (' + total + ')';
+                  } else if (used < total) {
+                    val.style.display = 'block';
+                    val.style.background = '#fff8e1'; val.style.color = '#e65100'; val.style.border = '1px solid #ffe082';
+                    val.textContent = '⚠️ ' + used + ' of ' + total + ' slots distributed';
+                  }
+                }
+                // Build text
+                const prefix = avail === 'Reserved' ? 'Reserved ' : '';
+                const parts = [];
+                if (g  > 0) parts.push(g  + ' Ground Floor');
+                if (b1 > 0) parts.push(b1 + ' Basement -1');
+                if (b2 > 0) parts.push(b2 + ' Basement -2');
+                if (b3 > 0) parts.push(b3 + ' Basement -3');
+                const txt = total + ' ' + prefix + 'Parking (' + parts.join(' + ') + ')';
+                if (prev) prev.textContent = txt;
+                // Save final value
+                document.getElementById('oParking').value = txt;
+              }
+              </script>
 
               <!-- Fire & Legal — SELL only -->
               <div id="officeSellFields" style="display:none">
@@ -1020,16 +1235,11 @@
                 </select>
               </div>
               <div class="hs-field">
-                <label>RERA Number</label>
-                <input type="text" id="pReraNo" placeholder="e.g. PR/GJ/AHMEDABAD/..." value="NTC Reg No: 12376">
-              </div>
-            </div>
-
-            <div class="hs-row cols-2">
-              <div class="hs-field">
                 <label>Agent Name</label>
                 <input type="text" id="pAgentName" placeholder="Agent Name"/>
               </div>
+            </div>
+            <div class="hs-row cols-1">
               <div class="hs-field">
                 <label>Agent Phone</label>
                 <input type="text" id="pAgentPhone" placeholder="+91 XXXXX XXXXX"/>
@@ -1419,6 +1629,7 @@
 </script>
 </body>
 </html>
+
 
 
 
