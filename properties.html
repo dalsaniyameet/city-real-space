@@ -81,7 +81,24 @@
       .btn-apply, .btn-clear { width: 100% !important; }
       .prop-grid { grid-template-columns: 1fr !important; }
     }
-    #reqBox input::placeholder { color: rgba(255,255,255,0.35); }
+    /* New feature badges */
+    .card-meta-bar { position:absolute; bottom:44px; left:0; right:0; display:flex; gap:6px; padding:0 8px; z-index:4; pointer-events:none; }
+    .card-meta-bar span { background:rgba(13,27,42,0.72); color:#fff; font-size:0.62rem; font-weight:600; padding:3px 7px; border-radius:20px; display:flex; align-items:center; gap:4px; backdrop-filter:blur(4px); }
+    .card-negotiable { display:inline-flex; align-items:center; gap:5px; background:#fff8e1; color:#b8860b; font-size:0.68rem; font-weight:700; padding:3px 9px; border-radius:20px; border:1px solid #ffe082; margin-bottom:6px; }
+    .card-action-btn { width:28px; height:28px; border-radius:7px; border:1.5px solid #e8e8e8; background:#fff; color:#888; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:0.75rem; transition:all 0.2s; flex-shrink:0; }
+    .card-action-btn:hover { border-color:#E53935; color:#E53935; background:#fff5f5; }
+    /* Recently Viewed Section */
+    .rv-section { margin-bottom:28px; }
+    .rv-section h3 { font-size:0.95rem; font-weight:700; color:#0D1B2A; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+    .rv-section h3 i { color:#E53935; }
+    .rv-scroll { display:flex; gap:12px; overflow-x:auto; padding-bottom:6px; scrollbar-width:none; }
+    .rv-scroll::-webkit-scrollbar { display:none; }
+    .rv-card { flex-shrink:0; width:160px; background:#fff; border-radius:10px; border:1px solid #e8e8e8; overflow:hidden; cursor:pointer; transition:all 0.2s; }
+    .rv-card:hover { border-color:#E53935; transform:translateY(-2px); }
+    .rv-card img { width:100%; height:90px; object-fit:cover; }
+    .rv-card-body { padding:8px 10px; }
+    .rv-card-title { font-size:0.72rem; font-weight:700; color:#0D1B2A; line-height:1.3; margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .rv-card-price { font-size:0.7rem; font-weight:800; color:#E53935; }
     /* Compare Button */
     .btn-compare { width:32px;height:32px;border-radius:8px;border:1.5px solid #e8e8e8;background:#fff;color:#888;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.82rem;transition:all 0.2s;flex-shrink:0; }
     .btn-compare:hover { border-color:#1565c0;color:#1565c0;background:#e3f2fd; }
@@ -141,6 +158,19 @@
     @media(max-width:480px) { .btn-compare { display:none; } }
     #cmpDrawer { padding-bottom: env(safe-area-inset-bottom); }
     @media(max-width:480px) { .cmp-slot { max-width:100%; } }
+    .card-meta-bar { position:absolute; bottom:44px; left:0; right:0; display:flex; gap:5px; padding:0 8px; z-index:4; pointer-events:none; }
+    .card-meta-bar span { background:rgba(13,27,42,0.75); color:#fff; font-size:0.6rem; font-weight:600; padding:3px 7px; border-radius:20px; display:flex; align-items:center; gap:3px; }
+    .card-negotiable { display:inline-flex; align-items:center; gap:5px; background:#fff8e1; color:#b8860b; font-size:0.68rem; font-weight:700; padding:3px 9px; border-radius:20px; border:1px solid #ffe082; margin-bottom:6px; }
+    .card-action-btn { width:28px; height:28px; border-radius:7px; border:1.5px solid #e8e8e8; background:#fff; color:#888; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:0.75rem; transition:all 0.2s; flex-shrink:0; }
+    .card-action-btn:hover { border-color:#E53935; color:#E53935; background:#fff5f5; }
+    .rv-section { margin-bottom:28px; }
+    .rv-section h3 { font-size:0.95rem; font-weight:700; color:#0D1B2A; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+    .rv-scroll { display:flex; gap:12px; overflow-x:auto; padding-bottom:6px; scrollbar-width:none; }
+    .rv-card { flex-shrink:0; width:160px; background:#fff; border-radius:10px; border:1px solid #e8e8e8; overflow:hidden; cursor:pointer; transition:all 0.2s; }
+    .rv-card img { width:100%; height:90px; object-fit:cover; }
+    .rv-card-body { padding:8px 10px; }
+    .rv-card-title { font-size:0.72rem; font-weight:700; color:#0D1B2A; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .rv-card-price { font-size:0.7rem; font-weight:800; color:#E53935; }
   </style>
 
   <!-- Google Analytics GA4 -->
@@ -680,21 +710,25 @@ function createCard(p) {
   const area2  = (p.location?.area || 'gujarat').toLowerCase().replace(/\s+/g, '-');
   const propUrl = p.slug ? '/property/' + city2 + '/' + area2 + '/' + p.slug : 'property-detail.html?id=' + p._id;
 
+  saveRecentlyViewed(p, propUrl);
   return '<div class="prop-card" onclick="window.open(\'' + propUrl + '\',\'_blank\')" style="cursor:pointer">' +
     '<div class="card-img" id="' + id + '">' +
     slides + arrows + dots +
     '<span class="card-badge ' + badgeClass + '">' + badge + '</span>' +
-    '<button class="card-fav" onclick="event.stopPropagation()"><i class="fa-regular fa-heart"></i></button>' +
-    '<div class="card-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>' +
+    '<div class="card-verified"><div class="card-verified-inner"><span class="cv-icon"><i class="fa-solid fa-check"></i></span> Verified Seller</div></div>' +
+    (p.views > 0 || p.createdAt ? '<div class="card-meta-bar">' + (p.views > 0 ? '<span><i class="fa-solid fa-eye"></i> ' + p.views + '</span>' : '') + (p.createdAt ? '<span><i class="fa-regular fa-clock"></i> ' + (Math.floor((Date.now()-new Date(p.createdAt))/86400000)===0?'Today':Math.floor((Date.now()-new Date(p.createdAt))/86400000)===1?'1 day ago':Math.floor((Date.now()-new Date(p.createdAt))/86400000)+' days ago') + '</span>' : '') + '</div>' : '') +
     '<div class="card-price"><span>' + price + '</span></div></div>' +
     '<div class="card-body">' +
     '<div class="card-loc"><i class="fa-solid fa-location-dot"></i>' + loc + '</div>' +
     '<div class="card-title">' + p.title + '</div>' +
+    (p.extraDetails && p.extraDetails.negotiable && p.extraDetails.negotiable !== 'No' ? '<span class="card-negotiable"><i class="fa-solid fa-handshake"></i> Negotiable</span>' : '') +
     '<div class="card-specs">' + specs + '</div>' +
     '<div class="card-footer"><div class="card-agent"><div class="agent-av">' + initials + '</div><span class="agent-name">' + agentName + '</span></div>' +
-    '<div style="display:flex;gap:6px;align-items:center;">' +
+    '<div style="display:flex;gap:5px;align-items:center;">' +
+    '<button class="card-action-btn" title="Share" onclick="event.stopPropagation();cardShare(\'' + propUrl + '\',\'' + p.title.replace(/'/g,"\\'") + '\')"><i class="fa-solid fa-share-nodes"></i></button>' +
+    '<button class="card-action-btn" title="Report" onclick="event.stopPropagation();cardReport(\'' + p._id + '\')"><i class="fa-solid fa-flag"></i></button>' +
     '<button class="btn-compare" title="Compare" onclick="toggleCompare(event,\'' + p._id + '\')" id="cmpBtn_' + p._id + '"><i class="fa-solid fa-code-compare"></i></button>' +
-    '<button class="btn-offer" onclick="requireLoginForOffer(event,\'' + p.title.replace(/'/g,"\\'") + '\',\'' + loc.replace(/'/g,"\\'") + '\')" >Contact Now</button>' +
+    '<button class="btn-offer" onclick="requireLoginForOffer(event,\'' + p.title.replace(/'/g,"\\'") + '\',\'' + loc.replace(/'/g,"\\'") + '\')">Contact Now</button>' +
     '</div></div></div></div>';
 }
 
@@ -766,6 +800,55 @@ function startAutoScroll() {
   });
 }
 
+// Card Share
+function cardShare(url, title) {
+  var fullUrl = window.location.origin + url;
+  if (navigator.share) { navigator.share({ title: title, url: fullUrl }); }
+  else {
+    if (navigator.clipboard) navigator.clipboard.writeText(fullUrl);
+    var t = document.querySelector('.auth-toast');
+    if (!t) { t = document.createElement('div'); t.className = 'auth-toast'; document.body.appendChild(t); }
+    t.innerHTML = '<i class="fa-solid fa-check"></i> Link Copied!';
+    t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2000);
+  }
+}
+function cardReport(id) {
+  if (confirm('Report this listing as fake or incorrect?')) {
+    fetch(API + '/properties/' + id + '/report', { method: 'POST' }).catch(function(){});
+    var t = document.querySelector('.auth-toast');
+    if (!t) { t = document.createElement('div'); t.className = 'auth-toast'; document.body.appendChild(t); }
+    t.innerHTML = '<i class="fa-solid fa-flag"></i> Reported. Thank you!';
+    t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 3000);
+  }
+}
+function renderRecentlyViewed() {
+  try {
+    var rv = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+    if (!rv.length) return;
+    var existing = document.getElementById('rvSection');
+    if (existing) existing.remove();
+    var sec = document.createElement('div');
+    sec.id = 'rvSection'; sec.className = 'rv-section';
+    sec.innerHTML = '<h3><i class="fa-solid fa-clock-rotate-left"></i> Recently Viewed</h3><div class="rv-scroll">' +
+      rv.map(function(p) {
+        return '<div class="rv-card" onclick="window.open(\'' + p.url + '\',\'_blank\')">' +
+          (p.img ? '<img src="' + p.img + '" alt="' + p.title + '" loading="lazy"/>' : '<div style="height:90px;background:#f0f2f5"></div>') +
+          '<div class="rv-card-body"><div class="rv-card-title">' + p.title + '</div><div class="rv-card-price">' + p.price + '</div></div></div>';
+      }).join('') + '</div>';
+    var wrap = document.querySelector('.prop-page-wrap');
+    var head = document.querySelector('.prop-page-head');
+    if (wrap && head) wrap.insertBefore(sec, head.nextSibling);
+  } catch(e) {}
+}
+function saveRecentlyViewed(p, propUrl) {
+  try {
+    var rv = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+    if (!rv.find(function(x){ return x.id === p._id; })) {
+      rv.unshift({ id: p._id, title: p.title, price: formatPrice(p.price, p.status), img: p.images && p.images[0] ? p.images[0] : '', url: propUrl });
+      localStorage.setItem('recentlyViewed', JSON.stringify(rv.slice(0, 10)));
+    }
+  } catch(e) {}
+}
 // No static fallback â€” only real DB data
 
 // Pagination

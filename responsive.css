@@ -1232,3 +1232,50 @@ img, video {
     padding: 0 10px;
   }
 }
+
+/* ===== BANNER MOBILE FIX ===== */
+@media (max-width: 768px) {
+  .hero-slide[style*="banner.png"],
+  .hero-slide[style*="banner2.png"] {
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+  }
+  .hero {
+    min-height: 50vh !important;
+  }
+}
+@media (max-width: 480px) {
+  .hero-slide[style*="banner.png"],
+  .hero-slide[style*="banner2.png"] {
+    background-size: cover !important;
+    background-position: 50% 30% !important;
+  }
+  .hero {
+    min-height: 45vh !important;
+  }
+}
+
+/* ===== BANNER MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .hero-slide {
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+  }
+  .hero {
+    min-height: 40vh !important;
+    padding: 0 !important;
+  }
+  .hero-overlay {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.5) 100%) !important;
+  }
+}
+@media (max-width: 480px) {
+  .hero {
+    min-height: 35vh !important;
+  }
+  .hero-slide {
+    background-position: 50% 40% !important;
+  }
+}

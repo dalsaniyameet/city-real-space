@@ -1,0 +1,60 @@
+﻿function createCard(p) {
+  const statusMap = { 'for-sale': 'For Sale', 'for-rent': 'For Rent', 'new-launch': 'New Launch' };
+  const badgeClass = p.status === 'for-rent' ? 'rent' : p.status === 'new-launch' ? 'new' : '';
+  const badge = statusMap[p.status] || p.status;
+  const price = formatPrice(p.price, p.status);
+  const loc = (p.location?.area || '') + ', ' + (p.location?.city || '');
+  const initials = p.agent?.initials || 'CRS';
+  const agentName = p.agent?.name || 'CRS Agent';
+  const specs = p.category === 'commercial'
+    ? '<div class="cs"><i class="fa-solid fa-vector-square"></i>' + (p.specs?.sqft || 0) + ' sqft</div><div class="cs"><i class="fa-solid fa-building"></i>' + p.type + '</div>'
+    : '<div class="cs"><i class="fa-solid fa-bed"></i>' + (p.specs?.beds || 0) + ' Beds</div><div class="cs"><i class="fa-solid fa-bath"></i>' + (p.specs?.baths || 0) + ' Baths</div><div class="cs"><i class="fa-solid fa-vector-square"></i>' + (p.specs?.sqft || 0) + ' sqft</div>';
+
+  // Build images array Ã¢â‚¬â€ fallback to 3 placeholder images if only 1
+  const fallbacks = [
+    'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
+    'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80',
+    'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80'
+  ];
+  const imgs = (p.images && p.images.length > 1) ? p.images : [p.images?.[0] || fallbacks[0], fallbacks[1], fallbacks[2]];
+  const id = 'cs_' + (p._id || Math.random().toString(36).substr(2,6));
+
+  const slides = imgs.map((src, i) =>
+    '<div class="ci-slide' + (i===0?' active':'') + '"><img src="' + src + '" alt="' + p.title + '" loading="lazy"/></div>'
+  ).join('');
+
+  const dots = imgs.length > 1 ? '<div class="ci-dots">' + imgs.map((_,i) =>
+    '<span class="ci-dot' + (i===0?' active':'') + '" onclick="ciGo(\'' + id + '\',' + i + ',event)"></span>'
+  ).join('') + '</div>' : '';
+
+  const arrows = imgs.length > 1
+    ? '<button class="ci-arr ci-prev" onclick="ciMove(\'' + id + '\',-1,event)"><i class="fa-solid fa-chevron-left"></i></button>' +
+      '<button class="ci-arr ci-next" onclick="ciMove(\'' + id + '\',1,event)"><i class="fa-solid fa-chevron-right"></i></button>'
+    : '';
+
+  const city2 = (p.location?.city || 'ahmedabad').toLowerCase().replace(/\s+/g, '-');
+  const area2  = (p.location?.area || 'gujarat').toLowerCase().replace(/\s+/g, '-');
+  const propUrl = p.slug ? '/property/' + city2 + '/' + area2 + '/' + p.slug : 'property-detail.html?id=' + p._id;
+
+  return '<div class="prop-card" onclick="window.open(\'' + propUrl + '\',\'_blank\')" style="cursor:pointer">' +
+    '<div class="card-img" id="' + id + '">' +
+    slides + arrows + dots +
+    '<span class="card-badge ' + badgeClass + '">' + badge + '</span>' +
+    '<button class="card-fav" onclick="event.stopPropagation()"><i class="fa-regular fa-heart"></i></button>' +
+    '<div class="card-verified"><i class="fa-solid fa-circle-check"></i> Verified</div>' +
+    '<div class="card-price"><span>' + price + '</span></div></div>' +
+    '<div class="card-body">' +
+    '<div class="card-loc"><i class="fa-solid fa-location-dot"></i>' + loc + '</div>' +
+    '<div class="card-title">' + p.title + '</div>' +
+    '<div class="card-specs">' + specs + '</div>' +
+    '<div class="card-footer"><div class="card-agent"><div class="agent-av">' + initials + '</div><span class="agent-name">' + agentName + '</span></div>' +
+    '<div style="display:flex;gap:6px;align-items:center;">' +
+    '<button class="btn-compare" title="Compare" onclick="toggleCompare(event,\'' + p._id + '\')" id="cmpBtn_' + p._id + '"><i class="fa-solid fa-code-compare"></i></button>' +
+    '<button class="btn-offer" onclick="requireLoginForOffer(event,\'' + p.title.replace(/'/g,"\\'") + '\',\'' + loc.replace(/'/g,"\\'") + '\')" >Contact Now</button>' +
+    '</div></div></div></div>';
+}
+
+// Card image slider functions
+function ciMove(id, dir, e) {
+  e.stopPropagation();
+  const wrap = document.getElementById(id);
