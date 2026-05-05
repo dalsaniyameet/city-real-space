@@ -3,6 +3,22 @@ const router   = express.Router();
 const Property = require('../models/Property');
 const { protect, adminOnly } = require('../middleware/auth');
 
+// GET /api/properties/sitemap — dynamic property sitemap for Google
+router.get('/sitemap', async (req, res) => {
+  try {
+    const properties = await Property.find({ isApproved: true }).select('slug _id type status createdAt').sort({ createdAt: -1 }).limit(1000);
+    const base = 'https://www.cityrealspace.com';
+    const urls = properties.map(p => {
+      const loc = p.slug ? `${base}/property-detail/${p.slug}` : `${base}/property-detail?id=${p._id}`;
+      return `  <url><loc>${loc}</loc><lastmod>${new Date(p.createdAt).toISOString().split('T')[0]}</lastmod><priority>0.7</priority><changefreq>weekly</changefreq></url>`;
+    }).join('\n');
+    res.setHeader('Content-Type', 'application/xml');
+    res.send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>`);
+  } catch (err) {
+    res.status(500).send('');
+  }
+});
+
 // GET /api/properties/localities — city ke basis pe real areas from DB
 router.get('/localities', async (req, res) => {
   try {

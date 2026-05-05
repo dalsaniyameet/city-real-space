@@ -121,22 +121,22 @@ app.get('/sitemap.xml', async (req, res) => {
     const today = new Date().toISOString().split('T')[0];
 
     const staticUrls = [
-      { loc: '/',             priority: '1.0', changefreq: 'daily',   lastmod: today },
-      { loc: '/properties',   priority: '0.9', changefreq: 'daily',   lastmod: today },
-      { loc: '/buy',          priority: '0.9', changefreq: 'daily',   lastmod: today },
-      { loc: '/rent',         priority: '0.9', changefreq: 'daily',   lastmod: today },
-      { loc: '/new-launch',   priority: '0.8', changefreq: 'daily',   lastmod: today },
-      { loc: '/resale',       priority: '0.8', changefreq: 'daily',   lastmod: today },
-      { loc: '/land',         priority: '0.7', changefreq: 'daily',   lastmod: today },
-      { loc: '/prelease',     priority: '0.7', changefreq: 'daily',   lastmod: today },
-      { loc: '/blog',         priority: '0.8', changefreq: 'weekly',  lastmod: today },
-      { loc: '/post-property',priority: '0.8', changefreq: 'weekly',  lastmod: today },
-      { loc: '/about',        priority: '0.7', changefreq: 'monthly', lastmod: today },
-      { loc: '/contact',      priority: '0.7', changefreq: 'monthly', lastmod: today },
-      { loc: '/faq',          priority: '0.6', changefreq: 'monthly', lastmod: today },
-      { loc: '/careers',      priority: '0.5', changefreq: 'monthly', lastmod: today },
-      { loc: '/privacy',      priority: '0.4', changefreq: 'yearly',  lastmod: today },
-      { loc: '/terms',        priority: '0.4', changefreq: 'yearly',  lastmod: today },
+      { loc: '/',             priority: '1.0', changefreq: 'daily', lastmod: today },
+      { loc: '/properties',   priority: '0.9', changefreq: 'daily', lastmod: today },
+      { loc: '/buy',          priority: '0.9', changefreq: 'daily', lastmod: today },
+      { loc: '/rent',         priority: '0.9', changefreq: 'daily', lastmod: today },
+      { loc: '/new-launch',   priority: '0.8', changefreq: 'daily', lastmod: today },
+      { loc: '/resale',       priority: '0.8', changefreq: 'daily', lastmod: today },
+      { loc: '/land',         priority: '0.8', changefreq: 'daily', lastmod: today },
+      { loc: '/prelease',     priority: '0.8', changefreq: 'daily', lastmod: today },
+      { loc: '/blog',         priority: '0.8', changefreq: 'daily', lastmod: today },
+      { loc: '/post-property',priority: '0.7', changefreq: 'daily', lastmod: today },
+      { loc: '/about',        priority: '0.7', changefreq: 'daily', lastmod: today },
+      { loc: '/contact',      priority: '0.7', changefreq: 'daily', lastmod: today },
+      { loc: '/faq',          priority: '0.6', changefreq: 'daily', lastmod: today },
+      { loc: '/careers',      priority: '0.5', changefreq: 'daily', lastmod: today },
+      { loc: '/privacy',      priority: '0.4', changefreq: 'daily', lastmod: today },
+      { loc: '/terms',        priority: '0.4', changefreq: 'daily', lastmod: today },
     ];
 
     const staticXml = staticUrls.map(u =>
@@ -150,7 +150,7 @@ app.get('/sitemap.xml', async (req, res) => {
       const propLoc = p.slug
         ? `${base}/property/${city}/${area}/${p.slug}`
         : `${base}/property-detail?id=${p._id}`;
-      return `  <url><loc>${propLoc}</loc><lastmod>${lastmod}</lastmod><priority>0.8</priority><changefreq>weekly</changefreq></url>`;
+      return `  <url><loc>${propLoc}</loc><lastmod>${lastmod}</lastmod><priority>0.8</priority><changefreq>daily</changefreq></url>`;
     }).join('\n');
 
     res.send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticXml}\n${propXml}\n</urlset>`);

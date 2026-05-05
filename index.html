@@ -83,6 +83,21 @@
   }
   </script>
 
+  <!-- FAQPage Schema for Rich Results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"How to buy property in Ahmedabad?","acceptedAnswer":{"@type":"Answer","text":"Contact City Real Space at +91 98250 31247. We provide free consultation, site visits and help you find verified properties in Ahmedabad within your budget."}},
+      {"@type":"Question","name":"Is City Real Space RERA registered?","acceptedAnswer":{"@type":"Answer","text":"Yes, City Real Space is RERA registered and NTC Reg No: 12376. All our property listings are verified and compliant."}},
+      {"@type":"Question","name":"What areas does City Real Space cover in Ahmedabad?","acceptedAnswer":{"@type":"Answer","text":"We cover all major areas including Prahlad Nagar, Satellite, Bopal, Thaltej, SG Highway, Bodakdev, Vastrapur, Shela, Giftcity and more."}},
+      {"@type":"Question","name":"How to rent office space in Ahmedabad?","acceptedAnswer":{"@type":"Answer","text":"Browse our commercial listings at cityrealspace.com/properties or call +91 98250 31247 for office spaces in PNTC, Titanium City Centre, Sun Gravitas and other premium buildings."}},
+      {"@type":"Question","name":"What is the price of 2 BHK flat in Ahmedabad?","acceptedAnswer":{"@type":"Answer","text":"2 BHK flats in Ahmedabad range from ₹30 lakhs to ₹1.5 crore depending on location. Areas like Bopal and Shela offer affordable options while Prahlad Nagar and Satellite have premium flats."}}
+    ]
+  }
+  </script>
+
   <!-- Google Analytics GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-W7LZWL8PLN"></script>
   <script>
@@ -208,9 +223,9 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <p class="hero-tag hero-anim-tag"><i class="fa-solid fa-star"></i> #1 Real Estate Platform in Ahmedabad</p>
-    <h1 id="heroTitle"></h1>
-    <p class="hero-sub" id="heroSub"></p>
-    <p class="hero-sub" id="heroSub2" style="margin-top:-20px;min-height:1.4em;font-weight:700;"></p>
+    <h1 id="heroTitle" class="hero-h1-static">Find Your <span class="yellow">Dream</span> Property<br>in the Heart of the City</h1>
+    <p class="hero-sub" id="heroSub">Explore thousands of verified listings — residential, commercial &amp; new launches.</p>
+    <p class="hero-sub" id="heroSub2" style="margin-top:-20px;min-height:1.4em;font-weight:700;"><span style="color:#34d399">The </span><span style="color:#ff6b6b">Unit </span><span style="color:rgba(255,255,255,0.7)">Of </span><span style="color:#34d399">Property </span><span style="color:#FFC107">Platform</span></p>
 
 </section>
 
@@ -1738,88 +1753,13 @@ function submitReqWA() {
   const titleEl = document.getElementById('heroTitle');
   const subEl   = document.getElementById('heroSub');
 
-  // h1 parts: plain text + yellow span + plain + br + plain
-  const h1Parts = [
-    { text: 'Find Your ', yellow: false },
-    { text: 'Dream',      yellow: true  },
-    { text: ' Property',  yellow: false },
-    { text: null,         br: true      },
-    { text: 'in the Heart of the City', yellow: false }
-  ];
-  const subText = 'Explore thousands of verified listings \u2014 residential, commercial & new launches.';
-
-  let charIndex = 0;
-  let partIndex = 0;
-  let totalChars = 0;
-
-  // flatten all chars with their style info
-  const chars = [];
-  h1Parts.forEach(part => {
-    if (part.br) { chars.push({ br: true }); return; }
-    for (const ch of part.text) chars.push({ ch, yellow: part.yellow });
-  });
-
-  // build spans upfront (hidden)
-  chars.forEach(c => {
-    if (c.br) { titleEl.appendChild(document.createElement('br')); return; }
-    const s = document.createElement('span');
-    if (c.ch === ' ') {
-      s.innerHTML = '&nbsp;';
-      s.style.cssText = 'opacity:0;display:inline-block;width:0.35em;transition:opacity 0.2s,width 0.25s';
-    } else {
-      s.textContent = c.ch;
-      s.style.cssText = 'opacity:0;display:inline-block;transform:translateY(20px);transition:opacity 0.3s,transform 0.3s';
-    }
-    if (c.yellow) s.classList.add('yellow');
-    titleEl.appendChild(s);
-  });
-
-  const spans = titleEl.querySelectorAll('span');
-
-  function revealNext() {
-    if (totalChars >= spans.length) {
-      setTimeout(() => typeSub(0), 150);
-      return;
-    }
-    const sp = spans[totalChars];
-    sp.style.opacity = '1';
-    sp.style.transform = 'translateY(0)';
-    if (sp.innerHTML === '&nbsp;') sp.style.width = '0.35em';
-    totalChars++;
-    setTimeout(revealNext, 28);
-  }
-
-  function typeSub(i) {
-    if (i === 0) subEl.textContent = '';
-    if (i >= subText.length) { setTimeout(() => typeSub2(0), 200); return; }
-    subEl.textContent += subText[i];
-    setTimeout(() => typeSub(i + 1), 18);
-  }
-
-
-  const sub2El = document.getElementById('heroSub2');
-  const sub2Parts = [
-    { text: 'The ',      color: '#34d399' },
-    { text: 'Unit ',     color: '#ff6b6b' },
-    { text: 'Of ',       color: 'rgba(255,255,255,0.7)' },
-    { text: 'Property ', color: '#34d399' },
-    { text: 'Platform',  color: '#FFC107' }
-  ];
-  const sub2Chars = [];
-  sub2Parts.forEach(p => { for (const ch of p.text) sub2Chars.push({ ch, color: p.color }); });
-
-  function typeSub2(i) {
-    if (i === 0) sub2El.innerHTML = '';
-    if (i >= sub2Chars.length) return;
-    const s = document.createElement('span');
-    s.textContent = sub2Chars[i].ch;
-    s.style.color = sub2Chars[i].color;
-    sub2El.appendChild(s);
-    setTimeout(() => typeSub2(i + 1), 28);
-  }
-
+  // H1 is now static HTML - CSS animation handles the reveal
   // start after splash
-  setTimeout(revealNext, 1950);
+  setTimeout(function(){
+    document.getElementById('heroTitle').classList.add('hero-h1-visible');
+    document.getElementById('heroSub').classList.add('hero-sub-visible');
+    document.getElementById('heroSub2').classList.add('hero-sub-visible');
+  }, 1950);
 })();
 </script>
 

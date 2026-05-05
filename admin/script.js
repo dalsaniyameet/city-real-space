@@ -3035,40 +3035,155 @@ function buildReviewGrid() {
   grid.innerHTML = html;
 }
 
-// ===== AI TITLE / DESC STUBS =====
+// ===== AI TITLE / DESC GENERATOR =====
+function _getFormData() {
+  function g(id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; }
+  var type     = g('pType');
+  var city     = g('pCitySelect');
+  var area     = g('pAreaSelect') !== '__other__' ? g('pAreaSelect') : '';
+  var subArea  = g('pSubAreaSelect') !== '__other__' ? g('pSubAreaSelect') : '';
+  var project  = g('pProject');
+  var status   = g('pStatus');
+  var beds     = g('pBeds') || g('rBeds');
+  var baths    = g('rBaths');
+  var balc     = g('rBalconies');
+  var carpet   = g('rCarpet');
+  var sba      = g('rSBA') || g('oSBA') || g('pSqft');
+  var floor    = g('rFloor') || g('oYourFloor');
+  var facing   = g('rFacing');
+  var furnish  = g('rFurnishing') || g('oFurnishing') || g('pFurnished');
+  var age      = g('rAge') || g('pAgeOfProperty');
+  var lift     = g('rLift');
+  var priceLabel = g('pPriceLabel');
+  var possession = g('pPossession');
+  var cabins   = g('oCabins');
+  var workstations = g('oWorkstations');
+  var parking  = g('oParking') || (g('rCoveredParking') !== '0' ? g('rCoveredParking') + ' Covered' : '');
+  var ac       = g('oAC');
+  var amenities = getSelectedAmenities();
+  var category = g('pCategory');
+  return { type, city, area, subArea, project, status, beds, baths, balc, carpet, sba, floor, facing, furnish, age, lift, priceLabel, possession, cabins, workstations, parking, ac, amenities, category };
+}
+
 function aiGenerateTitle() {
-  const type = document.getElementById('pType').value;
-  const city = document.getElementById('pCitySelect').value;
-  const area = document.getElementById('pAreaSelect').value || document.getElementById('pSubArea').value;
-  const beds = document.getElementById('pBeds').value;
-  const status = document.getElementById('pStatus').value;
-  if (!type || !city) { toast('Select Type and City first', 'error'); return; }
-  const bhk = beds ? beds + ' BHK ' : '';
-  const typeMap = { apartment:'Apartment', villa:'Villa', bungalow:'Bungalow', rowhouse:'Row House', plot:'Plot', office:'Office Space', shop:'Shop', warehouse:'Warehouse' };
-  const statusMap = { 'for-sale':'for Sale', 'for-rent':'for Rent', 'new-launch':'New Launch' };
-  const loc = area ? area + ', ' + city : city;
-  document.getElementById('pTitle').value = bhk + (typeMap[type]||type) + ' ' + (statusMap[status]||'for Sale') + ' in ' + loc;
+  var d = _getFormData();
+  if (!d.type || !d.city) { toast('Select Type and City first', 'error'); return; }
+
+  var typeMap   = { apartment:'Apartment', villa:'Villa', bungalow:'Bungalow', rowhouse:'Row House', plot:'Plot', office:'Office Space', shop:'Shop', showroom:'Showroom', warehouse:'Warehouse', factory:'Factory', coworking:'Co-working Space', industrial_land:'Industrial Land' };
+  var statusMap = { 'for-sale':'for Sale', 'for-rent':'for Rent', 'new-launch':'New Launch in' };
+  var typeName  = typeMap[d.type] || d.type;
+  var statusTxt = statusMap[d.status] || 'for Sale';
+  var loc       = d.subArea || d.area || d.city;
+  var bhk       = d.beds ? d.beds + ' BHK ' : '';
+
+  var title = '';
+  var isCommercial = d.category === 'commercial';
+
+  if (isCommercial) {
+    var sbaStr = d.sba ? d.sba + ' Sq.Ft ' : '';
+    var cabinStr = d.cabins ? d.cabins + ' Cabin ' : '';
+    var acStr = (d.ac && d.ac !== 'None') ? d.ac + ' ' : '';
+    var furnStr = (d.furnish && d.furnish !== 'Unfurnished') ? d.furnish + ' ' : '';
+    // Pick most unique combo
+    if (d.type === 'office' || d.type === 'coworking') {
+      title = furnStr + acStr + sbaStr + typeName + ' ' + statusTxt + ' in ' + loc + ', ' + d.city;
+    } else {
+      title = sbaStr + typeName + ' ' + statusTxt + ' in ' + loc + ', ' + d.city;
+    }
+  } else {
+    var furnStr2 = (d.furnish && d.furnish !== 'Unfurnished') ? d.furnish + ' ' : '';
+    var facingStr = d.facing ? d.facing + ' Facing ' : '';
+    var floorStr = d.floor ? 'Floor ' + d.floor + ' ' : '';
+    // Rotate title patterns for variety
+    var patterns = [
+      bhk + furnStr2 + typeName + ' ' + statusTxt + ' in ' + loc + ', ' + d.city,
+      bhk + typeName + ' ' + statusTxt + ' in ' + (d.project ? d.project + ', ' : '') + loc,
+      furnStr2 + bhk + typeName + ' ' + statusTxt + ' in ' + loc + (d.sba ? ' | ' + d.sba + ' Sq.Ft' : ''),
+      bhk + facingStr + typeName + ' ' + statusTxt + ' in ' + loc + ', ' + d.city,
+    ];
+    // Pick pattern based on what data is available
+    if (d.furnish && d.furnish !== 'Unfurnished') title = patterns[0];
+    else if (d.project) title = patterns[1];
+    else if (d.sba) title = patterns[2];
+    else if (d.facing) title = patterns[3];
+    else title = patterns[0];
+  }
+
+  document.getElementById('pTitle').value = title;
   updateAdminScore();
+  // Trigger SEO score bar
+  document.getElementById('pTitle').dispatchEvent(new Event('input'));
+  toast('Title generated! ✨');
 }
 
 function aiGenerateDesc() {
-  const type = document.getElementById('pType').value;
-  const city = document.getElementById('pCitySelect').value;
-  const area = document.getElementById('pAreaSelect').value || document.getElementById('pSubArea').value;
-  const beds = document.getElementById('pBeds').value;
-  const sqft = document.getElementById('pSqft').value;
-  const status = document.getElementById('pStatus').value;
-  if (!type || !city) { toast('Select Type and City first', 'error'); return; }
-  const bhk = beds ? beds + ' BHK ' : '';
-  const typeMap = { apartment:'Apartment', villa:'Villa', bungalow:'Bungalow', rowhouse:'Row House', plot:'Plot', office:'Office Space', shop:'Shop', warehouse:'Warehouse' };
-  const loc = area ? area + ', ' + city : city;
-  const sqftStr = sqft ? ' with ' + sqft + ' sq.ft' : '';
-  const rentSale = status === 'for-rent' ? 'rent' : 'sale';
-  document.getElementById('pDesc').value =
-    'Premium ' + bhk + (typeMap[type]||type) + ' available for ' + rentSale + ' in ' + loc + sqftStr + '. ' +
-    'Well-maintained property with modern amenities. Prime location, close to schools, hospitals, and shopping centers. ' +
-    'Ready to move in. Contact City Real Space for a free site visit. RERA Registered. NTC Reg No: 12376.';
-  updateAdminScore();
+  var d = _getFormData();
+  if (!d.type || !d.city) { toast('Select Type and City first', 'error'); return; }
+
+  var btn = document.getElementById('aiDescBtn');
+  if (btn) { btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Writing...'; btn.disabled = true; }
+
+  setTimeout(function() {
+    var typeMap = { apartment:'apartment', villa:'villa', bungalow:'bungalow / independent house', rowhouse:'row house', plot:'residential plot', office:'office space', shop:'shop', showroom:'showroom', warehouse:'warehouse', factory:'factory', coworking:'co-working space', industrial_land:'industrial land' };
+    var typeName = typeMap[d.type] || d.type;
+    var loc = d.subArea || d.area || d.city;
+    var fullLoc = d.area ? d.area + ', ' + d.city : d.city;
+    var bhk = d.beds ? d.beds + ' BHK ' : '';
+    var isRent = d.status === 'for-rent';
+    var isCommercial = d.category === 'commercial';
+    var rentSale = isRent ? 'rent' : 'sale';
+
+    // Build feature sentences
+    var features = [];
+    if (d.sba)    features.push(d.sba + ' sq.ft ' + (d.carpet ? '(carpet: ' + d.carpet + ' sq.ft)' : ''));
+    if (d.furnish && d.furnish !== 'Unfurnished') features.push(d.furnish.toLowerCase());
+    if (d.floor)  features.push('located on floor ' + d.floor);
+    if (d.facing) features.push(d.facing.toLowerCase() + ' facing');
+    if (d.lift && d.lift !== 'Not Available') features.push('lift available');
+    if (d.parking && d.parking !== 'Not Available') features.push('parking available');
+    if (d.ac && d.ac !== 'None') features.push(d.ac.toLowerCase());
+    if (d.cabins) features.push(d.cabins + ' private cabins');
+    if (d.workstations) features.push(d.workstations + ' workstations');
+    if (d.possession) features.push(d.possession.toLowerCase());
+    if (d.age)    features.push('property age: ' + d.age.toLowerCase());
+
+    // Top amenities (max 4)
+    var topAmenities = d.amenities.slice(0, 4);
+
+    var desc = '';
+
+    if (isCommercial) {
+      desc += 'Premium ' + typeName + ' available for ' + rentSale + ' in ' + fullLoc + '. ';
+      if (d.sba) desc += 'Total area: ' + d.sba + ' sq.ft' + (d.carpet ? ', carpet area: ' + d.carpet + ' sq.ft' : '') + '. ';
+      if (d.cabins || d.workstations) {
+        desc += 'Configuration includes ' + [d.cabins ? d.cabins + ' private cabins' : '', d.workstations ? d.workstations + ' workstations' : ''].filter(Boolean).join(' and ') + '. ';
+      }
+      if (d.furnish && d.furnish !== 'Unfurnished') desc += d.furnish + ' office with ';
+      if (d.ac && d.ac !== 'None') desc += d.ac + ' and high-speed internet. ';
+      if (topAmenities.length) desc += 'Key amenities: ' + topAmenities.join(', ') + '. ';
+      if (d.floor) desc += 'Situated on floor ' + d.floor + '. ';
+      if (d.parking && d.parking !== 'Not Available') desc += 'Parking available. ';
+      desc += 'Ideal for corporates, startups, and growing businesses. ';
+      desc += 'Prime location in ' + loc + ' with excellent connectivity. ';
+    } else {
+      desc += 'Beautiful ' + bhk + typeName + ' available for ' + rentSale + ' in ' + fullLoc + '. ';
+      if (features.length) desc += 'This property features ' + features.slice(0, 3).join(', ') + '. ';
+      if (d.baths) desc += 'Comes with ' + d.baths + ' bathroom' + (Number(d.baths) > 1 ? 's' : '') + (d.balc && d.balc !== '0' ? ' and ' + d.balc + ' balcon' + (Number(d.balc) > 1 ? 'ies' : 'y') : '') + '. ';
+      if (topAmenities.length) desc += 'Society amenities include ' + topAmenities.join(', ') + '. ';
+      if (d.project) desc += 'Located in ' + d.project + ', ' + loc + '. ';
+      desc += 'Well-connected to schools, hospitals, and shopping centers. ';
+      if (isRent) desc += 'Ideal for families' + (d.baths ? ' looking for a comfortable home' : '') + '. ';
+      else desc += 'Great investment opportunity in ' + loc + '. ';
+    }
+
+    desc += 'Contact City Real Space for a free site visit. RERA Registered. NTC Reg No: 12376.';
+
+    document.getElementById('pDesc').value = desc;
+    updateAdminScore();
+
+    if (btn) { btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> AI Write'; btn.disabled = false; }
+    toast('Description generated! ✨');
+  }, 600);
 }
 
 // ===== DRAFTS =====

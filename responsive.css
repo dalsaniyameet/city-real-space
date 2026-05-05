@@ -8,7 +8,7 @@
 html { overflow-x: hidden; }
 body { overflow-x: hidden; min-width: 320px; }
 img { max-width: 100%; height: auto; }
-table { width: 100%; overflow-x: auto; display: block; }
+table:not(.pd-table) { width: 100%; overflow-x: auto; display: block; }
 
 /* ===== CONTAINER ===== */
 .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 16px; }
@@ -129,13 +129,15 @@ table { width: 100%; overflow-x: auto; display: block; }
 
 /* ===== PROPERTY CARDS ===== */
 @media (max-width: 768px) {
-  .cards-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .cards-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
   .card-title { font-size: 0.9rem; }
-  .cards-slider .prop-card { min-width: 260px; }
+  .cards-slider .prop-card { min-width: 280px; }
+  .card-img { height: 200px !important; }
 }
 @media (max-width: 480px) {
   .cards-grid { grid-template-columns: 1fr; }
-  .cards-slider .prop-card { min-width: 240px; }
+  .cards-slider .prop-card { min-width: 260px; max-width: 260px; }
+  .card-img { height: 200px !important; }
 }
 
 /* ===== FEATURES GRID ===== */
@@ -294,51 +296,7 @@ table { width: 100%; overflow-x: auto; display: block; }
 }
 
 /* ===== PROPERTY DETAIL PAGE ===== */
-.pd-wrap { margin-top: 80px !important; padding: 0 14px !important; }
-.pd-grid { display: grid; grid-template-columns: 1fr 360px; gap: 28px; }
-@media (max-width: 960px) {
-  .pd-grid { grid-template-columns: 1fr !important; }
-  .pd-sidebar { position: static !important; top: auto !important; }
-  .pd-main-img { height: 300px !important; }
-}
-@media (max-width: 768px) {
-  .pd-wrap { padding: 0 12px !important; margin-top: 72px !important; }
-  .pd-tabs-bar { top: 28px !important; }
-  .pd-tabs-inner { padding: 0 12px !important; }
-  .pd-tab-link { padding: 12px 12px !important; font-size: 0.76rem !important; }
-  .pd-main-img { height: 260px !important; }
-  .pd-info, .pd-details, .pd-amenities, .pd-contact-box, .pd-share, .emi-box, .visit-box, .pd-map-box, .price-trend-box, .dealers-box, .pd-video-box { padding: 18px !important; }
-  .pd-details-grid { grid-template-columns: 1fr 1fr !important; }
-  .visit-slots { grid-template-columns: 1fr 1fr !important; }
-  .emi-breakdown { grid-template-columns: 1fr 1fr !important; }
-  .pt-meta { grid-template-columns: 1fr 1fr !important; }
-  .similar-grid { grid-template-columns: 1fr !important; }
-}
-@media (max-width: 600px) {
-  .pd-main-img { height: 220px !important; }
-  .pd-title { font-size: 1.2rem !important; }
-  .pd-price { font-size: 1.5rem !important; }
-  .pd-specs { gap: 10px !important; flex-wrap: wrap !important; }
-  .pd-spec { font-size: 0.8rem !important; }
-  .pd-details-grid { grid-template-columns: 1fr 1fr !important; }
-  .pd-thumbs { gap: 5px; overflow-x: auto; flex-wrap: nowrap !important; padding-bottom: 4px; }
-  .pd-thumb { width: 60px !important; height: 45px !important; flex-shrink: 0; }
-  .pd-share-btns { flex-direction: column; }
-  .pd-contact-form { gap: 8px !important; }
-  #pdMap { height: 240px !important; }
-  .localityCards { grid-template-columns: 1fr !important; }
-  #localityCards { grid-template-columns: 1fr !important; }
-}
-@media (max-width: 400px) {
-  .pd-wrap { padding: 0 10px !important; }
-  .pd-main-img { height: 200px !important; }
-  .pd-details-grid { grid-template-columns: 1fr !important; }
-  .pd-amenities-list { gap: 6px; }
-  .pd-amenity { font-size: 0.72rem; padding: 5px 10px; }
-  .visit-slots { grid-template-columns: 1fr !important; }
-  .emi-breakdown { grid-template-columns: 1fr !important; }
-  .pt-meta { grid-template-columns: 1fr !important; }
-}
+/* pd-grid mobile handled by JS in property-detail.html */
 
 /* ===== BLOG PAGE ===== */
 .blog-layout { display: grid; grid-template-columns: 1fr 300px; gap: 32px; align-items: start; }
@@ -1227,4 +1185,50 @@ pre, code { overflow-x: auto; white-space: pre-wrap; word-break: break-word; }
   .pa-marquee-wrap { -webkit-overflow-scrolling: touch; }
   .lcw-body { -webkit-overflow-scrolling: touch; }
   .auth-right, .inq-right { -webkit-overflow-scrolling: touch; }
+}
+
+/* ===== FINAL MOBILE RESPONSIVE FIX ===== */
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6, p, span {
+  word-break: normal !important;
+  overflow-wrap: break-word;
+  white-space: normal;
+  line-height: 1.4;
+}
+
+/* pd-desc p ke liye override — break-word chahiye */
+.pd-desc p, .pd-desc *, #pdDesc {
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  white-space: normal !important;
+  overflow: visible !important;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.slider, .carousel {
+  width: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  body { font-size: 14px; }
+
+  .container {
+    padding: 0 10px;
+  }
 }

@@ -343,7 +343,7 @@
     }
     grid.innerHTML = blogs.map((b, i) => {
       const featured = i === 0;
-      const link = b.slug ? 'blog-detail.html?slug=' + b.slug : '#';
+      const link = b.slug ? '/blog/' + b.slug : '#';
       return `<div class="blog-card${featured ? ' featured' : ''}" style="transition-delay:${i * 80}ms">
         <div class="blog-card-img"><img src="${b.image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80'}" alt="${b.title}" loading="lazy"/><span class="blog-cat">${b.category}</span></div>
         <div class="blog-body">
@@ -365,7 +365,7 @@
   // localhost ya production dono pe kaam kare
   const BLOG_API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:5000/api'
-    : 'https://city-real-space.vercel.app/api';
+    : '/api';
 
   let activeCat = '';
   async function loadBlogs(cat) {
@@ -397,7 +397,7 @@
       if (data.success && data.blogs.length) {
         el.innerHTML = data.blogs.map(b => {
           const date = new Date(b.createdAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
-          const link = b.slug ? 'blog-detail.html?slug=' + b.slug : '#';
+          const link = b.slug ? '/blog/' + b.slug : '#';
           return `<a href="${link}" class="recent-post" style="text-decoration:none;">
             <img src="${b.image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=200&q=80'}" alt="${b.title}" loading="lazy"/>
             <div class="recent-post-text"><h5>${b.title}</h5><span>${date}</span></div>

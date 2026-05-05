@@ -22,15 +22,17 @@
   {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "Search Properties in Ahmedabad",
+    "name": "Search Properties in Ahmedabad | Buy Sell Rent Flats Villas Offices",
     "url": "https://www.cityrealspace.com/properties",
+    "description": "Search verified properties for sale & rent in Ahmedabad. Browse 2BHK, 3BHK flats, villas, office spaces & plots. RERA registered.",
     "breadcrumb": {
       "@type": "BreadcrumbList",
       "itemListElement": [
         {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.cityrealspace.com/"},
-        {"@type": "ListItem", "position": 2, "name": "Properties", "item": "https://www.cityrealspace.com/properties"}
+        {"@type": "ListItem", "position": 2, "name": "Properties in Ahmedabad", "item": "https://www.cityrealspace.com/properties"}
       ]
-    }
+    },
+    "about": {"@type": "RealEstateAgent", "name": "City Real Space", "url": "https://www.cityrealspace.com"}
   }
   </script>
   <link rel="icon" type="image/jpeg" href="/images/logo.jpeg"/>
@@ -624,8 +626,19 @@ function getFilters() {
 function updateTitle(f) {
   const map = {'for-sale':'Properties for Sale','for-rent':'Properties for Rent','new-launch':'New Launch Projects','':'All Properties'};
   const loc = f.area || f.city;
-  document.getElementById('pageTitle').textContent = loc ? (map[f.status]||'All Properties') + ' in ' + loc : (map[f.status]||'All Properties');
-  document.getElementById('pageSubtitle').textContent = loc ? 'Showing properties in ' + loc : 'Browse verified properties across Gujarat';
+  const typeMap = {'apartment':'Flats','villa':'Villas','bungalow':'Bungalows','rowhouse':'Row Houses','plot':'Plots','office':'Office Spaces','shop':'Shops','warehouse':'Warehouses','':'' };
+  const typeTxt = typeMap[f.type] || '';
+  const bedsTxt = f.beds ? f.beds + ' BHK ' : '';
+  // Dynamic page title like MagicBricks
+  let pageTitle = '';
+  if (loc && typeTxt) pageTitle = bedsTxt + typeTxt + ' ' + (map[f.status]||'for Sale/Rent') + ' in ' + loc;
+  else if (loc) pageTitle = (map[f.status]||'All Properties') + ' in ' + loc;
+  else if (typeTxt) pageTitle = bedsTxt + typeTxt + ' ' + (map[f.status]||'for Sale/Rent') + ' in Ahmedabad';
+  else pageTitle = map[f.status] || 'All Properties';
+  document.getElementById('pageTitle').textContent = pageTitle;
+  document.getElementById('pageSubtitle').textContent = loc ? 'Showing verified properties in ' + loc + ', Ahmedabad' : 'Browse verified properties across Gujarat';
+  // Update document title for SEO
+  document.title = pageTitle + ' | City Real Space';
 }
 
 // Render card
@@ -844,6 +857,37 @@ function loadProperties(page) {
         renderPagination(data.pages || 1, currentPage);
         bindCardHover();
         startAutoScroll();
+
+
+
+
+
+        // Inject dynamic ItemList schema for SEO
+        var existingSchema = document.getElementById('propListSchema');
+        if (existingSchema) existingSchema.remove();
+        var schemaEl = document.createElement('script');
+        schemaEl.type = 'application/ld+json';
+        schemaEl.id = 'propListSchema';
+        var f2 = getFilters();
+        var loc2 = f2.area || f2.city || 'Ahmedabad';
+        schemaEl.textContent = JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          'name': document.getElementById('pageTitle').textContent,
+          'description': 'Verified properties in ' + loc2 + '. RERA registered. City Real Space.',
+          'numberOfItems': data.total || data.properties.length,
+          'itemListElement': data.properties.slice(0,5).map(function(p, i) {
+            var c2 = (p.location && p.location.city || 'ahmedabad').toLowerCase().replace(/\s+/g,'-');
+            var a2 = (p.location && p.location.area || 'gujarat').toLowerCase().replace(/\s+/g,'-');
+            return {
+              '@type': 'ListItem',
+              'position': i + 1,
+              'name': p.title,
+              'url': p.slug ? 'https://www.cityrealspace.com/property/' + c2 + '/' + a2 + '/' + p.slug : 'https://www.cityrealspace.com/property-detail?id=' + p._id
+            };
+          })
+        });
+        document.head.appendChild(schemaEl);
       } else {
         showEmptyState(grid);
       }

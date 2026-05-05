@@ -8,19 +8,23 @@ Disallow: /dashboard
 Disallow: /login
 Disallow: /register
 
-# Block ALL filter/parameter URLs to save crawl budget
-Disallow: /properties?*
+# Block filter/parameter URLs to save crawl budget (but allow area & city)
+Disallow: /properties?*beds=
+Disallow: /properties?*budget=
+Disallow: /properties?*minPrice=
+Disallow: /properties?*maxPrice=
+Disallow: /properties?*maxprice=
+Disallow: /properties?*sort=
+Disallow: /properties?*bhk=
+Disallow: /properties?*furnish=
+Disallow: /properties?*possession=
+Disallow: /properties?*sqft=
 
-# Allow only SEO-valuable clean filter pages
-Allow: /properties?city=
+# Allow important SEO URLs
 Allow: /properties?area=
+Allow: /properties?city=
 Allow: /properties?status=
-
-# Block old .html URLs (redirects exist but block crawling the old form)
-Disallow: /properties.html
-Disallow: /property-detail.html
-Disallow: /blog.html
-Disallow: /blog-detail.html
+Allow: /properties?type=
 
 # Block error pages
 Disallow: /401

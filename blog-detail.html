@@ -284,6 +284,7 @@ function renderBlog(b) {
   // Hero image
   if (b.image) {
     document.getElementById('bdImg').src = b.image;
+    document.getElementById('bdImg').alt = b.title + ' | City Real Space Blog';
   } else {
     document.getElementById('bdHero').style.display = 'none';
   }
