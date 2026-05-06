@@ -95,7 +95,7 @@ table:not(.pd-table) { width: 100%; overflow-x: auto; display: block; }
   .slide-label h2 { font-size: 1rem; }
 }
 @media (max-width: 480px) {
-  .hero { min-height: 50vh; padding: 70px 14px 24px; }
+  .hero { min-height: 50vh; padding: 0; }
   .hero h1 { font-size: 1.4rem; }
 }
 
@@ -1279,3 +1279,4 @@ img, video {
     background-position: 50% 40% !important;
   }
 }
+  
