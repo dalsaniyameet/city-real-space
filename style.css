@@ -839,7 +839,7 @@ img {
   .fav-btn { width: 36px; height: 36px; }
 
   /* Hero */
-  .hero { min-height: 60vh; padding: 0 16px; }
+  .hero { min-height: 60vh; padding: 0; }
   .hero h1 { font-size: 1.9rem; }
   .hero-sub { font-size: 0.9rem; }
   .hero-tag { font-size: 0.75rem; }
@@ -924,7 +924,7 @@ img {
   .header-actions { gap: 6px; }
 
   /* Hero */
-  .hero { min-height: 55vh; padding: 0 14px; }
+  .hero { min-height: 55vh; padding: 0; }
   .hero h1 { font-size: 1.55rem; line-height: 1.25; }
   .hero-sub { font-size: 0.82rem; margin-bottom: 0; }
   .slide-label { left: 12px; bottom: 14px; }

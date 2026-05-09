@@ -561,18 +561,52 @@ async function loadStats() {
 const CLOUDINARY_CLOUD  = 'dhqan0w6t';
 const CLOUDINARY_PRESET = 'crs_upload';
 
+function applyWatermark(file, callback) {
+  var rd = new FileReader();
+  rd.onload = function(ev) {
+    var img = new Image();
+    img.onload = function() {
+      var cv = document.createElement('canvas');
+      cv.width = img.width; cv.height = img.height;
+      var ctx = cv.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      var logo = new Image();
+      logo.crossOrigin = 'anonymous';
+      logo.onload = function() {
+        var lw = Math.round(img.width * 0.18);
+        var lh = Math.round(logo.naturalHeight * (lw / logo.naturalWidth));
+        var x  = Math.round((img.width  - lw) / 2);
+        var y  = Math.round((img.height - lh) / 2);
+        // White circle bg behind logo
+        ctx.save(); ctx.globalAlpha = 0.35;
+        ctx.beginPath();
+        ctx.arc(x + lw/2, y + lh/2, Math.max(lw, lh) * 0.62, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff'; ctx.fill(); ctx.restore();
+        // Draw logo
+        ctx.save(); ctx.globalAlpha = 0.55;
+        ctx.drawImage(logo, x, y, lw, lh); ctx.restore();
+        cv.toBlob(function(blob) {
+          callback(new File([blob], file.name, { type: 'image/jpeg' }), cv.toDataURL('image/jpeg', 0.92));
+        }, 'image/jpeg', 0.92);
+      };
+      logo.onerror = function() { callback(file, ev.target.result); };
+      logo.src = '/images/logo.jpeg';
+    };
+    img.src = ev.target.result;
+  };
+  rd.readAsDataURL(file);
+}
+
 function handleAdminImages(input) {
   Array.from(input.files).forEach(function(file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const item = document.createElement('div');
+    applyWatermark(file, function(wf, prev) {
+      var item = document.createElement('div');
       item.style.cssText = 'position:relative;width:90px;height:70px;border-radius:8px;overflow:hidden;border:1.5px solid #e8e8e8;flex-shrink:0';
-      item._file = file;
-      item.innerHTML = '<img src="' + e.target.result + '" style="width:100%;height:100%;object-fit:cover"/>' +
+      item._file = wf;
+      item.innerHTML = '<img src="' + prev + '" style="width:100%;height:100%;object-fit:cover"/>' +
         '<button type="button" onclick="this.parentElement.remove()" style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,0.6);border:none;color:#fff;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:0.65rem;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-xmark"></i></button>';
       document.getElementById('pImagePreview').appendChild(item);
-    };
-    reader.readAsDataURL(file);
+    });
   });
 }
 
@@ -3864,6 +3898,17 @@ async function deleteContact(id) {
     }
     var of2 = document.getElementById('officeFields');
     if (of2) of2.style.display = isOffice ? 'block' : 'none';
+    // Office show hone pe: default Unfurnished hai to related fields hide karo
+    if (isOffice) {
+      var curFurn = document.getElementById('oFurnishing');
+      var furnVal = curFurn ? curFurn.value : 'Unfurnished';
+      var isUnfurn = (furnVal === 'Unfurnished');
+      var hideShow = isUnfurn ? 'none' : '';
+      var cabSec = document.getElementById('oCabinSeatingSection'); if (cabSec) cabSec.style.display = hideShow;
+      var recF = document.getElementById('oReceptionField'); if (recF) recF.style.display = hideShow;
+      var panF = document.getElementById('oPantryField'); if (panF) panF.style.display = hideShow;
+      var acF = document.getElementById('oACField'); if (acF) acF.style.display = hideShow;
+    }
     // Show commercial lift section for ALL commercial types
     var cls = document.getElementById('commercialLiftSection');
     if (cls) cls.style.display = (isComm && !isOffice) ? 'block' : 'none';
@@ -3923,10 +3968,38 @@ function setMeetingRooms(btn, val) {
   }
 })();
 
-// Also hook into hsToggle for pStatus buttons
+// Also hook into hsToggle for pStatus buttons + oFurnishing logic
 var _origHsToggle = window.hsToggle;
 window.hsToggle = function(btn, fieldId, val) {
   if (_origHsToggle) _origHsToggle(btn, fieldId, val);
+
+  // Office furnishing: Unfurnished me workstations, cabins, conference rooms, reception, pantry, AC nahi dikhne chahiye
+  if (fieldId === 'oFurnishing') {
+    var isUnfurnished = (val === 'Unfurnished');
+    var hideShow = isUnfurnished ? 'none' : '';
+    // Cabin & Seating poora section
+    var cabSection = document.getElementById('oCabinSeatingSection');
+    if (cabSection) cabSection.style.display = hideShow;
+    // Reception
+    var recField = document.getElementById('oReceptionField');
+    if (recField) recField.style.display = hideShow;
+    // Pantry
+    var panField = document.getElementById('oPantryField');
+    if (panField) panField.style.display = hideShow;
+    // AC
+    var acField = document.getElementById('oACField');
+    if (acField) acField.style.display = hideShow;
+    // Unfurnished me values reset karo
+    if (isUnfurnished) {
+      var ws = document.getElementById('oWorkstations'); if (ws) ws.value = '';
+      var cab = document.getElementById('oCabins'); if (cab) cab.value = '';
+      var conf = document.getElementById('oConferenceRooms'); if (conf) { conf.value = ''; conf.dataset.manual = ''; }
+      var rec = document.getElementById('oReception'); if (rec) rec.value = 'No';
+      var pan = document.getElementById('oPantry'); if (pan) pan.value = 'No';
+      var ac = document.getElementById('oAC'); if (ac) ac.value = 'None';
+    }
+  }
+
   if (fieldId === 'pStatus') {
     var type = document.getElementById('pType').value;
     var isRes = ['apartment','villa','bungalow','rowhouse'].indexOf(type) !== -1;
@@ -3951,8 +4024,13 @@ function setResFurnishing(btn, val) {
   document.getElementById('rFurnishing').value = val;
   var pf = document.getElementById('pFurnished');
   if (pf) pf.value = val;
+  // Unfurnished me furnishing items nahi dikhne chahiye
   var items = document.getElementById('furnishingItems');
-  if (items) items.style.display = 'block';
+  if (items) items.style.display = (val === 'Unfurnished') ? 'none' : 'block';
+  // Unfurnished me sab checkboxes uncheck karo
+  if (val === 'Unfurnished') {
+    document.querySelectorAll('#furnishingItems input[name="furnItem"]').forEach(function(cb){ cb.checked = false; });
+  }
 }
 
 function calcSBA() {

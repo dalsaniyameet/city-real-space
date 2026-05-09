@@ -886,7 +886,8 @@
                 <div class="hs-field"><label>Carpet Area (sq.ft)</label><input type="number" id="oCarpet" placeholder="Auto: SBA x 0.70" oninput="this.dataset.manual=1;calcPricePerSqft()"/></div>
               </div>
 
-              <!-- Cabin / Seats -->
+              <!-- Cabin / Seats — hidden when Unfurnished -->
+              <div id="oCabinSeatingSection">
               <div style="font-size:0.78rem;font-weight:700;color:#1d4ed8;margin:10px 0 8px;">&#128188; Cabin &amp; Seating</div>
               <div class="hs-row cols-1">
                 <div class="hs-field"><label>Cabins</label><input type="number" id="oCabins" min="0" placeholder="e.g. 4"/></div>
@@ -951,16 +952,17 @@
               });
               </script>
               <input type="hidden" id="oMeetingRooms" value="0"/>
+              </div><!-- end oCabinSeatingSection -->
 
               <!-- Available Features -->
               <div style="font-size:0.78rem;font-weight:700;color:#1d4ed8;margin:10px 0 8px;">&#9989; Available Features</div>
               <div class="hs-row cols-3">
-                <div class="hs-field"><label>&#128706; Reception</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oReception','No')">No</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oReception','Yes')">Yes</button></div><input type="hidden" id="oReception" value="No"/></div>
-                <div class="hs-field"><label>&#127869; Pantry</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oPantry','No')">No</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oPantry','Dry')">Dry</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oPantry','Wet')">Wet</button></div><input type="hidden" id="oPantry" value="No"/></div>
+                <div class="hs-field" id="oReceptionField"><label>&#128706; Reception</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oReception','No')">No</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oReception','Yes')">Yes</button></div><input type="hidden" id="oReception" value="No"/></div>
+                <div class="hs-field" id="oPantryField"><label>&#127869; Pantry</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oPantry','No')">No</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oPantry','Dry')">Dry</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oPantry','Wet')">Wet</button></div><input type="hidden" id="oPantry" value="No"/></div>
                 <div class="hs-field"><label>&#129681; Furnishing</label><div class="hs-toggle" style="flex-wrap:wrap"><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oFurnishing','Fully Furnished')">Fully Furnished</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oFurnishing','Semi Furnished')">Semi Furnished</button><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oFurnishing','Unfurnished')">Unfurnished</button></div><input type="hidden" id="oFurnishing" value="Unfurnished"/></div>
               </div>
               <div class="hs-row cols-2">
-                <div class="hs-field"><label>&#127756; AC</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oAC','None')">None</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oAC','Split AC')">Split AC</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oAC','Central AC')">Central AC</button></div><input type="hidden" id="oAC" value="None"/></div>
+                <div class="hs-field" id="oACField"><label>&#127756; AC</label><div class="hs-toggle"><button type="button" class="hs-toggle-btn active" onclick="hsToggle(this,'oAC','None')">None</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oAC','Split AC')">Split AC</button><button type="button" class="hs-toggle-btn" onclick="hsToggle(this,'oAC','Central AC')">Central AC</button></div><input type="hidden" id="oAC" value="None"/></div>
                 <div class="hs-field"><label>&#128683; Washroom</label><div style="display:flex;gap:6px;flex-wrap:wrap"><label style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1.5px solid #e8e8e8;border-radius:20px;cursor:pointer;font-size:0.8rem;background:#fff;"><input type="checkbox" id="oWashMale" style="accent-color:#E53935" onchange="this.closest('label').style.borderColor=this.checked?'#E53935':'#e8e8e8'"/> Male</label><label style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1.5px solid #e8e8e8;border-radius:20px;cursor:pointer;font-size:0.8rem;background:#fff;"><input type="checkbox" id="oWashFemale" style="accent-color:#E53935" onchange="this.closest('label').style.borderColor=this.checked?'#E53935':'#e8e8e8'"/> Female</label><label style="display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1.5px solid #e8e8e8;border-radius:20px;cursor:pointer;font-size:0.8rem;background:#fff;"><input type="checkbox" id="oWashCommon" style="accent-color:#E53935" onchange="this.closest('label').style.borderColor=this.checked?'#E53935':'#e8e8e8'"/> Common</label></div></div>
               </div>
 
