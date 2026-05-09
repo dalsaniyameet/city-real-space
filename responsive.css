@@ -942,3 +942,31 @@ body.register-page {
   .header-logo-img { height: 38px !important; width: 38px !important; }
   #postReqBtn { display: none !important; }
 }
+
+/* ===== NTC BAR — ALWAYS VISIBLE ON ALL SCREENS ===== */
+#ntcBar {
+  display: block !important;
+  font-size: 0.68rem !important;
+  padding: 5px 0 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#ntcBar span { font-size: 0.68rem !important; }
+#ntcBar .ntc-mid { display: none; }
+@media (max-width: 480px) {
+  #ntcBar { display: block !important; font-size: 0.62rem !important; }
+  #ntcBar span { font-size: 0.62rem !important; }
+}
+
+/* ===== HEADER TOP FIX — NTC BAR KE NEECHE RAKHO ===== */
+@media (max-width: 768px) {
+  #ntcBar { height: auto; min-height: 28px; }
+  .header { top: 28px !important; }
+  /* Spacer div bhi adjust karo */
+  body > div[style*="height:33px"] { height: 28px !important; }
+}
+@media (max-width: 480px) {
+  #ntcBar { min-height: 26px; }
+  .header { top: 26px !important; }
+}

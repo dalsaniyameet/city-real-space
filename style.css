@@ -1453,3 +1453,11 @@ img {
     font-size: 0.68rem;
   }
 }
+
+/* NTC Bar spacer — mobile adjust */
+@media (max-width: 768px) {
+  #ntcSpacer { height: 28px !important; }
+}
+@media (max-width: 480px) {
+  #ntcSpacer { height: 26px !important; }
+}
