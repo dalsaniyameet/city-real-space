@@ -970,3 +970,119 @@ body.register-page {
   #ntcBar { min-height: 26px; }
   .header { top: 26px !important; }
 }
+
+/* ===== SEO AREAS SECTION — MOBILE RESPONSIVE ===== */
+
+/* Row 3: Residential & Commercial — 2 cols on desktop, 1 col on mobile */
+.seo-areas-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* Row 4: Sell Office — links grid */
+.seo-sell-row .seo-links-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+/* Collapsible on mobile */
+.seo-collapse-btn {
+  display: none;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: Poppins, sans-serif;
+  text-align: left;
+}
+.seo-collapse-content { display: block; }
+
+@media (max-width: 768px) {
+  /* Row 3: stack to 1 col */
+  .seo-areas-row {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  /* Row 4: sell office links — 2 cols */
+  .seo-sell-row .seo-links-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* All seo-section links — compact on mobile */
+  .seo-areas-row .seo-links a,
+  .seo-sell-row .seo-links a {
+    font-size: 0.82rem !important;
+    padding: 6px 8px !important;
+  }
+
+  /* Collapsible toggle button show on mobile */
+  .seo-collapse-btn { display: flex; align-items: center; justify-content: space-between; }
+  .seo-collapse-btn .seo-collapse-icon { transition: transform 0.3s; font-size: 0.75rem; color: #E53935; }
+  .seo-collapse-btn.open .seo-collapse-icon { transform: rotate(180deg); }
+  .seo-collapse-content { display: none; }
+  .seo-collapse-content.open { display: block; }
+
+  /* seo-section heading on mobile */
+  .seo-areas-row .seo-section h4,
+  .seo-sell-row .seo-section h4 {
+    font-size: 0.9rem !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .seo-sell-row .seo-links-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .seo-areas-row .seo-links a,
+  .seo-sell-row .seo-links a {
+    font-size: 0.8rem !important;
+    padding: 5px 6px !important;
+  }
+}
+
+/* ===== SEO AREAS — DIRECT TARGETING (no class needed) ===== */
+@media (max-width: 768px) {
+  /* Row 3: Residential & Commercial 2-col grid → 1 col */
+  .seo-keywords-section .seo-content > div[style*="grid-template-columns:1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Row 4: Sell Office 4-col grid → 2 col */
+  .seo-keywords-section .seo-content > div > .seo-section .seo-links[style*="grid-template-columns:repeat(4"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* All seo-section links compact */
+  .seo-keywords-section .seo-links a {
+    font-size: 0.82rem !important;
+    padding: 5px 8px !important;
+  }
+
+  /* seo-section heading */
+  .seo-keywords-section .seo-section h4 {
+    font-size: 0.88rem !important;
+  }
+
+  /* seo-section padding */
+  .seo-keywords-section .seo-section {
+    padding: 14px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Row 4: Sell Office → 1 col */
+  .seo-keywords-section .seo-content > div > .seo-section .seo-links[style*="grid-template-columns:repeat(4"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  .seo-keywords-section .seo-links a {
+    font-size: 0.78rem !important;
+    padding: 4px 6px !important;
+  }
+}
