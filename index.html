@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,108 +7,91 @@
   <meta name="google-site-verification" content="5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk" />
   <title>Buy, Sell &amp; Rent Property in Ahmedabad | City Real Space</title>
   <meta name="description" content="City Real Space – Ahmedabad's #1 RERA registered real estate company. NTC Reg No: 12376. Buy, sell or rent verified 2BHK, 3BHK flats, villas, offices &amp; plots across Ahmedabad, Gandhinagar &amp; Surat."/>
-  <meta name="keywords" content="real estate ahmedabad, property dealer ahmedabad, buy flat ahmedabad, rent apartment ahmedabad, 2bhk for sale ahmedabad, 3bhk for sale ahmedabad, office for rent ahmedabad, villa for sale ahmedabad, plot for sale ahmedabad, new launch projects ahmedabad, RERA registered broker ahmedabad, prahlad nagar property, satellite ahmedabad property, bopal flat ahmedabad, SG highway office rent, property investment ahmedabad, city real space"/>
   <meta name="robots" content="index, follow"/>
   <meta property="og:type" content="website"/>
-  <meta property="og:title" content="City Real Space | #1 Real Estate Company in Ahmedabad, Gujarat"/>
-  <meta property="og:description" content="Ahmedabad ki sabse trusted real estate company. NTC Reg No: 12376. RERA Registered. Verified properties in Ahmedabad, Gandhinagar, Surat."/>
+  <meta property="og:title" content="Buy, Sell &amp; Rent Property in Ahmedabad | City Real Space"/>
+  <meta property="og:description" content="City Real Space &ndash; Ahmedabad's #1 RERA registered real estate company. NTC Reg No: 12376. Buy, sell or rent verified 2BHK, 3BHK flats, villas, offices &amp; plots across Ahmedabad, Gandhinagar &amp; Surat."/>
   <meta property="og:url" content="https://www.cityrealspace.com/"/>
   <meta property="og:image" content="https://www.cityrealspace.com/images/logo.jpeg"/>
   <meta property="og:site_name" content="City Real Space"/>
   <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="City Real Space | #1 Real Estate Company in Ahmedabad"/>
-  <meta name="twitter:description" content="Buy sell rent verified properties in Ahmedabad Gujarat."/>
+  <meta name="twitter:title" content="Buy, Sell &amp; Rent Property in Ahmedabad | City Real Space"/>
+  <meta name="twitter:description" content="Ahmedabad's #1 RERA registered real estate platform. Verified 2BHK, 3BHK flats, villas, offices &amp; plots. Free site visit. NTC Reg No: 12376."/>
   <meta name="twitter:image" content="https://www.cityrealspace.com/images/logo.jpeg"/>
   <link rel="preload" href="/images/logo.jpeg" as="image" fetchpriority="high"/>
   <link rel="preload" href="/images/banner.png" as="image" fetchpriority="high"/>
   <link rel="icon" type="image/jpeg" href="/images/logo.jpeg"/>
   <link rel="apple-touch-icon" href="/images/logo.jpeg"/>
   <style>
-  .seo-links a:hover{color:#E53935!important;background:rgba(229,57,53,0.05);transform:translateX(3px)}
+  /* ===== HERO ===== */
+  .hero{position:relative;width:100%;min-height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#0D1B2A;}
+  .hero-slides{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
+  .hero-slide{position:absolute;inset:0;width:100%;height:100%;background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important;opacity:0;transition:opacity 1.4s ease,transform 8s ease,filter 1.4s ease;transform:scale(1.08);filter:blur(5px);}
+  .hero-slide.active{opacity:1;transform:scale(1.02);filter:blur(0px);}
+  .hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,rgba(13,27,42,0.72) 0%,rgba(13,27,42,0.38) 50%,rgba(13,27,42,0.78) 100%);}
+  .hero-content{position:relative;z-index:2;text-align:center;width:100%;max-width:860px;padding:130px 24px 70px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  /* ===== SEO ===== */
   .seo-section{background:#fff;padding:16px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);transition:all .3s;border:1px solid rgba(229,57,53,0.1)}
   .seo-section:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(229,57,53,0.15);border-color:rgba(229,57,53,0.2)}
   .seo-keywords-section{position:relative;overflow:hidden}
   .seo-keywords-section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#E53935,#FFC107,#E53935)}
   .sec-tag{position:relative;display:inline-block}
   .sec-tag::after{content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:30px;height:2px;background:#E53935}
-  @media(max-width:768px){.seo-grid{grid-template-columns:1fr!important;gap:20px!important}.seo-header h2{font-size:1.8rem!important;line-height:1.3!important}.seo-description{padding:24px!important}.seo-section{padding:20px!important}.seo-links a{font-size:.85rem!important;padding:6px 10px!important}}
-  @media(max-width:480px){.seo-keywords-section{padding:40px 0!important}.seo-header{margin-bottom:30px!important}.seo-header h2{font-size:1.5rem!important}}
-  /* Hero text animations */
+  /* ===== ANIMATIONS ===== */
   @keyframes heroFadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
   @keyframes heroGlow{0%,100%{text-shadow:0 0 20px rgba(255,193,7,0.4)}50%{text-shadow:0 0 40px rgba(255,193,7,0.8),0 0 60px rgba(229,57,53,0.3)}}
   @keyframes badgePop{from{opacity:0;transform:scale(0.7) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
   @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-  /* Gradient text */
-  .hero-grad-text{
-    background:linear-gradient(135deg,#FFC107,#ff6b35,#E53935);
-    background-size:200% auto;
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-    animation:shimmer 3s linear infinite,heroGlow 2s ease-in-out infinite;
-    display:inline-block;
-  }
-  .hero-sub-title{color:rgba(255,255,255,0.85);font-size:0.85em;font-weight:600;}
-  /* Badges */
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  #heroCursor{display:inline-block;width:3px;height:0.85em;background:#FFC107;margin-left:3px;vertical-align:middle;animation:blink 0.7s step-end infinite;border-radius:2px;}
+  .hero-grad-text{background:linear-gradient(135deg,#FFC107,#ff6b35,#E53935);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite;display:inline;}
+  .hero-sub-title{color:rgba(255,255,255,0.85);font-size:0.85em;font-weight:600;display:block;}
   .hero-badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;}
   .hbadge{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:50px;font-size:0.78rem;font-weight:700;letter-spacing:0.3px;animation:badgePop 0.5s cubic-bezier(0.175,0.885,0.32,1.275) both;}
   .hbadge-green{background:rgba(52,211,153,0.15);color:#34d399;border:1.5px solid rgba(52,211,153,0.4);animation-delay:0.2s;}
   .hbadge-yellow{background:rgba(255,193,7,0.15);color:#FFC107;border:1.5px solid rgba(255,193,7,0.4);animation-delay:0.35s;}
   .hbadge-blue{background:rgba(96,165,250,0.15);color:#60a5fa;border:1.5px solid rgba(96,165,250,0.4);animation-delay:0.5s;}
-  /* Hero slide - full cover no crop */
-  .hero-slide{
-    background-size:cover!important;
-    background-position:center center!important;
-    background-repeat:no-repeat!important;
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-  }
-  .hero{
-    min-height:100vh;
-    position:relative;
-    overflow:hidden;
-  }
-  .hero-slides{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-  }
+  /* ===== RESPONSIVE ===== */
   @media(max-width:768px){
     body{padding-top:0}
     #ntcBar{font-size:0;padding:5px 0}
     #ntcBar .ntc-mid{display:none}
     #ntcBar span:first-child,#ntcBar span:last-child{font-size:.7rem}
-    .hero{min-height:100vh!important;padding:0!important}
-    .hero-slide{background-size:cover!important;background-position:center center!important;}
-    .hero-content{padding:110px 20px 40px!important;text-align:center!important;display:flex!important;flex-direction:column!important;align-items:center!important;}
-    .hero-tag{font-size:.72rem!important;padding:6px 14px!important;margin-bottom:14px!important}
-    #heroTitle{font-size:1.75rem!important;line-height:1.25!important;margin-bottom:12px!important;min-height:auto!important;text-align:center!important;}
-    #heroSub{font-size:.88rem!important;margin-bottom:0!important;min-height:auto!important;text-align:center!important;}
-    .hero-badges{gap:8px!important;margin-top:14px!important;justify-content:center!important;flex-wrap:wrap!important;}
-    .hbadge{font-size:.74rem!important;padding:7px 13px!important;}
+    .hero{min-height:100svh;min-height:100vh;}
+    .hero-content{padding:115px 18px 50px!important;}
+    .hero-tag{font-size:.72rem!important;padding:6px 14px!important;margin-bottom:12px!important}
+    #heroTitle{font-size:1.75rem!important;line-height:1.25!important;margin-bottom:10px!important;min-height:auto!important;text-align:center!important;}
+    #heroSub{font-size:.86rem!important;margin-bottom:0!important;min-height:auto!important;text-align:center!important;}
+    .hero-badges{gap:8px!important;margin-top:12px!important;justify-content:center!important;flex-wrap:wrap!important;}
+    .hbadge{font-size:.72rem!important;padding:6px 12px!important;}
+    .seo-grid{grid-template-columns:1fr!important;gap:20px!important}
+    .seo-header h2{font-size:1.8rem!important;line-height:1.3!important}
+    .seo-description{padding:24px!important}
+    .seo-section{padding:20px!important}
+    .seo-links a{font-size:.85rem!important;padding:6px 10px!important}
   }
   @media(max-width:480px){
     body{padding-top:0}
     #ntcBar{display:none}
     .header{top:0!important}
-    .hero{min-height:100vh!important;padding:0!important}
-    .hero-slide{background-size:cover!important;background-position:center center!important;}
-    .hero-content{padding:100px 16px 36px!important;}
-    #heroTitle{font-size:1.45rem!important;line-height:1.28!important}
-    #heroSub{font-size:.82rem!important}
+    .hero{min-height:100svh;min-height:100vh;}
+    .hero-content{padding:100px 14px 44px!important;}
+    #heroTitle{font-size:1.42rem!important;line-height:1.28!important;}
+    #heroSub{font-size:.8rem!important;}
     .hero-grad-text{font-size:1em!important;}
-    .hero-badges{gap:6px!important;margin-top:12px!important;}
-    .hbadge{font-size:.68rem!important;padding:6px 11px!important;}
-    .hero-tag{font-size:.68rem!important}
+    .hero-badges{gap:6px!important;margin-top:10px!important;}
+    .hbadge{font-size:.68rem!important;padding:6px 10px!important;}
+    .hero-tag{font-size:.66rem!important;}
+    .seo-keywords-section{padding:40px 0!important}
+    .seo-header h2{font-size:1.5rem!important}
   }
   @media(max-width:360px){
-    .hero-content{padding:90px 12px 28px!important;}
-    #heroTitle{font-size:1.25rem!important;}
-    #heroSub{font-size:.78rem!important;}
-    .hbadge{font-size:.64rem!important;padding:5px 9px!important;}
+    .hero-content{padding:90px 12px 36px!important;}
+    #heroTitle{font-size:1.22rem!important;}
+    #heroSub{font-size:.76rem!important;}
+    .hbadge{font-size:.62rem!important;padding:5px 8px!important;}
   }
-  </style>
+</style>
   <link rel="stylesheet" href="/style.css" media="print" onload="this.media='all'"/>
   <link rel="stylesheet" href="/responsive.css" media="print" onload="this.media='all'"/>
   <noscript><link rel="stylesheet" href="/style.css"/><link rel="stylesheet" href="/responsive.css"/></noscript>
@@ -268,17 +251,18 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
 <section class="hero">
   <!-- BG Slider -->
     <div class="hero-slides">
-    <div class="hero-slide active" style="background-image:url('/images/banner.png');background-size:cover;background-position:center center" role="img" aria-label="City Real Space Banner"></div>
-    <div class="hero-slide" style="background-image:url('/images/banner2.png');background-size:cover;background-position:center center" role="img" aria-label="City Real Space Banner 2"></div>
-    <div class="hero-slide" style="background-image:url('/images/banner3.png');background-size:cover;background-position:center center" role="img" aria-label="City Real Space Banner 3"></div>
+    <div class="hero-slide active" style="background-image:url('/images/banner.png');background-size:cover;background-position:center center;background-repeat:no-repeat" role="img" aria-label="City Real Space Banner"></div>
+    <div class="hero-slide" style="background-image:url('/images/banner2.png');background-size:cover;background-position:center center;background-repeat:no-repeat" role="img" aria-label="City Real Space Banner 2"></div>
+    <div class="hero-slide" style="background-image:url('/images/banner3.png');background-size:cover;background-position:center center;background-repeat:no-repeat" role="img" aria-label="City Real Space Banner 3"></div>
   </div>
 
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <p class="hero-tag hero-anim-tag"><i class="fa-solid fa-star"></i> #1 Real Estate Platform in Ahmedabad</p>
-    <h1 id="heroTitle" class="hero-h1-static">Find Your <span class="hero-grad-text">Dream</span> Property<br><span class="hero-sub-title">in the Heart of the City</span></h1>
+    <h1 id="heroTitle" class="hero-h1-static">Find Your <span class="hero-grad-text">Dream</span> Property<br><span class="hero-sub-title">in Ahmedabad</span></h1>
     <p class="hero-sub" id="heroSub">Explore thousands of verified listings — residential, commercial &amp; new launches.</p>
     <p class="hero-badges" id="heroSub2"><span class="hbadge hbadge-green"><i class="fa-solid fa-circle-check"></i> RERA Verified</span><span class="hbadge hbadge-yellow"><i class="fa-solid fa-bolt"></i> Free Site Visit</span><span class="hbadge hbadge-blue"><i class="fa-solid fa-shield-halved"></i> Trusted Platform</span></p>
+  </div>
 
 </section>
 <script>
@@ -287,7 +271,7 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
   var line1 = 'Find Your ';
   var line1grad = 'Dream';
   var line1end = ' Property';
-  var line2 = 'in the Heart of the City';
+  var line2 = 'in Ahmedabad';
   var speed = 55;
   var el = document.getElementById('heroTitle');
   if(!el) return;
@@ -433,8 +417,8 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
           <a href="/properties?area=Satellite">Satellite</a>
           <a href="/properties?area=Thaltej">Thaltej</a>
           <a href="/properties?area=Shela">Shela</a>
-          <a href="/properties?area=Chekhla">Chekhla</a>
-          <a href="/properties?area=Memnagar">Memnagar</a>
+          <a href="/properties?area=Bodakdev">Bodakdev</a>
+          <a href="/properties?area=Vastrapur">Vastrapur</a>
           <a href="/properties?area=Giftcity">Giftcity</a>
           <a href="/properties?area=Bopal">Bopal</a>
           <a href="/properties?area=Prahlad+Nagar">Prahlad Nagar</a>
@@ -566,88 +550,140 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
 </section>
 
 <!-- ===== CTA BANNER ===== -->
-<section class="cta-banner">
-  <div class="cta-overlay"></div>
-  <div class="cta-content">
-    <h2>Ready to Find Your <span class="yellow">Perfect Property?</span></h2>
-    <p>Join 8,200+ happy clients who found their dream home with City Real Space.</p>
-    <div class="cta-btns">
-      <a href="#" class="btn-red">View All Properties <i class="fa-solid fa-arrow-right"></i></a>
-      <a href="#" class="btn-white">Talk to an Expert</a>
+<section style="background:#fff;padding:80px 0;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;position:relative;overflow:hidden;">
+  <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#E53935,#FFC107,#E53935);"></div>
+  <div style="position:absolute;top:-60px;right:-60px;width:280px;height:280px;border-radius:50%;background:rgba(229,57,53,0.04);pointer-events:none;"></div>
+  <div style="position:absolute;bottom:-40px;left:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,193,7,0.05);pointer-events:none;"></div>
+  <div class="container">
+    <div style="text-align:center;max-width:700px;margin:0 auto;">
+      <div style="width:72px;height:72px;background:linear-gradient(135deg,#E53935,#c62828);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 8px 24px rgba(229,57,53,0.25);">
+        <i class="fa-solid fa-building-columns" style="font-size:1.8rem;color:#fff;"></i>
+      </div>
+      <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#0D1B2A;margin-bottom:14px;line-height:1.25;">Ready to Find Your <span style="color:#E53935;">Perfect Property?</span></h2>
+      <p style="color:#666;font-size:1rem;line-height:1.7;margin-bottom:32px;">Join <strong style="color:#0D1B2A;">8,200+</strong> happy clients who found their dream home with City Real Space.</p>
+      <div style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:36px;padding:20px 28px;background:#f8f9fa;border-radius:16px;border:1px solid #f0f0f0;">
+        <div style="text-align:center;">
+          <div style="font-size:1.6rem;font-weight:900;color:#E53935;">12K+</div>
+          <div style="font-size:0.75rem;color:#888;font-weight:600;margin-top:2px;">Properties</div>
+        </div>
+        <div style="width:1px;background:#e8e8e8;"></div>
+        <div style="text-align:center;">
+          <div style="font-size:1.6rem;font-weight:900;color:#E53935;">8,200+</div>
+          <div style="font-size:0.75rem;color:#888;font-weight:600;margin-top:2px;">Happy Clients</div>
+        </div>
+        <div style="width:1px;background:#e8e8e8;"></div>
+        <div style="text-align:center;">
+          <div style="font-size:1.6rem;font-weight:900;color:#E53935;">25+</div>
+          <div style="font-size:0.75rem;color:#888;font-weight:600;margin-top:2px;">Years Experience</div>
+        </div>
+        <div style="width:1px;background:#e8e8e8;"></div>
+        <div style="text-align:center;">
+          <div style="font-size:1.6rem;font-weight:900;color:#E53935;">350+</div>
+          <div style="font-size:0.75rem;color:#888;font-weight:600;margin-top:2px;">Expert Agents</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <a href="/properties" style="display:inline-flex;align-items:center;gap:8px;background:#E53935;color:#fff;padding:14px 32px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;box-shadow:0 4px 16px rgba(229,57,53,0.3);transition:all 0.2s;" onmouseover="this.style.background='#c62828';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='#E53935';this.style.transform=''">View All Properties <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="/contact" style="display:inline-flex;align-items:center;gap:8px;background:#fff;color:#0D1B2A;padding:14px 32px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;border:2px solid #e0e0e0;transition:all 0.2s;" onmouseover="this.style.borderColor='#E53935';this.style.color='#E53935';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='#e0e0e0';this.style.color='#0D1B2A';this.style.transform=''"><i class="fa-solid fa-phone"></i> Talk to an Expert</a>
+      </div>
+      <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:24px;">
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;color:#999;"><i class="fa-solid fa-certificate" style="color:#FFC107;"></i> NTC Reg No: 12376</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;color:#999;"><i class="fa-solid fa-shield-halved" style="color:#2e7d32;"></i> RERA Registered</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;color:#999;"><i class="fa-solid fa-circle-check" style="color:#1565c0;"></i> 100% Verified</span>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ===== TEAM ===== -->
-<section style="background:linear-gradient(135deg,#0D1B2A 0%,#1a3a5c 60%,#0D1B2A 100%);padding:80px 0;position:relative;overflow:hidden;">
-  <!-- BG decoration -->
-  <div style="position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:rgba(229,57,53,0.06);pointer-events:none;"></div>
-  <div style="position:absolute;bottom:-60px;left:-60px;width:240px;height:240px;border-radius:50%;background:rgba(255,193,7,0.05);pointer-events:none;"></div>
-
+<!-- ===== TEAM SECTION ===== -->
+<section style="background:#fff;padding:80px 0;border-top:1px solid #f0f0f0;position:relative;overflow:hidden;">
+  <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#E53935,#FFC107,#E53935);"></div>
+  <div style="position:absolute;top:-60px;right:-60px;width:260px;height:260px;border-radius:50%;background:rgba(229,57,53,0.03);pointer-events:none;"></div>
+  <div style="position:absolute;bottom:-40px;left:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,193,7,0.04);pointer-events:none;"></div>
+  <style>
+    .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;max-width:980px;margin:0 auto;}
+    .team-card{background:#fff;border:1.5px solid #f0f0f0;border-radius:20px;padding:36px 24px 28px;text-align:center;transition:all 0.35s;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);}
+    .team-card:hover{transform:translateY(-10px);}
+    .team-card-nikhil:hover{box-shadow:0 20px 50px rgba(229,57,53,0.15);border-color:rgba(229,57,53,0.3);}
+    .team-card-founder{border:1.5px solid rgba(255,193,7,0.4);background:linear-gradient(135deg,#fffdf0,#fff);}
+    .team-card-founder:hover{box-shadow:0 20px 50px rgba(255,193,7,0.2);border-color:rgba(255,193,7,0.6);}
+    .team-card-meet:hover{box-shadow:0 20px 50px rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3);}
+    .team-avatar{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;position:relative;font-size:2rem;font-weight:900;color:#fff;}
+    .team-avatar-founder{width:100px;height:100px;background:linear-gradient(135deg,#FFC107,#ff8f00);color:#0D1B2A;box-shadow:0 0 0 4px rgba(255,193,7,0.15),0 8px 28px rgba(255,193,7,0.4);}
+    .team-avatar-nikhil{background:linear-gradient(135deg,#E53935,#c62828);box-shadow:0 8px 24px rgba(229,57,53,0.35);}
+    .team-avatar-meet{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 8px 24px rgba(16,185,129,0.35);}
+    .team-ring{position:absolute;inset:-4px;border-radius:50%;border:2px dashed;animation:rotateRing 6s linear infinite;}
+    .team-ring-gold{border-color:rgba(255,193,7,0.5);animation-duration:4s;}
+    .team-ring-red{border-color:rgba(229,57,53,0.4);}
+    .team-ring-green{border-color:rgba(16,185,129,0.4);}
+    .team-topbar{position:absolute;top:0;left:0;right:0;height:4px;}
+    .team-tag{font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:20px;}
+    @media(max-width:900px){.team-grid{grid-template-columns:1fr 1fr;gap:20px;}}
+    @media(max-width:600px){.team-grid{grid-template-columns:1fr;gap:16px;max-width:400px;}.team-card{padding:28px 20px 22px;}}
+  </style>
   <div class="container">
-    <div class="section-head center" style="margin-bottom:48px;">
+    <div class="section-head center" style="margin-bottom:52px;">
       <div>
-        <p class="sec-tag" style="color:#FFC107;">Our Team</p>
-        <h2 style="color:#fff;">Meet Our <span style="color:#FFC107;">Expert Team</span></h2>
-        <p class="sec-sub" style="color:rgba(255,255,255,0.55);">The dedicated professionals powering City Real Space.</p>
+        <p class="sec-tag">Our Team</p>
+        <h2>Meet Our <span class="yellow">Expert Team</span></h2>
+        <p class="sec-sub">The dedicated professionals powering City Real Space.</p>
       </div>
     </div>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:24px;">
+    <div class="team-grid">
 
       <!-- Nikhil Bhai -->
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px 20px 24px;text-align:center;transition:all 0.3s;position:relative;overflow:hidden;" onmouseover="this.style.background='rgba(229,57,53,0.1)';this.style.borderColor='rgba(229,57,53,0.4)';this.style.transform='translateY(-8px)';this.style.boxShadow='0 20px 50px rgba(229,57,53,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.transform='';this.style.boxShadow=''">
-        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#E53935,#FFC107);"></div>
-        <div style="width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#E53935,#c62828);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 8px 24px rgba(229,57,53,0.4);position:relative;"><span style="font-size:2rem;font-weight:800;color:#fff;animation:letterPulse 2s ease-in-out infinite;">N</span><div style="position:absolute;inset:-4px;border-radius:50%;border:2px dashed rgba(229,57,53,0.5);animation:rotateRing 6s linear infinite;"></div></div>
-        <h4 style="font-size:1rem;font-weight:800;color:#fff;margin-bottom:6px;">Nikhil Bhai</h4>
-        <p style="color:#FFC107;font-size:0.72rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Residential & Commercial Manager</p>
-        <p style="color:rgba(255,255,255,0.5);font-size:0.78rem;line-height:1.6;">Expert in both residential &amp; commercial property deals.</p>
-        <div style="margin-top:16px;display:flex;justify-content:center;gap:8px;">
-          <span style="background:rgba(229,57,53,0.15);color:#f87171;font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid rgba(229,57,53,0.3);">Residential</span>
-          <span style="background:rgba(59,130,246,0.15);color:#60a5fa;font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid rgba(59,130,246,0.3);">Commercial</span>
+      <div class="team-card team-card-nikhil">
+        <div class="team-topbar" style="background:linear-gradient(90deg,#E53935,#FFC107);"></div>
+        <div class="team-avatar team-avatar-nikhil">
+          <span style="animation:letterPulse 2s ease-in-out infinite;">N</span>
+          <div class="team-ring team-ring-red"></div>
+        </div>
+        <h4 style="font-size:1.05rem;font-weight:800;color:#0D1B2A;margin-bottom:6px;">Nikhil Bhai</h4>
+        <p style="color:#E53935;font-size:0.72rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Residential &amp; Commercial Manager</p>
+        <p style="color:#666;font-size:0.82rem;line-height:1.7;">Expert in both residential &amp; commercial property deals across Ahmedabad.</p>
+        <div style="margin-top:16px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;">
+          <span class="team-tag" style="background:#fff0f0;color:#E53935;border:1px solid rgba(229,57,53,0.2);">Residential</span>
+          <span class="team-tag" style="background:#fff8e1;color:#b8860b;border:1px solid rgba(255,193,7,0.3);">Commercial</span>
         </div>
       </div>
 
-      <!-- Amit Parmani - FOUNDER/OWNER - Special Card -->
-      <div style="background:linear-gradient(135deg,#0D1B2A 0%,#1a2a3a 50%,#0d2137 100%);border:1.5px solid rgba(255,193,7,0.4);border-radius:20px;padding:32px 20px 24px;text-align:center;transition:all 0.3s;position:relative;overflow:hidden;grid-column:span 1;" onmouseover="this.style.transform='translateY(-10px)';this.style.boxShadow='0 24px 60px rgba(255,193,7,0.3)';this.style.borderColor='rgba(255,193,7,0.7)'" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.borderColor='rgba(255,193,7,0.4)'">
-        <!-- Gold shimmer top bar -->
-        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#FFC107,#ff8f00,#FFC107);background-size:200%;animation:shimmerBar 2s linear infinite;"></div>
-        <style>@keyframes shimmerBar{0%{background-position:0%}100%{background-position:200%}}</style>
-        <!-- Crown icon -->
-        <div style="position:absolute;top:12px;right:12px;width:26px;height:26px;background:linear-gradient(135deg,#FFC107,#ff8f00);border-radius:7px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,193,7,0.5);"><i class="fa-solid fa-crown" style="color:#0D1B2A;font-size:0.72rem;"></i></div>
-        <!-- Founder badge -->
-        <div style="display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#FFC107,#ff8f00);color:#0D1B2A;font-size:0.62rem;font-weight:800;padding:3px 10px;border-radius:20px;margin-bottom:14px;letter-spacing:0.5px;text-transform:uppercase;"><i class='fa-solid fa-star' style='color:#FFC107'></i> Founder &amp; Owner</div>
-        <!-- Avatar -->
-        <div style="width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,#FFC107,#ff8f00);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 0 0 4px rgba(255,193,7,0.2),0 8px 28px rgba(255,193,7,0.5);position:relative;">
-          <span style="font-size:2.2rem;font-weight:900;color:#0D1B2A;animation:letterPulse 2s ease-in-out infinite;">A</span>
-          <div style="position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(255,193,7,0.6);animation:rotateRing 4s linear infinite;"></div>
-          <div style="position:absolute;inset:-10px;border-radius:50%;border:1.5px dashed rgba(255,193,7,0.3);animation:rotateRing 8s linear infinite reverse;"></div>
-          <style>@keyframes rotateRing{to{transform:rotate(360deg)}}@keyframes letterPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}</style>
+      <!-- Amit Parmani - Founder -->
+      <div class="team-card team-card-founder">
+        <div class="team-topbar" style="background:linear-gradient(90deg,#FFC107,#ff8f00,#FFC107);background-size:200%;animation:shimmerBar 2s linear infinite;"></div>
+        <div style="position:absolute;top:12px;right:12px;width:28px;height:28px;background:linear-gradient(135deg,#FFC107,#ff8f00);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,193,7,0.4);"><i class="fa-solid fa-crown" style="color:#0D1B2A;font-size:0.75rem;"></i></div>
+        <div style="display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#FFC107,#ff8f00);color:#0D1B2A;font-size:0.62rem;font-weight:800;padding:4px 12px;border-radius:20px;margin-bottom:14px;letter-spacing:0.5px;text-transform:uppercase;"><i class="fa-solid fa-star" style="font-size:0.6rem;"></i> Founder &amp; Owner</div>
+        <div class="team-avatar team-avatar-founder">
+          <span style="animation:letterPulse 2s ease-in-out infinite;">A</span>
+          <div class="team-ring team-ring-gold"></div>
+          <div style="position:absolute;inset:-10px;border-radius:50%;border:1.5px dashed rgba(255,193,7,0.2);animation:rotateRing 8s linear infinite reverse;"></div>
         </div>
-        <h4 style="font-size:1.1rem;font-weight:900;color:#FFC107;margin-bottom:4px;">Amit Parmani</h4>
-        <p style="color:rgba(255,193,7,0.7);font-size:0.72rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.8px;">Founder &amp; Managing Director</p>
-        <p style="color:rgba(255,255,255,0.6);font-size:0.78rem;line-height:1.6;margin-bottom:14px;">Visionary leader &amp; founder of City Real Space. Expert in residential &amp; commercial property deals across Gujarat.</p>
-        <!-- 25 Years badge -->
-        <div style="background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.3);border-radius:12px;padding:10px 14px;margin-bottom:12px;">
-          <div style="font-size:1.6rem;font-weight:900;color:#FFC107;line-height:1;">25+</div>
-          <div style="font-size:0.65rem;color:rgba(255,193,7,0.7);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Years of Trust</div>
+        <h4 style="font-size:1.15rem;font-weight:900;color:#0D1B2A;margin-bottom:4px;">Amit Parmani</h4>
+        <p style="color:#b8860b;font-size:0.72rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.8px;">Founder &amp; Managing Director</p>
+        <p style="color:#555;font-size:0.82rem;line-height:1.7;margin-bottom:14px;">Visionary leader &amp; founder of City Real Space with 25+ years of expertise in Gujarat real estate.</p>
+        <div style="background:#fff8e1;border:1px solid rgba(255,193,7,0.3);border-radius:12px;padding:10px 14px;margin-bottom:14px;">
+          <div style="font-size:1.8rem;font-weight:900;color:#b8860b;line-height:1;">25+</div>
+          <div style="font-size:0.65rem;color:#b8860b;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Years of Trust</div>
         </div>
         <div style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap;">
-          <span style="background:rgba(255,193,7,0.15);color:#fbbf24;font-size:0.62rem;font-weight:700;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,193,7,0.3);">Residential</span>
-          <span style="background:rgba(255,193,7,0.15);color:#fbbf24;font-size:0.62rem;font-weight:700;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,193,7,0.3);">Commercial</span>
+          <span class="team-tag" style="background:#fff0f0;color:#E53935;border:1px solid rgba(229,57,53,0.2);">Residential</span>
+          <span class="team-tag" style="background:#fff8e1;color:#b8860b;border:1px solid rgba(255,193,7,0.3);">Commercial</span>
         </div>
       </div>
 
       <!-- Meet Dalsaniya -->
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px 20px 24px;text-align:center;transition:all 0.3s;position:relative;overflow:hidden;" onmouseover="this.style.background='rgba(99,102,241,0.08)';this.style.borderColor='rgba(99,102,241,0.4)';this.style.transform='translateY(-8px)';this.style.boxShadow='0 20px 50px rgba(99,102,241,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.transform='';this.style.boxShadow=''">
-        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#6366f1,#8b5cf6);"></div>
-        <div style="width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 8px 24px rgba(99,102,241,0.4);position:relative;"><span style="font-size:2rem;font-weight:800;color:#fff;animation:letterPulse 2s ease-in-out infinite;">M</span><div style="position:absolute;inset:-4px;border-radius:50%;border:2px dashed rgba(99,102,241,0.5);animation:rotateRing 6s linear infinite;"></div></div>
-        <h4 style="font-size:1rem;font-weight:800;color:#fff;margin-bottom:6px;">Meet Dalsaniya</h4>
-        <p style="color:#FFC107;font-size:0.72rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">SEO &amp; Digital Marketing</p>
-        <p style="color:rgba(255,255,255,0.5);font-size:0.78rem;line-height:1.6;margin-bottom:14px;">Driving online visibility &amp; digital growth for City Real Space through SEO, social media &amp; performance marketing.</p>
+      <div class="team-card team-card-meet">
+        <div class="team-topbar" style="background:linear-gradient(90deg,#10b981,#059669);"></div>
+        <div class="team-avatar team-avatar-meet">
+          <span style="animation:letterPulse 2s ease-in-out infinite;">M</span>
+          <div class="team-ring team-ring-green"></div>
+        </div>
+        <h4 style="font-size:1.05rem;font-weight:800;color:#0D1B2A;margin-bottom:6px;">Meet Dalsaniya</h4>
+        <p style="color:#059669;font-size:0.72rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">SEO &amp; Digital Marketing</p>
+        <p style="color:#666;font-size:0.82rem;line-height:1.7;margin-bottom:14px;">Driving online visibility &amp; digital growth through SEO, social media &amp; performance marketing.</p>
         <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;">
-          <span style="background:rgba(99,102,241,0.15);color:#a5b4fc;font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid rgba(99,102,241,0.3);">SEO</span>
-          <span style="background:rgba(139,92,246,0.15);color:#c4b5fd;font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid rgba(139,92,246,0.3);">Digital Marketing</span>
+          <span class="team-tag" style="background:#ecfdf5;color:#059669;border:1px solid rgba(16,185,129,0.25);">SEO</span>
+          <span class="team-tag" style="background:#ecfdf5;color:#059669;border:1px solid rgba(16,185,129,0.25);">Digital Marketing</span>
         </div>
       </div>
 
@@ -965,10 +1001,10 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
         </a>
         <p class="footer-about">Ahmedabad's most trusted real estate platform. We connect buyers, sellers and investors with verified properties across Gujarat.</p>
         <div class="social-links">
-          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="https://wa.me/919825031247" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-          <a href="#"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="https://www.facebook.com/cityrealspace" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://wa.me/919825031247" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="https://www.instagram.com/cityrealspace" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.linkedin.com/company/cityrealspace" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
       </div>
 
@@ -982,8 +1018,8 @@ function closeMobileNav(){document.getElementById('mobileNav').style.display='no
           <li><a href="/post-property"><i class="fa-solid fa-chevron-right"></i> Sell  -  List Project</a></li>
           <li><a href="/new-launch"><i class="fa-solid fa-chevron-right"></i> New Launch</a></li>
           <li><a href="/prelease"><i class="fa-solid fa-chevron-right"></i> Prelease</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Property Valuation</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Home Loans</a></li>
+          <li><a href="/contact"><i class="fa-solid fa-chevron-right"></i> Property Valuation</a></li>
+          <li><a href="/contact"><i class="fa-solid fa-chevron-right"></i> Home Loans</a></li>
         </ul>
       </div>
 
