@@ -219,7 +219,7 @@
           <button onclick="handleLogout()" style="width:100%;padding:12px 16px;border:none;background:none;cursor:pointer;font-family:Poppins,sans-serif;font-size:0.85rem;color:#E53935;font-weight:600;text-align:left;display:flex;align-items:center;gap:8px"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
         </div>
       </div>
-      <a href="/login" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> Login / Register</a>
+      <a href="/login" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> <span class="login-text">Login / Register</span></a>
       <button class="btn-inquiry">Inquiry <i class="fa-solid fa-arrow-right"></i></button>
       <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
     </div>
@@ -246,9 +246,41 @@
     <a href="/blog" onclick="closeMobileNav()" style="padding:22px 16px;border-right:1px solid #f0f0f0;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-newspaper" style="color:#E53935;width:18px"></i>Blog</a>
     <a href="/contact" onclick="closeMobileNav()" style="padding:22px 16px;display:flex;align-items:center;gap:10px;font-size:0.95rem;font-weight:600;color:#222;text-decoration:none"><i class="fa-solid fa-phone" style="color:#E53935;width:18px"></i>Contact</a>
   </div>
+  <!-- Mobile Login/User Section -->
+  <div id="mobileAuthSection" style="border-top:2px solid #f0f0f0;padding:14px 20px;flex-shrink:0;display:flex;gap:10px;align-items:center;">
+    <!-- Logged out -->
+    <a href="/login" id="mobileLoginBtn" onclick="closeMobileNav()" style="flex:1;background:#E53935;color:#fff;border-radius:10px;padding:12px;text-align:center;font-size:0.88rem;font-weight:700;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px;"><i class="fa-solid fa-user"></i> Login / Register</a>
+    <!-- Logged in -->
+    <div id="mobileUserSection" style="display:none;flex:1;display:none;flex-direction:column;gap:8px;width:100%;">
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0;">
+        <div style="width:36px;height:36px;background:linear-gradient(135deg,#E53935,#c62828);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.9rem;font-weight:700;flex-shrink:0;"><i class="fa-solid fa-user"></i></div>
+        <span id="mobileUserName" style="font-size:0.9rem;font-weight:700;color:#0D1B2A;"></span>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <a href="/dashboard" onclick="closeMobileNav()" style="flex:1;background:#f5f5f5;color:#333;border-radius:8px;padding:10px;text-align:center;font-size:0.8rem;font-weight:600;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:5px;"><i class="fa-solid fa-gauge" style="color:#E53935;"></i> Dashboard</a>
+        <button onclick="handleLogout()" style="flex:1;background:#fff0f0;color:#E53935;border:none;border-radius:8px;padding:10px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </div>
+  </div>
 </div>
 <script>
 function closeMobileNav(){document.getElementById('mobileNav').style.display='none';document.getElementById('hamburger').innerHTML='<i class="fa-solid fa-bars"></i>';document.body.style.overflow='';}
+function updateMobileAuth(){
+  var user=JSON.parse(localStorage.getItem('user')||'{}');
+  var token=localStorage.getItem('token');
+  var loginBtn=document.getElementById('mobileLoginBtn');
+  var userSec=document.getElementById('mobileUserSection');
+  var userName=document.getElementById('mobileUserName');
+  if(token&&user&&user.firstName){
+    if(loginBtn)loginBtn.style.display='none';
+    if(userSec){userSec.style.display='flex';}
+    if(userName)userName.textContent=user.firstName+(user.lastName?' '+user.lastName:'');
+  } else {
+    if(loginBtn)loginBtn.style.display='flex';
+    if(userSec)userSec.style.display='none';
+  }
+}
+document.addEventListener('DOMContentLoaded',updateMobileAuth);
 </script>
 
 <!-- ===== HERO / SEARCH ===== -->
@@ -1754,77 +1786,74 @@ window.addEventListener('message', function(e) {
 </script>
 
 <!-- POST REQUIREMENT MODAL -->
-<div id="reqOverlay" style="position:fixed;inset:0;z-index:5000;background:rgba(13,27,42,0.7);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.3s">
-  <div style="background:#0D1B2A;border-radius:20px;width:100%;max-width:460px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.4);position:relative">
-    <div style="background:linear-gradient(135deg,#E53935,#c62828);padding:22px 28px 18px">
-      <button onclick="closeReqModal()" style="position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,0.2);color:#fff;font-size:0.9rem;cursor:pointer"><i class="fa-solid fa-xmark"></i></button>
-      <div style="display:flex;align-items:center;gap:10px">
-        <i class="fa-solid fa-bell" style="font-size:1.4rem;color:#fff"></i>
+<style>
+#reqOverlay{position:fixed;inset:0;z-index:5000;background:rgba(13,27,42,0.7);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity 0.3s;overflow-y:auto;box-sizing:border-box;}
+#reqBox{background:#0D1B2A;border-radius:20px;width:100%;max-width:460px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.4);position:relative;margin:auto;box-sizing:border-box;}
+#reqHead{background:linear-gradient(135deg,#E53935,#c62828);padding:18px 20px 14px;position:relative;}
+#reqHead h3{color:#fff;font-size:1rem;font-weight:800;margin:0;}
+#reqHead p{color:rgba(255,255,255,0.75);font-size:0.76rem;margin:3px 0 0;}
+#reqBody{padding:16px;display:flex;flex-direction:column;gap:10px;}
+.req-field{display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 13px;background:rgba(255,255,255,0.06);box-sizing:border-box;}
+.req-field i{color:#E53935;font-size:0.82rem;flex-shrink:0;}
+.req-field input,.req-field select{flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.85rem;color:#fff;background:transparent;min-width:0;}
+.req-field select option{background:#0D1B2A;}
+.req-isd{font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.5);border-right:1px solid rgba(255,255,255,0.15);padding-right:10px;flex-shrink:0;}
+#reqBtns{display:flex;gap:10px;margin-top:2px;}
+#reqBtns button{flex:1;border:none;padding:13px 8px;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:7px;}
+#hReqSubmitBtn{background:#E53935;color:#fff;}
+#reqWABtn{background:#25D366;color:#fff;}
+#reqNote{text-align:center;font-size:0.7rem;color:rgba(255,255,255,0.35);margin:0;}
+@media(max-width:480px){
+  #reqOverlay{padding:10px;align-items:flex-start;}
+  #reqBox{border-radius:16px;}
+  #reqHead{padding:14px 16px 12px;}
+  #reqHead h3{font-size:0.92rem;}
+  #reqBody{padding:12px;gap:8px;}
+  .req-field{padding:10px 11px;}
+  .req-field input,.req-field select{font-size:0.82rem;}
+  #reqBtns{flex-direction:column;gap:8px;}
+  #reqBtns button{width:100%;padding:12px;font-size:0.85rem;}
+}
+</style>
+<div id="reqOverlay">
+  <div id="reqBox">
+    <div id="reqHead">
+      <button onclick="closeReqModal()" style="position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:50%;border:none;background:rgba(255,255,255,0.2);color:#fff;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-xmark"></i></button>
+      <div style="display:flex;align-items:center;gap:10px;padding-right:36px;">
+        <i class="fa-solid fa-bell" style="font-size:1.3rem;color:#fff;flex-shrink:0;"></i>
         <div>
-          <h3 style="color:#fff;font-size:1.05rem;font-weight:800;margin:0">Post Your Requirement</h3>
-          <p style="color:rgba(255,255,255,0.75);font-size:0.78rem;margin:2px 0 0">Can't find what you need? We'll find it for you!</p>
+          <h3>Post Your Requirement</h3>
+          <p>Can't find what you need? We'll find it for you!</p>
         </div>
       </div>
     </div>
-    <div style="padding:24px 28px;display:flex;flex-direction:column;gap:12px">
-      <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
-        <i class="fa-solid fa-user" style="color:#E53935;font-size:0.85rem"></i>
-        <input id="hReqName" type="text" placeholder="Your Full Name *" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#fff;background:transparent"/>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
-        <i class="fa-solid fa-phone" style="color:#E53935;font-size:0.85rem"></i>
-        <span style="font-size:0.85rem;font-weight:600;color:rgba(255,255,255,0.5);border-right:1px solid rgba(255,255,255,0.15);padding-right:10px">+91</span>
-        <input id="hReqPhone" type="tel" placeholder="Mobile Number *" maxlength="10" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#fff;background:transparent"/>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
-        <i class="fa-solid fa-location-dot" style="color:#E53935;font-size:0.85rem"></i>
-        <select id="hReqCity" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:rgba(255,255,255,0.8);background:transparent;cursor:pointer">
-          <option value="" style="background:#0D1B2A">Preferred City *</option>
-          <option style="background:#0D1B2A">Ahmedabad</option>
-          <option style="background:#0D1B2A">Gandhinagar</option>
-          <option style="background:#0D1B2A">Surat</option>
-          <option style="background:#0D1B2A">Vadodara</option>
-          <option style="background:#0D1B2A">Rajkot</option>
+    <div id="reqBody">
+      <div class="req-field"><i class="fa-solid fa-user"></i><input id="hReqName" type="text" placeholder="Your Full Name *"/></div>
+      <div class="req-field"><i class="fa-solid fa-phone"></i><span class="req-isd">+91</span><input id="hReqPhone" type="tel" placeholder="Mobile Number *" maxlength="10"/></div>
+      <div class="req-field"><i class="fa-solid fa-location-dot"></i>
+        <select id="hReqCity">
+          <option value="">Preferred City *</option>
+          <option>Ahmedabad</option><option>Gandhinagar</option><option>Surat</option><option>Vadodara</option><option>Rajkot</option>
         </select>
       </div>
-      <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
-        <i class="fa-solid fa-building" style="color:#E53935;font-size:0.85rem"></i>
-        <select id="hReqType" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:rgba(255,255,255,0.8);background:transparent;cursor:pointer">
-          <option value="" style="background:#0D1B2A">Property Type (Optional)</option>
-          <option style="background:#0D1B2A">Apartment / Flat</option>
-          <option style="background:#0D1B2A">Villa</option>
-          <option style="background:#0D1B2A">Bungalow</option>
-          <option style="background:#0D1B2A">Row House</option>
-          <option style="background:#0D1B2A">Plot / Land</option>
-          <option style="background:#0D1B2A">Office Space</option>
-          <option style="background:#0D1B2A">Shop / Showroom</option>
+      <div class="req-field"><i class="fa-solid fa-building"></i>
+        <select id="hReqType">
+          <option value="">Property Type (Optional)</option>
+          <option>Apartment / Flat</option><option>Villa</option><option>Bungalow</option><option>Row House</option><option>Plot / Land</option><option>Office Space</option><option>Shop / Showroom</option>
         </select>
       </div>
-      <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
-        <i class="fa-solid fa-indian-rupee-sign" style="color:#E53935;font-size:0.85rem"></i>
-        <select id="hReqBudget" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:rgba(255,255,255,0.8);background:transparent;cursor:pointer">
-          <option value="" style="background:#0D1B2A">Budget Range (Optional)</option>
-          <option style="background:#0D1B2A">Under ₹30 Lakh</option>
-          <option style="background:#0D1B2A">₹30L  -  ₹60L</option>
-          <option style="background:#0D1B2A">₹60L  -  ₹1 Cr</option>
-          <option style="background:#0D1B2A">₹1Cr  -  ₹2Cr</option>
-          <option style="background:#0D1B2A">₹2Cr  -  ₹5Cr</option>
-          <option style="background:#0D1B2A">Above ₹5Cr</option>
+      <div class="req-field"><i class="fa-solid fa-indian-rupee-sign"></i>
+        <select id="hReqBudget">
+          <option value="">Budget Range (Optional)</option>
+          <option>Under ₹30 Lakh</option><option>₹30L - ₹60L</option><option>₹60L - ₹1 Cr</option><option>₹1Cr - ₹2Cr</option><option>₹2Cr - ₹5Cr</option><option>Above ₹5Cr</option>
         </select>
       </div>
-      <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
-        <i class="fa-solid fa-comment" style="color:#E53935;font-size:0.85rem"></i>
-        <input id="hReqMsg" type="text" placeholder="Any specific requirement? (Optional)" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#fff;background:transparent"/>
+      <div class="req-field"><i class="fa-solid fa-comment"></i><input id="hReqMsg" type="text" placeholder="Any specific requirement? (Optional)"/></div>
+      <div id="reqBtns">
+        <button id="hReqSubmitBtn" onclick="submitReq()"><i class="fa-solid fa-paper-plane"></i> Submit Requirement</button>
+        <button id="reqWABtn" onclick="submitReqWA()"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
       </div>
-      <div style="display:flex;gap:10px;margin-top:4px">
-        <button onclick="submitReq()" style="flex:1;background:#E53935;color:#fff;border:none;padding:13px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px" id="hReqSubmitBtn">
-          <i class="fa-solid fa-paper-plane"></i> Submit Requirement
-        </button>
-        <button onclick="submitReqWA()" style="flex:1;background:#25D366;color:#fff;border:none;padding:13px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">
-          <i class="fa-brands fa-whatsapp"></i> WhatsApp
-        </button>
-      </div>
-      <p style="text-align:center;font-size:0.72rem;color:rgba(255,255,255,0.35);margin:0"><i class="fa-solid fa-lock" style="margin-right:4px"></i> Your details are safe. No spam calls.</p>
+      <p id="reqNote"><i class="fa-solid fa-lock" style="margin-right:4px"></i> Your details are safe. No spam calls.</p>
     </div>
   </div>
 </div>

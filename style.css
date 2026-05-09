@@ -1374,3 +1374,82 @@ img {
     background-position: center center !important;
   }
 }
+
+/* ===== POST REQUIREMENT MODAL — MOBILE RESPONSIVE ===== */
+#reqOverlay { align-items: flex-start; }
+@media (min-height: 600px) { #reqOverlay { align-items: center; } }
+
+#reqOverlay > div { box-sizing: border-box; }
+
+#reqOverlay > div > div:last-child {
+  padding: 20px 20px;
+  gap: 10px;
+}
+
+#reqOverlay > div > div:first-child {
+  padding: 18px 20px 14px;
+}
+
+#reqOverlay > div > div:first-child h3 {
+  font-size: 0.98rem;
+}
+
+#reqOverlay > div > div:last-child > div {
+  padding: 10px 12px;
+}
+
+#reqOverlay > div > div:last-child input,
+#reqOverlay > div > div:last-child select {
+  font-size: 0.85rem;
+}
+
+#reqOverlay > div > div:last-child > div:last-of-type {
+  flex-direction: row;
+  gap: 8px;
+}
+
+@media (max-width: 480px) {
+  #reqOverlay {
+    padding: 8px;
+    align-items: flex-start;
+  }
+  #reqOverlay > div {
+    border-radius: 16px;
+    margin: auto;
+  }
+  #reqOverlay > div > div:first-child {
+    padding: 14px 16px 12px;
+  }
+  #reqOverlay > div > div:first-child h3 {
+    font-size: 0.92rem;
+  }
+  #reqOverlay > div > div:first-child p {
+    font-size: 0.72rem;
+  }
+  #reqOverlay > div > div:last-child {
+    padding: 14px 14px;
+    gap: 9px;
+  }
+  #reqOverlay > div > div:last-child > div {
+    padding: 9px 11px;
+    border-radius: 9px;
+  }
+  #reqOverlay > div > div:last-child input,
+  #reqOverlay > div > div:last-child select {
+    font-size: 0.82rem;
+  }
+  /* Submit + WhatsApp buttons stack on very small screens */
+  #reqOverlay > div > div:last-child > div:has(#hReqSubmitBtn) {
+    flex-direction: column;
+  }
+  #hReqSubmitBtn,
+  #reqOverlay > div > div:last-child > div:last-of-type > button:last-child {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.85rem;
+    border-radius: 9px;
+  }
+  #reqOverlay > div > div:last-child > p:last-child {
+    font-size: 0.68rem;
+  }
+}
