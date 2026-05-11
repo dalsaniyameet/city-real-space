@@ -668,6 +668,8 @@ function renderPropRow(p) {
     '<td><div class="act-btns">' +
     (!p.isApproved ? '<button class="act-btn approve" title="Approve" onclick="approveProperty(\'' + p._id + '\')"><i class="fa-solid fa-check"></i></button>' : '') +
     trendBtn +
+    (p.status !== 'sold' ? '<button class="act-btn sold-btn" onclick="markStatus(\'' + p._id + '\', \'sold\')"><i class="fa-solid fa-ban"></i> Sold</button>' : '<button class="act-btn undo-btn" onclick="markStatus(\'' + p._id + '\', \'for-sale\')"><i class="fa-solid fa-rotate-left"></i> Undo</button>') +
+    (p.status !== 'rented' ? '<button class="act-btn rented-btn" onclick="markStatus(\'' + p._id + '\', \'rented\')"><i class="fa-solid fa-key"></i> Rented</button>' : '<button class="act-btn undo-btn" onclick="markStatus(\'' + p._id + '\', \'for-rent\')"><i class="fa-solid fa-rotate-left"></i> Undo</button>') +
     '<button class="act-btn edit" title="Edit" onclick="editPropertyById(\'' + p._id + '\')"><i class="fa-solid fa-pen"></i></button>' +
     '<button class="act-btn del" title="Delete" onclick="deleteProperty(\'' + p._id + '\')"><i class="fa-solid fa-trash"></i></button>' +
     '</div></td></tr>';
@@ -1302,6 +1304,17 @@ async function approveProperty(id) {
   const data = await api('PUT', '/properties/' + id + '/approve');
   if (data.success) { toast('Property approved!'); loadProperties(currentPropFilter); loadStats(); }
   else toast(data.message || 'Error', 'error');
+}
+
+
+async function markStatus(id, status) {
+  var labels = { sold: 'Sold Out', rented: 'Rented Out', 'for-sale': 'For Sale', 'for-rent': 'For Rent' };
+  var data = await api('PUT', '/properties/' + id, { status: status });
+  if (data.success) {
+    toast((labels[status] || status) + ' — status updated!');
+    loadProperties(currentPropFilter);
+    loadStats();
+  } else toast(data.message || 'Error', 'error');
 }
 
 async function toggleTrending(id, isFeatured) {

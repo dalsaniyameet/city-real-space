@@ -1,4 +1,4 @@
-const express  = require('express');
+﻿const express  = require('express');
 const router   = express.Router();
 const Property = require('../models/Property');
 const { protect, adminOnly } = require('../middleware/auth');
@@ -16,6 +16,16 @@ router.get('/sitemap', async (req, res) => {
     res.send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>`);
   } catch (err) {
     res.status(500).send('');
+  }
+});
+
+// GET /api/properties/count — total properties count
+router.get('/count', async (req, res) => {
+  try {
+    const count = await Property.countDocuments();
+    res.json({ success: true, count });
+  } catch (err) {
+    res.status(500).json({ success: false, count: 0 });
   }
 });
 
@@ -125,7 +135,7 @@ router.post('/generate-slugs', protect, adminOnly, async (req, res) => {
 // GET /api/properties/trending — top 6 featured
 router.get('/trending', async (req, res) => {
   try {
-    const properties = await Property.find({ isFeatured: true, isApproved: true }).sort({ views: -1 }).limit(6);
+    const properties = await Property.find({ isFeatured: true, isApproved: true }).sort({ views: -1 }).limit(10);
     res.json({ success: true, properties });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

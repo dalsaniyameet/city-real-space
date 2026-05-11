@@ -1,4 +1,4 @@
-
+﻿
 /* ===== RESET & BASE ===== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; max-width: 100%; }
 html { scroll-behavior: smooth; overflow-x: hidden; }
@@ -6,7 +6,7 @@ body { font-family: 'Poppins', sans-serif; color: #333; background: #fff; overfl
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 img { max-width: 100%; display: block; }
-.ci-slide img, .card-img img { max-width: 100%; width: 100%; height: 100%; object-fit: contain; background: #e8eaf0; }
+.ci-slide img, .card-img img { max-width: 100%; width: 100%; height: 100%; object-fit: cover; background: #e8eaf0; }
 select, input { font-family: 'Poppins', sans-serif; border: none; outline: none; background: transparent; }
 
 /* ===== VARIABLES ===== */
@@ -25,7 +25,17 @@ select, input { font-family: 'Poppins', sans-serif; border: none; outline: none;
 }
 
 img {
-  object-fit: cover !important;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .hero-slide img {
+    object-fit: unset !important;
+    width: 100% !important;
+    height: auto !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }
 
 .yellow { color: var(--yellow); }
@@ -85,7 +95,7 @@ img {
 
 /* ===== HERO ===== */
 .hero {
-  min-height: 100vh;
+  height: 100vh;
   background: #0D1B2A;
   position: relative; display: flex; align-items: center; justify-content: center;
   padding: 0;
@@ -102,11 +112,15 @@ img {
   inset: 0;
   width: 100%;
   height: 100%;
-  background-size: cover !important;
-  background-position: center center !important;
-  background-repeat: no-repeat !important;
   opacity: 0; transition: opacity 1.2s ease;
   will-change: opacity;
+}
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
 }
 .hero-slide.active { opacity: 1; }
 .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.55) 100%); }
@@ -183,12 +197,28 @@ img {
   background: #e8eaf0;
   display: block;
 }
-.card-img img { width: 100%; height: 100%; object-fit: contain; background: #e8eaf0; object-position: center center; transition: transform 0.4s ease; display: block; }
+.card-img img { width: 100%; height: 100%; object-fit: cover; background: #e8eaf0; object-position: center center; transition: transform 0.4s ease; display: block; }
 .prop-card:hover .card-img img { transform: scale(1.03); }
 
 .card-badge { position: absolute; top: 12px; left: 12px; background: var(--red); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 50px; letter-spacing: 0.5px; z-index: 3; }
 .card-badge.new { background: #2e7d32; }
 .card-badge.rent { background: #1565c0; }
+.card-badge.sold { background: #424242; }
+.card-badge.rented { background: #6a1b9a; }
+.card-sold-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.52); z-index: 4; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.card-sold-stamp { background: rgba(255,255,255,0.96); font-size: 0.95rem; font-weight: 800; padding: 10px 22px; border-radius: 8px; letter-spacing: 1px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.25); }
+.card-sold-stamp.is-sold { color: #c62828; border: 2.5px solid #c62828; }
+.card-sold-stamp.is-rented { color: #6a1b9a; border: 2.5px solid #6a1b9a; }
+
+@keyframes stampDrop { 0% { transform: scale(2.5) rotate(-15deg); opacity: 0; } 60% { transform: scale(0.9) rotate(3deg); opacity: 1; } 80% { transform: scale(1.08) rotate(-1deg); } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+@keyframes stampPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(198,40,40,0.4); } 50% { box-shadow: 0 0 0 8px rgba(198,40,40,0); } }
+@keyframes stampPulseP { 0%,100% { box-shadow: 0 0 0 0 rgba(106,27,154,0.4); } 50% { box-shadow: 0 0 0 8px rgba(106,27,154,0); } }
+@keyframes overlayFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.card-sold-overlay { animation: overlayFadeIn 0.4s ease forwards; }
+.card-sold-stamp { animation: stampDrop 0.6s cubic-bezier(0.175,0.885,0.32,1.275) forwards; }
+.card-sold-stamp.is-sold { animation: stampDrop 0.6s cubic-bezier(0.175,0.885,0.32,1.275) forwards, stampPulse 2s ease-in-out 0.6s infinite; }
+.card-sold-stamp.is-rented { animation: stampDrop 0.6s cubic-bezier(0.175,0.885,0.32,1.275) forwards, stampPulseP 2s ease-in-out 0.6s infinite; }
 
 .card-fav { display: none; }
 
@@ -520,7 +550,7 @@ img {
 .slide-label p { color: rgba(255,255,255,0.8); font-size: 0.85rem; display: flex; align-items: center; gap: 6px; margin: 0; }
 .slide-label p i { color: var(--yellow); }
 /* ===== HERO (no search box inside) ===== */
-.hero { min-height: 70vh; padding-top: 0; }
+.hero { min-height: 100vh; padding-top: 0; }
 .vslider-wrap { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.18); }
 .vslider { position: relative; height: 520px; }
 .vslide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease; pointer-events: none; }
@@ -839,7 +869,7 @@ img {
   .fav-btn { width: 36px; height: 36px; }
 
   /* Hero */
-  .hero { min-height: 60vh; padding: 0; }
+  .hero { min-height: 100vh !important; padding: 0; }
   .hero h1 { font-size: 1.9rem; }
   .hero-sub { font-size: 0.9rem; }
   .hero-tag { font-size: 0.75rem; }
@@ -924,7 +954,7 @@ img {
   .header-actions { gap: 6px; }
 
   /* Hero */
-  .hero { min-height: 55vh; padding: 0; }
+  .hero { min-height: 100vh !important; padding: 0; }
   .hero h1 { font-size: 1.55rem; line-height: 1.25; }
   .hero-sub { font-size: 0.82rem; margin-bottom: 0; }
   .slide-label { left: 12px; bottom: 14px; }
@@ -992,7 +1022,7 @@ img {
 .card-img { position: relative; width: 100%; height: 200px; overflow: hidden; background: #e8eaf0; display: block; }
 .ci-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.5s ease; }
 .ci-slide.active { opacity: 1; }
-.ci-slide img { width: 100%; height: 100%; object-fit: contain; background: #e8eaf0; object-position: center center; display: block; }
+.ci-slide img { width: 100%; height: 100%; object-fit: cover; background: #e8eaf0; object-position: center center; display: block; }
 
 .ci-arr {
   position: absolute; top: 50%; transform: translateY(-50%);
@@ -1346,34 +1376,7 @@ img {
 }
 
 /* ===== HERO BACKGROUND IMAGE MOBILE FIX ===== */
-@media (max-width: 768px) {
-  .hero {
-    min-height: 100vh !important;
-  }
-  .hero-slides {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
-  .hero-slide {
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    width: 100%;
-    height: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero {
-    min-height: 100vh !important;
-  }
-  .hero-slide {
-    background-size: cover !important;
-    background-position: center center !important;
-  }
-}
+/* Mobile pe responsive.css handle karta hai */
 
 /* ===== POST REQUIREMENT MODAL — MOBILE RESPONSIVE ===== */
 #reqOverlay { align-items: flex-start; }
@@ -1461,3 +1464,100 @@ img {
 @media (max-width: 480px) {
   #ntcSpacer { height: 26px !important; }
 }
+
+/* openFc null-safe override — fixes TypeError on index.html:1608 */
+
+/* ===== FURNISHING BADGE ===== */
+.furnish-badge {
+  position: absolute;
+  bottom: 44px;
+  left: 12px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  backdrop-filter: blur(4px);
+}
+.furnish-badge.furnished {
+  background: rgba(16,185,129,0.9);
+  color: #fff;
+  border: 1px solid rgba(16,185,129,0.6);
+}
+.furnish-badge.semi-furnished {
+  background: rgba(245,158,11,0.9);
+  color: #fff;
+  border: 1px solid rgba(245,158,11,0.6);
+}
+.furnish-badge.unfurnished {
+  background: rgba(107,114,128,0.85);
+  color: #fff;
+  border: 1px solid rgba(107,114,128,0.5);
+}
+
+/* ===== FURNISHING BADGE ===== */
+.furnish-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.furnish-badge.furnished {
+  background: rgba(16,185,129,0.12);
+  color: #059669;
+  border: 1px solid rgba(16,185,129,0.35);
+}
+.furnish-badge.semi-furnished {
+  background: rgba(245,158,11,0.12);
+  color: #d97706;
+  border: 1px solid rgba(245,158,11,0.35);
+}
+.furnish-badge.unfurnished {
+  background: rgba(107,114,128,0.1);
+  color: #6b7280;
+  border: 1px solid rgba(107,114,128,0.3);
+}
+
+/* ===== PROPERTY CARD FURNISHING BADGE ===== */
+.cs-furn { padding: 0 !important; background: none !important; }
+
+.card-furn-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+.furn-full {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.furn-semi {
+  background: #fff8e1;
+  color: #f57f17;
+  border: 1px solid #ffe082;
+}
+
+.furn-none {
+  background: #f5f5f5;
+  color: #757575;
+  border: 1px solid #e0e0e0;
+}
+
+.card-furn-badge i { font-size: 0.6rem; }

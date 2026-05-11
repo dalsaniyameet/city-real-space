@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 *{margin:0;padding:0;box-sizing:border-box;}
 
@@ -271,7 +271,7 @@ body::after{
 #propTable th:nth-child(4),#propTable td:nth-child(4){width:90px;}
 #propTable th:nth-child(5),#propTable td:nth-child(5){width:80px;}
 #propTable th:nth-child(6),#propTable td:nth-child(6){width:80px;}
-#propTable th:nth-child(7),#propTable td:nth-child(7){width:80px;}
+#propTable th:nth-child(7),#propTable td:nth-child(7){width:160px;min-width:160px;}
 #propTable th:nth-child(8),#propTable td:nth-child(8){width:110px;min-width:110px;}
 
 /* User table column widths */
@@ -293,14 +293,21 @@ body::after{
 .badge-purple{background:rgba(139,92,246,0.15);color:#a78bfa;}
 
 /* ===== ACTION BUTTONS ===== */
-.act-btns{display:flex;gap:6px;}
-.act-btn{width:30px;height:30px;border-radius:8px;border:none;cursor:pointer;font-size:0.78rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.act-btns{display:grid;grid-template-columns:1fr 1fr;gap:4px;width:150px;}
+.act-btn{width:100%;height:28px;border-radius:6px;border:1px solid transparent;cursor:pointer;font-size:0.68rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
 .act-btn.approve{background:rgba(16,185,129,0.15);color:#34d399;}
 .act-btn.approve:hover{background:var(--green);color:#fff;transform:scale(1.1);}
 .act-btn.edit{background:rgba(59,130,246,0.15);color:#60a5fa;}
 .act-btn.edit:hover{background:var(--blue);color:#fff;transform:scale(1.1);}
 .act-btn.del{background:rgba(239,68,68,0.15);color:#f87171;}
 .act-btn.del:hover{background:var(--red);color:#fff;transform:scale(1.1);}
+.act-btn.sold-btn{background:rgba(198,40,40,0.15);color:#ef4444;border:1px solid rgba(198,40,40,0.3);gap:3px;justify-content:center;displaing:0 8px;width:100%;justify-content:center;gap:4px;}
+.act-btn.sold-btn:hover{background:#c62828;color:#fff;transform:scale(1.02);}
+.act-btn.rented-btn{background:rgba(106,27,154,0.15);color:#c084fc;border:1px solid rgba(106,27,154,0.3);gap:3px;justify-content:center;display:flex;align-items:center;}
+.act-btn.rented-btn:hover{background:#6a1b9a;color:#fff;transform:scale(1.02);}
+.act-btn.undo-btn{background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);gap:3px;justify-content:center;display:flex;align-items:center;}
+.act-btn.undo-btn:hover{background:#059669;color:#fff;transform:scale(1.02);}
+
 
 /* ===== ADD BUTTON ===== */
 .btn-add{

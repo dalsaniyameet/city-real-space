@@ -88,14 +88,12 @@ table:not(.pd-table) { width: 100%; overflow-x: auto; display: block; }
 
 /* ===== HERO ===== */
 @media (max-width: 768px) {
-  .hero { min-height: 60vh; padding: 80px 16px 32px; }
   .hero h1 { font-size: clamp(1.5rem, 5vw, 2rem); }
   .hero-sub { font-size: 0.88rem; }
   .slide-label { left: 14px; bottom: 16px; right: 14px; }
   .slide-label h2 { font-size: 1rem; }
 }
 @media (max-width: 480px) {
-  .hero { min-height: 50vh; padding: 0; }
   .hero h1 { font-size: 1.4rem; }
 }
 
@@ -520,7 +518,6 @@ table:not(.pd-table) { width: 100%; overflow-x: auto; display: block; }
 
 /* ===== LANDSCAPE MOBILE ===== */
 @media (max-width: 768px) and (orientation: landscape) {
-  .hero { min-height: 100vw; }
   .auth-modal, .inq-modal { max-height: 90vh; overflow-y: auto; }
   .live-chat-widget { max-height: 70vh; }
 }
@@ -803,14 +800,9 @@ body.register-page {
     background-position: center center !important;
     background-size: cover !important;
   }
-  .hero-slide.active {
-    background-position: center top !important;
-  }
-  .hero { min-height: 55vh !important; }
 }
 @media (max-width: 480px) {
-  .hero { min-height: 50vh !important; }
-  .hero-slide { background-position: 60% center !important; }
+  .hero-slide { background-position: center center !important; }
 }
 
 /* ===== FORM / MODAL Z-INDEX FIX â€” header ke neeche nahi jayega ===== */
@@ -867,17 +859,7 @@ body.register-page {
   }
 }
 
-/* ===== HERO MOBILE IMAGE FIX ===== */
-@media (max-width: 768px) {
-  .hero-slide {
-    background-position: center center !important;
-    background-size: cover !important;
-  }
-  .hero { min-height: 55vh !important; }
-}
-@media (max-width: 480px) {
-  .hero { min-height: 50vh !important; }
-}
+
 
 /* ===== ALL MODALS Z-INDEX FIX - header ke neeche nahi jayega ===== */
 .auth-overlay,
@@ -1085,4 +1067,79 @@ body.register-page {
     font-size: 0.78rem !important;
     padding: 4px 6px !important;
   }
+}
+
+/* ===== HERO MOBILE — CLEAN FIX ===== */
+@media (max-width: 768px) {
+  .hero {
+    height: auto !important;
+    min-height: unset !important;
+    display: block !important;
+    position: relative !important;
+    margin-top: 92px !important;
+  }
+  .hero-slides {
+    position: relative !important;
+    inset: unset !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+  .hero-slide {
+    position: relative !important;
+    inset: unset !important;
+    width: 100% !important;
+    height: auto !important;
+    opacity: 1 !important;
+    display: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .hero-slide.active {
+    display: block !important;
+  }
+  .hero-slide img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: unset !important;
+    transform: none !important;
+    filter: none !important;
+    display: block !important;
+  }
+  .hero-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    background: rgba(0,0,0,0.45) !important;
+    z-index: 1 !important;
+  }
+  .hero-content {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+  }
+  #heroTitle { font-size: 1.4rem !important; line-height: 1.25 !important; text-align: center !important; color: #fff !important; min-height: unset !important; margin-bottom: 8px !important; }
+  #heroSub { font-size: 0.8rem !important; text-align: center !important; color: rgba(255,255,255,0.9) !important; min-height: unset !important; margin-bottom: 0 !important; }
+  .hero-tag { font-size: 0.68rem !important; padding: 5px 12px !important; margin-bottom: 10px !important; }
+  .hero-badges { justify-content: center !important; flex-wrap: wrap !important; gap: 6px !important; margin-top: 10px !important; }
+  .hbadge { font-size: 0.68rem !important; padding: 5px 10px !important; }
+}
+@media (max-width: 480px) {
+  .hero { margin-top: 84px !important; }
+  .hero-content { padding: 16px 14px 16px !important; }
+  #heroTitle { font-size: 1.2rem !important; }
+  #heroSub { font-size: 0.76rem !important; }
+  .hbadge { font-size: 0.64rem !important; padding: 5px 8px !important; }
+}
+@media (max-width: 360px) {
+  .hero { margin-top: 80px !important; }
+  .hero-content { padding: 14px 12px 14px !important; }
+  #heroTitle { font-size: 1.05rem !important; }
 }

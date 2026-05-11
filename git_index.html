@@ -26,8 +26,8 @@
   /* ===== HERO ===== */
   .hero{position:relative;width:100%;min-height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#0D1B2A;}
   .hero-slides{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
-  .hero-slide{position:absolute;inset:0;width:100%;height:100%;background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important;opacity:0;transition:opacity 1.4s ease;}
-  .hero-slide.active{opacity:1;}
+  .hero-slide{position:absolute;inset:0;width:100%;height:100%;background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important;opacity:0;transition:opacity 1.4s ease,transform 8s ease,filter 1.4s ease;transform:scale(1.08);filter:blur(5px);}
+  .hero-slide.active{opacity:1;transform:scale(1.02);filter:blur(0px);}
   .hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,rgba(13,27,42,0.72) 0%,rgba(13,27,42,0.38) 50%,rgba(13,27,42,0.78) 100%);}
   .hero-content{position:relative;z-index:2;text-align:center;width:100%;max-width:860px;padding:130px 24px 70px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;}
   /* ===== SEO ===== */
@@ -57,6 +57,13 @@
     #ntcBar{font-size:0;padding:5px 0}
     #ntcBar .ntc-mid{display:none}
     #ntcBar span:first-child,#ntcBar span:last-child{font-size:.7rem}
+    .hero{min-height:100svh;min-height:100vh;}
+    .hero-content{padding:115px 18px 50px!important;}
+    .hero-tag{font-size:.72rem!important;padding:6px 14px!important;margin-bottom:12px!important}
+    #heroTitle{font-size:1.75rem!important;line-height:1.25!important;margin-bottom:10px!important;min-height:auto!important;text-align:center!important;}
+    #heroSub{font-size:.86rem!important;margin-bottom:0!important;min-height:auto!important;text-align:center!important;}
+    .hero-badges{gap:8px!important;margin-top:12px!important;justify-content:center!important;flex-wrap:wrap!important;}
+    .hbadge{font-size:.72rem!important;padding:6px 12px!important;}
     .seo-grid{grid-template-columns:1fr!important;gap:20px!important}
     .seo-header h2{font-size:1.8rem!important;line-height:1.3!important}
     .seo-description{padding:24px!important}
@@ -67,10 +74,21 @@
     body{padding-top:0}
     #ntcBar{display:none}
     .header{top:0!important}
+    .hero{min-height:100svh;min-height:100vh;}
+    .hero-content{padding:100px 14px 44px!important;}
+    #heroTitle{font-size:1.42rem!important;line-height:1.28!important;}
+    #heroSub{font-size:.8rem!important;}
+    .hero-grad-text{font-size:1em!important;}
+    .hero-badges{gap:6px!important;margin-top:10px!important;}
+    .hbadge{font-size:.68rem!important;padding:6px 10px!important;}
+    .hero-tag{font-size:.66rem!important;}
     .seo-keywords-section{padding:40px 0!important}
     .seo-header h2{font-size:1.5rem!important}
   }
   @media(max-width:360px){
+    .hero-content{padding:90px 12px 36px!important;}
+    #heroTitle{font-size:1.22rem!important;}
+    #heroSub{font-size:.76rem!important;}
     .hbadge{font-size:.62rem!important;padding:5px 8px!important;}
   }
 </style>
@@ -268,16 +286,10 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
 <!-- ===== HERO / SEARCH ===== -->
 <section class="hero">
   <!-- BG Slider -->
-  <div class="hero-slides">
-    <div class="hero-slide active">
-      <img src="/images/banner.png" alt="Buy Sell Rent Property in Ahmedabad - City Real Space" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;"/>
-    </div>
-    <div class="hero-slide">
-      <img src="/images/banner2.png" alt="Verified Properties in Ahmedabad - City Real Space" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;"/>
-    </div>
-    <div class="hero-slide">
-      <img src="/images/banner3.png" alt="RERA Registered Real Estate Ahmedabad - City Real Space" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;"/>
-    </div>
+    <div class="hero-slides">
+    <div class="hero-slide active" style="background-image:url('/images/banner.png');background-size:cover;background-position:center center;background-repeat:no-repeat" role="img" aria-label="Buy Sell Rent Property in Ahmedabad - City Real Space"></div>
+    <div class="hero-slide" style="background-image:url('/images/banner2.png');background-size:cover;background-position:center center;background-repeat:no-repeat" role="img" aria-label="Verified Properties in Ahmedabad - City Real Space"></div>
+    <div class="hero-slide" style="background-image:url('/images/banner3.png');background-size:cover;background-position:center center;background-repeat:no-repeat" role="img" aria-label="RERA Registered Real Estate Ahmedabad - City Real Space"></div>
   </div>
 
   <div class="hero-overlay"></div>
@@ -454,13 +466,13 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
     </div>
 
     <div class="stats-inner">
-      <div class="stat"><span class="snum" id="dynamicPropCount">...</span><span class="slabel">Properties</span></div>
+      <div class="stat"><span class="snum" id="dynamicPropCount">0</span><span class="slabel">Properties Listed</span></div>
       <div class="stat-div"></div>
-      <div class="stat"><span class="snum" data-target="500" data-suffix="+">500+</span><span class="slabel">Happy Clients</span></div>
+      <div class="stat"><span class="snum" data-target="1000" data-suffix="+">1,000+</span><span class="slabel">Happy Clients</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="snum" data-target="20" data-suffix="+">20+</span><span class="slabel">Expert Agents</span></div>
       <div class="stat-div"></div>
       <div class="stat"><span class="snum" data-target="25" data-suffix="+">25+</span><span class="slabel">Years Experience</span></div>
-      <div class="stat-div"></div>
-      <div class="stat"><span class="snum" data-target="50" data-suffix="+">50+</span><span class="slabel">Expert Agents</span></div>
     </div>
 
   </div>
@@ -584,15 +596,15 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
         <i class="fa-solid fa-building-columns" style="font-size:1.8rem;color:#fff;"></i>
       </div>
       <h2 style="font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;color:#0D1B2A;margin-bottom:14px;line-height:1.25;">Ready to Find Your <span style="color:#E53935;">Perfect Property?</span></h2>
-      <p style="color:#666;font-size:1rem;line-height:1.7;margin-bottom:32px;">Join <strong style="color:#0D1B2A;">500+</strong> happy clients who found their dream home with City Real Space.</p>
+      <p style="color:#666;font-size:1rem;line-height:1.7;margin-bottom:32px;">Join <strong style="color:#0D1B2A;">8,200+</strong> happy clients who found their dream home with City Real Space.</p>
       <div style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:36px;padding:20px 28px;background:#f8f9fa;border-radius:16px;border:1px solid #f0f0f0;">
         <div style="text-align:center;">
-          <div style="font-size:1.6rem;font-weight:900;color:#E53935;" id="ctaPropCount">...</div>
+          <div style="font-size:1.6rem;font-weight:900;color:#E53935;">12K+</div>
           <div style="font-size:0.75rem;color:#888;font-weight:600;margin-top:2px;">Properties</div>
         </div>
         <div style="width:1px;background:#e8e8e8;"></div>
         <div style="text-align:center;">
-          <div style="font-size:1.6rem;font-weight:900;color:#E53935;">500+</div>
+          <div style="font-size:1.6rem;font-weight:900;color:#E53935;">8,200+</div>
           <div style="font-size:0.75rem;color:#888;font-weight:600;margin-top:2px;">Happy Clients</div>
         </div>
         <div style="width:1px;background:#e8e8e8;"></div>
@@ -602,7 +614,7 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
         </div>
         <div style="width:1px;background:#e8e8e8;"></div>
         <div style="text-align:center;">
-          <div style="font-size:1.6rem;font-weight:900;color:#E53935;">50+</div>
+          <div style="font-size:1.6rem;font-weight:900;color:#E53935;">350+</div>
           <div style="font-size:0.75rem;color:#888;font-weight:600;margin-top:2px;">Expert Agents</div>
         </div>
       </div>
@@ -1094,17 +1106,17 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
         <span class="logo-text">City <span class="yellow">Real</span> Space</span>
       </div>
       <h2>Gujarat's Most Trusted<br/>Real Estate Platform</h2>
-      <p>Join 500+ happy clients. Buy, Sell & Invest in verified properties across Ahmedabad, Gandhinagar & beyond.</p>
+      <p>Join 8,200+ happy clients. Buy, Sell & Invest in verified properties across Ahmedabad, Gandhinagar & beyond.</p>
       <ul class="auth-perks">
-        <li><i class="fa-solid fa-circle-check"></i> Verified Listings</li>
+        <li><i class="fa-solid fa-circle-check"></i> 12,500+ Verified Listings</li>
         <li><i class="fa-solid fa-circle-check"></i> Free Property Consultation</li>
         <li><i class="fa-solid fa-circle-check"></i> Exclusive New Launch Deals</li>
         <li><i class="fa-solid fa-circle-check"></i> Dedicated Relationship Manager</li>
       </ul>
       <div class="auth-stats">
-        <div><span id="authPropCount">...</span><small>Properties</small></div>
-        <div><span>500+</span><small>Clients</small></div>
-        <div><span>50+</span><small>Agents</small></div>
+        <div><span>12K+</span><small>Properties</small></div>
+        <div><span>8K+</span><small>Clients</small></div>
+        <div><span>350+</span><small>Agents</small></div>
       </div>
     </div>
 
@@ -1915,6 +1927,22 @@ function submitReqWA() {
 <script>
 // ===== HERO TEXT ANIMATION =====
 (function(){
+  // Dynamic property count from API
+  (async function loadPropCount() {
+    try {
+      const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:5000/api' : '/api';
+      const res = await fetch(API + '/properties?limit=1');
+      const data = await res.json();
+      const el = document.getElementById('dynamicPropCount');
+      if (el && data.success && typeof data.total === 'number') {
+        el.textContent = data.total > 0 ? data.total + '+' : '0';
+      }
+    } catch(e) {}
+  })();
+  const titleEl = document.getElementById('heroTitle');
+  const subEl   = document.getElementById('heroSub');
+
   // H1 is now static HTML - CSS animation handles the reveal
   // start after splash
   setTimeout(function(){

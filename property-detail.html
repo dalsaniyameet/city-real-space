@@ -800,6 +800,14 @@ function renderProperty(p) {
   const sqft = p.specs?.sqft || 0;
   const beds = p.specs?.beds || 0;
   const baths = p.specs?.baths || 0;
+  const furnished = p.extraDetails?.furnished || '';
+  let furnLabel = '';
+  if (furnished) {
+    const fl = furnished.toLowerCase();
+    if (fl.includes('fully')) furnLabel = 'Fully Furnished';
+    else if (fl.includes('semi')) furnLabel = 'Semi Furnished';
+    else if (fl.includes('unfurnish')) furnLabel = 'Unfurnished';
+  }
   const specs = p.category === 'commercial'
     ? `<div class="pd-spec"><i class="fa-solid fa-vector-square"></i><strong>${sqft}</strong><span>sqft</span></div>`
     : `<div class="pd-spec"><i class="fa-solid fa-bed"></i><strong>${beds}</strong><span>Beds</span></div>

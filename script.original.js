@@ -116,18 +116,30 @@ function dbToCard(p) {
     sqft: String(p.specs?.sqft || 0),
     agent: p.agent?.initials || 'CRS',
     agentName: p.agent?.name || 'CRS Agent',
-    type: p.type
+    type: p.type,
+    furnished: p.extraDetails?.furnished || p.furnished || p.specs?.furnished || ''
   };
 }
 
 // ===== RENDER CARD =====
 function createCard(p) {
+  // Furnishing badge logic
+  let furnText = '';
+  if (p.furnished) {
+    const f = p.furnished.toLowerCase();
+    if (f.includes('fully')) furnText = 'Fully Furnished';
+    else if (f.includes('semi')) furnText = 'Semi Furnished';
+    else if (f.includes('unfurnished') || f.includes('unfurnish')) furnText = 'Unfurnished';
+  }
+
   const specs = p.beds !== null && p.beds !== undefined
     ? `<div class="cs"><i class="fa-solid fa-bed"></i>${p.beds} Beds</div>
        <div class="cs"><i class="fa-solid fa-bath"></i>${p.baths} Baths</div>
-       <div class="cs"><i class="fa-solid fa-vector-square"></i>${p.sqft} sqft</div>`
+       <div class="cs"><i class="fa-solid fa-vector-square"></i>${p.sqft} sqft</div>
+       ${furnText ? '<div class="cs"><i class="fa-solid fa-couch"></i>' + furnText + '</div>' : ''}`
     : `<div class="cs"><i class="fa-solid fa-vector-square"></i>${p.sqft} sqft</div>
-       <div class="cs"><i class="fa-solid fa-building"></i>${p.type || 'Commercial'}</div>`;
+       <div class="cs"><i class="fa-solid fa-building"></i>${p.type || 'Commercial'}</div>
+       ${furnText ? '<div class="cs"><i class="fa-solid fa-couch"></i>' + furnText + '</div>' : ''}`;
 
   const fallbacks = [
     'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
@@ -272,7 +284,9 @@ function initSlider(sliderId, prevId, nextId) {
   const slider = document.getElementById(sliderId);
   const wrap = slider.parentElement;
 
-  // Duplicate cards for seamless loop
+  // Duplicate cards for seamless loop (only once)
+  if (slider.dataset.cloned) return;
+  slider.dataset.cloned = '1';
   const origCards = Array.from(slider.children);
   origCards.forEach(card => slider.appendChild(card.cloneNode(true)));
 
@@ -393,6 +407,24 @@ loadAllProperties();
 // ===== HERO BG SLIDER =====
 const heroSlides = document.querySelectorAll('.hero-slide');
 if (heroSlides.length > 0) {
+  // Fix mobile background-position
+  function fixHeroMobile() {
+    const isMobile = window.innerWidth <= 768;
+    heroSlides.forEach(s => {
+      if (isMobile) {
+        s.style.backgroundSize = 'contain';
+        s.style.backgroundPosition = 'center center';
+        s.style.backgroundRepeat = 'no-repeat';
+      } else {
+        s.style.backgroundSize = 'cover';
+        s.style.backgroundPosition = 'center center';
+        s.style.backgroundRepeat = 'no-repeat';
+      }
+    });
+  }
+  fixHeroMobile();
+  window.addEventListener('resize', fixHeroMobile, { passive: true });
+
   let heroCurrent = 0;
   function getSlideDelay(idx) {
     // Banner.png (index 0) ke liye 8 seconds, baaki ke liye 4 seconds
