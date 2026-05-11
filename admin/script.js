@@ -654,15 +654,15 @@ function renderPropRow(p) {
   var score = calcPropScore(p);
   var sc = score >= 75 ? '#10b981' : score >= 50 ? '#3b82f6' : score >= 25 ? '#f59e0b' : '#ef4444';
   var sb = score >= 75 ? 'rgba(16,185,129,0.12)' : score >= 50 ? 'rgba(59,130,246,0.12)' : score >= 25 ? 'rgba(245,158,11,0.12)' : 'rgba(239,68,68,0.12)';
-  var sl = score >= 75 ? 'Ã°Å¸â€Â¥' : score >= 50 ? 'Ã¢Å¡Â¡' : score >= 25 ? 'Ã¢Å¡Â Ã¯Â¸Â' : 'Ã°Å¸â€œâ€°';
+  var sl = score >= 75 ? String.fromCodePoint(0x1F525) : score >= 50 ? String.fromCodePoint(0x2705) : score >= 25 ? String.fromCodePoint(0x26A0) : String.fromCodePoint(0x274C);
   var scoreBadge = '<div style="display:inline-flex;align-items:center;gap:4px;background:' + sb + ';color:' + sc + ';font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;margin-top:3px;">' + sl + ' ' + score + '/100</div>';
   return '<tr>' +
     '<td><div style="display:flex;align-items:center;gap:10px">' +
     (p.images && p.images[0] ? '<img src="' + p.images[0] + '" class="prop-thumb" alt=""/>' : '<div style="width:48px;height:36px;background:rgba(255,255,255,0.05);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#555"><i class="fa-solid fa-image"></i></div>') +
-    '<div class="prop-info"><strong>' + p.title + '</strong><span>' + (p.isFeatured ? 'Ã°Å¸â€Â¥ ' : '') + (p.agent && p.agent.name ? p.agent.name : '') + '</span>' + scoreBadge + '</div></div></td>' +
+    '<div class="prop-info"><strong>' + p.title + '</strong><span>' + (p.isFeatured ? '<i class="fa-solid fa-fire" style="color:#f59e0b;margin-right:3px;"></i>' : '') + (p.agent && p.agent.name ? p.agent.name : '') + '</span>' + scoreBadge + '</div></div></td>' +
     '<td style="white-space:normal">' + catBadge + '</td>' +
-    '<td>' + (p.location ? p.location.area + ', ' + p.location.city : 'Ã¢â‚¬â€') + '</td>' +
-    '<td><strong>' + (p.priceLabel || 'Ã¢â€šÂ¹' + p.price) + '</strong></td>' +
+    '<td>' + (p.location ? p.location.area + ', ' + p.location.city : '&mdash;') + '</td>' +
+    '<td><strong>' + (p.priceLabel || '&#8377;' + p.price) + '</strong></td>' +
     '<td><span class="badge ' + (p.status === 'for-sale' ? 'badge-green' : p.status === 'for-rent' ? 'badge-blue' : 'badge-orange') + '">' + p.status + '</span></td>' +
     '<td><span class="badge ' + (p.isApproved ? 'badge-green' : 'badge-orange') + '">' + (p.isApproved ? 'Approved' : 'Pending') + '</span></td>' +
     '<td><div class="act-btns">' +
@@ -678,9 +678,10 @@ function renderPropRow(p) {
 
 async function loadProperties(filter) {
   currentPropFilter = filter;
-  document.querySelectorAll('.fbtn[data-filter]').forEach(function(b) {
-    b.classList.toggle('active', b.dataset.filter === filter);
-  });
+  // Clear all filter buttons first, then set active
+  document.querySelectorAll('#page-properties .fbtn').forEach(function(b) { b.classList.remove('active'); });
+  var activeFilterBtn = document.querySelector('.fbtn[data-filter="' + filter + '"]');
+  if (activeFilterBtn) activeFilterBtn.classList.add('active');
   let param = '';
   if (filter === 'pending')  param = '?approved=false';
   if (filter === 'approved') param = '?approved=true';
@@ -707,7 +708,7 @@ document.querySelectorAll('.fbtn[data-filter]').forEach(function(b) {
 // Category + Trending filter buttons
 function setPropFilterActive(btn) {
   document.querySelectorAll('#page-properties .fbtn').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
+  if (btn) btn.classList.add('active');
 }
 
 function applyPropFilter(cat) {
@@ -1338,9 +1339,9 @@ function filterByCategory(cat) {
   });
   document.getElementById('topbarTitle').textContent = 'Properties';
 
-  // Mark correct filter button as active
-  var btnMap = { residential:'btnResidential', commercial:'btnCommercial', trending:'btnTrending' };
+  // Mark correct filter button as active — clear all first
   document.querySelectorAll('#page-properties .fbtn').forEach(function(b) { b.classList.remove('active'); });
+  var btnMap = { residential:'btnResidential', commercial:'btnCommercial', trending:'btnTrending' };
   var activeBtn = document.getElementById(btnMap[cat]);
   if (activeBtn) activeBtn.classList.add('active');
 
@@ -2992,12 +2993,12 @@ function buildReviewGrid() {
 
   // Header
   html += '<div style="background:linear-gradient(135deg,#E53935,#b71c1c);border-radius:14px;padding:16px 18px;margin-bottom:16px;color:#fff;">' +
-    '<div style="font-size:0.68rem;font-weight:700;opacity:0.7;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Ã°Å¸â€œâ€¹ Review Before Posting</div>' +
+    '<div style="font-size:0.68rem;font-weight:700;opacity:0.7;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">â€œâ€¹ Review Before Posting</div>' +
     '<div style="font-size:1rem;font-weight:800;margin-bottom:10px;line-height:1.4;">' + (title || '<span style="opacity:0.5">Title not set</span>') + '</div>' +
     '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">' +
       '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">' + (statusMap[status]||status||'Ã¢â‚¬â€') + '</span>' +
       '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">' + (typeMap[type]||type||'Ã¢â‚¬â€') + '</span>' +
-      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">Ã°Å¸â€œÂ¸ ' + photos + ' Photos</span>' +
+      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">â€œÂ¸ ' + photos + ' Photos</span>' +
     '</div>' +
     '<div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;">' +
       '<span style="font-size:0.72rem;font-weight:600;">Listing Score</span>' +
@@ -3009,53 +3010,53 @@ function buildReviewGrid() {
   '</div>';
 
   // Location
-  html += sec('Ã°Å¸â€œÂ Location',
-    row('Ã°Å¸Ââ„¢Ã¯Â¸Â', 'City', city) +
-    row('Ã°Å¸â€œÅ’', 'Locality', area) +
-    (subArea && subArea !== '__other__' ? row('Ã°Å¸â€”ÂºÃ¯Â¸Â', 'Sub Area', subArea) : '') +
-    (project ? row('Ã°Å¸Ââ€”Ã¯Â¸Â', 'Building / Society', project) : '')
+  html += sec('<i class="fa-solid fa-location-dot"></i> Location',
+    row('<i class="fa-solid fa-city"></i>', 'City', city) +
+    row('<i class="fa-solid fa-map-pin"></i>', 'Locality', area) +
+    (subArea && subArea !== '__other__' ? row('<i class="fa-solid fa-map-marker-alt"></i>', 'Sub Area', subArea) : '') +
+    (project ? row('<i class="fa-solid fa-building"></i>', 'Building / Society', project) : '')
   );
 
   // Property Info
-  var propInfo = row('Ã°Å¸ÂÂ ', 'Property Type', typeMap[type]||type, true) +
-    row('Ã°Å¸â€œâ€¹', 'Listing Type', statusMap[status]||status, true);
-  if (isRes && bhk) propInfo += row('Ã°Å¸â€ºÂÃ¯Â¸Â', 'BHK', bhk + ' BHK', false);
-  if (isRes) propInfo += row('Ã°Å¸â€ºÅ’', 'Bedrooms', beds) + row('Ã°Å¸Å¡Â¿', 'Bathrooms', baths) + row('Ã°Å¸ÂÂ ', 'Balconies', balc);
-  html += sec('Ã°Å¸ÂÂ  Property Info', propInfo);
+  var propInfo = row('<i class="fa-solid fa-home"></i>', 'Property Type', typeMap[type]||type, true) +
+    row('<i class="fa-solid fa-tag"></i>', 'Listing Type', statusMap[status]||status, true);
+  if (isRes && bhk) propInfo += row('<i class="fa-solid fa-bed"></i>', 'BHK', bhk + ' BHK', false);
+  if (isRes) propInfo += row('<i class="fa-solid fa-bed"></i>', 'Bedrooms', beds) + row('<i class="fa-solid fa-shower"></i>', 'Bathrooms', baths) + row('<i class="fa-solid fa-door-open"></i>', 'Balconies', balc);
+  html += sec('<i class="fa-solid fa-building"></i> Property Info', propInfo);
 
   // Area
   if (isRes && (carpet || sba)) {
     var loading = (carpet && sba) ? Math.round((Number(sba)/Number(carpet) - 1)*100) + '%' : '';
-    html += sec('Ã°Å¸â€œÂ Area Details',
-      row('Ã°Å¸â€œÂ', 'Carpet Area', carpet ? carpet + ' sq.ft' : '') +
-      row('Ã°Å¸â€œÂ', 'Super Built-up Area', sba ? sba + ' sq.ft' : '') +
-      (loading ? row('Ã°Å¸â€œÅ ', 'Loading Factor', loading) : '')
+    html += sec('<i class="fa-solid fa-ruler-combined"></i> Area Details',
+      row('<i class="fa-solid fa-ruler-combined"></i>', 'Carpet Area', carpet ? carpet + ' sq.ft' : '') +
+      row('<i class="fa-solid fa-ruler-combined"></i>', 'Super Built-up Area', sba ? sba + ' sq.ft' : '') +
+      (loading ? row('<i class="fa-solid fa-percent"></i>', 'Loading Factor', loading) : '')
     );
   }
 
   // Building
   if (isRes) {
-    html += sec('Ã°Å¸ÂÂ¢ Building Details',
-      row('Ã°Å¸ÂÂ¢', 'Floor', floor ? 'Floor ' + floor + (totalFloors ? ' / ' + totalFloors : '') : '') +
-      row('Ã°Å¸â€ºâ€”', 'Lift', lift) +
-      row('Ã°Å¸Å¡â€”', 'Parking', covPark + ' Covered + ' + openPark + ' Open') +
-      row('Ã°Å¸Â§Â­', 'Facing', facing) +
-      row('Ã°Å¸â€œâ€¹', 'Ownership', ownership) +
-      row('Ã°Å¸Ââ€”Ã¯Â¸Â', 'Property Age', age) +
-      row('Ã°Å¸â€ºâ€¹Ã¯Â¸Â', 'Furnishing', furnish)
+    html += sec('<i class="fa-solid fa-building-columns"></i> Building Details',
+      row('<i class="fa-solid fa-layer-group"></i>', 'Floor', floor ? 'Floor ' + floor + (totalFloors ? ' / ' + totalFloors : '') : '') +
+      row('<i class="fa-solid fa-elevator"></i>', 'Lift', lift) +
+      row('<i class="fa-solid fa-car"></i>', 'Parking', covPark + ' Covered + ' + openPark + ' Open') +
+      row('<i class="fa-solid fa-compass"></i>', 'Facing', facing) +
+      row('<i class="fa-solid fa-file-contract"></i>', 'Ownership', ownership) +
+      row('<i class="fa-solid fa-calendar"></i>', 'Property Age', age) +
+      row('<i class="fa-solid fa-couch"></i>', 'Furnishing', furnish)
     );
   }
 
   // Pricing
-  html += sec('Ã°Å¸â€™Â° Pricing',
-    row('Ã°Å¸â€™Â°', 'Expected Price', priceStr(price) + (priceLabel ? '  (' + priceLabel + ')' : ''), true) +
-    (possession ? row('Ã°Å¸â€â€˜', 'Possession', possession) : '') +
-    (rera ? row('Ã°Å¸â€œÅ“', 'RERA No.', rera) : '')
+  html += sec('<i class="fa-solid fa-indian-rupee-sign"></i> Pricing',
+    row('<i class="fa-solid fa-indian-rupee-sign"></i>', 'Expected Price', priceStr(price) + (priceLabel ? '  (' + priceLabel + ')' : ''), true) +
+    (possession ? row('<i class="fa-solid fa-calendar-check"></i>', 'Possession', possession) : '') +
+    (rera ? row('<i class="fa-solid fa-certificate"></i>', 'RERA No.', rera) : '')
   );
 
   // Amenities
   if (amenities.length) {
-    html += sec('Ã¢Å“â€¦ Amenities (' + amenities.length + ')',
+    html += sec('<i class="fa-solid fa-circle-check"></i> Amenities (' + amenities.length + ')',
       '<div style="display:flex;flex-wrap:wrap;gap:6px;padding:4px 0;">' +
       amenities.map(function(a) {
         return '<span style="background:#e8f5e9;color:#2e7d32;font-size:0.73rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid #c8e6c9;">Ã¢Å“â€œ ' + a + '</span>';
@@ -3065,15 +3066,15 @@ function buildReviewGrid() {
 
   // Agent
   if (agent) {
-    html += sec('Ã°Å¸â€˜Â¤ Agent Details',
-      row('Ã°Å¸â€˜Â¤', 'Agent Name', agent) +
-      row('Ã°Å¸â€œÅ¾', 'Phone', agentPh)
+    html += sec('â€˜Â¤ Agent Details',
+      row('<i class="fa-solid fa-user-tie"></i>', 'Agent Name', agent) +
+      row('<i class="fa-solid fa-phone"></i>', 'Phone', agentPh)
     );
   }
 
   // Description
   if (desc) {
-    html += sec('Ã°Å¸â€œÂ Description Preview',
+    html += sec('â€œÂ Description Preview',
       '<div style="background:#f8f9fb;border:1.5px solid #f0f0f0;border-radius:10px;padding:12px 14px;font-size:0.82rem;color:#555;line-height:1.7;">' +
       desc.substring(0,250) + (desc.length > 250 ? '...' : '') + '</div>'
     );
@@ -3439,7 +3440,7 @@ function showDraftSavedToast() {
   var t = document.createElement('div');
   t.id = 'draftSavedToast';
   t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);z-index:99999;background:linear-gradient(135deg,#064e3b,#065f46);border:1.5px solid rgba(16,185,129,0.4);border-radius:16px;padding:16px 24px;box-shadow:0 20px 60px rgba(0,0,0,0.4);display:flex;align-items:center;gap:12px;font-family:Poppins,sans-serif;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s;opacity:0;';
-  t.innerHTML = '<div style="width:38px;height:38px;background:rgba(16,185,129,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">Ã°Å¸â€™Â¾</div>' +
+  t.innerHTML = '<div style="width:38px;height:38px;background:rgba(16,185,129,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">â€™Â¾</div>' +
     '<div>' +
       '<div style="font-size:0.88rem;font-weight:700;color:#6ee7b7;">Draft Saved!</div>' +
       '<div style="font-size:0.75rem;color:rgba(110,231,183,0.6);margin-top:1px;">All details saved. Continue anytime.</div>' +
@@ -3459,13 +3460,13 @@ function loadDrafts() {
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text3)"><i class="fa-regular fa-floppy-disk" style="font-size:2.5rem;display:block;margin-bottom:12px;opacity:0.3"></i><p style="font-size:0.9rem">No saved drafts yet.<br><small>Click "Save Draft" while adding a property.</small></p></div>';
     return;
   }
-  var typeIcon  = { apartment:'Ã°Å¸ÂÂ¢', villa:'Ã°Å¸ÂÂ¡', bungalow:'Ã°Å¸ÂÂ ', rowhouse:'Ã°Å¸ÂËœÃ¯Â¸Â', plot:'Ã°Å¸Å’Â¿', office:'Ã°Å¸ÂÂ¢', shop:'Ã°Å¸ÂÂª', showroom:'Ã°Å¸Å¡â€”', warehouse:'Ã°Å¸ÂÂ­', factory:'Ã¢Å¡â„¢Ã¯Â¸Â', coworking:'Ã°Å¸â€™Â»', industrial_land:'Ã°Å¸Å’Â' };
+  var typeIcon  = { apartment:'<i class="fa-solid fa-building"></i>', villa:'<i class="fa-solid fa-house"></i>', bungalow:'<i class="fa-solid fa-house-chimney"></i>', rowhouse:'<i class="fa-solid fa-house-flag"></i>', plot:'<i class="fa-solid fa-map"></i>', office:'<i class="fa-solid fa-briefcase"></i>', shop:'<i class="fa-solid fa-store"></i>', showroom:'<i class="fa-solid fa-car"></i>', warehouse:'<i class="fa-solid fa-warehouse"></i>', factory:'<i class="fa-solid fa-industry"></i>', coworking:'<i class="fa-solid fa-users"></i>', industrial_land:'<i class="fa-solid fa-map-location"></i>' };
   var typeLabel = { apartment:'Apartment', villa:'Villa', bungalow:'Bungalow', rowhouse:'Row House', plot:'Plot', office:'Office', shop:'Shop', showroom:'Showroom', warehouse:'Warehouse', factory:'Factory', coworking:'Co-working', industrial_land:'Industrial Land' };
   grid.innerHTML = drafts.map(function(d, idx) {
-    var icon   = typeIcon[d.type]  || 'Ã°Å¸ÂÂ ';
+    var icon   = typeIcon[d.type]  || '<i class="fa-solid fa-building"></i>';
     var tLabel = typeLabel[d.type] || d.type || 'Property';
-    var loc    = [d.area, d.city].filter(Boolean).join(', ') || 'Ã¢â‚¬â€';
-    var price  = d.price ? 'Ã¢â€šÂ¹' + Number(d.price).toLocaleString('en-IN') : 'Ã¢â‚¬â€';
+    var loc    = [d.area, d.city].filter(Boolean).join(', ') || '&mdash;';
+    var price  = d.price ? '&#8377;' + Number(d.price).toLocaleString('en-IN') : '&mdash;';
     var beds   = d.rBeds || d.beds ? (d.rBeds || d.beds) + ' BHK' : '';
     var sqft   = d.superBuiltUp || d.sqft ? (d.superBuiltUp || d.sqft) + ' sq.ft' : '';
     var saved  = new Date(d.savedAt).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });

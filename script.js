@@ -14,14 +14,14 @@ document.addEventListener('keydown', e => {
 function formatPrice(price, status) {
   if (!price) return 'Price on Request';
   if (status === 'for-rent') {
-    if (price >= 100000) return '?' + (price/100000).toFixed(price%100000===0?0:1)+'L/mo';
-    if (price >= 1000)   return '?' + Math.round(price/1000)+'K/mo';
-    return '?' + price.toLocaleString('en-IN')+'/mo';
+    if (price >= 100000) return '\u20B9' + (price/100000).toFixed(price%100000===0?0:1)+'L/mo';
+    if (price >= 1000)   return '\u20B9' + Math.round(price/1000)+'K/mo';
+    return '\u20B9' + price.toLocaleString('en-IN')+'/mo';
   }
-  if (price >= 10000000) return '?' + (price/10000000).toFixed(price%10000000===0?0:2).replace(/\.?0+$/,'')+' Cr';
-  if (price >= 100000)   return '?' + (price/100000).toFixed(price%100000===0?0:2).replace(/\.?0+$/,'')+' L';
-  if (price >= 1000)     return '?' + Math.round(price/1000)+'K';
-  return '?' + price.toLocaleString('en-IN');
+  if (price >= 10000000) return '\u20B9' + (price/10000000).toFixed(price%10000000===0?0:2).replace(/\.?0+$/,'')+' Cr';
+  if (price >= 100000)   return '\u20B9' + (price/100000).toFixed(price%100000===0?0:2).replace(/\.?0+$/,'')+' L';
+  if (price >= 1000)     return '\u20B9' + Math.round(price/1000)+'K';
+  return '\u20B9' + price.toLocaleString('en-IN');
 }
 const API = (function() {
   if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
@@ -1268,23 +1268,23 @@ const lcwQA = [
   },
   {
     q: ['rent', 'lease', 'kiraya', 'rental', 'kiraye pe', 'rent pe'],
-    a: '🏡 Hamare paas ?15,000/month se shuru rental properties hain. Kaun sa area aur BHK chahiye aapko?'
+    a: '🏡 Hamare paas ₹15,000/month se shuru rental properties hain. Kaun sa area aur BHK chahiye aapko?'
   },
   {
     q: ['2bhk', '2 bhk', 'two bhk', 'do bhk'],
-    a: '🛏️ 2 BHK flats available hain:\n• Bopal: ?55L – ?75L\n• Satellite: ?70L – ?95L\n• Memnagar: ?60L – ?80L\n\nKaunsa area prefer karenge?'
+    a: '🛏️ 2 BHK flats available hain:\n• Bopal: ₹55L – ₹75L\n• Satellite: ₹70L – ₹95L\n• Memnagar: ₹60L – ₹80L\n\nKaunsa area prefer karenge?'
   },
   {
     q: ['3bhk', '3 bhk', 'three bhk', 'teen bhk'],
-    a: '🛏️ 3 BHK options:\n• Prahlad Nagar: ?90L – ?1.5Cr\n• Thaltej: ?85L – ?1.2Cr\n• Bopal: ?75L – ?1Cr\n\nBudget kya hai aapka?'
+    a: '🛏️ 3 BHK options:\n• Prahlad Nagar: ₹90L – ₹1.5Cr\n• Thaltej: ₹85L – ₹1.2Cr\n• Bopal: ₹75L – ₹1Cr\n\nBudget kya hai aapka?'
   },
   {
     q: ['4bhk', '4 bhk', 'four bhk', 'char bhk'],
-    a: '🏠 4 BHK premium properties:\n• Prahlad Nagar: ?1.5Cr – ?2.5Cr\n• Bodakdev: ?1.8Cr – ?3Cr\n• Vastrapur: ?1.6Cr – ?2.8Cr\n\nSite visit book karein — bilkul free!'
+    a: '🏠 4 BHK premium properties:\n• Prahlad Nagar: ₹1.5Cr – ₹2.5Cr\n• Bodakdev: ₹1.8Cr – ₹3Cr\n• Vastrapur: ₹1.6Cr – ₹2.8Cr\n\nSite visit book karein — bilkul free!'
   },
   {
     q: ['price', 'cost', 'budget', 'kitna', 'rate', 'kitne ka', 'daam', 'paisa'],
-    a: '💎 Hamare properties ka range:\n• Budget: ?30L – ?60L\n• Mid Range: ?60L – ?1.5Cr\n• Premium: ?1.5Cr – ?5Cr+\n\nAapka budget kya hai? Best options suggest karunga!'
+    a: '💎 Hamare properties ka range:\n• Budget: ₹30L – ₹60L\n• Mid Range: ₹60L – ₹1.5Cr\n• Premium: ₹1.5Cr – ₹5Cr+\n\nAapka budget kya hai? Best options suggest karunga!'
   },
   {
     q: ['bopal', 'satellite', 'prahlad nagar', 'thaltej', 'giftcity', 'gift city', 'memnagar', 'shela', 'vastrapur', 'bodakdev', 'navrangpura', 'chandkheda'],
@@ -1296,7 +1296,7 @@ const lcwQA = [
   },
   {
     q: ['visit', 'site visit', 'dekhna', 'show', 'dikhao', 'visit book', 'free visit'],
-    a: '?? FREE Site Visit — koi charge nahi!\n\nBas apna preferred date & time share karein, hum sab arrange kar denge. WhatsApp karein: +91 93775 31247'
+    a: '🚗 FREE Site Visit — koi charge nahi!\n\nBas apna preferred date & time share karein, hum sab arrange kar denge. WhatsApp karein: +91 93775 31247'
   },
   {
     q: ['contact', 'call', 'phone', 'number', 'agent', 'baat', 'expert'],
@@ -1304,7 +1304,7 @@ const lcwQA = [
   },
   {
     q: ['new launch', 'new project', 'upcoming', 'naya', 'launch'],
-    a: '?? New Launch projects available hain:\n• GIFT City — pre-launch prices\n• Bopal — 2 & 3 BHK\n• Shela — premium villas\n\nEarly bird discount ke liye abhi contact karein!'
+    a: '🚀 New Launch projects available hain:\n• GIFT City — pre-launch prices\n• Bopal — 2 & 3 BHK\n• Shela — premium villas\n\nEarly bird discount ke liye abhi contact karein!'
   },
   {
     q: ['commercial', 'office', 'shop', 'warehouse', 'dukaan', 'godown'],
@@ -1320,15 +1320,15 @@ const lcwQA = [
   },
   {
     q: ['hello', 'hi', 'hey', 'helo', 'namaste', 'namaskar', 'kem cho', 'kaise ho'],
-    a: '?? Hello! City Real Space mein aapka swagat hai!\n\nMain aapki property search mein help kar sakta hoon. Aap kya dhundh rahe hain?'
+    a: '👋 Hello! City Real Space mein aapka swagat hai!\n\nMain aapki property search mein help kar sakta hoon. Aap kya dhundh rahe hain?'
   },
   {
     q: ['thanks', 'thank you', 'shukriya', 'dhanyawad', 'ok', 'okay', 'theek hai'],
-    a: '?? Aapka shukriya! Koi bhi sawaal ho toh zaroor poochein. Hamare experts 30 minutes mein aapse contact karenge!'
+    a: '😊 Aapka shukriya! Koi bhi sawaal ho toh zaroor poochein. Hamare experts 30 minutes mein aapse contact karenge!'
   },
 ];
 
-const lcwFinalMsg = '?? Thank you for chatting with us! Our property expert will contact you within 30 minutes. You can also call us directly at ??� +91 98250 31247. Have a great day! ??';
+const lcwFinalMsg = '😊 Thank you for chatting with us! Our property expert will contact you within 30 minutes. You can also call us directly at ??� +91 98250 31247. Have a great day! ??';
 
 let lcwMsgCount = 0;
 
@@ -1338,7 +1338,7 @@ function lcwGetReply(text) {
     if (item.q.some(k => lower.includes(k))) return item.a;
   }
   // Default smart fallback
-  return '?? Samajh gaya! Hamare property expert aapko 30 minutes mein call karenge.\n\nYa abhi call karein: ??� +91 98250 31247';
+  return '👍 Samajh gaya! Hamare property expert aapko 30 minutes mein call karenge.\n\nYa abhi call karein: ??� +91 98250 31247';
 }
 
 function lcwAddMsg(text, type) {

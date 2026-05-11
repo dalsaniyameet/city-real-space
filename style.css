@@ -1411,6 +1411,7 @@ img {
   gap: 8px;
 }
 
+
 @media (max-width: 480px) {
   #reqOverlay {
     padding: 8px;
