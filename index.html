@@ -24,12 +24,12 @@
   <link rel="apple-touch-icon" href="/images/logo.jpeg"/>
   <style>
   /* ===== HERO ===== */
-  .hero{position:relative;width:100%;min-height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#0D1B2A;}
+  .hero{position:relative;width:100%;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#0D1B2A;}
   .hero-slides{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
-  .hero-slide{position:absolute;inset:0;width:100%;height:100%;background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important;opacity:0;transition:opacity 1.4s ease;}
+  .hero-slide{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.2s ease;}
   .hero-slide.active{opacity:1;}
-  .hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,rgba(13,27,42,0.72) 0%,rgba(13,27,42,0.38) 50%,rgba(13,27,42,0.78) 100%);}
-  .hero-content{position:relative;z-index:2;text-align:center;width:100%;max-width:860px;padding:130px 24px 70px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .hero-slide img{width:100%;height:100%;object-fit:cover;object-position:center center;display:block;}
+  .hero-overlay{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,0.15);}
   /* ===== SEO ===== */
   .seo-section{background:#fff;padding:16px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);transition:all .3s;border:1px solid rgba(229,57,53,0.1)}
   .seo-section:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(229,57,53,0.15);border-color:rgba(229,57,53,0.2)}
@@ -53,7 +53,6 @@
   .hbadge-blue{background:rgba(96,165,250,0.15);color:#60a5fa;border:1.5px solid rgba(96,165,250,0.4);animation-delay:0.5s;}
   /* ===== RESPONSIVE ===== */
   @media(max-width:768px){
-    body{padding-top:0}
     #ntcBar{font-size:0;padding:5px 0}
     #ntcBar .ntc-mid{display:none}
     #ntcBar span:first-child,#ntcBar span:last-child{font-size:.7rem}
@@ -64,7 +63,6 @@
     .seo-links a{font-size:.85rem!important;padding:6px 10px!important}
   }
   @media(max-width:480px){
-    body{padding-top:0}
     #ntcBar{display:none}
     .header{top:0!important}
     .seo-keywords-section{padding:40px 0!important}
@@ -74,9 +72,8 @@
     .hbadge{font-size:.62rem!important;padding:5px 8px!important;}
   }
 </style>
-  <link rel="stylesheet" href="/style.css" media="print" onload="this.media='all'"/>
-  <link rel="stylesheet" href="/responsive.css" media="print" onload="this.media='all'"/>
-  <noscript><link rel="stylesheet" href="/style.css"/><link rel="stylesheet" href="/responsive.css"/></noscript>
+  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="/responsive.css"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
@@ -152,14 +149,13 @@
 <body>
 <script src="/splash.js" defer></script>
 
+<div id="siteHeader" style="position:fixed;top:0;left:0;right:0;z-index:99999;">
 <!-- NTC REG BAR -->
-<div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;overflow:hidden;white-space:nowrap;width:100%;max-width:100%;">
+<div id="ntcBar" style="background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;overflow:hidden;white-space:nowrap;width:100%;max-width:100%;">
   <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
   <span class="ntc-mid">&nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;</span>
   <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
 </div>
-<div style="height:33px;"></div>
-
 <header class="header" id="header">
   <div class="container header-inner">
     <a href="/" class="logo">
@@ -207,6 +203,7 @@
     </div>
   </div>
 </header>
+</div><!-- /#siteHeader -->
 
 <!-- ===== MOBILE NAV OVERLAY ===== -->
 <div id="mobileNav" style="display:none;position:fixed;inset:0;z-index:9998;background:#fff;flex-direction:column;overflow:hidden">
@@ -265,104 +262,61 @@ function updateMobileAuth(){
 document.addEventListener('DOMContentLoaded',updateMobileAuth);
 </script>
 
-<!-- ===== HERO / SEARCH ===== -->
+<!-- ===== HERO BANNER SLIDER ===== -->
 <section class="hero">
-  <!-- BG Slider -->
   <div class="hero-slides">
     <div class="hero-slide active">
-      <img src="/images/banner.png" alt="Buy Sell Rent Property in Ahmedabad - City Real Space" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;"/>
+      <img src="/images/banner.png" alt="City Real Space - Buy Sell Rent Property in Ahmedabad"/>
     </div>
     <div class="hero-slide">
-      <img src="/images/banner2.png" alt="Verified Properties in Ahmedabad - City Real Space" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;"/>
+      <img src="/images/banner2.png" alt="Verified Properties in Ahmedabad - City Real Space"/>
     </div>
     <div class="hero-slide">
-      <img src="/images/banner3.png" alt="RERA Registered Real Estate Ahmedabad - City Real Space" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;"/>
+      <img src="/images/banner3.png" alt="RERA Registered Real Estate - City Real Space"/>
     </div>
   </div>
-
   <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <p class="hero-tag hero-anim-tag"><i class="fa-solid fa-star"></i> #1 Real Estate Platform in Ahmedabad</p>
-    <h1 id="heroTitle" class="hero-h1-static">Find Your <span class="hero-grad-text">Dream</span> Property<br><span class="hero-sub-title">in Ahmedabad</span></h1>
-    <p class="hero-sub" id="heroSub">Explore thousands of verified listings — residential, commercial &amp; new launches.</p>
-    <p class="hero-badges" id="heroSub2"><span class="hbadge hbadge-green"><i class="fa-solid fa-circle-check"></i> RERA Verified</span><span class="hbadge hbadge-yellow"><i class="fa-solid fa-bolt"></i> Free Site Visit</span><span class="hbadge hbadge-blue"><i class="fa-solid fa-shield-halved"></i> Trusted Platform</span></p>
-  </div>
 
+  <!-- Prev/Next Arrows -->
+  <button class="hero-arr hero-prev" id="heroPrev"><i class="fa-solid fa-chevron-left"></i></button>
+  <button class="hero-arr hero-next" id="heroNext"><i class="fa-solid fa-chevron-right"></i></button>
+
+  <!-- Dots -->
+  <div class="hero-dots">
+    <span class="hero-dot active" data-idx="0"></span>
+    <span class="hero-dot" data-idx="1"></span>
+    <span class="hero-dot" data-idx="2"></span>
+  </div>
 </section>
+
 <script>
 (function(){
-  // Typewriter for heroTitle
-  var line1 = 'Find Your ';
-  var line1grad = 'Dream';
-  var line1end = ' Property';
-  var line2 = 'in Ahmedabad, Gujarat';
-  var speed = 55;
-  var el = document.getElementById('heroTitle');
-  if(!el) return;
-  el.innerHTML = '';
-  el.style.minHeight = 'auto';
+  var slides = document.querySelectorAll('.hero-slide');
+  var dots   = document.querySelectorAll('.hero-dot');
+  var cur = 0, timer;
 
-  var cursor = '<span id="heroCursor"></span>';
-  var full1 = line1 + '<span class="hero-grad-text">' + line1grad + '</span>' + line1end;
-  var full2 = '<span class="hero-sub-title">' + line2 + '</span>';
-
-  // Build plain text sequence: line1 + line1grad + line1end + line2
-  var plainSeq = line1 + line1grad + line1end;
-  var i = 0;
-
-  function renderLine1(n) {
-    // n = chars typed so far in line1+grad+end
-    var l1 = line1.length;
-    var l1g = l1 + line1grad.length;
-    var l1e = l1g + line1end.length;
-    var out = '';
-    if(n <= l1) {
-      out = line1.slice(0,n);
-    } else if(n <= l1g) {
-      out = line1 + '<span class="hero-grad-text">' + line1grad.slice(0, n-l1) + '</span>';
-    } else {
-      out = line1 + '<span class="hero-grad-text">' + line1grad + '</span>' + line1end.slice(0, n-l1g);
-    }
-    return out;
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    dots[cur].classList.remove('active');
+    cur = (n + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    dots[cur].classList.add('active');
   }
 
-  function type() {
-    if(i <= plainSeq.length) {
-      el.innerHTML = renderLine1(i) + cursor;
-      i++;
-      setTimeout(type, speed);
-    } else {
-      // Line 1 done, now type line 2
-      el.innerHTML = full1 + '<br>' + cursor;
-      var j = 0;
-      function type2() {
-        if(j <= line2.length) {
-          el.innerHTML = full1 + '<br><span class="hero-sub-title">' + line2.slice(0,j) + '</span>' + cursor;
-          j++;
-          setTimeout(type2, speed);
-        } else {
-          // Done — remove cursor after 2s
-          el.innerHTML = full1 + '<br>' + full2;
-          setTimeout(function(){
-            var c = document.getElementById('heroCursor');
-            if(c) c.style.display='none';
-          }, 2000);
-        }
-      }
-      type2();
-    }
-  }
+  function autoPlay() { timer = setInterval(function(){ goTo(cur + 1); }, 5000); }
+  function resetTimer() { clearInterval(timer); autoPlay(); }
 
-  // Start after splash (2s delay)
-  setTimeout(type, 2000);
+  document.getElementById('heroPrev').addEventListener('click', function(){ goTo(cur - 1); resetTimer(); });
+  document.getElementById('heroNext').addEventListener('click', function(){ goTo(cur + 1); resetTimer(); });
+  dots.forEach(function(d){ d.addEventListener('click', function(){ goTo(+this.dataset.idx); resetTimer(); }); });
+
+  autoPlay();
 })();
 </script>
-
 
 <!-- ===== SEARCH + STATS (WHITE BG) ===== -->
 <div class="search-stats-wrap">
   <div class="container">
-
     <div class="search-box">
       <div class="search-tabs">
         <button class="stab active" data-status="for-sale">Buy</button>
@@ -371,8 +325,7 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
         <button class="stab" data-status="commercial">Commercial</button>
       </div>
       <div class="search-fields">
-        <div class="sf">
-          <i class="fa-solid fa-location-dot"></i>
+        <div class="sf"><i class="fa-solid fa-location-dot"></i>
           <select id="searchCity">
             <option value="">Select City</option>
             <option value="Ahmedabad">Ahmedabad</option>
@@ -382,14 +335,10 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
             <option value="Rajkot">Rajkot</option>
           </select>
         </div>
-        <div class="sf">
-          <i class="fa-solid fa-map-pin"></i>
-          <select id="searchLocality">
-            <option value="">Select Locality</option>
-          </select>
+        <div class="sf"><i class="fa-solid fa-map-pin"></i>
+          <select id="searchLocality"><option value="">Select Locality</option></select>
         </div>
-        <div class="sf">
-          <i class="fa-solid fa-home"></i>
+        <div class="sf"><i class="fa-solid fa-home"></i>
           <select id="searchType">
             <option value="">Property Type</option>
             <option value="apartment">Apartment / Flat</option>
@@ -402,38 +351,34 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
             <option value="warehouse">Warehouse</option>
           </select>
         </div>
-        <div class="sf">
-          <i class="fa-solid fa-sliders"></i>
+        <div class="sf"><i class="fa-solid fa-sliders"></i>
           <select id="searchBudget">
             <option value="">Budget Filter</option>
             <optgroup label="-- For Sale --">
-              <option value="sale-0-3000000">Under ₹30L</option>
-              <option value="sale-3000000-6000000">₹30L  -  ₹60L</option>
-              <option value="sale-6000000-10000000">₹60L  -  ₹1Cr</option>
-              <option value="sale-10000000-20000000">₹1Cr  -  ₹2Cr</option>
-              <option value="sale-20000000-50000000">₹2Cr  -  ₹5Cr</option>
-              <option value="sale-50000000-999999999">Above ₹5Cr</option>
+              <option value="sale-0-3000000">Under &#8377;30L</option>
+              <option value="sale-3000000-6000000">&#8377;30L &nbsp;-&nbsp; &#8377;60L</option>
+              <option value="sale-6000000-10000000">&#8377;60L &nbsp;-&nbsp; &#8377;1Cr</option>
+              <option value="sale-10000000-20000000">&#8377;1Cr &nbsp;-&nbsp; &#8377;2Cr</option>
+              <option value="sale-20000000-50000000">&#8377;2Cr &nbsp;-&nbsp; &#8377;5Cr</option>
+              <option value="sale-50000000-999999999">Above &#8377;5Cr</option>
             </optgroup>
             <optgroup label="-- For Rent --">
-              <option value="rent-0-15000">Under ₹15K/mo</option>
-              <option value="rent-15000-30000">₹15K  -  ₹30K/mo</option>
-              <option value="rent-30000-60000">₹30K  -  ₹60K/mo</option>
-              <option value="rent-60000-100000">₹60K  -  ₹1L/mo</option>
-              <option value="rent-100000-999999999">Above ₹1L/mo</option>
+              <option value="rent-0-15000">Under &#8377;15K/mo</option>
+              <option value="rent-15000-30000">&#8377;15K &nbsp;-&nbsp; &#8377;30K/mo</option>
+              <option value="rent-30000-60000">&#8377;30K &nbsp;-&nbsp; &#8377;60K/mo</option>
+              <option value="rent-60000-100000">&#8377;60K &nbsp;-&nbsp; &#8377;1L/mo</option>
+              <option value="rent-100000-999999999">Above &#8377;1L/mo</option>
             </optgroup>
           </select>
         </div>
         <button class="btn-search" id="mainSearchBtn"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
       </div>
     </div>
-
-
-
     <div class="popular-areas popular-areas-light">
       <span class="pa-label">Popular Areas:</span>
       <div class="pa-marquee-wrap">
         <div class="pa-marquee">
-            <a href="/properties?area=Chekhla">Chekhla</a>
+          <a href="/properties?area=Chekhla">Chekhla</a>
           <a href="/properties?area=Memnagar">Memnagar</a>
           <a href="/properties?area=Giftcity">Giftcity</a>
           <a href="/properties?area=Bopal">Bopal</a>
@@ -452,17 +397,15 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
         </div>
       </div>
     </div>
-
     <div class="stats-inner">
       <div class="stat"><span class="snum" id="dynamicPropCount">...</span><span class="slabel">Properties</span></div>
       <div class="stat-div"></div>
-      <div class="stat"><span class="snum" data-target="500" data-suffix="+">500+</span><span class="slabel">Happy Clients</span></div>
+      <div class="stat"><span class="snum">500+</span><span class="slabel">Happy Clients</span></div>
       <div class="stat-div"></div>
-      <div class="stat"><span class="snum" data-target="25" data-suffix="+">25+</span><span class="slabel">Years Experience</span></div>
+      <div class="stat"><span class="snum">25+</span><span class="slabel">Years Experience</span></div>
       <div class="stat-div"></div>
-      <div class="stat"><span class="snum" data-target="50" data-suffix="+">50+</span><span class="slabel">Expert Agents</span></div>
+      <div class="stat"><span class="snum">50+</span><span class="slabel">Expert Agents</span></div>
     </div>
-
   </div>
 </div>
 
