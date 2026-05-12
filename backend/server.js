@@ -114,7 +114,9 @@ app.get('/sitemap.xml', async (req, res) => {
   try {
     const Property = require('./models/Property');
     const properties = await Property.find({ isApproved: true })
-      .select('slug location createdAt updatedAt type status')
+      .select('slug location createdAt updatedAt type status title')
+      .sort({ updatedAt: -1 })
+      .limit(5000)
       .lean();
 
     const base = 'https://www.cityrealspace.com';

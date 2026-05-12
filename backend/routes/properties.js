@@ -6,7 +6,7 @@ const { protect, adminOnly } = require('../middleware/auth');
 // GET /api/properties/sitemap — dynamic property sitemap for Google
 router.get('/sitemap', async (req, res) => {
   try {
-    const properties = await Property.find({ isApproved: true }).select('slug _id type status createdAt').sort({ createdAt: -1 }).limit(1000);
+    const properties = await Property.find({ isApproved: true }).select('slug _id type status location createdAt updatedAt').sort({ createdAt: -1 }).limit(2000);
     const base = 'https://www.cityrealspace.com';
     const urls = properties.map(p => {
       let loc;

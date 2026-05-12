@@ -1861,9 +1861,9 @@ function submitReqWA() {
   // H1 is now static HTML - CSS animation handles the reveal
   // start after splash
   setTimeout(function(){
-    document.getElementById('heroTitle').classList.add('hero-h1-visible');
-    document.getElementById('heroSub').classList.add('hero-sub-visible');
-    document.getElementById('heroSub2').classList.add('hero-sub-visible');
+    const _ht = document.getElementById('heroTitle'); if(_ht) _ht.classList.add('hero-h1-visible');
+    const _hs = document.getElementById('heroSub'); if(_hs) _hs.classList.add('hero-sub-visible');
+    const _hs2 = document.getElementById('heroSub2'); if(_hs2) _hs2.classList.add('hero-sub-visible');
   }, 1950);
 })();
 </script>
