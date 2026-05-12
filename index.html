@@ -6,7 +6,7 @@
   <link rel="canonical" href="https://www.cityrealspace.com/"/>
   <meta name="google-site-verification" content="5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk" />
   <title>Buy, Sell &amp; Rent Property in Ahmedabad | City Real Space</title>
-  <meta name="description" content="City Real Space � Ahmedabad's #1 RERA registered real estate company. NTC Reg No: 12376. Buy, sell or rent verified 2BHK, 3BHK flats, villas, offices &amp; plots across Ahmedabad, Gandhinagar &amp; Surat."/>
+  <meta name="description" content="City Real Space � Ahmedabad's #1 RERA registered real estate company. NTC Reg No: 12376. Buy, sell or rent verified 2BHK, 3BHK flats, villas, offices &amp; plots across Ahmedabad, Gandhinagar &amp; Surat."/>
   <meta name="robots" content="index, follow"/>
   <meta property="og:type" content="website"/>
   <meta property="og:title" content="Buy, Sell &amp; Rent Property in Ahmedabad | City Real Space"/>
@@ -24,12 +24,15 @@
   <link rel="apple-touch-icon" href="/images/logo.jpeg"/>
   <style>
   /* ===== HERO ===== */
-  .hero{position:relative;width:100%;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#0D1B2A;}
-  .hero-slides{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
-  .hero-slide{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.2s ease;}
-  .hero-slide.active{opacity:1;}
-  .hero-slide img{width:100%;height:100%;object-fit:cover;object-position:center center;display:block;}
-  .hero-overlay{position:absolute;inset:0;z-index:1;background:rgba(0,0,0,0.15);}
+  .hero{position:relative;width:100%;overflow:hidden;background:#0D1B2A;display:block;}
+  .hero-slides{position:relative;width:100%;}
+  .hero-slide{position:absolute;top:0;left:0;width:100%;opacity:0;transition:opacity 1.4s ease;}
+  .hero-slide:first-child{position:relative;}
+  .hero-slide.active{opacity:1;z-index:1;}
+  .hero-img{width:100%;height:auto;display:block;transform:scale(1.08);transition:transform 6s ease-out;}
+  .hero-slide.active .hero-img{transform:scale(1);}
+  .hero-overlay{position:absolute;inset:0;z-index:2;background:linear-gradient(to bottom,rgba(0,0,0,0.15) 0%,rgba(0,0,0,0.05) 30%,rgba(0,0,0,0.55) 70%,rgba(0,0,0,0.75) 100%);}
+  .hero-content{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 40px;width:100%;box-sizing:border-box;}
   /* ===== SEO ===== */
   .seo-section{background:#fff;padding:16px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);transition:all .3s;border:1px solid rgba(229,57,53,0.1)}
   .seo-section:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(229,57,53,0.15);border-color:rgba(229,57,53,0.2)}
@@ -137,7 +140,7 @@
   }
   </script>
 
-  <!-- Google Analytics GA4 � defer to not block render -->
+  <!-- Google Analytics GA4 � defer to not block render -->
   <script defer src="https://www.googletagmanager.com/gtag/js?id=G-W7LZWL8PLN"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -266,16 +269,18 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
 <section class="hero">
   <div class="hero-slides">
     <div class="hero-slide active">
-      <img src="/images/banner.png" alt="City Real Space - Buy Sell Rent Property in Ahmedabad"/>
+      <img src="/images/banner.png" alt="City Real Space - Buy Sell Rent Property in Ahmedabad" class="hero-img"/>
     </div>
     <div class="hero-slide">
-      <img src="/images/banner2.png" alt="Verified Properties in Ahmedabad - City Real Space"/>
+      <img src="/images/banner2.png" alt="Verified Properties in Ahmedabad - City Real Space" class="hero-img"/>
     </div>
     <div class="hero-slide">
-      <img src="/images/banner3.png" alt="RERA Registered Real Estate - City Real Space"/>
+      <img src="/images/banner3.png" alt="RERA Registered Real Estate - City Real Space" class="hero-img"/>
     </div>
   </div>
+
   <div class="hero-overlay"></div>
+
 
   <!-- Prev/Next Arrows -->
   <button class="hero-arr hero-prev" id="heroPrev"><i class="fa-solid fa-chevron-left"></i></button>
@@ -295,12 +300,26 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
   var dots   = document.querySelectorAll('.hero-dot');
   var cur = 0, timer;
 
+  function syncHeight() {
+    var h = slides[0].offsetHeight;
+    if (h > 0) {
+      for (var i = 1; i < slides.length; i++) {
+        slides[i].style.height = h + 'px';
+      }
+      var overlay = document.querySelector('.hero-overlay');
+      var heroContent = document.querySelector('.hero-content');
+      if (overlay) overlay.style.height = h + 'px';
+      if (heroContent) heroContent.style.height = h + 'px';
+    }
+  }
+
   function goTo(n) {
     slides[cur].classList.remove('active');
     dots[cur].classList.remove('active');
     cur = (n + slides.length) % slides.length;
     slides[cur].classList.add('active');
     dots[cur].classList.add('active');
+    syncHeight();
   }
 
   function autoPlay() { timer = setInterval(function(){ goTo(cur + 1); }, 5000); }
@@ -310,6 +329,9 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
   document.getElementById('heroNext').addEventListener('click', function(){ goTo(cur + 1); resetTimer(); });
   dots.forEach(function(d){ d.addEventListener('click', function(){ goTo(+this.dataset.idx); resetTimer(); }); });
 
+  window.addEventListener('load', syncHeight);
+  window.addEventListener('resize', syncHeight);
+  syncHeight();
   autoPlay();
 })();
 </script>
@@ -1456,8 +1478,8 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
     <div class="lcw-quick-btns">
       <button onclick="lcwQuick('I want to buy a property')"><i class='fa-solid fa-house'></i> Buy Property</button>
       <button onclick="lcwQuick('I want to sell my property')"><i class='fa-solid fa-tag'></i> Sell Property</button>
-      <button onclick="lcwQuick('I need property consultation')">Ã�Å¸â€œÂÃ…Â¾ Get Consultation</button>
-      <button onclick="lcwQuick('I want to schedule a site visit')">Ã�Å¸â€œÂÃ¢â‚¬Â¦ Site Visit</button>
+      <button onclick="lcwQuick('I need property consultation')">Ã�Å¸â€œÂÃ…Â¾ Get Consultation</button>
+      <button onclick="lcwQuick('I want to schedule a site visit')">Ã�Å¸â€œÂÃ¢â‚¬Â¦ Site Visit</button>
     </div>
   </div>
   <div class="lcw-footer">
