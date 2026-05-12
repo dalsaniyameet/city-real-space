@@ -1194,11 +1194,11 @@ function showError(msg) {
         <p style="color:#FFC107;font-size:0.82rem;font-weight:700;margin-bottom:6px">✨ FREE SERVICE</p>
         <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">Post Your Requirement</h3>
         <p style="color:rgba(255,255,255,0.65);font-size:0.82rem;margin-bottom:16px">Apni zaroorat batao — hamare expert 30 minutes mein aapko best options bhejenge.</p>
-        <a href="login.html" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;background:#E53935;color:#fff;padding:13px;border-radius:10px;font-size:0.9rem;font-weight:700;text-decoration:none">
+        <a href="/login" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;background:#E53935;color:#fff;padding:13px;border-radius:10px;font-size:0.9rem;font-weight:700;text-decoration:none">
           <i class="fa-solid fa-paper-plane"></i> Login & Post Requirement
         </a>
       </div>
-      <a href="properties.html" style="display:inline-flex;align-items:center;gap:6px;color:#888;font-size:0.85rem;font-weight:600;text-decoration:none">
+      <a href="/properties" style="display:inline-flex;align-items:center;gap:6px;color:#888;font-size:0.85rem;font-weight:600;text-decoration:none">
         <i class="fa-solid fa-arrow-left"></i> Browse All Properties
       </a>
     </div>`;
@@ -1295,7 +1295,7 @@ async function toggleSaveProperty() {
   const token = localStorage.getItem('token');
   if (!token) {
     sessionStorage.setItem('redirectAfterLogin', window.location.href);
-    window.location.href = '/login.html';
+    window.location.href = '/login';
     return;
   }
   const btn  = document.getElementById('pdSaveBtn');
@@ -1492,7 +1492,7 @@ async function loadArticles() {
     if (!blogs.length) return;
     document.getElementById('articlesSection').style.display = 'block';
     document.getElementById('articlesList').innerHTML = blogs.map(b => `
-      <div class="prop-card" onclick="window.open('blog-detail.html?id=${b._id}','_blank')" style="cursor:pointer">
+      <div class="prop-card" onclick="window.open('/blog/' + b.slug, '_blank')" style="cursor:pointer">
         <div class="card-img"><img src="${b.image||'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80'}" alt="${b.title}" loading="lazy" width="400" height="160" style="width:100%;height:160px;object-fit:cover"/></div>
         <div class="card-body">
           <div class="card-title" style="font-size:0.88rem">${b.title}</div>
@@ -1533,7 +1533,7 @@ function renderSimilarCards(grid, list) {
     const loc   = (x.location?.area || '') + ', ' + (x.location?.city || '');
     const _c=(x.location?.city||'ahmedabad').toLowerCase().replace(/\s+/g,'-');
     const _a=(x.location?.area||'gujarat').toLowerCase().replace(/\s+/g,'-');
-    const _url=x.slug?'/property/'+_c+'/'+_a+'/'+x.slug:'/property-detail.html?id='+x._id;
+    const _url=x.slug?'/property/'+_c+'/'+_a+'/'+x.slug:'/property-detail?id='+x._id;
     const statusMap = {'for-sale':'For Sale','for-rent':'For Rent','new-launch':'New Launch'};
     const badgeClass = x.status === 'for-rent' ? 'rent' : x.status === 'new-launch' ? 'new' : 'sale';
     return `<div class="prop-card" onclick="window.open('${_url}','_blank')" style="cursor:pointer">

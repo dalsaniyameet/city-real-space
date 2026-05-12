@@ -9,7 +9,14 @@ router.get('/sitemap', async (req, res) => {
     const properties = await Property.find({ isApproved: true }).select('slug _id type status createdAt').sort({ createdAt: -1 }).limit(1000);
     const base = 'https://www.cityrealspace.com';
     const urls = properties.map(p => {
-      const loc = p.slug ? `${base}/property-detail/${p.slug}` : `${base}/property-detail?id=${p._id}`;
+      let loc;
+      if (p.slug) {
+        const city = (p.location?.city || 'ahmedabad').toLowerCase().replace(/\s+/g, '-');
+        const area = (p.location?.area || 'gujarat').toLowerCase().replace(/\s+/g, '-');
+        loc = `${base}/property/${city}/${area}/${p.slug}`;
+      } else {
+        loc = `${base}/property-detail?id=${p._id}`;
+      }
       return `  <url><loc>${loc}</loc><lastmod>${new Date(p.createdAt).toISOString().split('T')[0]}</lastmod><priority>0.7</priority><changefreq>weekly</changefreq></url>`;
     }).join('\n');
     res.setHeader('Content-Type', 'application/xml');

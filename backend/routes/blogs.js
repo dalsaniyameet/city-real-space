@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
 router.get('/sitemap', async (req, res) => {
   try {
     const blogs = await Blog.find({ isPublished: true }).select('slug createdAt').sort({ createdAt: -1 });
-    const base = 'https://cityrealspace.com';
+    const base = 'https://www.cityrealspace.com';
     const urls = blogs.map(b =>
       `  <url><loc>${base}/blog/${b.slug}</loc><lastmod>${new Date(b.createdAt).toISOString().split('T')[0]}</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>`
     ).join('\n');
