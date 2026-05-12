@@ -1724,6 +1724,9 @@ function renderSimilarCards(grid, list) {
         <i class="fa-solid fa-link"></i> Copy Link
       </button>
     </div>
+    <button onclick="downloadCardImage()" id="scDownloadBtn" style="width:100%;margin-top:10px;background:linear-gradient(135deg,#E53935,#c62828);color:#fff;border:none;padding:13px;border-radius:14px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 20px rgba(229,57,53,0.3);transition:all 0.2s;">
+      <i class="fa-solid fa-image"></i> Download Card Image (Share on WhatsApp)
+    </button>
     <p style="text-align:center;color:rgba(255,255,255,0.2);font-size:0.62rem;margin-top:10px;font-family:Poppins,sans-serif;">📸 Screenshot & share on WhatsApp Status</p>
   </div>
 </div>
@@ -1947,6 +1950,51 @@ function copyShareLink() {
 document.getElementById('shareCardOverlay').addEventListener('click', function(e) {
   if (e.target === this) closeShareCard();
 });
+
+async function downloadCardImage() {
+  const btn = document.getElementById('scDownloadBtn');
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
+  btn.disabled = true;
+
+  // html2canvas load karo agar nahi hai
+  if (!window.html2canvas) {
+    await new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+      s.onload = res; s.onerror = rej;
+      document.head.appendChild(s);
+    });
+  }
+
+  try {
+    const card = document.getElementById('propShareCard');
+    const canvas = await html2canvas(card, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: false,
+      backgroundColor: '#0a1628',
+      logging: false
+    });
+
+    // Download as image
+    const link = document.createElement('a');
+    const title = (_shareCardData?.title || 'property').toLowerCase().replace(/\s+/g,'-').substring(0,30);
+    link.download = 'cityrealspace-' + title + '.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Downloaded! Share on WhatsApp';
+    btn.style.background = 'linear-gradient(135deg,#2e7d32,#1b5e20)';
+    setTimeout(() => {
+      btn.innerHTML = '<i class="fa-solid fa-image"></i> Download Card Image (Share on WhatsApp)';
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 3000);
+  } catch(e) {
+    btn.innerHTML = '<i class="fa-solid fa-image"></i> Download Card Image (Share on WhatsApp)';
+    btn.disabled = false;
+  }
+}
 </script>
 </body>
 </html>
