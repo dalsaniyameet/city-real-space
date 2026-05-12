@@ -11,7 +11,12 @@
   <meta property="og:description" content="Find verified properties for sale and rent in Ahmedabad. Free site visit. RERA registered."/>
   <meta property="og:image" content="https://www.cityrealspace.com/images/logo.jpeg"/>
   <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://www.cityrealspace.com/property-detail"/>
   <meta property="og:site_name" content="City Real Space"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Property for Sale/Rent in Ahmedabad | City Real Space"/>
+  <meta name="twitter:description" content="Find verified properties for sale and rent in Ahmedabad. Free site visit. RERA registered."/>
+  <meta name="twitter:image" content="https://www.cityrealspace.com/images/logo.jpeg"/>
   <link rel="icon" type="image/jpeg" href="/images/logo.jpeg"/>
   <link rel="apple-touch-icon" href="/images/logo.jpeg"/>
   <link rel="stylesheet" href="/style.css"/>
@@ -434,6 +439,9 @@
             <button class="pd-share-btn" id="pdShareWa"><i class="fa-brands fa-whatsapp" style="color:#25D366"></i> WhatsApp</button>
             <button class="pd-share-btn" id="pdShareCopy"><i class="fa-solid fa-link"></i> Copy Link</button>
           </div>
+          <button onclick="openShareCard()" style="width:100%;margin-top:10px;background:linear-gradient(135deg,#E53935,#c62828);color:#fff;border:none;padding:11px;border-radius:10px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;">
+            <i class="fa-solid fa-share-nodes"></i> Share Property Card
+          </button>
         </div>
       </div>
     </div>
@@ -1088,13 +1096,17 @@ function renderProperty(p) {
 
   // Share buttons
   document.getElementById('pdShareWa').onclick = () => {
-    window.open(`https://wa.me/?text=${encodeURIComponent(propTitle + ' - ' + window.location.href)}`, '_blank');
+    _shareCardData = p;
+    shareCardToWhatsApp();
   };
   document.getElementById('pdShareCopy').onclick = function() {
     navigator.clipboard.writeText(window.location.href);
     this.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
     setTimeout(() => { this.innerHTML = '<i class="fa-solid fa-link"></i> Copy Link'; }, 2000);
   };
+
+  // Share Card data set karo
+  _shareCardData = p;
 
   // Video Tour
   if (p.videoUrl) {
@@ -1551,6 +1563,391 @@ function renderSimilarCards(grid, list) {
   }).join('');
 }
 </script>
-<script src="/cursor.js"></script></body>
+<script src="/cursor.js"></script>
+
+<!-- ===== PROPERTY SHARE CARD MODAL ===== -->
+<style>
+  @keyframes scSlideUp { from{opacity:0;transform:translateY(50px) scale(0.95)} to{opacity:1;transform:translateY(0) scale(1)} }
+  @keyframes scPulse { 0%,100%{opacity:0.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.15)} }
+  @keyframes scImgFade { from{opacity:0} to{opacity:0.75} }
+  @keyframes scPricePop { 0%{opacity:0;transform:scale(0.6) translateY(8px)} 70%{transform:scale(1.05)} 100%{opacity:1;transform:scale(1) translateY(0)} }
+  @keyframes scTagIn { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:translateX(0)} }
+  @keyframes scWaWave { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-10deg)} 75%{transform:rotate(10deg)} }
+  #shareCardOverlay.sc-open > div { animation: scSlideUp 0.4s cubic-bezier(.22,.68,0,1.2) both; }
+  #scPrice { animation: scPricePop 0.5s 0.2s cubic-bezier(.22,.68,0,1.2) both; }
+  .sc-spec-item { flex:1;text-align:center;padding:10px 4px;border-right:1px solid rgba(255,255,255,0.07); }
+  .sc-spec-item:last-child { border-right:none; }
+  .sc-amenity-tag { background:rgba(255,193,7,0.1);color:#FFC107;font-size:0.58rem;font-weight:700;padding:3px 9px;border-radius:20px;border:1px solid rgba(255,193,7,0.2);display:flex;align-items:center;gap:4px;animation:scTagIn 0.3s ease both; }
+  .sc-detail-box { background:rgba(255,255,255,0.05);border-radius:10px;padding:9px 11px;border:1px solid rgba(255,255,255,0.07); }
+  .sc-wa-btn:hover { transform:translateY(-2px);box-shadow:0 10px 28px rgba(37,211,102,0.45) !important; }
+  .sc-wa-btn i { animation: scWaWave 2s ease infinite; }
+  .sc-img-slide { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.6s ease; }
+  .sc-img-slide.sc-active { opacity:0.75; }
+  .sc-dot { width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.35);border:none;padding:0;cursor:pointer;transition:all 0.3s; }
+  .sc-dot.sc-active { background:#fff;transform:scale(1.5); }
+  /* Status Mode — 9:16 ratio for WhatsApp Status */
+  #shareCardOverlay.sc-status-mode { display:flex !important;align-items:center;justify-content:center; }
+  #shareCardOverlay.sc-status-mode > div { width:100%;max-width:340px; }
+  #shareCardOverlay.sc-status-mode #propShareCard { border-radius:0 !important; }
+  #shareCardOverlay.sc-status-mode #scImgSlider,
+  #shareCardOverlay.sc-status-mode #scImgSlider .sc-img-slide { height:340px !important; }
+  #shareCardOverlay.sc-status-mode #scImgSlider { height:340px !important; }
+  #shareCardOverlay.sc-status-mode [style*="height:220px"] { height:340px !important; }
+</style>
+
+<div id="shareCardOverlay" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.88);backdrop-filter:blur(10px);overflow-y:auto;padding:16px;">
+  <div style="max-width:390px;margin:0 auto;">
+
+    <!-- Top Bar -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#E53935;animation:scPulse 1.5s infinite;"></div>
+        <span style="color:#fff;font-size:0.78rem;font-weight:700;font-family:Poppins,sans-serif;letter-spacing:1px;">PROPERTY CARD</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button onclick="toggleStatusMode()" id="scStatusBtn" style="background:rgba(255,193,7,0.15);border:1px solid rgba(255,193,7,0.3);color:#FFC107;padding:5px 10px;border-radius:20px;font-size:0.62rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:5px;"><i class="fa-brands fa-whatsapp"></i> Status Size</button>
+        <button onclick="closeShareCard()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;width:32px;height:32px;border-radius:50%;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+      </div>
+    </div>
+
+    <!-- ===== THE CARD ===== -->
+    <div id="propShareCard" style="border-radius:22px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.7),0 0 0 1px rgba(255,255,255,0.05);font-family:Poppins,sans-serif;background:#0a1628;">
+
+      <!-- HERO IMAGE SLIDER -->
+      <div style="position:relative;height:220px;overflow:hidden;background:#0a1628;">
+        <div id="scImgSlider" style="position:absolute;inset:0;"></div>
+        <!-- Gradient overlays -->
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,22,40,0.25) 0%,transparent 35%,rgba(10,22,40,0.97) 100%);pointer-events:none;"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(229,57,53,0.12) 0%,transparent 55%);pointer-events:none;"></div>
+
+        <!-- Slider arrows -->
+        <button id="scPrev" onclick="scImgMove(-1)" style="display:none;position:absolute;left:10px;top:50%;transform:translateY(-50%);z-index:5;width:28px;height:28px;border-radius:50%;border:none;background:rgba(0,0,0,0.45);color:#fff;font-size:0.7rem;cursor:pointer;align-items:center;justify-content:center;"><i class="fa-solid fa-chevron-left"></i></button>
+        <button id="scNext" onclick="scImgMove(1)" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);z-index:5;width:28px;height:28px;border-radius:50%;border:none;background:rgba(0,0,0,0.45);color:#fff;font-size:0.7rem;cursor:pointer;align-items:center;justify-content:center;"><i class="fa-solid fa-chevron-right"></i></button>
+
+        <!-- Dots -->
+        <div id="scDots" style="position:absolute;bottom:52px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:5;"></div>
+
+        <!-- Top: Logo + Badge -->
+        <div style="position:absolute;top:12px;left:12px;right:12px;display:flex;align-items:center;justify-content:space-between;z-index:4;">
+          <div style="display:flex;align-items:center;gap:7px;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);padding:5px 10px 5px 6px;border-radius:30px;border:1px solid rgba(255,255,255,0.1);">
+            <img src="/images/logo.jpeg" style="width:20px;height:20px;border-radius:50%;object-fit:contain;background:#fff;" crossorigin="anonymous"/>
+            <span style="color:#fff;font-size:0.6rem;font-weight:800;letter-spacing:0.5px;">City <span style="color:#FFC107;">Real</span> Space</span>
+          </div>
+          <div id="scBadge" style="background:linear-gradient(135deg,#E53935,#c62828);color:#fff;font-size:0.56rem;font-weight:800;padding:4px 11px;border-radius:20px;letter-spacing:1px;box-shadow:0 4px 12px rgba(229,57,53,0.5);">FOR SALE</div>
+        </div>
+
+        <!-- Bottom: Price + Verified -->
+        <div style="position:absolute;bottom:12px;left:14px;right:14px;display:flex;align-items:flex-end;justify-content:space-between;z-index:4;">
+          <div>
+            <div style="color:rgba(255,255,255,0.55);font-size:0.52rem;font-weight:600;letter-spacing:1.5px;margin-bottom:2px;">ASKING PRICE</div>
+            <div id="scPrice" style="color:#fff;font-size:1.55rem;font-weight:800;line-height:1;text-shadow:0 2px 10px rgba(0,0,0,0.6);">₹0</div>
+          </div>
+          <div style="background:rgba(46,125,50,0.8);backdrop-filter:blur(6px);color:#fff;font-size:0.56rem;font-weight:700;padding:4px 10px;border-radius:20px;border:1px solid rgba(76,175,80,0.35);display:flex;align-items:center;gap:4px;">
+            <span style="color:#69f0ae;">✓</span> VERIFIED
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN CONTENT -->
+      <div style="padding:16px 16px 0;background:linear-gradient(180deg,#0f1f38 0%,#0a1628 100%);">
+
+        <!-- Title -->
+        <div id="scTitle" style="font-size:0.95rem;font-weight:800;color:#fff;line-height:1.35;margin-bottom:5px;"></div>
+
+        <!-- Location -->
+        <div id="scLoc" style="font-size:0.68rem;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:5px;margin-bottom:14px;">
+          <i class="fa-solid fa-location-dot" style="color:#E53935;font-size:0.7rem;"></i>
+          <span></span>
+        </div>
+
+        <!-- Specs Row -->
+        <div id="scSpecs" style="display:flex;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;margin-bottom:12px;"></div>
+
+        <!-- Key Details Grid -->
+        <div id="scDetails" style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px;"></div>
+
+        <!-- Amenities -->
+        <div id="scAmenities" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;"></div>
+      </div>
+
+      <!-- GOLD DIVIDER -->
+      <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,193,7,0.4),transparent);margin:0 16px;"></div>
+
+      <!-- COMPANY FOOTER -->
+      <div style="background:#060e1c;padding:12px 16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <a href="/" target="_blank" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+            <img src="/images/logo.jpeg" style="width:32px;height:32px;border-radius:8px;object-fit:contain;background:#fff;padding:2px;" crossorigin="anonymous"/>
+            <div>
+              <div style="color:#fff;font-size:0.72rem;font-weight:800;">City <span style="color:#FFC107;">Real</span> Space</div>
+              <div style="color:rgba(255,255,255,0.35);font-size:0.52rem;">Gujarat's Most Trusted Platform</div>
+            </div>
+          </a>
+          <a href="https://wa.me/919825031247" target="_blank" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;font-size:0.6rem;font-weight:700;padding:6px 11px;border-radius:8px;display:flex;align-items:center;gap:5px;text-decoration:none;">
+            <i class="fa-brands fa-whatsapp"></i> WhatsApp Us
+          </a>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <a href="tel:+919825031247" style="display:flex;align-items:center;gap:6px;text-decoration:none;">
+            <i class="fa-solid fa-phone" style="color:#FFC107;font-size:0.65rem;"></i>
+            <span style="color:rgba(255,255,255,0.6);font-size:0.6rem;">+91 98250 31247</span>
+          </a>
+          <a href="https://www.cityrealspace.com" target="_blank" style="display:flex;align-items:center;gap:6px;text-decoration:none;">
+            <i class="fa-solid fa-globe" style="color:#FFC107;font-size:0.65rem;"></i>
+            <span style="color:rgba(255,255,255,0.6);font-size:0.6rem;">cityrealspace.com</span>
+          </a>
+          <a href="mailto:info@cityrealspace.com" style="display:flex;align-items:center;gap:6px;text-decoration:none;">
+            <i class="fa-solid fa-envelope" style="color:#FFC107;font-size:0.65rem;"></i>
+            <span style="color:rgba(255,255,255,0.6);font-size:0.6rem;">info@cityrealspace.com</span>
+          </a>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <i class="fa-solid fa-certificate" style="color:#FFC107;font-size:0.65rem;"></i>
+            <span style="color:rgba(255,255,255,0.6);font-size:0.6rem;">NTC Reg: 12376 | RERA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- URL STRIP -->
+      <div style="background:rgba(229,57,53,0.07);border-top:1px solid rgba(229,57,53,0.12);padding:6px 16px;display:flex;align-items:center;gap:6px;">
+        <i class="fa-solid fa-link" style="color:#E53935;font-size:0.55rem;"></i>
+        <div id="scUrl" style="font-size:0.52rem;color:rgba(255,255,255,0.25);word-break:break-all;"></div>
+      </div>
+    </div>
+    <!-- ===== END CARD ===== -->
+
+    <!-- Action Buttons -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
+      <button class="sc-wa-btn" onclick="shareCardToWhatsApp()" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;padding:14px;border-radius:14px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 20px rgba(37,211,102,0.3);transition:all 0.2s;">
+        <i class="fa-brands fa-whatsapp" style="font-size:1rem;"></i> Share
+      </button>
+      <button onclick="copyShareLink()" id="scCopyBtn" style="background:rgba(255,255,255,0.07);color:#fff;border:1px solid rgba(255,255,255,0.12);padding:14px;border-radius:14px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;backdrop-filter:blur(6px);transition:all 0.2s;">
+        <i class="fa-solid fa-link"></i> Copy Link
+      </button>
+    </div>
+    <p style="text-align:center;color:rgba(255,255,255,0.2);font-size:0.62rem;margin-top:10px;font-family:Poppins,sans-serif;">📸 Screenshot & share on WhatsApp Status</p>
+  </div>
+</div>
+
+<script>
+// ===== SHARE CARD LOGIC =====
+let _shareCardData = null;
+let _scImgIdx = 0;
+let _scImgs = [];
+let _scAutoTimer = null;
+let _scStatusMode = false;
+
+function toggleStatusMode() {
+  _scStatusMode = !_scStatusMode;
+  const overlay = document.getElementById('shareCardOverlay');
+  const btn = document.getElementById('scStatusBtn');
+  const heroDiv = document.querySelector('#propShareCard > div:first-child');
+  if (_scStatusMode) {
+    overlay.classList.add('sc-status-mode');
+    if (heroDiv) heroDiv.style.height = '340px';
+    btn.style.background = 'rgba(255,193,7,0.35)';
+    btn.style.borderColor = '#FFC107';
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Status Mode ON';
+  } else {
+    overlay.classList.remove('sc-status-mode');
+    if (heroDiv) heroDiv.style.height = '220px';
+    btn.style.background = 'rgba(255,193,7,0.15)';
+    btn.style.borderColor = 'rgba(255,193,7,0.3)';
+    btn.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Status Size';
+  }
+}
+
+const _scAmenityIcons = {
+  'Parking':'fa-square-parking','Visitor Parking':'fa-square-parking','Reserved Parking':'fa-square-parking','Covered Parking':'fa-square-parking',
+  'Lift':'fa-elevator','Lift(s)':'fa-elevator','Service Lift':'fa-elevator','Passenger Lift':'fa-elevator',
+  'Power Backup':'fa-bolt','Power Back-up':'fa-bolt','DG Availability':'fa-bolt',
+  'Security':'fa-shield-halved','24/7 Security':'fa-shield-halved','Security Guard':'fa-user-shield','CCTV':'fa-video','CCTV Surveillance':'fa-video',
+  'Swimming Pool':'fa-person-swimming','Gymnasium':'fa-dumbbell','Home Gym':'fa-dumbbell',
+  'Garden / Park':'fa-tree','Private Garden':'fa-seedling','Landscaping':'fa-leaf',
+  'High Speed Internet':'fa-wifi','Internet Ready':'fa-wifi',
+  'AC':'fa-snowflake','Central AC':'fa-snowflake',
+  'Clubhouse':'fa-building','Grade A Building':'fa-building-columns',
+  'Jogging Track':'fa-person-running','Sports Court':'fa-table-tennis-paddle-ball',
+  'Kids Play Area':'fa-child','Pet Friendly':'fa-paw',
+  'Water Supply 24/7':'fa-droplet','24x7 Water':'fa-droplet','Water Connection':'fa-droplet',
+  'Gas Pipeline':'fa-fire-flame-simple','Fire Safety':'fa-fire-extinguisher','Fire Extinguisher':'fa-fire-extinguisher',
+  'Intercom':'fa-phone-volume','Intercom Facility':'fa-phone-volume',
+  'Housekeeping':'fa-broom','Maintenance Staff':'fa-screwdriver-wrench',
+  'Conference Room':'fa-users','Reception Area':'fa-concierge-bell',
+  'Cafeteria':'fa-utensils','Cafeteria / Food Court':'fa-utensils',
+  'Printer / Scanner':'fa-print','Lounge Area':'fa-couch',
+  'Road Access':'fa-road','Highway Access':'fa-road',
+  'Gated Community':'fa-lock','Gated / Fenced':'fa-fence',
+  'Warehouse Permitted':'fa-warehouse','Loading Dock':'fa-truck-ramp-box',
+  'Electricity Connection':'fa-plug','3-Phase Power':'fa-plug','UPS Available':'fa-plug',
+  'Vaastu Compliant':'fa-om','ATM':'fa-landmark','Shopping Centre':'fa-store',
+  'Rainwater Harvesting':'fa-cloud-rain','Waste Disposal':'fa-trash',
+  'Washroom':'fa-restroom','Emergency Exit':'fa-door-open',
+  'WheelChair Accessibility':'fa-wheelchair','Sprinklers':'fa-shower'
+};
+
+function scImgMove(dir) {
+  if (!_scImgs.length) return;
+  _scImgIdx = (_scImgIdx + dir + _scImgs.length) % _scImgs.length;
+  _scRenderSlide();
+}
+
+function _scRenderSlide() {
+  const slider = document.getElementById('scImgSlider');
+  const dots = document.getElementById('scDots');
+  if (!slider) return;
+  slider.querySelectorAll('.sc-img-slide').forEach((el, i) => {
+    el.classList.toggle('sc-active', i === _scImgIdx);
+  });
+  if (dots) dots.querySelectorAll('.sc-dot').forEach((d, i) => d.classList.toggle('sc-active', i === _scImgIdx));
+}
+
+function openShareCard() {
+  if (!_shareCardData) return;
+  const p = _shareCardData;
+  const statusMap = {'for-sale':'FOR SALE','for-rent':'FOR RENT','new-launch':'NEW LAUNCH'};
+  const badgeGrad = {'for-sale':'linear-gradient(135deg,#E53935,#c62828)','for-rent':'linear-gradient(135deg,#1565c0,#0d47a1)','new-launch':'linear-gradient(135deg,#2e7d32,#1b5e20)'};
+
+  // Badge
+  const badge = document.getElementById('scBadge');
+  badge.textContent = statusMap[p.status] || 'FOR SALE';
+  badge.style.background = badgeGrad[p.status] || badgeGrad['for-sale'];
+
+  // Image Slider
+  _scImgs = (p.images && p.images.length) ? p.images : ['https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80'];
+  _scImgIdx = 0;
+  const slider = document.getElementById('scImgSlider');
+  const dots = document.getElementById('scDots');
+  slider.innerHTML = _scImgs.map((src, i) =>
+    `<img class="sc-img-slide${i===0?' sc-active':''}" src="${src}" crossorigin="anonymous" alt=""/>`
+  ).join('');
+  // Dots
+  if (_scImgs.length > 1) {
+    dots.innerHTML = _scImgs.map((_, i) => `<button class="sc-dot${i===0?' sc-active':''}" onclick="_scImgIdx=${i};_scRenderSlide()"></button>`).join('');
+    dots.style.display = 'flex';
+    document.getElementById('scPrev').style.display = 'flex';
+    document.getElementById('scNext').style.display = 'flex';
+    // Auto slide every 3s
+    clearInterval(_scAutoTimer);
+    _scAutoTimer = setInterval(() => scImgMove(1), 3000);
+  } else {
+    dots.style.display = 'none';
+    document.getElementById('scPrev').style.display = 'none';
+    document.getElementById('scNext').style.display = 'none';
+    clearInterval(_scAutoTimer);
+  }
+
+  // Price
+  document.getElementById('scPrice').textContent = formatPrice(p.price, p.status);
+
+  // Title & Location
+  document.getElementById('scTitle').textContent = p.title;
+  document.getElementById('scLoc').querySelector('span').textContent = (p.location?.area || '') + ', ' + (p.location?.city || 'Ahmedabad');
+
+  // Specs
+  const specsEl = document.getElementById('scSpecs');
+  const specItems = [];
+  if (p.specs?.beds)  specItems.push(['fa-bed', p.specs.beds + ' BHK']);
+  if (p.specs?.baths) specItems.push(['fa-bath', p.specs.baths + ' Bath']);
+  if (p.specs?.sqft)  specItems.push(['fa-ruler-combined', p.specs.sqft + ' sqft']);
+  if (p.extraDetails?.furnished) specItems.push(['fa-couch', p.extraDetails.furnished]);
+  specsEl.innerHTML = specItems.map(s =>
+    `<div class="sc-spec-item">
+      <i class="fa-solid ${s[0]}" style="color:#FFC107;font-size:0.85rem;"></i>
+      <div style="font-size:0.65rem;font-weight:700;color:#fff;margin-top:4px;">${s[1]}</div>
+    </div>`
+  ).join('');
+
+  // Key Details
+  const ex = p.extraDetails || {};
+  const detailItems = [
+    ex.floor ? ['fa-building','Floor', 'Floor ' + ex.floor + (ex.totalFloors ? '/'+ex.totalFloors : '')] : null,
+    ex.facing ? ['fa-compass','Facing', ex.facing] : null,
+    ex.possession ? ['fa-key','Possession', ex.possession] : null,
+    ex.ageOfProperty ? ['fa-calendar','Age', ex.ageOfProperty] : null,
+    (ex.coveredParking && ex.coveredParking !== '0') ? ['fa-car','Parking', ex.coveredParking+' Covered'] : null,
+    ex.ownership ? ['fa-file-contract','Ownership', ex.ownership] : null,
+  ].filter(Boolean).slice(0, 4);
+
+  document.getElementById('scDetails').innerHTML = detailItems.map(d =>
+    `<div class="sc-detail-box">
+      <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;">
+        <i class="fa-solid ${d[0]}" style="color:#FFC107;font-size:0.6rem;"></i>
+        <span style="font-size:0.55rem;color:rgba(255,255,255,0.4);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">${d[1]}</span>
+      </div>
+      <div style="font-size:0.72rem;font-weight:700;color:#fff;">${d[2]}</div>
+    </div>`
+  ).join('');
+
+  // Amenities with FA icons (max 8)
+  const amenEl = document.getElementById('scAmenities');
+  if (p.amenities && p.amenities.length) {
+    amenEl.innerHTML = p.amenities.slice(0, 8).map((a, i) => {
+      const icon = _scAmenityIcons[a] || 'fa-circle-check';
+      return `<span class="sc-amenity-tag" style="animation-delay:${i*0.05}s"><i class="fa-solid ${icon}" style="font-size:0.6rem;"></i> ${a}</span>`;
+    }).join('');
+    amenEl.style.display = 'flex';
+  } else {
+    amenEl.style.display = 'none';
+  }
+
+  // URL
+  document.getElementById('scUrl').textContent = window.location.href;
+
+  const overlay = document.getElementById('shareCardOverlay');
+  overlay.style.display = 'block';
+  overlay.classList.add('sc-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeShareCard() {
+  clearInterval(_scAutoTimer);
+  const overlay = document.getElementById('shareCardOverlay');
+  overlay.style.display = 'none';
+  overlay.classList.remove('sc-open');
+  document.body.style.overflow = '';
+}
+
+function shareCardToWhatsApp() {
+  const p = _shareCardData;
+  if (!p) return;
+  const price = formatPrice(p.price, p.status);
+  const loc = (p.location?.area || '') + ', ' + (p.location?.city || 'Ahmedabad');
+  const beds = p.specs?.beds ? p.specs.beds + ' BHK | ' : '';
+  const sqft = p.specs?.sqft ? p.specs.sqft + ' sqft | ' : '';
+  const amenities = (p.amenities || []).slice(0, 5).join(' • ');
+  const msg =
+`🏠 *${p.title}*
+
+📍 ${loc}
+💰 *${price}*
+${beds}${sqft}${p.extraDetails?.furnished ? p.extraDetails.furnished + ' | ' : ''}${p.status === 'for-rent' ? 'For Rent' : 'For Sale'}
+${amenities ? '✅ ' + amenities : ''}
+
+🔗 ${window.location.href}
+
+📞 +91 98250 31247
+🌐 www.cityrealspace.com
+📧 info@cityrealspace.com
+_City Real Space — Gujarat's Most Trusted Platform_
+_NTC Reg: 12376 | RERA Registered_`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function copyShareLink() {
+  navigator.clipboard.writeText(window.location.href);
+  const btn = document.getElementById('scCopyBtn');
+  btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+  btn.style.background = 'rgba(46,125,50,0.3)'; btn.style.color = '#69f0ae'; btn.style.borderColor = 'rgba(76,175,80,0.4)';
+  setTimeout(() => {
+    btn.innerHTML = '<i class="fa-solid fa-link"></i> Copy Link';
+    btn.style.background = ''; btn.style.color = ''; btn.style.borderColor = '';
+  }, 2000);
+}
+
+document.getElementById('shareCardOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeShareCard();
+});
+</script>
+</body>
 </html>
 

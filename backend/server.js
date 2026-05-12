@@ -246,9 +246,9 @@ app.get('/blog/:slug', (req, res) => {
 const pages = ['blog', 'blog-detail', 'about', 'contact', 'properties', 'buy', 'rent', 'new-launch', 'resale', 'land', 'prelease', 'post-property', 'faq', 'careers', 'privacy', 'terms', 'login', 'register', 'dashboard'];
 pages.forEach(p => app.get(`/${p}`, (req, res) => res.sendFile(path.join(FRONTEND, `${p}.html`))));
 
-// SEO-friendly property URLs — inject correct canonical server-side so Google sees it without JS
+// SEO-friendly property URLs — inject OG meta tags server-side for WhatsApp/Facebook previews
 const fs = require('fs');
-function servePropertyDetail(req, res) {
+async function servePropertyDetail(req, res) {
   const slug = req.params.slug;
   const city = (req.params.city || 'ahmedabad').toLowerCase().replace(/\s+/g, '-');
   const area = (req.params.area || 'gujarat').toLowerCase().replace(/\s+/g, '-');
@@ -257,11 +257,53 @@ function servePropertyDetail(req, res) {
     : `https://www.cityrealspace.com/property/${slug}`;
   try {
     let html = fs.readFileSync(path.join(FRONTEND, 'property-detail.html'), 'utf8');
+
+    // Canonical inject
     html = html.replace(
       /(<link rel="canonical" href=")[^"]*(")[^>]*(>)/,
       `$1${canonicalUrl}$2 id="canonicalTag">`
     );
+
+    // Property data fetch karke OG tags inject karo
+    try {
+      const Property = require('./models/Property');
+      const p = await Property.findOne({ slug, isApproved: true })
+        .select('title description images price status type location specs')
+        .lean();
+
+      if (p) {
+        const ogTitle = `${p.specs?.beds ? p.specs.beds + ' BHK ' : ''}${p.type || 'Property'} in ${p.location?.area || ''}, ${p.location?.city || 'Ahmedabad'} | City Real Space`;
+        const ogDesc  = (p.description || `${p.title} - Verified property in ${p.location?.area || 'Ahmedabad'}. Free site visit. RERA registered.`).substring(0, 200);
+        const ogImg   = p.images?.[0]
+          ? (p.images[0].startsWith('http') ? p.images[0] : `https://www.cityrealspace.com${p.images[0]}`)
+          : 'https://www.cityrealspace.com/images/logo.jpeg';
+
+        html = html
+          .replace(/<title>[^<]*<\/title>/, `<title>${ogTitle}</title>`)
+          .replace(/(<meta property="og:title" content=")[^"]*("\/>)/, `$1${ogTitle}$2`)
+          .replace(/(<meta property="og:description" content=")[^"]*("\/>)/, `$1${ogDesc}$2`)
+          .replace(/(<meta property="og:image" content=")[^"]*("\/>)/, `$1${ogImg}$2`)
+          .replace(/(<meta name="description" content=")[^"]*("\/>)/, `$1${ogDesc}$2`);
+
+        // og:url inject karo
+        if (!html.includes('og:url')) {
+          html = html.replace('</head>', `  <meta property="og:url" content="${canonicalUrl}"/>
+  <meta property="og:type" content="website"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="${ogTitle}"/>
+  <meta name="twitter:description" content="${ogDesc}"/>
+  <meta name="twitter:image" content="${ogImg}"/>
+</head>`);
+        } else {
+          html = html.replace(/(<meta property="og:url" content=")[^"]*("\/>)/, `$1${canonicalUrl}$2`);
+        }
+      }
+    } catch (dbErr) {
+      // DB error pe bhi HTML serve karo
+    }
+
     res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 'public, max-age=300'); // 5 min cache
     res.send(html);
   } catch (e) {
     res.sendFile(path.join(FRONTEND, 'property-detail.html'));
