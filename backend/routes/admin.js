@@ -169,9 +169,24 @@ router.get('/properties', async (req, res) => {
   }
 });
 
+// Helper: price se correct priceLabel generate karo
+function genLabel(price, status) {
+  const p = Math.round(Number(price));
+  if (!p) return '';
+  const isRent = status === 'for-rent';
+  let label;
+  if (p >= 10000000)  label = '\u20b9' + (p % 10000000 === 0 ? p/10000000 : parseFloat((p/10000000).toFixed(2))) + ' Cr';
+  else if (p >= 100000) label = '\u20b9' + (p % 100000 === 0 ? p/100000 : parseFloat((p/100000).toFixed(2))) + ' L';
+  else if (p >= 1000)   label = '\u20b9' + Math.round(p/1000) + 'K';
+  else                  label = '\u20b9' + p.toLocaleString('en-IN');
+  return isRent ? label + '/mo' : label;
+}
+
 router.post('/properties', async (req, res) => {
   try {
-    const property = await Property.create({ ...req.body, postedBy: req.user._id, isApproved: true });
+    const body = { ...req.body, postedBy: req.user._id, isApproved: true };
+    if (body.price) body.priceLabel = genLabel(body.price, body.status);
+    const property = await Property.create(body);
     property.slug = Property.generateSlug(property.type, property.status, property._id);
     await property.save();
     res.status(201).json({ success: true, property });
@@ -231,7 +246,9 @@ router.put('/properties/:id/reject', async (req, res) => {
 
 router.put('/properties/:id', async (req, res) => {
   try {
-    const property = await Property.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const body = { ...req.body };
+    if (body.price) body.priceLabel = genLabel(body.price, body.status);
+    const property = await Property.findByIdAndUpdate(req.params.id, body, { new: true });
     res.json({ success: true, property });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

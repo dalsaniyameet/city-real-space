@@ -13,14 +13,15 @@ document.addEventListener('keydown', e => {
 // ===== PRICE FORMAT FUNCTION (global) =====
 function formatPrice(price, status) {
   if (!price) return 'Price on Request';
+  price = Math.round(price);
   if (status === 'for-rent') {
-    if (price >= 100000) return '\u20B9' + (price/100000).toFixed(price%100000===0?0:1)+'L/mo';
-    if (price >= 1000)   return '\u20B9' + Math.round(price/1000)+'K/mo';
-    return '\u20B9' + price.toLocaleString('en-IN')+'/mo';
+    if (price >= 100000) { var lv = price/100000; return '\u20B9' + (lv === Math.floor(lv) ? Math.floor(lv) : lv.toFixed(1)) + ' L/mo'; }
+    if (price >= 1000)   return '\u20B9' + Math.round(price/1000) + 'K/mo';
+    return '\u20B9' + price.toLocaleString('en-IN') + '/mo';
   }
-  if (price >= 10000000) return '\u20B9' + (price/10000000).toFixed(price%10000000===0?0:2).replace(/\.?0+$/,'')+' Cr';
-  if (price >= 100000)   return '\u20B9' + (price/100000).toFixed(price%100000===0?0:2).replace(/\.?0+$/,'')+' L';
-  if (price >= 1000)     return '\u20B9' + Math.round(price/1000)+'K';
+  if (price >= 10000000) { var cv = price/10000000; return '\u20B9' + (cv === Math.floor(cv) ? Math.floor(cv) : parseFloat(cv.toFixed(2))) + ' Cr'; }
+  if (price >= 100000)   { var lv = price/100000;   return '\u20B9' + (lv === Math.floor(lv) ? Math.floor(lv) : parseFloat(lv.toFixed(2))) + ' L'; }
+  if (price >= 1000)     return '\u20B9' + Math.round(price/1000) + 'K';
   return '\u20B9' + price.toLocaleString('en-IN');
 }
 const API = (function() {

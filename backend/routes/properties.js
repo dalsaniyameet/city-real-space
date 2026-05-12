@@ -210,11 +210,25 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Helper: generate correct priceLabel from price
+function genPriceLabel(price, status) {
+  if (!price) return '';
+  const p = Math.round(Number(price));
+  const isRent = status === 'for-rent';
+  let label;
+  if (p >= 10000000)  label = '\u20b9' + (p % 10000000 === 0 ? p/10000000 : parseFloat((p/10000000).toFixed(2))) + ' Cr';
+  else if (p >= 100000) label = '\u20b9' + (p % 100000 === 0 ? p/100000 : parseFloat((p/100000).toFixed(2))) + ' L';
+  else if (p >= 1000)   label = '\u20b9' + Math.round(p/1000) + 'K';
+  else                  label = '\u20b9' + p.toLocaleString('en-IN');
+  return isRent ? label + '/mo' : label;
+}
+
 // POST /api/properties — admin only
 router.post('/', protect, adminOnly, async (req, res) => {
   try {
-    const property = await Property.create({ ...req.body, postedBy: req.user._id });
-    // Generate slug after creation (need _id)
+    const body = { ...req.body, postedBy: req.user._id };
+    if (body.price) body.priceLabel = genPriceLabel(body.price, body.status);
+    const property = await Property.create(body);
     property.slug = Property.generateSlug(property.type, property.status, property._id);
     await property.save();
     res.status(201).json({ success: true, property });
@@ -226,9 +240,10 @@ router.post('/', protect, adminOnly, async (req, res) => {
 // PUT /api/properties/:id — admin only
 router.put('/:id', protect, adminOnly, async (req, res) => {
   try {
-    const property = await Property.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const body = { ...req.body };
+    if (body.price) body.priceLabel = genPriceLabel(body.price, body.status);
+    const property = await Property.findByIdAndUpdate(req.params.id, body, { new: true, runValidators: true });
     if (!property) return res.status(404).json({ success: false, message: 'Property not found' });
-    // Regenerate slug if title/location changed
     if (!property.slug) {
       property.slug = Property.generateSlug(property.type, property.status, property._id);
       await property.save();

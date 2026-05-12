@@ -750,10 +750,10 @@ document.getElementById('addPropBtn').addEventListener('click', function() {
 
 
   var plReset = document.getElementById('pPriceLabel'); if (plReset) { plReset.value = ''; plReset.dataset.manual = ''; }
-
+  _actualPrice = 0;
 
   var unitReset = document.getElementById('pPriceUnit');
-  if (unitReset) unitReset.value = 'cr';
+  if (unitReset) unitReset.value = 'lakh';
   // RERA default
   var reraReset = document.getElementById('pReraNo');
   if (reraReset) reraReset.value = 'NTC Reg No: 12376';
@@ -791,7 +791,7 @@ function editProperty(p) {
   document.getElementById('pPriceLabel').value = p.priceLabel || '';
   document.getElementById('pPrice').value   = p.price || '';
   if (p.price) {
-    var ap = p.price;
+    var ap = Math.round(p.price);
     var unitEl2 = document.getElementById('pPriceUnit');
     var priceEl2 = document.getElementById('pPrice');
     if (ap >= 10000000) {
@@ -1179,7 +1179,14 @@ document.getElementById('propForm').addEventListener('submit', async function(e)
   const body = {
     title: document.getElementById('pTitle').value,
     priceLabel: document.getElementById('pPriceLabel').value,
-    price: _actualPrice > 0 ? _actualPrice : Number(document.getElementById('pPrice').value),
+    price: (function(){
+      var unit = document.getElementById('pPriceUnit') ? document.getElementById('pPriceUnit').value : 'rs';
+      var n = parseFloat(document.getElementById('pPrice').value) || 0;
+      if (unit === 'cr')    return Math.round(n * 10000000);
+      if (unit === 'lakh')  return Math.round(n * 100000);
+      if (unit === 'k')     return Math.round(n * 1000);
+      return Math.round(n);
+    })(),
     type: document.getElementById('pType').value,
     category: document.getElementById('pCategory').value,
     status: document.getElementById('pStatus').value,
@@ -2097,6 +2104,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ===== AUTO PRICE LABEL =====
+var _actualPrice = 0;
 function autoPriceLabel() {
   var val = document.getElementById('pPrice') ? document.getElementById('pPrice').value : '';
   var unit = document.getElementById('pPriceUnit') ? document.getElementById('pPriceUnit').value : 'rs';
@@ -2105,16 +2113,17 @@ function autoPriceLabel() {
   var helperText = document.getElementById('priceHelperText');
   var labelEl = document.getElementById('pPriceLabel');
   if (!helper || !helperText) return;
-  if (!n || isNaN(n)) { helper.style.display = 'none'; return; }
+  if (!n || isNaN(n)) { helper.style.display = 'none'; _actualPrice = 0; return; }
 
   var status = document.getElementById('pStatus') ? document.getElementById('pStatus').value : 'for-sale';
   var isRent = status === 'for-rent';
 
-  // Convert to actual rupees based on unit
+  // Convert to actual rupees based on unit — use Math.round to avoid floating point errors
   var actualAmount = n;
-  if (unit === 'cr')    actualAmount = n * 10000000;
-  else if (unit === 'lakh') actualAmount = n * 100000;
-  else if (unit === 'k')    actualAmount = n * 1000;
+  if (unit === 'cr')        actualAmount = Math.round(n * 10000000);
+  else if (unit === 'lakh') actualAmount = Math.round(n * 100000);
+  else if (unit === 'k')    actualAmount = Math.round(n * 1000);
+  else                      actualAmount = Math.round(n);
 
   // Set actual value in hidden field for saving
   document.getElementById('pPrice').dataset.actual = actualAmount;
