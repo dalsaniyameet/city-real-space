@@ -657,6 +657,12 @@ async function loadProperty() {
 function renderProperty(p) {
   document.title = p.title + ' – City Real Space';
 
+  // ===== RENTED OUT / SOLD CHECK =====
+  if (p.status === 'rented' || p.status === 'sold') {
+    showUnavailable(p);
+    return;
+  }
+
   // SEO: Update URL to slug-based if currently on ?id= URL
   if (p.slug && window.location.search.includes('id=')) {
     const _city = (p.location?.city || 'ahmedabad').toLowerCase().replace(/\s+/g, '-');
