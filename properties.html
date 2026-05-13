@@ -41,7 +41,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
-    .prop-page-wrap { max-width: 1280px; margin: 40px auto 60px; padding: 0 20px; }
+    .prop-page-wrap { max-width: 1280px; margin: 160px auto 60px; padding: 0 20px; }
     .prop-page-head { margin-bottom: 24px; }
     .prop-page-head h1 { font-size: 1.6rem; font-weight: 800; color: #0D1B2A; }
     .prop-page-head p { color: #888; font-size: 0.85rem; margin-top: 4px; }
@@ -72,8 +72,10 @@
     .pg-btn { width: 38px; height: 38px; border-radius: 8px; border: 1.5px solid #e8e8e8; background: #fff; color: #555; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: Poppins, sans-serif; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
     .pg-btn.active { background: #E53935; border-color: #E53935; color: #fff; }
     .pg-btn:hover:not(.active) { border-color: #E53935; color: #E53935; }
+    #statusTabsBar { position: sticky; top: 123px; z-index: 900; background: #fff; padding: 10px 0 6px; margin-bottom: 4px; border-bottom: 1px solid #f0f0f0; margin-left: -20px; margin-right: -20px; padding-left: 20px; padding-right: 20px; }
     @media(max-width:600px) { 
-      .prop-page-wrap { margin-top: 80px; } 
+      .prop-page-wrap { margin-top: 140px; }
+      #statusTabsBar { top: 108px; } 
       .fp-grp { min-width: 100% !important; width: 100% !important; } 
       .req-img-panel { display: none !important; }
       .filter-panel { flex-direction: column !important; }
@@ -183,8 +185,9 @@
 </head>
 <body>
 
+<div id="siteHeader">
 <!-- NTC REG BAR -->
-<div style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);">
+<div style="background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);">
   <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
   &nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;
   <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
@@ -232,6 +235,7 @@
     </div>
   </div>
 </header>
+</div><!-- /#siteHeader -->
 
 <!-- MOBILE NAV -->
 <div id="mobileNav" style="display:none;position:fixed;inset:0;z-index:9998;background:#fff;flex-direction:column;overflow:hidden">
@@ -264,7 +268,7 @@
   <!-- FILTER PANEL -->
   <div class="filter-panel">
     <!-- Status Tabs -->
-    <div style="width:100%">
+    <div id="statusTabsBar" style="width:100%">
       <div class="fp-tabs" id="statusTabs">
         <button class="fp-tab active" data-val="">All</button>
         <button class="fp-tab" data-val="for-sale">Buy</button>
@@ -363,10 +367,10 @@
     <div class="fp-grp" id="furnishGrp" style="display:none">
       <label>Furnishing</label>
       <select id="fFurnish">
-        <option value="">Any</option>
-        <option value="furnished">Fully Furnished</option>
-        <option value="semi-furnished">Semi Furnished</option>
-        <option value="bare-shell">Bare Shell</option>
+        <option value="">Any Furnishing</option>
+        <option value="fully">Fully Furnished</option>
+        <option value="semi">Semi Furnished</option>
+        <option value="unfurnished">Unfurnished</option>
       </select>
     </div>
 
@@ -614,7 +618,7 @@ document.querySelectorAll('.fp-tab').forEach(t => {
       typeEl.innerHTML = '<option value="">All Commercial</option><option value="office">Office Space</option><option value="shop">Shop / Showroom</option><option value="showroom">Showroom</option><option value="warehouse">Warehouse</option>';
       document.getElementById('bedsGrp').style.display = 'none';
       document.getElementById('sqftGrp').style.display = '';
-      document.getElementById('furnishGrp').style.display = '';
+      document.getElementById('furnishGrp').style.display = 'none';
       document.getElementById('possessionGrp').style.display = '';
     } else {
       typeEl.innerHTML = '<option value="">All Types</option><option value="apartment">Apartment / Flat</option><option value="villa">Villa</option><option value="bungalow">Bungalow</option><option value="rowhouse">Row House</option><option value="plot">Plot / Land</option><option value="office">Office Space</option><option value="shop">Shop / Showroom</option><option value="showroom">Showroom</option><option value="warehouse">Warehouse</option>';
@@ -629,11 +633,15 @@ updateBudgetOptions(initStatus);
 // Commercial filter toggle
 const commercialTypes = ['office','shop','showroom','warehouse'];
 function toggleFilters() {
-  const isC = commercialTypes.includes(document.getElementById('fType').value);
-  document.getElementById('bedsGrp').style.display    = isC ? 'none' : '';
-  document.getElementById('sqftGrp').style.display     = isC ? '' : 'none';
-  document.getElementById('furnishGrp').style.display  = isC ? '' : 'none';
-  document.getElementById('possessionGrp').style.display = isC ? '' : 'none';
+  const activeTab = document.querySelector('.fp-tab.active')?.dataset.val || '';
+  const typeVal = document.getElementById('fType').value;
+  const isCommercial = activeTab === 'commercial' || commercialTypes.includes(typeVal);
+  const isResidential = !isCommercial;
+
+  document.getElementById('bedsGrp').style.display    = isResidential ? '' : 'none';
+  document.getElementById('sqftGrp').style.display     = isCommercial ? '' : 'none';
+  document.getElementById('furnishGrp').style.display  = isResidential ? '' : 'none';
+  document.getElementById('possessionGrp').style.display = isCommercial ? '' : 'none';
 }
 document.getElementById('fType').addEventListener('change', toggleFilters);
 toggleFilters();
@@ -641,14 +649,15 @@ toggleFilters();
 function getFilters() {
   const activeTab = document.querySelector('.fp-tab.active')?.dataset.val || '';
   return {
-    status:   activeTab === 'commercial' ? '' : activeTab,
-    category: activeTab === 'commercial' ? 'commercial' : '',
-    city:     document.getElementById('fCity').value,
-    area:     document.getElementById('fSubLocality').value || document.getElementById('fLocality').value,
-    type:     document.getElementById('fType').value,
-    beds:     document.getElementById('fBeds').value,
-    budget:   document.getElementById('fBudget').value,
-    sort:     document.getElementById('fSort').value
+    status:    activeTab === 'commercial' ? '' : activeTab,
+    category:  activeTab === 'commercial' ? 'commercial' : '',
+    city:      document.getElementById('fCity').value,
+    area:      document.getElementById('fSubLocality').value || document.getElementById('fLocality').value,
+    type:      document.getElementById('fType').value,
+    beds:      document.getElementById('fBeds').value,
+    budget:    document.getElementById('fBudget').value,
+    sort:      document.getElementById('fSort').value,
+    furnish:   document.getElementById('fFurnish').value
   };
 }
 
@@ -871,6 +880,7 @@ document.getElementById('clearBtn').addEventListener('click', function() {
   document.getElementById('fSubLocality').innerHTML = '<option value="">All Sub-Areas</option>';
   document.getElementById('fType').value = '';
   document.getElementById('fBeds').value = '';
+  document.getElementById('fFurnish').value = '';
   updateBudgetOptions('');
   toggleFilters();
   history.replaceState(null, '', 'properties.html');
@@ -923,6 +933,7 @@ function loadProperties(page) {
   if (f.sort === 'price-desc') url += '&sort=price&order=desc';
   if (f.sort === 'sqft-desc')  url += '&sort=sqft&order=desc';
   if (f.sort === 'newest')     url += '&sort=createdAt&order=desc';
+  if (f.furnish)               url += '&furnishing=' + encodeURIComponent(f.furnish);
   if (f.budget) {
     var budgetParts = f.budget.split('-');
     if (budgetParts.length === 2) {

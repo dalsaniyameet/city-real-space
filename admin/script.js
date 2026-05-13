@@ -987,8 +987,7 @@ function editProperty(p) {
       var oc = b.getAttribute('onclick') || '';
       if (oc.indexOf('setResFurnishing') !== -1) b.classList.toggle('active', oc.indexOf("'" + furnVal2 + "'") !== -1);
     });
-    var fi2 = document.getElementById('furnishingItems');
-    if (fi2) fi2.style.display = 'block';
+    applyFurnishingItems(furnVal2);
     // Available From / Suitable For
     var rAFEl = document.getElementById('rAvailFrom'); if (rAFEl) rAFEl.value = ex.availFrom || '';
     var rSFEl = document.getElementById('rSuitableFor');
@@ -2571,76 +2570,76 @@ async function deleteContact(id) {
 // ===== AMENITIES GRID =====
 const AMENITIES_BY_TYPE = {
   apartment: [
-    { icon: 'ðŸ›—', label: 'Lift' },
-    { icon: 'ðŸŠ', label: 'Swimming Pool' },
-    { icon: 'ðŸ‹ï¸', label: 'Gymnasium' },
-    { icon: 'ðŸ”’', label: '24/7 Security' },
-    { icon: 'ðŸ…¿ï¸', label: 'Covered Parking' },
-    { icon: 'âš¡', label: 'Power Backup' },
-    { icon: 'ðŸŒ¿', label: 'Garden / Park' },
-    { icon: 'ðŸŽ®', label: 'Clubhouse' },
-    { icon: 'ðŸƒ', label: 'Jogging Track' },
-    { icon: 'ðŸ“¡', label: 'Intercom' },
-    { icon: 'ðŸŒŠ', label: 'Water Supply 24/7' },
-    { icon: 'ðŸ”¥', label: 'Gas Pipeline' },
-    { icon: 'ðŸ§¹', label: 'Housekeeping' },
-    { icon: 'ðŸ›', label: 'Kids Play Area' },
-    { icon: 'ðŸŽ¾', label: 'Sports Court' },
-    { icon: 'ðŸ¾', label: 'Pet Friendly' },
-    { icon: 'ðŸ“¶', label: 'High Speed Internet' },
-    { icon: 'ðŸš¿', label: 'Rainwater Harvesting' },
+    { icon: '&#128727;', label: 'Lift' },
+    { icon: '&#127946;', label: 'Swimming Pool' },
+    { icon: '&#127947;', label: 'Gymnasium' },
+    { icon: '&#128274;', label: '24/7 Security' },
+    { icon: '&#127359;', label: 'Covered Parking' },
+    { icon: '&#9889;', label: 'Power Backup' },
+    { icon: '&#127807;', label: 'Garden / Park' },
+    { icon: '&#127918;', label: 'Clubhouse' },
+    { icon: '&#127939;', label: 'Jogging Track' },
+    { icon: '&#128225;', label: 'Intercom' },
+    { icon: '&#127754;', label: 'Water Supply 24/7' },
+    { icon: '&#128293;', label: 'Gas Pipeline' },
+    { icon: '&#129529;', label: 'Housekeeping' },
+    { icon: '&#128707;', label: 'Kids Play Area' },
+    { icon: '&#127934;', label: 'Sports Court' },
+    { icon: '&#128062;', label: 'Pet Friendly' },
+    { icon: '&#128246;', label: 'High Speed Internet' },
+    { icon: '&#128703;', label: 'Rainwater Harvesting' },
   ],
   villa: [
-    { icon: 'ðŸŒ¿', label: 'Private Garden' },
-    { icon: 'ðŸŠ', label: 'Private Pool' },
-    { icon: 'ðŸ…¿ï¸', label: 'Private Parking' },
-    { icon: 'ðŸ”’', label: '24/7 Security' },
-    { icon: 'âš¡', label: 'Power Backup' },
-    { icon: 'ðŸ‹ï¸', label: 'Home Gym' },
-    { icon: 'ðŸŽ®', label: 'Clubhouse' },
-    { icon: 'ðŸ”¥', label: 'Gas Pipeline' },
-    { icon: 'ðŸŒŠ', label: 'Water Supply 24/7' },
-    { icon: 'ðŸ“¡', label: 'Intercom' },
-    { icon: 'ðŸ¾', label: 'Pet Friendly' },
-    { icon: 'ðŸ“¶', label: 'High Speed Internet' },
-    { icon: 'ðŸ›', label: 'Kids Play Area' },
-    { icon: 'ðŸŽ¾', label: 'Sports Court' },
+    { icon: '&#127807;', label: 'Private Garden' },
+    { icon: '&#127946;', label: 'Private Pool' },
+    { icon: '&#127359;', label: 'Private Parking' },
+    { icon: '&#128274;', label: '24/7 Security' },
+    { icon: '&#9889;', label: 'Power Backup' },
+    { icon: '&#127947;', label: 'Home Gym' },
+    { icon: '&#127918;', label: 'Clubhouse' },
+    { icon: '&#128293;', label: 'Gas Pipeline' },
+    { icon: '&#127754;', label: 'Water Supply 24/7' },
+    { icon: '&#128225;', label: 'Intercom' },
+    { icon: '&#128062;', label: 'Pet Friendly' },
+    { icon: '&#128246;', label: 'High Speed Internet' },
+    { icon: '&#128707;', label: 'Kids Play Area' },
+    { icon: '&#127934;', label: 'Sports Court' },
   ],
   bungalow: [
-    { icon: 'ðŸŒ¿', label: 'Private Garden' },
-    { icon: 'ðŸ…¿ï¸', label: 'Private Parking' },
-    { icon: 'ðŸ”’', label: '24/7 Security' },
-    { icon: 'âš¡', label: 'Power Backup' },
-    { icon: 'ðŸ”¥', label: 'Gas Pipeline' },
-    { icon: 'ðŸŒŠ', label: 'Water Supply 24/7' },
-    { icon: 'ðŸ“¡', label: 'Intercom' },
-    { icon: 'ðŸ¾', label: 'Pet Friendly' },
-    { icon: 'ðŸ“¶', label: 'High Speed Internet' },
-    { icon: 'ðŸŠ', label: 'Swimming Pool' },
+    { icon: '&#127807;', label: 'Private Garden' },
+    { icon: '&#127359;', label: 'Private Parking' },
+    { icon: '&#128274;', label: '24/7 Security' },
+    { icon: '&#9889;', label: 'Power Backup' },
+    { icon: '&#128293;', label: 'Gas Pipeline' },
+    { icon: '&#127754;', label: 'Water Supply 24/7' },
+    { icon: '&#128225;', label: 'Intercom' },
+    { icon: '&#128062;', label: 'Pet Friendly' },
+    { icon: '&#128246;', label: 'High Speed Internet' },
+    { icon: '&#127946;', label: 'Swimming Pool' },
   ],
   rowhouse: [
-    { icon: 'ðŸŒ¿', label: 'Garden' },
-    { icon: 'ðŸ…¿ï¸', label: 'Parking' },
-    { icon: 'ðŸ”’', label: '24/7 Security' },
-    { icon: 'âš¡', label: 'Power Backup' },
-    { icon: 'ðŸ”¥', label: 'Gas Pipeline' },
-    { icon: 'ðŸŒŠ', label: 'Water Supply 24/7' },
-    { icon: 'ðŸ“¡', label: 'Intercom' },
-    { icon: 'ðŸŽ®', label: 'Clubhouse' },
-    { icon: 'ðŸ›', label: 'Kids Play Area' },
-    { icon: 'ðŸ“¶', label: 'High Speed Internet' },
+    { icon: '&#127807;', label: 'Garden' },
+    { icon: '&#127359;', label: 'Parking' },
+    { icon: '&#128274;', label: '24/7 Security' },
+    { icon: '&#9889;', label: 'Power Backup' },
+    { icon: '&#128293;', label: 'Gas Pipeline' },
+    { icon: '&#127754;', label: 'Water Supply 24/7' },
+    { icon: '&#128225;', label: 'Intercom' },
+    { icon: '&#127918;', label: 'Clubhouse' },
+    { icon: '&#128707;', label: 'Kids Play Area' },
+    { icon: '&#128246;', label: 'High Speed Internet' },
   ],
   plot: [
-    { icon: 'ðŸŒŠ', label: 'Water Connection' },
-    { icon: 'âš¡', label: 'Electricity Connection' },
-    { icon: 'ðŸ›£ï¸', label: 'Road Access' },
-    { icon: 'ðŸ”’', label: 'Gated Community' },
-    { icon: 'ðŸŒ¿', label: 'Landscaping' },
-    { icon: 'ðŸš¿', label: 'Drainage' },
-    { icon: 'ðŸ“¶', label: 'Internet Ready' },
+    { icon: '&#127754;', label: 'Water Connection' },
+    { icon: '&#9889;', label: 'Electricity Connection' },
+    { icon: '&#128739;', label: 'Road Access' },
+    { icon: '&#128274;', label: 'Gated Community' },
+    { icon: '&#127807;', label: 'Landscaping' },
+    { icon: '&#128703;', label: 'Drainage' },
+    { icon: '&#128246;', label: 'Internet Ready' },
   ],
   office: [
-    { icon: '<i class="fa-solid fa-square-parking"></i>', label: 'Parking' },
+    { icon: '&#127359;', label: 'Parking' },
     { icon: '<i class="fa-solid fa-car"></i>', label: 'Visitor Parking' },
     { icon: '<i class="fa-solid fa-square-parking"></i>', label: 'Reserved Parking' },
     { icon: '<i class="fa-solid fa-elevator"></i>', label: 'Lift(s)' },
@@ -2648,10 +2647,10 @@ const AMENITIES_BY_TYPE = {
     { icon: '<i class="fa-solid fa-bolt"></i>', label: 'Power Back-up' },
     { icon: '<i class="fa-solid fa-shield-halved"></i>', label: 'Security Guard' },
     { icon: '<i class="fa-solid fa-video"></i>', label: 'CCTV Surveillance' },
-    { icon: '<i class="fa-solid fa-snowflake"></i>', label: 'Central AC' },
-    { icon: '<i class="fa-solid fa-wifi"></i>', label: 'High Speed Internet' },
+    { icon: '&#10052;', label: 'Central AC' },
+    { icon: '&#128246;', label: 'High Speed Internet' },
     { icon: '<i class="fa-solid fa-utensils"></i>', label: 'Cafeteria / Food Court' },
-    { icon: '<i class="fa-solid fa-person-booth"></i>', label: 'Reception Area' },
+    { icon: '&#127970;', label: 'Reception Area' },
     { icon: '<i class="fa-solid fa-phone-volume"></i>', label: 'Intercom Facility' },
     { icon: '<i class="fa-solid fa-fire-extinguisher"></i>', label: 'Fire Extinguisher' },
     { icon: '<i class="fa-solid fa-bell"></i>', label: 'Fire Sensors' },
@@ -2659,7 +2658,7 @@ const AMENITIES_BY_TYPE = {
     { icon: '<i class="fa-solid fa-building-columns"></i>', label: 'Grade A Building' },
     { icon: '<i class="fa-solid fa-door-open"></i>', label: 'Emergency Exit' },
     { icon: '<i class="fa-solid fa-wheelchair"></i>', label: 'WheelChair Accessibility' },
-    { icon: '<i class="fa-solid fa-restroom"></i>', label: 'Washroom' },
+    { icon: '&#128703;', label: 'Washroom' },
     { icon: '<i class="fa-solid fa-droplet"></i>', label: '24x7 Water' },
     { icon: '<i class="fa-solid fa-water"></i>', label: 'Water Storage' },
     { icon: '<i class="fa-solid fa-trash"></i>', label: 'Waste Disposal' },
@@ -2671,77 +2670,77 @@ const AMENITIES_BY_TYPE = {
     { icon: '<i class="fa-solid fa-om"></i>', label: 'Vaastu Compliant' },
   ],
   shop: [
-    { icon: 'ðŸ…¿ï¸', label: 'Parking' },
-    { icon: 'âš¡', label: 'Power Backup' },
+    { icon: '&#127359;', label: 'Parking' },
+    { icon: '&#9889;', label: 'Power Backup' },
     { icon: 'ðŸ”’', label: 'Security' },
     { icon: 'â„ï¸', label: 'AC' },
-    { icon: 'ðŸŽ¥', label: 'CCTV' },
-    { icon: 'ðŸ›—', label: 'Lift' },
-    { icon: 'ðŸ”¥', label: 'Fire Safety' },
-    { icon: 'ðŸ“¶', label: 'Internet Ready' },
-    { icon: 'ðŸš¿', label: 'Washroom' },
+    { icon: '&#127909;', label: 'CCTV' },
+    { icon: '&#128727;', label: 'Lift' },
+    { icon: '&#128293;', label: 'Fire Safety' },
+    { icon: '&#128246;', label: 'Internet Ready' },
+    { icon: '&#128703;', label: 'Washroom' },
   ],
   warehouse: [
-    { icon: 'ðŸ…¿ï¸', label: 'Loading Dock' },
-    { icon: 'âš¡', label: '3-Phase Power' },
-    { icon: 'ðŸ”’', label: '24/7 Security' },
-    { icon: 'ðŸŽ¥', label: 'CCTV' },
-    { icon: 'ðŸ”¥', label: 'Fire Safety' },
-    { icon: 'ðŸš¿', label: 'Washroom' },
-    { icon: 'ðŸ›£ï¸', label: 'Highway Access' },
-    { icon: 'ðŸ“¦', label: 'Storage Racks' },
-    { icon: 'â„ï¸', label: 'Cold Storage' },
+    { icon: '&#127359;', label: 'Loading Dock' },
+    { icon: '&#9889;', label: '3-Phase Power' },
+    { icon: '&#128274;', label: '24/7 Security' },
+    { icon: '&#127909;', label: 'CCTV' },
+    { icon: '&#128293;', label: 'Fire Safety' },
+    { icon: '&#128703;', label: 'Washroom' },
+    { icon: '&#128739;', label: 'Highway Access' },
+    { icon: '&#128230;', label: 'Storage Racks' },
+    { icon: '&#10052;', label: 'Cold Storage' },
   ],
   showroom: [
-    { icon: 'ðŸ…¿ï¸', label: 'Parking' },
-    { icon: 'âš¡', label: 'Power Backup' },
+    { icon: '&#127359;', label: 'Parking' },
+    { icon: '&#9889;', label: 'Power Backup' },
     { icon: 'ðŸ”’', label: 'Security' },
-    { icon: 'â„ï¸', label: 'Central AC' },
-    { icon: 'ðŸŽ¥', label: 'CCTV' },
-    { icon: 'ðŸ›—', label: 'Lift' },
-    { icon: 'ðŸ”¥', label: 'Fire Safety' },
-    { icon: 'ðŸ“¶', label: 'High Speed Internet' },
-    { icon: 'ðŸš¿', label: 'Washroom' },
-    { icon: 'ðŸ¢', label: 'Reception Area' },
-    { icon: 'ðŸ’¡', label: 'Display Lighting' },
-    { icon: 'â™¿', label: 'Wheelchair Access' },
+    { icon: '&#10052;', label: 'Central AC' },
+    { icon: '&#127909;', label: 'CCTV' },
+    { icon: '&#128727;', label: 'Lift' },
+    { icon: '&#128293;', label: 'Fire Safety' },
+    { icon: '&#128246;', label: 'High Speed Internet' },
+    { icon: '&#128703;', label: 'Washroom' },
+    { icon: '&#127970;', label: 'Reception Area' },
+    { icon: '&#128161;', label: 'Display Lighting' },
+    { icon: '&#9855;', label: 'Wheelchair Access' },
   ],
   factory: [
-    { icon: 'âš¡', label: '3-Phase Power' },
-    { icon: 'ðŸ…¿ï¸', label: 'Loading / Unloading' },
-    { icon: 'ðŸ”’', label: '24/7 Security' },
-    { icon: 'ðŸŽ¥', label: 'CCTV' },
-    { icon: 'ðŸ”¥', label: 'Fire Safety' },
-    { icon: 'ðŸš¿', label: 'Washroom' },
-    { icon: 'ðŸ›£ï¸', label: 'Highway Access' },
-    { icon: 'ðŸŒŠ', label: 'Water Supply' },
-    { icon: 'ðŸ­', label: 'Overhead Crane' },
-    { icon: 'ðŸ“¦', label: 'Storage Area' },
-    { icon: 'â™»ï¸', label: 'Effluent Treatment' },
+    { icon: '&#9889;', label: '3-Phase Power' },
+    { icon: '&#127359;', label: 'Loading / Unloading' },
+    { icon: '&#128274;', label: '24/7 Security' },
+    { icon: '&#127909;', label: 'CCTV' },
+    { icon: '&#128293;', label: 'Fire Safety' },
+    { icon: '&#128703;', label: 'Washroom' },
+    { icon: '&#128739;', label: 'Highway Access' },
+    { icon: '&#127754;', label: 'Water Supply' },
+    { icon: '&#127981;', label: 'Overhead Crane' },
+    { icon: '&#128230;', label: 'Storage Area' },
+    { icon: '&#9851;', label: 'Effluent Treatment' },
   ],
   coworking: [
-    { icon: 'ðŸ“¶', label: 'High Speed Internet' },
-    { icon: 'â„ï¸', label: 'Central AC' },
-    { icon: 'ðŸ…¿ï¸', label: 'Parking' },
-    { icon: 'ðŸ›—', label: 'Lift' },
-    { icon: 'âš¡', label: 'Power Backup' },
-    { icon: 'ðŸ”’', label: '24/7 Security' },
-    { icon: 'ðŸŽ¥', label: 'CCTV' },
-    { icon: 'ðŸ½ï¸', label: 'Cafeteria' },
-    { icon: 'ðŸ–¨ï¸', label: 'Printer / Scanner' },
-    { icon: 'ðŸ“¹', label: 'Conference Room' },
-    { icon: 'ðŸ›‹ï¸', label: 'Lounge Area' },
-    { icon: 'ðŸ”¥', label: 'Fire Safety' },
+    { icon: '&#128246;', label: 'High Speed Internet' },
+    { icon: '&#10052;', label: 'Central AC' },
+    { icon: '&#127359;', label: 'Parking' },
+    { icon: '&#128727;', label: 'Lift' },
+    { icon: '&#9889;', label: 'Power Backup' },
+    { icon: '&#128274;', label: '24/7 Security' },
+    { icon: '&#127909;', label: 'CCTV' },
+    { icon: '&#127869;', label: 'Cafeteria' },
+    { icon: '&#128424;', label: 'Printer / Scanner' },
+    { icon: '&#128249;', label: 'Conference Room' },
+    { icon: '&#128715;', label: 'Lounge Area' },
+    { icon: '&#128293;', label: 'Fire Safety' },
   ],
   industrial_land: [
-    { icon: 'ðŸŒŠ', label: 'Water Connection' },
-    { icon: 'âš¡', label: '3-Phase Power' },
-    { icon: 'ðŸ›£ï¸', label: 'Road Access' },
-    { icon: 'ðŸ”’', label: 'Gated / Fenced' },
-    { icon: 'ðŸš¿', label: 'Drainage' },
-    { icon: 'ðŸ­', label: 'GIDC Zone' },
-    { icon: 'ðŸ“¦', label: 'Warehouse Permitted' },
-    { icon: 'â™»ï¸', label: 'ETP Facility' },
+    { icon: '&#127754;', label: 'Water Connection' },
+    { icon: '&#9889;', label: '3-Phase Power' },
+    { icon: '&#128739;', label: 'Road Access' },
+    { icon: '&#128274;', label: 'Gated / Fenced' },
+    { icon: '&#128703;', label: 'Drainage' },
+    { icon: '&#127981;', label: 'GIDC Zone' },
+    { icon: '&#128230;', label: 'Warehouse Permitted' },
+    { icon: '&#9851;', label: 'ETP Facility' },
   ],
 };
 
@@ -3969,6 +3968,12 @@ function setMeetingRooms(btn, val) {
     var rf = document.getElementById('residentialFields');
     if (rf) rf.style.display = isRes ? 'block' : 'none';
 
+    // Jab residential type select ho, default Unfurnished state apply karo
+    if (isRes) {
+      var furnVal = document.getElementById('rFurnishing') ? document.getElementById('rFurnishing').value : 'Unfurnished';
+      applyFurnishingItems(furnVal || 'Unfurnished');
+    }
+
     var rd = document.getElementById('rentalDetailsSection');
     if (rd) rd.style.display = (isRes && isRent) ? 'block' : 'none';
     var sd = document.getElementById('sellPricingSection');
@@ -4041,19 +4046,29 @@ function hsChipRes(chip, fieldId, val) {
   document.getElementById(fieldId).value = val;
 }
 
+function applyFurnishingItems(val) {
+  var items = document.getElementById('furnishingItems');
+  if (!items) return;
+  if (val === 'Unfurnished') {
+    items.style.display = 'none';
+  } else {
+    items.style.display = 'block';
+    items.querySelectorAll('label.furn-item').forEach(function(label) {
+      label.style.display = '';
+    });
+  }
+}
+
 function setResFurnishing(btn, val) {
   btn.closest('.hs-toggle').querySelectorAll('.hs-toggle-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
   document.getElementById('rFurnishing').value = val;
   var pf = document.getElementById('pFurnished');
   if (pf) pf.value = val;
-  // Unfurnished me furnishing items nahi dikhne chahiye
-  var items = document.getElementById('furnishingItems');
-  if (items) items.style.display = (val === 'Unfurnished') ? 'none' : 'block';
-  // Unfurnished me sab checkboxes uncheck karo
   if (val === 'Unfurnished') {
     document.querySelectorAll('#furnishingItems input[name="furnItem"]').forEach(function(cb){ cb.checked = false; });
   }
+  applyFurnishingItems(val);
 }
 
 function calcSBA() {
@@ -4064,6 +4079,7 @@ function calcSBA() {
   if (pSqft && !pSqft.value && sba.value) pSqft.value = sba.value;
   updateAdminScore();
 }
+
 
 
 

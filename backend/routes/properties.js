@@ -97,7 +97,15 @@ router.get('/', async (req, res) => {
     if (area)       query['location.area'] = new RegExp(area, 'i');
     if (beds)       query['specs.beds'] = Number(beds);
     if (featured)   query.isFeatured = true;
-    if (furnishing) query['extraDetails.furnished'] = new RegExp(furnishing, 'i');
+    if (furnishing) {
+      const fl = furnishing.toLowerCase();
+      let furnRegex;
+      if (fl === 'fully')        furnRegex = /fully\s*furnished/i;
+      else if (fl === 'semi')    furnRegex = /semi\s*furnished/i;
+      else if (fl === 'unfurnished') furnRegex = /^unfurnished$/i;
+      else                       furnRegex = new RegExp(furnishing, 'i');
+      query['extraDetails.furnished'] = furnRegex;
+    }
     if (possession) query['extraDetails.possession'] = new RegExp(possession, 'i');
     if (minPrice || maxPrice) {
       query.price = {};

@@ -465,7 +465,7 @@ const statsObserver = new IntersectionObserver(entries => {
           const el = document.getElementById('dynamicPropCount');
           const ctaEl = document.getElementById('ctaPropCount');
           const authEl = document.getElementById('authPropCount');
-          if (el) { el.dataset.suffix = '+'; count > 0 ? animateCounter(el, count, 3500) : (el.textContent = '0'); }
+          if (el) { el.dataset.suffix = '+'; count > 0 ? animateCounter(el, count, 800) : (el.textContent = '0'); }
           if (ctaEl) ctaEl.textContent = val;
           if (authEl) authEl.textContent = val;
         })
@@ -1228,14 +1228,25 @@ document.getElementById('inqSuccessClose').addEventListener('click', () => inqOv
 
 }
 
-// ===== NAV DROPDOWN MOBILE =====
+// ===== NAV DROPDOWN — Desktop click + Mobile click =====
 document.querySelectorAll('.nav-drop-btn').forEach(btn => {
   btn.addEventListener('click', e => {
-    if (window.innerWidth <= 768) {
-      e.preventDefault();
-      btn.closest('.nav-dropdown').classList.toggle('open');
-    }
+    e.preventDefault();
+    e.stopPropagation();
+    const thisDropdown = btn.closest('.nav-dropdown');
+    const isOpen = thisDropdown.classList.contains('open');
+    // Pehle sab band karo
+    document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+    // Agar ye band tha toh open karo
+    if (!isOpen) thisDropdown.classList.add('open');
   });
+});
+
+// Bahar click karne pe sab dropdown band
+document.addEventListener('click', e => {
+  if (!e.target.closest('.nav-dropdown')) {
+    document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+  }
 });
 
 // ===== NAV CLOSE ON LINK CLICK =====
