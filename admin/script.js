@@ -3806,6 +3806,9 @@ async function checkAllServices() {
   }
 }
 
+// Alias for index.html button
+function checkAllServices() { checkApiStatus(); }
+
 async function checkApiStatus() { await checkAllServices(); }
 async function testApiConnection() { await checkAllServices(); }
 

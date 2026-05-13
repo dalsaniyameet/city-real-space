@@ -260,14 +260,17 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     });
     const data = await res.json();
     
+    console.log('📨 Login response:', data);
+    
     if (data.success && data.needsOTP) {
-      if (!data.isAdmin) {
+      // isAdmin check - backend sends isAdmin:true for admin users
+      if (data.isAdmin === false) {
         showErr('Access denied. Admin only.');
         btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login to Admin Panel';
         btn.disabled = false;
         return;
       }
-      _adminEmail = data.email;
+      _adminEmail = data.email || email;
 
       // ✅ OTP already verified within 24 hours — skip OTP, go directly
       if (isOtpSessionValid(_adminEmail)) {
