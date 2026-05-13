@@ -16,14 +16,14 @@ async function createAdmin() {
     lastName:  'Admin',
     email:     'info@cityrealspace.com',
     phone:     '9825031247',
-    password:  'CRS@Info#2026!',
+    password:  'CRS@1247.',
     role:      'admin',
     city:      'Ahmedabad',
     isVerified: true
   });
 
   console.log('✅ Admin created!');
-  console.log('   info@cityrealspace.com / CRS@Info#2026!');
+  console.log('   info@cityrealspace.com / CRS@1247.');
   process.exit(0);
 }
 
