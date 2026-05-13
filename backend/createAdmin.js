@@ -10,7 +10,7 @@ async function createAdmin() {
   // Delete all existing admins
   await User.deleteMany({ role: 'admin' });
 
-  // Only admin - City Real Space
+  // Admin 1 - City Real Space
   await User.create({
     firstName: 'City',
     lastName:  'Admin',
@@ -22,8 +22,21 @@ async function createAdmin() {
     isVerified: true
   });
 
-  console.log('✅ Admin created!');
+  // Admin 2 - Patel Shriji
+  await User.create({
+    firstName: 'Patel',
+    lastName:  'Shriji',
+    email:     'patelshriji72@gmail.com',
+    phone:     '',
+    password:  'CRS@1247',
+    role:      'admin',
+    city:      'Ahmedabad',
+    isVerified: true
+  });
+
+  console.log('✅ Admins created!');
   console.log('   info@cityrealspace.com / CRS@1247.');
+  console.log('   patelshriji72@gmail.com / CRS@1247');
   process.exit(0);
 }
 
