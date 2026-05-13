@@ -43,7 +43,6 @@
     .box::before { content:''; position:absolute; top:0;left:0;right:0;height:3px; background:linear-gradient(90deg,#E53935,#D4A017,#E53935); background-size:200% 100%; animation:lineShimmer 3s linear infinite; }
     .box::after  { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(229,57,53,0.06) 0%,transparent 60%); pointer-events:none; }
 
-    /* Admin badge */
     .admin-badge {
       display:inline-flex;align-items:center;gap:6px;
       background:linear-gradient(135deg,rgba(229,57,53,0.2),rgba(183,28,28,0.15));
@@ -55,53 +54,11 @@
     }
 
     .logo{text-align:center;margin-bottom:28px;animation:fadeInUp 0.6s 0.1s both;display:flex;flex-direction:column;align-items:center;}
-    .logo-img-wrap {
-      display:inline-block;margin-bottom:16px;
-      position:relative;width:88px;height:88px;
-    }
-    .logo-img-wrap img{
-      width:88px;height:88px;
-      object-fit:cover;border-radius:22px;
-      border:2.5px solid rgba(229,57,53,0.6);
-      display:block;
-      position:relative;z-index:2;
-      animation:logoFloat 4s ease-in-out infinite;
-    }
-    /* Ring 1 */
-    .logo-img-wrap::before{
-      content:'';
-      position:absolute;
-      inset:-7px;
-      border-radius:28px;
-      border:2px solid transparent;
-      border-top-color:rgba(229,57,53,0.8);
-      border-right-color:rgba(212,160,23,0.5);
-      z-index:1;
-      animation:ringRotate 3s linear infinite;
-    }
-    /* Ring 2 */
-    .logo-img-wrap::after{
-      content:'';
-      position:absolute;
-      inset:-13px;
-      border-radius:34px;
-      border:1.5px solid transparent;
-      border-top-color:rgba(212,160,23,0.5);
-      border-bottom-color:rgba(229,57,53,0.3);
-      z-index:1;
-      animation:ringRotate 5s linear infinite reverse;
-    }
-    /* Online dot */
-    .logo-dot{
-      position:absolute;
-      bottom:4px;right:4px;
-      width:14px;height:14px;
-      background:#10b981;
-      border-radius:50%;
-      border:2.5px solid #0e1118;
-      z-index:3;
-      animation:dotPulse 2s ease-in-out infinite;
-    }
+    .logo-img-wrap { display:inline-block;margin-bottom:16px;position:relative;width:88px;height:88px; }
+    .logo-img-wrap img{ width:88px;height:88px;object-fit:cover;border-radius:22px;border:2.5px solid rgba(229,57,53,0.6);display:block;position:relative;z-index:2;animation:logoFloat 4s ease-in-out infinite; }
+    .logo-img-wrap::before{ content:'';position:absolute;inset:-7px;border-radius:28px;border:2px solid transparent;border-top-color:rgba(229,57,53,0.8);border-right-color:rgba(212,160,23,0.5);z-index:1;animation:ringRotate 3s linear infinite; }
+    .logo-img-wrap::after{ content:'';position:absolute;inset:-13px;border-radius:34px;border:1.5px solid transparent;border-top-color:rgba(212,160,23,0.5);border-bottom-color:rgba(229,57,53,0.3);z-index:1;animation:ringRotate 5s linear infinite reverse; }
+    .logo-dot{ position:absolute;bottom:4px;right:4px;width:14px;height:14px;background:#10b981;border-radius:50%;border:2.5px solid #0e1118;z-index:3;animation:dotPulse 2s ease-in-out infinite; }
 
     .logo h2{font-size:1.4rem;font-weight:800;color:#f5f0eb;margin-bottom:3px;}
     .logo h2 span{color:#D4A017;}
@@ -128,7 +85,6 @@
     .back a{color:#D4A017;font-weight:600;text-decoration:none;}
     .hidden{display:none!important;}
 
-    /* OTP boxes */
     .otp-boxes{display:flex;gap:10px;justify-content:center;margin:20px 0;}
     .otp-boxes input{width:46px;height:52px;border:1.5px solid rgba(229,57,53,0.2);border-radius:10px;text-align:center;font-size:1.4rem;font-weight:700;color:#f5f0eb;font-family:'Poppins',sans-serif;outline:none;transition:all 0.2s;background:rgba(255,255,255,0.03);}
     .otp-boxes input:focus{border-color:rgba(229,57,53,0.6);box-shadow:0 0 0 3px rgba(229,57,53,0.12);background:rgba(229,57,53,0.05);}
@@ -137,7 +93,6 @@
     .resend-row{text-align:center;margin-top:12px;font-size:0.8rem;color:#7a6a55;}
     .resend-row button{background:none;border:none;color:#D4A017;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;font-size:0.8rem;}
 
-    /* Custom Cursor — DISABLED for admin */
     .cursor-dot, .cursor-ring { display: none !important; }
 
     @media (max-width: 600px) {
@@ -215,8 +170,6 @@ const API = (function() {
 })();
 let _adminEmail = '';
 
-console.log('🔒 Admin Panel - API Endpoint:', API);
-
 // OTP box auto-jump
 document.querySelectorAll('.otp-digit').forEach((inp, i, arr) => {
   inp.addEventListener('input', () => {
@@ -234,13 +187,6 @@ function showErr(msg) {
 }
 function hideErr() { document.getElementById('errMsg').style.display = 'none'; }
 
-const OTP_VALID_MS = 24 * 60 * 60 * 1000; // 24 hours
-
-function isOtpSessionValid(email) {
-  const saved = localStorage.getItem('adminOtpVerified_' + email);
-  return saved && (Date.now() - parseInt(saved)) < OTP_VALID_MS;
-}
-
 // STEP 1 — Login
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -248,10 +194,10 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
   const btn = document.getElementById('loginBtn');
   const email = document.getElementById('adminEmail').value.trim();
   const password = document.getElementById('pass').value;
-  
+
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
   btn.disabled = true;
-  
+
   try {
     const res = await fetch(API + '/auth/login', {
       method: 'POST',
@@ -259,46 +205,19 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
       body: JSON.stringify({ email, password })
     });
     const data = await res.json();
-    
-    console.log('📨 Login response:', data);
-    
-    if (data.success && data.needsOTP) {
-      // isAdmin check - backend sends isAdmin:true for admin users
-      if (data.isAdmin === false) {
-        showErr('Access denied. Admin only.');
-        btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login to Admin Panel';
-        btn.disabled = false;
-        return;
-      }
+
+    if (data.success && data.needsOTP && data.isAdmin) {
       _adminEmail = data.email || email;
-
-      // ✅ OTP already verified within 24 hours — skip OTP, go directly
-      if (isOtpSessionValid(_adminEmail)) {
-        // Re-fetch token by doing a silent OTP-bypass verify
-        // We need a valid token — request backend with stored session
-        // Since backend requires OTP, we store token from last OTP verify
-        const storedToken = localStorage.getItem('adminOtpToken_' + _adminEmail);
-        const storedUser  = localStorage.getItem('adminOtpUser_'  + _adminEmail);
-        if (storedToken && storedUser) {
-          localStorage.setItem('adminToken', storedToken);
-          localStorage.setItem('adminUser',  storedUser);
-          localStorage.setItem('adminLastActive', Date.now().toString());
-          window.location.href = 'index.html';
-          return;
-        }
-      }
-
-      // OTP session expired or not found — show OTP step
       document.getElementById('otpEmailShow').textContent = _adminEmail;
       document.getElementById('loginForm').classList.add('hidden');
       document.getElementById('otpStep').classList.remove('hidden');
       document.getElementById('o1').focus();
-    } else if (data.success && !data.needsOTP) {
+    } else if (data.success && data.isAdmin === false) {
       showErr('Access denied. Admin only.');
       btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login to Admin Panel';
       btn.disabled = false;
     } else {
-      showErr(data.message || 'Invalid credentials');
+      showErr(data.message || 'Invalid email or password');
       btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Login to Admin Panel';
       btn.disabled = false;
     }
@@ -314,45 +233,36 @@ async function verifyOTP() {
   hideErr();
   const otp = ['o1','o2','o3','o4','o5','o6'].map(id => document.getElementById(id).value).join('');
   if (otp.length < 6) { showErr('Enter complete 6-digit OTP'); return; }
-  
+
   const btn = document.getElementById('otpVerifyBtn');
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
   btn.disabled = true;
-  
+
   try {
-    console.log('🔑 Admin OTP verify request:', { email: _adminEmail, otp });
     const res = await fetch(API + '/auth/verify-login', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ email: _adminEmail, otp })
     });
     const data = await res.json();
-    console.log('📨 Verify response:', data);
-    
+
     if (data.success && data.user && data.user.role === 'admin') {
       localStorage.setItem('adminToken', data.token);
       localStorage.setItem('adminUser', JSON.stringify(data.user));
       localStorage.setItem('adminLastActive', Date.now().toString());
-      // Save OTP session for 24 hours
-      localStorage.setItem('adminOtpVerified_' + _adminEmail, Date.now().toString());
-      localStorage.setItem('adminOtpToken_'    + _adminEmail, data.token);
-      localStorage.setItem('adminOtpUser_'     + _adminEmail, JSON.stringify(data.user));
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = 'index.html';
+      window.location.replace('index.html');
     } else if (data.success && data.user && data.user.role !== 'admin') {
-      console.error('❌ User is not admin');
       showErr('Access denied. Admin only.');
       btn.innerHTML = '<i class="fa-solid fa-shield-halved"></i> Verify & Enter Panel';
       btn.disabled = false;
     } else {
-      console.error('❌ OTP verification failed:', data.message);
       showErr(data.message || 'Invalid OTP');
       btn.innerHTML = '<i class="fa-solid fa-shield-halved"></i> Verify & Enter Panel';
       btn.disabled = false;
     }
   } catch(err) {
-    console.error('🚨 OTP verify error:', err);
     showErr('Server error.');
     btn.innerHTML = '<i class="fa-solid fa-shield-halved"></i> Verify & Enter Panel';
     btn.disabled = false;
@@ -363,27 +273,20 @@ async function verifyOTP() {
 async function resendOTP() {
   if (!_adminEmail) return;
   try {
-    console.log('🔄 Resending OTP for:', _adminEmail);
     const res = await fetch(API + '/auth/resend-otp', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ email: _adminEmail })
     });
     const data = await res.json();
-    console.log('📨 Resend response:', data);
-    
-    if (data.success) { 
-      console.log('✅ OTP resent');
+    if (data.success) {
       hideErr();
       ['o1','o2','o3','o4','o5','o6'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('o1').focus();
-    }
-    else {
-      console.error('❌ Resend failed:', data.message);
+    } else {
       showErr(data.message || 'Error resending OTP');
     }
   } catch(err) {
-    console.error('🚨 Resend error:', err);
     showErr('Server error.');
   }
 }
