@@ -1,13 +1,13 @@
-﻿const API = (function() {
+const API = (function() {
   if (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     return 'http://localhost:5000/api';
   }
-  return 'https://city-real-space.vercel.app/api';
+  return 'https://www.cityrealspace.com/api';
 })();
 
-console.log('ðŸ”’ Admin Panel Script - API Endpoint:', API);
+console.log('🔒 Admin Panel Script - API Endpoint:', API);
 
-// ===== CITY â†’ LOCALITY DATA =====
+// ===== CITY → LOCALITY DATA =====
 const cityLocalities = {
   'Ahmedabad': {
     '100 Feet Road':   ['100 Feet Road Satellite','100 Feet Road Bodakdev','100 Feet Road Prahlad Nagar','100 Feet Road Anand Nagar'],
@@ -130,7 +130,7 @@ const cityLocalities = {
   }
 };
 
-// City change â†’ populate locality
+// City change → populate locality
 document.getElementById('pCitySelect').addEventListener('change', function() {
   const city = this.value;
   const areaEl = document.getElementById('pAreaSelect');
@@ -144,7 +144,7 @@ document.getElementById('pCitySelect').addEventListener('change', function() {
   document.getElementById('projectDropdown').style.display = 'none';
 });
 
-// Locality change â†’ populate sub-area + projects
+// Locality change → populate sub-area + projects
 document.getElementById('pAreaSelect').addEventListener('change', function() {
   const city  = document.getElementById('pCitySelect').value;
   const area  = this.value;
@@ -162,14 +162,14 @@ document.getElementById('pAreaSelect').addEventListener('change', function() {
   document.getElementById('projectDropdown').style.display = 'none';
 });
 
-// Sub-area select â†’ fill text input
+// Sub-area select → fill text input
 document.getElementById('pSubAreaSelect').addEventListener('change', function() {
   if (this.value && this.value !== '__other__') {
     document.getElementById('pSubArea') && (document.getElementById('pSubArea').value = this.value);
   }
 });
 
-// Project smart combo â€” shows ALL projects from all cities/areas
+// Project smart combo — shows ALL projects from all cities/areas
 function onProjectInput(query) {
   var city = document.getElementById('pCitySelect').value;
   var area = document.getElementById('pAreaSelect').value;
@@ -208,14 +208,14 @@ function onProjectInput(query) {
       + '<i class="fa-solid fa-building" style="color:#FF4D4D;margin-right:8px;font-size:0.75rem;"></i>' + p + '</div>';
   }).join('');
 
-  // If typed something and no match â€” show "Use: <typed>" option
+  // If typed something and no match — show "Use: <typed>" option
   if (q && filtered.length === 0) {
     items = '<div onclick="selectProject(\'' + query.replace(/'/g, "\\'") + '\')" ' +
       'style="padding:10px 14px;cursor:pointer;font-size:0.85rem;color:#E53935;border-bottom:1px solid #f5f5f5;transition:background 0.15s;" ' +
       'onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'\'">'
       + '<i class="fa-solid fa-plus" style="color:#E53935;margin-right:8px;font-size:0.75rem;"></i>Add "' + query + '" manually</div>';
   } else if (q && !filtered.some(function(p) { return p.toLowerCase() === q; })) {
-    // Typed something, some matches exist but exact not found â€” add option at bottom
+    // Typed something, some matches exist but exact not found — add option at bottom
     items += '<div onclick="selectProject(\'' + query.replace(/'/g, "\\'") + '\')" ' +
       'style="padding:10px 14px;cursor:pointer;font-size:0.85rem;color:#E53935;transition:background 0.15s;background:#fff8f8;" ' +
       'onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'#fff8f8\'">' +
@@ -239,7 +239,7 @@ document.addEventListener('click', function(e) {
   if (dd && inp && !dd.contains(e.target) && e.target !== inp) dd.style.display = 'none';
 });
 
-// cityData reference for projects â€” real Ahmedabad societies/projects
+// cityData reference for projects — real Ahmedabad societies/projects
 const cityData = {
   'Ahmedabad': {
     '100 Feet Road':    { projects: ['Shivalik Sharda','Rajpath Rangoli','Safal Profitaire','Iscon Platinum','Goyal Intercity'] },
@@ -361,7 +361,7 @@ const cityData = {
   }
 };
 
-// ===== AUTH GUARD â€” instant check before anything loads =====
+// ===== AUTH GUARD — instant check before anything loads =====
 const adminToken = localStorage.getItem('adminToken');
 const adminUser  = JSON.parse(localStorage.getItem('adminUser') || 'null');
 if (!adminToken || !adminUser || adminUser.role !== 'admin') {
@@ -369,7 +369,7 @@ if (!adminToken || !adminUser || adminUser.role !== 'admin') {
   throw new Error('Unauthorized');
 }
 
-// ===== SESSION TIMEOUT â€” 24 hours =====
+// ===== SESSION TIMEOUT — 24 hours =====
 const SESSION_TIMEOUT = 24 * 60 * 60 * 1000;
 let _sessionTimer;
 
@@ -380,7 +380,7 @@ function resetSessionTimer() {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminUser');
     localStorage.removeItem('adminLastActive');
-    alert('â° Session expired due to inactivity. Please login again.');
+    alert('⏰ Session expired due to inactivity. Please login again.');
     window.location.replace('login.html');
   }, SESSION_TIMEOUT);
 }
@@ -406,7 +406,7 @@ if (lastActive && (Date.now() - lastActive) > SESSION_TIMEOUT) {
       localStorage.removeItem('adminLastActive');
       window.location.replace('login.html');
     }
-  } catch(e) { /* network error â€” keep session */ }
+  } catch(e) { /* network error — keep session */ }
 })();
 
 ['mousemove','keydown','click','scroll','touchstart'].forEach(function(evt) {
@@ -715,7 +715,7 @@ function applyPropFilter(cat) {
   const tbody = document.getElementById('propTbody');
   tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px"><i class="fa-solid fa-spinner fa-spin" style="color:var(--accent);font-size:1.5rem"></i></td></tr>';
   const paramMap = { residential: '?category=residential', commercial: '?category=commercial', trending: '?featured=true' };
-  const emptyMsg = { residential: 'No residential properties found.', commercial: 'No commercial properties found.', trending: 'No trending properties. Click ðŸ”¥ on any property to mark it trending.' };
+  const emptyMsg = { residential: 'No residential properties found.', commercial: 'No commercial properties found.', trending: 'No trending properties. Click 🔥 on any property to mark it trending.' };
   api('GET', '/properties' + (paramMap[cat] || '')).then(function(data) {
     if (!data.success || !data.properties || !data.properties.length) {
       tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="fa-solid fa-building"></i><p>' + (emptyMsg[cat] || 'No properties found.') + '</p></div></td></tr>';
@@ -1066,7 +1066,7 @@ function editProperty(p) {
     if (oc.indexOf("'pStatus'") !== -1) b.classList.toggle('active', oc.indexOf("'" + status + "'") !== -1);
   });
 
-  // City Ã¢â€ â€™ Locality Ã¢â€ â€™ SubArea
+  // City â†’ Locality â†’ SubArea
   var city    = p.location ? p.location.city : '';
   var area    = p.location ? p.location.area : '';
   var subArea = ex.subArea || '';
@@ -1318,7 +1318,7 @@ async function markStatus(id, status) {
   var labels = { sold: 'Sold Out', rented: 'Rented Out', 'for-sale': 'For Sale', 'for-rent': 'For Rent' };
   var data = await api('PUT', '/properties/' + id, { status: status });
   if (data.success) {
-    toast((labels[status] || status) + ' — status updated!');
+    toast((labels[status] || status) + ' � status updated!');
     loadProperties(currentPropFilter);
     loadStats();
   } else toast(data.message || 'Error', 'error');
@@ -1327,7 +1327,7 @@ async function markStatus(id, status) {
 async function toggleTrending(id, isFeatured) {
   const data = await api('PUT', '/properties/' + id, { isFeatured: !isFeatured });
   if (data.success) {
-    toast(isFeatured ? 'Removed from Trending!' : 'ðŸ”¥ Added to Trending!');
+    toast(isFeatured ? 'Removed from Trending!' : '🔥 Added to Trending!');
     loadProperties(currentPropFilter);
     loadStats();
   } else toast(data.message || 'Error', 'error');
@@ -1345,7 +1345,7 @@ function filterByCategory(cat) {
   });
   document.getElementById('topbarTitle').textContent = 'Properties';
 
-  // Mark correct filter button as active — clear all first
+  // Mark correct filter button as active � clear all first
   document.querySelectorAll('#page-properties .fbtn').forEach(function(b) { b.classList.remove('active'); });
   var btnMap = { residential:'btnResidential', commercial:'btnCommercial', trending:'btnTrending' };
   var activeBtn = document.getElementById(btnMap[cat]);
@@ -1362,7 +1362,7 @@ async function loadTrendingProperties() {
   const data = await api('GET', '/properties?featured=true');
   const tbody = document.getElementById('propTbody');
   if (!data.success || !data.properties.length) {
-    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fa-solid fa-fire"></i><p>No trending properties yet.<br><small>Click ðŸ”¥ fire button on any property to mark it trending.</small></p></div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fa-solid fa-fire"></i><p>No trending properties yet.<br><small>Click 🔥 fire button on any property to mark it trending.</small></p></div></td></tr>';
     return;
   }
   data.properties.forEach(function(p) { propsCache[p._id] = p; });
@@ -1399,17 +1399,17 @@ async function loadSubmissions() {
   const pending = data.properties.filter(function(p){return !p.isApproved;}).length;
   document.getElementById('subBadge').textContent = pending || '';
   tbody.innerHTML = data.properties.map(function(p) {
-    const postedName = p.postedBy ? ((p.postedBy.firstName || '') + ' ' + (p.postedBy.lastName || '')).trim() || p.postedBy.name || 'â€”' : 'â€”';
-    const postedPhone = p.postedBy ? (p.postedBy.phone || 'â€”') : 'â€”';
+    const postedName = p.postedBy ? ((p.postedBy.firstName || '') + ' ' + (p.postedBy.lastName || '')).trim() || p.postedBy.name || '—' : '—';
+    const postedPhone = p.postedBy ? (p.postedBy.phone || '—') : '—';
     const postedRole  = p.postedBy ? (p.postedBy.role || '') : '';
     return '<tr>' +
       '<td><div style="display:flex;align-items:center;gap:10px">' +
       (p.images && p.images[0] ? '<img src="' + p.images[0] + '" class="prop-thumb"/>' : '<div style="width:48px;height:36px;background:#f0f0f0;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#ccc"><i class="fa-solid fa-image"></i></div>') +
-      '<div class="prop-info"><strong>' + (p.title || 'Untitled') + '</strong><span style="color:var(--text3);font-size:0.7rem">' + (p.type || '') + (p.category ? ' â€¢ ' + p.category : '') + '</span></div></div></td>' +
+      '<div class="prop-info"><strong>' + (p.title || 'Untitled') + '</strong><span style="color:var(--text3);font-size:0.7rem">' + (p.type || '') + (p.category ? ' • ' + p.category : '') + '</span></div></div></td>' +
       '<td><strong style="color:var(--text)">' + postedName + '</strong>' + (postedRole ? '<br><span style="font-size:0.68rem;color:var(--text3)">' + postedRole + '</span>' : '') + '</td>' +
       '<td><a href="tel:' + postedPhone + '" style="color:#60a5fa;font-weight:600;font-size:0.82rem">' + postedPhone + '</a></td>' +
-      '<td>' + (p.location ? (p.location.area || '') + (p.location.city ? ', ' + p.location.city : '') : 'â€”') + '</td>' +
-      '<td><strong>' + (p.priceLabel || (p.price ? 'â‚¹' + Number(p.price).toLocaleString('en-IN') : 'â€”')) + '</strong></td>' +
+      '<td>' + (p.location ? (p.location.area || '') + (p.location.city ? ', ' + p.location.city : '') : '—') + '</td>' +
+      '<td><strong>' + (p.priceLabel || (p.price ? '₹' + Number(p.price).toLocaleString('en-IN') : '—')) + '</strong></td>' +
       '<td>' + listingBadgeHtml(p) + '</td>' +
       '<td><span class="badge ' + (p.isApproved ? 'badge-green' : 'badge-orange') + '">' + (p.isApproved ? 'Approved' : 'Pending') + '</span></td>' +
       '<td>' + fmtDate(p.createdAt) + '</td>' +
@@ -1423,7 +1423,7 @@ async function loadSubmissions() {
 
 async function approveSubmission(id) {
   const data = await api('PUT', '/properties/' + id + '/approve');
-  if (data.success) { toast('Approved! âœ…'); loadSubmissions(); loadStats(); loadNotifications(); }
+  if (data.success) { toast('Approved! ✅'); loadSubmissions(); loadStats(); loadNotifications(); }
   else toast(data.message || 'Error', 'error');
 }
 
@@ -1458,10 +1458,10 @@ async function loadBlogs() {
   tbody.innerHTML = data.blogs.map(function(b) {
     const seoScore = calcBlogSeoScore(b);
     const scoreBadge = seoScore >= 80
-      ? '<span style="background:#e8f5e9;color:#2e7d32;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid #a5d6a7;">ðŸŸ¢ ' + seoScore + '</span>'
+      ? '<span style="background:#e8f5e9;color:#2e7d32;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid #a5d6a7;">🟢 ' + seoScore + '</span>'
       : seoScore >= 50
-      ? '<span style="background:#fff3e0;color:#e65100;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid #ffcc80;">ðŸŸ¡ ' + seoScore + '</span>'
-      : '<span style="background:#ffebee;color:#c62828;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid #ef9a9a;">ðŸ”´ ' + seoScore + '</span>';
+      ? '<span style="background:#fff3e0;color:#e65100;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid #ffcc80;">🟡 ' + seoScore + '</span>'
+      : '<span style="background:#ffebee;color:#c62828;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid #ef9a9a;">🔴 ' + seoScore + '</span>';
     return '<tr>' +
       '<td><div style="display:flex;align-items:center;gap:10px">' +
       (b.image ? '<img src="' + b.image + '" style="width:48px;height:36px;border-radius:6px;object-fit:cover;flex-shrink:0"/>' : '<div style="width:48px;height:36px;background:#f0f0f0;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#ccc"><i class="fa-solid fa-image"></i></div>') +
@@ -1724,7 +1724,7 @@ function updateBlogSeoScore() {
   const pb = document.getElementById('bSeoPublishBtn');
   if (score >= 75) {
     pb.style.cssText = 'width:100%;padding:10px;border-radius:10px;border:none;font-size:0.75rem;font-weight:700;font-family:Poppins,sans-serif;cursor:pointer;background:linear-gradient(135deg,#10b981,#059669);color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;transition:all 0.3s;box-shadow:0 4px 18px rgba(16,185,129,0.4);';
-    pb.innerHTML = '<i class="fa-solid fa-fire"></i> SEO Ready â€” Publish!';
+    pb.innerHTML = '<i class="fa-solid fa-fire"></i> SEO Ready — Publish!';
   } else if (score >= 50) {
     pb.style.cssText = 'width:100%;padding:10px;border-radius:10px;border:none;font-size:0.75rem;font-weight:700;font-family:Poppins,sans-serif;cursor:pointer;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;transition:all 0.3s;';
     pb.innerHTML = '<i class="fa-solid fa-rocket"></i> Ready to Publish';
@@ -1755,27 +1755,27 @@ async function loadInquiries(filter) {
     const isOffer = i.lookingFor === 'Get Offer';
     const propName = i.propertyName || i.propertyTitle || i.propertyType || '';
     return '<tr>' +
-      '<td><strong style="color:#E53935">' + (i.refId || 'â€”') + '</strong></td>' +
+      '<td><strong style="color:#E53935">' + (i.refId || '—') + '</strong></td>' +
       '<td><strong>' + i.name + '</strong><br><small style="color:#aaa">' + (i.email || '') + '</small></td>' +
       '<td><a href="tel:+91' + i.phone + '" style="color:#1565c0;font-weight:600;display:flex;align-items:center;gap:5px"><i class="fa-solid fa-phone" style="font-size:0.7rem"></i>+91 ' + i.phone + '</a></td>' +
-      '<td><span class="badge ' + (isOffer ? 'badge-orange' : 'badge-blue') + '">' + (i.lookingFor || 'â€”') + '</span></td>' +
+      '<td><span class="badge ' + (isOffer ? 'badge-orange' : 'badge-blue') + '">' + (i.lookingFor || '—') + '</span></td>' +
       '<td>' + (propName
         ? '<div style="background:#fff8e1;border:1.5px solid #ffe082;border-radius:8px;padding:6px 10px;max-width:180px">' +
           '<div style="font-size:0.7rem;color:#f57f17;font-weight:700;margin-bottom:2px"><i class="fa-solid fa-building" style="margin-right:4px"></i>PROPERTY</div>' +
           '<div style="font-size:0.82rem;color:#333;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="' + propName + '">' + propName + '</div>' +
           (i.city ? '<div style="font-size:0.72rem;color:#888;margin-top:2px"><i class="fa-solid fa-location-dot" style="color:#E53935;margin-right:3px"></i>' + i.city + '</div>' : '') +
           '</div>'
-        : '<span style="color:#aaa">â€”</span>') + '</td>' +
-      '<td>' + (i.city || 'â€”') + '</td>' +
-      '<td>' + (i.budget || 'â€”') + '</td>' +
+        : '<span style="color:#aaa">—</span>') + '</td>' +
+      '<td>' + (i.city || '—') + '</td>' +
+      '<td>' + (i.budget || '—') + '</td>' +
       '<td><select onchange="updateInqStatus(\'' + i._id + '\', this.value)" style="border:1.5px solid #e8e8e8;border-radius:7px;padding:4px 8px;font-size:0.78rem;font-family:Poppins,sans-serif;outline:none;cursor:pointer;">' +
-      '<option value="new"' + (i.status==='new'?' selected':'') + '>ðŸ”´ New</option>' +
-      '<option value="contacted"' + (i.status==='contacted'?' selected':'') + '>ðŸŸ¡ Contacted</option>' +
-      '<option value="closed"' + (i.status==='closed'?' selected':'') + '>ðŸŸ¢ Closed</option>' +
+      '<option value="new"' + (i.status==='new'?' selected':'') + '>🔴 New</option>' +
+      '<option value="contacted"' + (i.status==='contacted'?' selected':'') + '>🟡 Contacted</option>' +
+      '<option value="closed"' + (i.status==='closed'?' selected':'') + '>🟢 Closed</option>' +
       '</select></td>' +
-      '<td>' + (i.createdAt ? fmtDate(i.createdAt) : 'â€”') + '</td>' +
+      '<td>' + (i.createdAt ? fmtDate(i.createdAt) : '—') + '</td>' +
       '<td><div class="act-btns">' +
-      '<a href="https://wa.me/91' + i.phone + '?text=' + encodeURIComponent('Hi ' + i.name + ', regarding your inquiry' + (propName ? ' for "' + propName + '"' : '') + ' â€” City Real Space team is here to help!') + '" target="_blank" class="act-btn approve" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>' +
+      '<a href="https://wa.me/91' + i.phone + '?text=' + encodeURIComponent('Hi ' + i.name + ', regarding your inquiry' + (propName ? ' for "' + propName + '"' : '') + ' — City Real Space team is here to help!') + '" target="_blank" class="act-btn approve" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>' +
       '<button class="act-btn del" onclick="deleteInquiry(\'' + i._id + '\')"><i class="fa-solid fa-trash"></i></button>' +
       '</div></td>' +
       '</tr>';
@@ -1823,14 +1823,14 @@ async function loadRequirements() {
       return '<tr>' +
         '<td><strong>' + r.name + '</strong></td>' +
         '<td><a href="tel:+91' + r.phone + '" style="color:#1565c0;font-weight:600;display:flex;align-items:center;gap:5px"><i class="fa-solid fa-phone" style="font-size:0.7rem"></i> +91 ' + r.phone + '</a></td>' +
-        '<td>' + (r.propertyType || 'â€”') + '</td>' +
-        '<td>' + (r.budget || 'â€”') + '</td>' +
-        '<td>' + (r.city || 'â€”') + '</td>' +
-        '<td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (r.message || 'â€”') + '</td>' +
+        '<td>' + (r.propertyType || '—') + '</td>' +
+        '<td>' + (r.budget || '—') + '</td>' +
+        '<td>' + (r.city || '—') + '</td>' +
+        '<td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (r.message || '—') + '</td>' +
         '<td><select onchange="updateInqStatus(\'' + r._id + '\',this.value)" style="border:1.5px solid #e8e8e8;border-radius:7px;padding:4px 8px;font-size:0.78rem;font-family:Poppins,sans-serif;outline:none;cursor:pointer">' +
-        '<option value="new"' + (r.status === 'new' ? ' selected' : '') + '>ðŸ”´ New</option>' +
-        '<option value="contacted"' + (r.status === 'contacted' ? ' selected' : '') + '>ðŸŸ¡ Contacted</option>' +
-        '<option value="closed"' + (r.status === 'closed' ? ' selected' : '') + '>ðŸŸ¢ Closed</option>' +
+        '<option value="new"' + (r.status === 'new' ? ' selected' : '') + '>🔴 New</option>' +
+        '<option value="contacted"' + (r.status === 'contacted' ? ' selected' : '') + '>🟡 Contacted</option>' +
+        '<option value="closed"' + (r.status === 'closed' ? ' selected' : '') + '>🟢 Closed</option>' +
         '</select></td>' +
         '<td>' + fmtDate(r.createdAt) + '</td>' +
         '<td><div class="act-btns">' +
@@ -1860,7 +1860,7 @@ function addPropertyForReq(encName, phone, encType, encCity, encBudget) {
   // Switch to properties page first, then open modal
   goPage('properties');
   setTimeout(function() {
-    document.getElementById('propModalTitle').textContent = 'Add Property â€” For ' + name;
+    document.getElementById('propModalTitle').textContent = 'Add Property — For ' + name;
     document.getElementById('propForm').reset();
     document.getElementById('propId').value = '';
     document.getElementById('pApproved').checked = true;
@@ -1921,7 +1921,7 @@ async function loadUsers() {
       '<td>' + u.email + '</td>' +
       '<td>' + u.phone + '</td>' +
       '<td><span class="badge badge-blue">' + u.role + '</span></td>' +
-      '<td>' + (u.city || 'â€”') + '</td>' +
+      '<td>' + (u.city || '—') + '</td>' +
       '<td>' + fmtDate(u.createdAt) + '</td>' +
       '<td><div class="act-btns"><button class="act-btn del" onclick="deleteUser(\'' + u._id + '\')"><i class="fa-solid fa-trash"></i></button></div></td>' +
       '</tr>';
@@ -1945,18 +1945,18 @@ const BHK_SQFT = {
 };
 
 const TYPE_AREA_LABEL = {
-  apartment:       'ðŸ“ Super Built-up Area (sq.ft)',
-  villa:           'ðŸ“ Built-up Area (sq.ft)',
-  bungalow:        'ðŸ“ Built-up Area (sq.ft)',
-  rowhouse:        'ðŸ“ Built-up Area (sq.ft)',
-  plot:            'ðŸ“ Plot Area (sq.ft)',
-  office:          'ðŸ“ Carpet Area (sq.ft)',
-  shop:            'ðŸ“ Carpet Area (sq.ft)',
-  showroom:        'ðŸ“ Carpet Area (sq.ft)',
-  warehouse:       'ðŸ“ Built-up Area (sq.ft)',
-  factory:         'ðŸ“ Built-up / Plot Area (sq.ft)',
-  coworking:       'ðŸ“ Carpet Area (sq.ft)',
-  industrial_land: 'ðŸ“ Land Area (sq.ft)',
+  apartment:       '📐 Super Built-up Area (sq.ft)',
+  villa:           '📐 Built-up Area (sq.ft)',
+  bungalow:        '📐 Built-up Area (sq.ft)',
+  rowhouse:        '📐 Built-up Area (sq.ft)',
+  plot:            '📐 Plot Area (sq.ft)',
+  office:          '📐 Carpet Area (sq.ft)',
+  shop:            '📐 Carpet Area (sq.ft)',
+  showroom:        '📐 Carpet Area (sq.ft)',
+  warehouse:       '📐 Built-up Area (sq.ft)',
+  factory:         '📐 Built-up / Plot Area (sq.ft)',
+  coworking:       '📐 Carpet Area (sq.ft)',
+  industrial_land: '📐 Land Area (sq.ft)',
 };
 
 function onAdminTypeChange() {
@@ -1992,7 +1992,7 @@ const BHK_AUTO = {
   },
 };
 
-// ===== COMMERCIAL oSBA → oCarpet + PricePerSqft AUTO =====
+// ===== COMMERCIAL oSBA ? oCarpet + PricePerSqft AUTO =====
 document.addEventListener('DOMContentLoaded', function() {
   var oSBAEl = document.getElementById('oSBA');
   if (oSBAEl) {
@@ -2050,7 +2050,7 @@ function calcPricePerSqft() {
                 ppsf < 8000  ? 'Premium segment' :
                 ppsf < 15000 ? 'Luxury segment' : 'Ultra Luxury';
 
-  var msg = '\u20b9' + ppsf.toLocaleString('en-IN') + '/sq.ft  •  ' + price.toLocaleString('en-IN') + ' ÷ ' + sqft + ' sqft  •  ' + segment;
+  var msg = '\u20b9' + ppsf.toLocaleString('en-IN') + '/sq.ft  �  ' + price.toLocaleString('en-IN') + ' � ' + sqft + ' sqft  �  ' + segment;
   if (hint) { hint.textContent = msg; hint.style.display = 'block'; }
 }
 
@@ -2068,20 +2068,20 @@ function autoAvailDate(possession) {
   var msg = '';
 
   if (possession === 'Ready to Move') {
-    // Aaj se 7 din baad — immediate possession
+    // Aaj se 7 din baad � immediate possession
     d = new Date(today);
     d.setDate(d.getDate() + 7);
-    msg = 'Ready to Move — 7 din mein available';
+    msg = 'Ready to Move � 7 din mein available';
   } else if (possession === 'Under Construction') {
-    // 18 months baad — typical UC delivery
+    // 18 months baad � typical UC delivery
     d = new Date(today);
     d.setMonth(d.getMonth() + 18);
-    msg = 'Under Construction — ~18 months mein possession';
+    msg = 'Under Construction � ~18 months mein possession';
   } else if (possession === 'New Launch') {
-    // 24 months baad — new launch
+    // 24 months baad � new launch
     d = new Date(today);
     d.setMonth(d.getMonth() + 24);
-    msg = 'New Launch — ~24 months mein possession';
+    msg = 'New Launch � ~24 months mein possession';
   }
 
   if (d) {
@@ -2117,7 +2117,7 @@ function autoPriceLabel() {
   var status = document.getElementById('pStatus') ? document.getElementById('pStatus').value : 'for-sale';
   var isRent = status === 'for-rent';
 
-  // Convert to actual rupees based on unit — use Math.round to avoid floating point errors
+  // Convert to actual rupees based on unit � use Math.round to avoid floating point errors
   var actualAmount = n;
   if (unit === 'cr')        actualAmount = Math.round(n * 10000000);
   else if (unit === 'lakh') actualAmount = Math.round(n * 100000);
@@ -2141,7 +2141,7 @@ function autoPriceLabel() {
   }
   if (isRent) label += '/mo';
 
-  // Helper text â€” full breakdown
+  // Helper text — full breakdown
   var breakdown = '\u20b9' + actualAmount.toLocaleString('en-IN');
   if (unit === 'cr')        breakdown += ' (' + n + ' Crore)';
   else if (unit === 'lakh') breakdown += ' (' + n + ' Lakh)';
@@ -2249,7 +2249,7 @@ function hsChipBhk(chip, val) {
     // --- Show area hint banner ---
     var hint = document.getElementById('sqftHint');
     if (hint) {
-      hint.textContent = 'ðŸ’¡ ' + val + ' BHK ' + (type||'') + ': Carpet ' + data.carpet[0] + 'â€“' + data.carpet[1] + ' | SBA ' + data.sba[0] + 'â€“' + data.sba[1] + ' sq.ft';
+      hint.textContent = '💡 ' + val + ' BHK ' + (type||'') + ': Carpet ' + data.carpet[0] + '–' + data.carpet[1] + ' | SBA ' + data.sba[0] + '–' + data.sba[1] + ' sq.ft';
       hint.style.display = 'block';
     }
   }
@@ -2275,13 +2275,13 @@ function showSqftSuggest() {
   const mid = Math.round((lo + hi) / 2);
   const suggestions = [lo, mid, hi];
 
-  hint.textContent = 'ðŸ’¡ Typical ' + beds + ' BHK ' + (type||'') + ': ' + lo + 'â€“' + hi + ' sq.ft';
+  hint.textContent = '💡 Typical ' + beds + ' BHK ' + (type||'') + ': ' + lo + '–' + hi + ' sq.ft';
   hint.style.display = 'block';
 
   box.innerHTML = suggestions.map(s =>
     '<div onclick="document.getElementById(\'pSqft\').value=' + s + ';document.getElementById(\'sqftSuggest\').style.display=\'none\';updateAdminScore()" ' +
     'style="padding:8px 14px;cursor:pointer;font-size:0.82rem;font-weight:600;color:#FF4D4D;border-bottom:1px solid #fff5f5;transition:background 0.15s" ' +
-    'onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'\'">ðŸ“ ' + s + ' sq.ft</div>'
+    'onmouseover="this.style.background=\'#fff5f5\'" onmouseout="this.style.background=\'\'">📐 ' + s + ' sq.ft</div>'
   ).join('');
   box.style.display = 'block';
 
@@ -2442,7 +2442,7 @@ function updateAdminScore() {
   if (btn) {
     if (score >= 75) {
       btn.className = 'asc-publish-btn high-listing';
-      btn.innerHTML = '<i class="fas fa-fire"></i> High Listing â€” Publish!';
+      btn.innerHTML = '<i class="fas fa-fire"></i> High Listing — Publish!';
     } else if (score >= 50) {
       btn.className = 'asc-publish-btn ready';
       btn.innerHTML = '<i class="fas fa-rocket"></i> Ready to Publish';
@@ -2529,13 +2529,13 @@ async function loadContacts() {
       return '<tr>' +
         '<td><strong>' + c.name + '</strong></td>' +
         '<td>' + c.phone + '</td>' +
-        '<td>' + (c.email || 'â€”') + '</td>' +
-        '<td>' + (c.subject || 'â€”') + '</td>' +
+        '<td>' + (c.email || '—') + '</td>' +
+        '<td>' + (c.subject || '—') + '</td>' +
         '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + c.message + '</td>' +
         '<td><select onchange="updateContactStatus(\'' + c._id + '\',this.value)" style="border:1.5px solid #e0e0e0;border-radius:7px;padding:4px 8px;font-size:0.78rem;font-family:Poppins,sans-serif;outline:none;cursor:pointer;">' +
-        '<option value="new"'     + (c.status==='new'     ? ' selected':'') + '>ðŸ”´ New</option>' +
-        '<option value="read"'    + (c.status==='read'    ? ' selected':'') + '>ðŸŸ¡ Read</option>' +
-        '<option value="replied"' + (c.status==='replied' ? ' selected':'') + '>ðŸŸ¢ Replied</option>' +
+        '<option value="new"'     + (c.status==='new'     ? ' selected':'') + '>🔴 New</option>' +
+        '<option value="read"'    + (c.status==='read'    ? ' selected':'') + '>🟡 Read</option>' +
+        '<option value="replied"' + (c.status==='replied' ? ' selected':'') + '>🟢 Replied</option>' +
         '</select></td>' +
         '<td>' + fmtDate(c.createdAt) + '</td>' +
         '<td><div class="act-btns">' +
@@ -2563,7 +2563,7 @@ async function deleteContact(id) {
     headers: { 'Authorization': 'Bearer ' + adminToken }
   });
   const data = await res.json();
-  if (data.success) { toast('Deleted! âœ…'); loadContacts(); }
+  if (data.success) { toast('Deleted! ✅'); loadContacts(); }
   else toast('Error: ' + (data.message || 'Delete failed'), 'error');
 }
 
@@ -2672,8 +2672,8 @@ const AMENITIES_BY_TYPE = {
   shop: [
     { icon: '&#127359;', label: 'Parking' },
     { icon: '&#9889;', label: 'Power Backup' },
-    { icon: 'ðŸ”’', label: 'Security' },
-    { icon: 'â„ï¸', label: 'AC' },
+    { icon: '🔒', label: 'Security' },
+    { icon: '❄️', label: 'AC' },
     { icon: '&#127909;', label: 'CCTV' },
     { icon: '&#128727;', label: 'Lift' },
     { icon: '&#128293;', label: 'Fire Safety' },
@@ -2694,7 +2694,7 @@ const AMENITIES_BY_TYPE = {
   showroom: [
     { icon: '&#127359;', label: 'Parking' },
     { icon: '&#9889;', label: 'Power Backup' },
-    { icon: 'ðŸ”’', label: 'Security' },
+    { icon: '🔒', label: 'Security' },
     { icon: '&#10052;', label: 'Central AC' },
     { icon: '&#127909;', label: 'CCTV' },
     { icon: '&#128727;', label: 'Lift' },
@@ -2971,10 +2971,10 @@ function buildReviewGrid() {
   var isRes = ['apartment','villa','bungalow','rowhouse'].indexOf(type) !== -1;
 
   function priceStr(p) {
-    if (!p) return 'Ã¢â‚¬â€';
-    if (p >= 10000000) return 'Ã¢â€šÂ¹' + (p/10000000).toFixed(2) + ' Cr';
-    if (p >= 100000)   return 'Ã¢â€šÂ¹' + (p/100000).toFixed(2) + ' L';
-    return 'Ã¢â€šÂ¹' + p.toLocaleString('en-IN');
+    if (!p) return 'â€”';
+    if (p >= 10000000) return 'â‚¹' + (p/10000000).toFixed(2) + ' Cr';
+    if (p >= 100000)   return 'â‚¹' + (p/100000).toFixed(2) + ' L';
+    return 'â‚¹' + p.toLocaleString('en-IN');
   }
 
   function row(icon, label, value, hi) {
@@ -2986,7 +2986,7 @@ function buildReviewGrid() {
       '<span style="font-size:1rem;flex-shrink:0;">' + icon + '</span>' +
       '<div style="flex:1;min-width:0;">' +
         '<div style="font-size:0.68rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.5px;">' + label + '</div>' +
-        '<div style="font-size:0.88rem;font-weight:700;color:' + vc + ';margin-top:2px;">' + (value || '<span style="color:#ccc;font-weight:400;">Ã¢â‚¬â€</span>') + '</div>' +
+        '<div style="font-size:0.88rem;font-weight:700;color:' + vc + ';margin-top:2px;">' + (value || '<span style="color:#ccc;font-weight:400;">â€”</span>') + '</div>' +
       '</div></div>';
   }
 
@@ -3001,12 +3001,12 @@ function buildReviewGrid() {
 
   // Header
   html += '<div style="background:linear-gradient(135deg,#E53935,#b71c1c);border-radius:14px;padding:16px 18px;margin-bottom:16px;color:#fff;">' +
-    '<div style="font-size:0.68rem;font-weight:700;opacity:0.7;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">â€œâ€¹ Review Before Posting</div>' +
+    '<div style="font-size:0.68rem;font-weight:700;opacity:0.7;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">“‹ Review Before Posting</div>' +
     '<div style="font-size:1rem;font-weight:800;margin-bottom:10px;line-height:1.4;">' + (title || '<span style="opacity:0.5">Title not set</span>') + '</div>' +
     '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">' +
-      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">' + (statusMap[status]||status||'Ã¢â‚¬â€') + '</span>' +
-      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">' + (typeMap[type]||type||'Ã¢â‚¬â€') + '</span>' +
-      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">â€œÂ¸ ' + photos + ' Photos</span>' +
+      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">' + (statusMap[status]||status||'â€”') + '</span>' +
+      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">' + (typeMap[type]||type||'â€”') + '</span>' +
+      '<span style="background:rgba(255,255,255,0.2);padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;">“¸ ' + photos + ' Photos</span>' +
     '</div>' +
     '<div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;">' +
       '<span style="font-size:0.72rem;font-weight:600;">Listing Score</span>' +
@@ -3067,14 +3067,14 @@ function buildReviewGrid() {
     html += sec('<i class="fa-solid fa-circle-check"></i> Amenities (' + amenities.length + ')',
       '<div style="display:flex;flex-wrap:wrap;gap:6px;padding:4px 0;">' +
       amenities.map(function(a) {
-        return '<span style="background:#e8f5e9;color:#2e7d32;font-size:0.73rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid #c8e6c9;">Ã¢Å“â€œ ' + a + '</span>';
+        return '<span style="background:#e8f5e9;color:#2e7d32;font-size:0.73rem;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid #c8e6c9;">âœ“ ' + a + '</span>';
       }).join('') + '</div>'
     );
   }
 
   // Agent
   if (agent) {
-    html += sec('â€˜Â¤ Agent Details',
+    html += sec('‘¤ Agent Details',
       row('<i class="fa-solid fa-user-tie"></i>', 'Agent Name', agent) +
       row('<i class="fa-solid fa-phone"></i>', 'Phone', agentPh)
     );
@@ -3082,7 +3082,7 @@ function buildReviewGrid() {
 
   // Description
   if (desc) {
-    html += sec('â€œÂ Description Preview',
+    html += sec('“ Description Preview',
       '<div style="background:#f8f9fb;border:1.5px solid #f0f0f0;border-radius:10px;padding:12px 14px;font-size:0.82rem;color:#555;line-height:1.7;">' +
       desc.substring(0,250) + (desc.length > 250 ? '...' : '') + '</div>'
     );
@@ -3169,7 +3169,7 @@ function aiGenerateTitle() {
   updateAdminScore();
   // Trigger SEO score bar
   document.getElementById('pTitle').dispatchEvent(new Event('input'));
-  toast('Title generated! ✨');
+  toast('Title generated! ?');
 }
 
 function aiGenerateDesc() {
@@ -3238,7 +3238,7 @@ function aiGenerateDesc() {
     updateAdminScore();
 
     if (btn) { btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> AI Write'; btn.disabled = false; }
-    toast('Description generated! ✨');
+    toast('Description generated! ?');
   }, 600);
 }
 
@@ -3313,7 +3313,7 @@ function startAutoSave() {
 }
 startAutoSave();
 
-// On page load Ã¢â‚¬â€ check for auto-saved draft
+// On page load â€” check for auto-saved draft
 window.addEventListener('load', function() {
   var autoSave = localStorage.getItem('adminAutoSaveDraft');
   if (!autoSave) return;
@@ -3448,7 +3448,7 @@ function showDraftSavedToast() {
   var t = document.createElement('div');
   t.id = 'draftSavedToast';
   t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);z-index:99999;background:linear-gradient(135deg,#064e3b,#065f46);border:1.5px solid rgba(16,185,129,0.4);border-radius:16px;padding:16px 24px;box-shadow:0 20px 60px rgba(0,0,0,0.4);display:flex;align-items:center;gap:12px;font-family:Poppins,sans-serif;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1),opacity 0.4s;opacity:0;';
-  t.innerHTML = '<div style="width:38px;height:38px;background:rgba(16,185,129,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">â€™Â¾</div>' +
+  t.innerHTML = '<div style="width:38px;height:38px;background:rgba(16,185,129,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">’¾</div>' +
     '<div>' +
       '<div style="font-size:0.88rem;font-weight:700;color:#6ee7b7;">Draft Saved!</div>' +
       '<div style="font-size:0.75rem;color:rgba(110,231,183,0.6);margin-top:1px;">All details saved. Continue anytime.</div>' +
@@ -3503,8 +3503,8 @@ function loadDrafts() {
       '</div>' +
       '<div style="display:flex;flex-direction:column;gap:6px">' +
         '<div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)"><i class="fa-solid fa-location-dot" style="color:var(--accent);width:14px"></i>' + loc + '</div>' +
-        (price !== 'Ã¢â‚¬â€' ? '<div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)"><i class="fa-solid fa-indian-rupee-sign" style="color:#10b981;width:14px"></i>' + price + '</div>' : '') +
-        ([beds, sqft].filter(Boolean).length ? '<div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)"><i class="fa-solid fa-ruler-combined" style="color:#f59e0b;width:14px"></i>' + [beds, sqft].filter(Boolean).join(' Ã¢â‚¬Â¢ ') + '</div>' : '') +
+        (price !== 'â€”' ? '<div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)"><i class="fa-solid fa-indian-rupee-sign" style="color:#10b981;width:14px"></i>' + price + '</div>' : '') +
+        ([beds, sqft].filter(Boolean).length ? '<div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--text2)"><i class="fa-solid fa-ruler-combined" style="color:#f59e0b;width:14px"></i>' + [beds, sqft].filter(Boolean).join(' â€¢ ') + '</div>' : '') +
         (d.desc ? '<div style="font-size:0.72rem;color:var(--text3);line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">' + d.desc.substring(0,100) + (d.desc.length > 100 ? '...' : '') + '</div>' : '') +
       '</div>' +
       '<div style="display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--border)">' +
@@ -3685,7 +3685,7 @@ async function loadNotifications() {
           color: '#10b981',
           bg: 'rgba(16,185,129,0.12)',
           title: 'New Inquiry',
-          sub: (i.name || 'Someone') + ' â€” ' + (i.lookingFor || 'Property inquiry'),
+          sub: (i.name || 'Someone') + ' — ' + (i.lookingFor || 'Property inquiry'),
           time: i.createdAt,
           action: function() { goPage('inquiries'); toggleNotifPanel(); }
         });
@@ -3755,7 +3755,7 @@ function clearNotifs() {
 async function sendTestWA() {
   try {
     const data = await api('POST', '/send-wa', { message: 'Test notification from City Real Space Admin Panel!' });
-    if (data.success) toast('WhatsApp sent! âœ…');
+    if (data.success) toast('WhatsApp sent! ✅');
     else toast(data.message || 'WA Error', 'error');
   } catch(e) { toast('Error sending WA', 'error'); }
 }
@@ -3866,13 +3866,13 @@ async function loadContacts() {
       return '<tr>' +
         '<td><strong style="color:var(--text)">' + c.name + '</strong></td>' +
         '<td>' + c.phone + '</td>' +
-        '<td>' + (c.email || 'â€”') + '</td>' +
-        '<td>' + (c.subject || 'â€”') + '</td>' +
+        '<td>' + (c.email || '—') + '</td>' +
+        '<td>' + (c.subject || '—') + '</td>' +
         '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + c.message + '</td>' +
         '<td><select onchange="updateContactStatus(\'' + c._id + '\', this.value)" style="border:1.5px solid #e8e8e8;border-radius:7px;padding:4px 8px;font-size:0.78rem;font-family:Poppins,sans-serif;outline:none;cursor:pointer;">' +
-        '<option value="new"'     + (c.status==='new'     ? ' selected' : '') + '>ðŸ”´ New</option>' +
-        '<option value="read"'    + (c.status==='read'    ? ' selected' : '') + '>ðŸŸ¡ Read</option>' +
-        '<option value="replied"' + (c.status==='replied' ? ' selected' : '') + '>ðŸŸ¢ Replied</option>' +
+        '<option value="new"'     + (c.status==='new'     ? ' selected' : '') + '>🔴 New</option>' +
+        '<option value="read"'    + (c.status==='read'    ? ' selected' : '') + '>🟡 Read</option>' +
+        '<option value="replied"' + (c.status==='replied' ? ' selected' : '') + '>🟢 Replied</option>' +
         '</select></td>' +
         '<td>' + fmtDate(c.createdAt) + '</td>' +
         '<td><div class="act-btns">' +
