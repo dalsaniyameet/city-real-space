@@ -140,12 +140,30 @@ propertySchema.index({ title: 'text', 'location.area': 'text', 'location.city': 
 propertySchema.index({ slug: 1 });
 
 // Slug generator
-function generateSlug(type, status, id) {
-  const base = (type + '-' + status)
-    .toLowerCase()
-    .replace(/[^a-z0-9-]/g, '-')
-    .replace(/-+/g, '-');
-  return base + '-' + String(id).slice(-8);
+function generateSlug(type, status, id, property) {
+  const parts = [];
+
+  // BHK — sirf residential ke liye
+  if (property?.specs?.beds > 0) parts.push(property.specs.beds + 'bhk');
+
+  // Sqft — commercial/plot ke liye
+  if (property?.specs?.sqft > 0 && !(property?.specs?.beds > 0)) parts.push(property.specs.sqft + 'sqft');
+
+  // Type
+  parts.push((type || 'property').toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-'));
+
+  // Status
+  parts.push((status || 'for-sale').toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-'));
+
+  // Area
+  if (property?.location?.area) {
+    parts.push(property.location.area.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''));
+  }
+
+  // Unique ID (last 6 chars)
+  parts.push(String(id).slice(-6));
+
+  return parts.join('-').replace(/-+/g, '-').replace(/^-|-$/g, '');
 }
 propertySchema.statics.generateSlug = generateSlug;
 

@@ -21,6 +21,22 @@ app.use(helmet({
 // ===== TRUST PROXY — Vercel/Render ke liye zaroori =====
 app.set('trust proxy', 1);
 
+// ===== FORCE WWW + HTTPS (SEO canonical redirect) =====
+app.use((req, res, next) => {
+  const host = req.headers.host || '';
+  const proto = req.headers['x-forwarded-proto'] || req.protocol;
+  if (host.includes('localhost') || host.includes('127.0.0.1') || host.includes('.onrender.com')) {
+    return next();
+  }
+  if (proto !== 'https') {
+    return res.redirect(301, `https://${host}${req.url}`);
+  }
+  if (!host.startsWith('www.')) {
+    return res.redirect(301, `https://www.${host}${req.url}`);
+  }
+  next();
+});
+
 // ===== RATE LIMITING =====
 const rateLimitHandler = (req, res) => {
   if (req.path.startsWith('/api/')) {
@@ -149,11 +165,10 @@ app.get('/sitemap.xml', async (req, res) => {
       const city = (p.location?.city || 'ahmedabad').toLowerCase().replace(/\s+/g, '-');
       const area = (p.location?.area || 'gujarat').toLowerCase().replace(/\s+/g, '-');
       const lastmod = (p.updatedAt || p.createdAt) ? (p.updatedAt || p.createdAt).toISOString().split('T')[0] : today;
-      const propLoc = p.slug
-        ? `${base}/property/${city}/${area}/${p.slug}`
-        : `${base}/property-detail?id=${p._id}`;
-      return `  <url><loc>${propLoc}</loc><lastmod>${lastmod}</lastmod><priority>0.8</priority><changefreq>daily</changefreq></url>`;
-    }).join('\n');
+      if (!p.slug) return null;
+      const propLoc = `${base}/property/${city}/${area}/${p.slug}`;
+      return `  <url><loc>${propLoc}</loc><lastmod>${lastmod}</lastmod><priority>0.8</priority><changefreq>weekly</changefreq></url>`;
+    }).filter(Boolean).join('\n');
 
     res.send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${staticXml}\n${propXml}\n</urlset>`);
   } catch (err) {
@@ -297,6 +312,40 @@ async function servePropertyDetail(req, res) {
         } else {
           html = html.replace(/(<meta property="og:url" content=")[^"]*("\/>)/, `$1${canonicalUrl}$2`);
         }
+
+        // ===== PROPERTY SCHEMA (Rich Results ke liye) =====
+        try {
+          const schemaObj = {
+            "@context": "https://schema.org",
+            "@type": "RealEstateListing",
+            "name": p.title || ogTitle,
+            "description": ogDesc,
+            "url": canonicalUrl,
+            "image": (p.images && p.images[0]) || "https://www.cityrealspace.com/images/logo.jpeg",
+            "datePosted": (p.createdAt || new Date()).toISOString().split('T')[0],
+            "offers": {
+              "@type": "Offer",
+              "price": p.price || 0,
+              "priceCurrency": "INR"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": p.location?.area || "",
+              "addressLocality": p.location?.city || "Ahmedabad",
+              "addressRegion": "Gujarat",
+              "addressCountry": "IN"
+            }
+          };
+          if (p.specs?.beds) schemaObj.numberOfRooms = p.specs.beds;
+          if (p.specs?.sqft) schemaObj.floorSize = {
+            "@type": "QuantitativeValue",
+            "value": p.specs.sqft,
+            "unitCode": "FTK"
+          };
+          html = html.replace('</head>',
+            `  <script type="application/ld+json">${JSON.stringify(schemaObj)}</script>\n</head>`
+          );
+        } catch(schemaErr) { /* ignore */ }
       }
     } catch (dbErr) {
       // DB error pe bhi HTML serve karo

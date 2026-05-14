@@ -137,7 +137,7 @@ router.post('/generate-slugs', protect, adminOnly, async (req, res) => {
     const properties = await Property.find({ slug: { $in: ['', null, undefined] } });
     let count = 0;
     for (const p of properties) {
-      p.slug = Property.generateSlug(p.type, p.status, p._id);
+      p.slug = Property.generateSlug(p.type, p.status, p._id, p);
       await p.save();
       count++;
     }
@@ -195,7 +195,7 @@ router.post('/user-post', protect, async (req, res) => {
       isApproved: false,
       postedBy: req.user._id
     });
-    property.slug = Property.generateSlug(property.type, property.status, property._id);
+    property.slug = Property.generateSlug(property.type, property.status, property._id, property);
     await property.save();
     res.status(201).json({ success: true, property });
   } catch (err) {
@@ -244,7 +244,7 @@ router.post('/', protect, adminOnly, async (req, res) => {
     const body = { ...req.body, postedBy: req.user._id };
     if (body.price) body.priceLabel = genPriceLabel(body.price, body.status);
     const property = await Property.create(body);
-    property.slug = Property.generateSlug(property.type, property.status, property._id);
+    property.slug = Property.generateSlug(property.type, property.status, property._id, property);
     await property.save();
     res.status(201).json({ success: true, property });
   } catch (err) {
@@ -260,7 +260,7 @@ router.put('/:id', protect, adminOnly, async (req, res) => {
     const property = await Property.findByIdAndUpdate(req.params.id, body, { new: true, runValidators: true });
     if (!property) return res.status(404).json({ success: false, message: 'Property not found' });
     if (!property.slug) {
-      property.slug = Property.generateSlug(property.type, property.status, property._id);
+      property.slug = Property.generateSlug(property.type, property.status, property._id, property);
       await property.save();
     }
     res.json({ success: true, property });

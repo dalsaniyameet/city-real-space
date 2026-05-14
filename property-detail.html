@@ -285,15 +285,7 @@
 <script>function closeMobileNav(){var n=document.getElementById('mobileNav');if(n)n.style.display='none';var b=document.getElementById('hamburger');if(b)b.innerHTML='<i class="fa-solid fa-bars"></i>';document.body.style.overflow='';}
 document.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('.nav-drop-btn').forEach(function(btn){
-    btn.addEventListener('click',function(e){
-      e.preventDefault(); e.stopPropagation();
-      var d=btn.closest('.nav-dropdown'), isOpen=d.classList.contains('open');
-      document.querySelectorAll('.nav-dropdown').forEach(function(x){x.classList.remove('open');});
-      if(!isOpen) d.classList.add('open');
-    });
-  });
-  document.addEventListener('click',function(e){
-    if(!e.target.closest('.nav-dropdown')) document.querySelectorAll('.nav-dropdown').forEach(function(d){d.classList.remove('open');});
+    btn.addEventListener('click',function(e){e.preventDefault();btn.closest('.nav-dropdown').classList.toggle('open');});
   });
 });
 </script>
@@ -1222,12 +1214,12 @@ function showError(msg) {
     <div style="text-align:center;padding:60px 20px;font-family:Poppins,sans-serif">
       <div style="font-size:4rem;margin-bottom:16px">🏠</div>
       <h2 style="color:#0D1B2A;font-size:1.4rem;font-weight:800;margin-bottom:8px">Property Not Found</h2>
-      <p style="color:#888;font-size:0.9rem;margin-bottom:6px">This property is currently unavailable or has been removed.</p>
-      <p style="color:#555;font-size:0.88rem;margin-bottom:28px">Don't worry! We can find the <strong style="color:#E53935">perfect property for you.</strong></p>
+      <p style="color:#888;font-size:0.9rem;margin-bottom:6px">Yeh property abhi available nahi hai ya remove ho gayi hai.</p>
+      <p style="color:#555;font-size:0.88rem;margin-bottom:28px">Ghabrao mat! Hum aapke liye <strong style="color:#E53935">perfect property dhundh sakte hain.</strong></p>
       <div style="background:linear-gradient(135deg,#0D1B2A,#1a3a5c);border-radius:16px;padding:24px;max-width:420px;margin:0 auto 24px">
         <p style="color:#FFC107;font-size:0.82rem;font-weight:700;margin-bottom:6px">✨ FREE SERVICE</p>
         <h3 style="color:#fff;font-size:1.1rem;font-weight:800;margin-bottom:8px">Post Your Requirement</h3>
-        <p style="color:rgba(255,255,255,0.65);font-size:0.82rem;margin-bottom:16px">Tell us what you need — our experts will send you the best options within 30 minutes.</p>
+        <p style="color:rgba(255,255,255,0.65);font-size:0.82rem;margin-bottom:16px">Apni zaroorat batao — hamare expert 30 minutes mein aapko best options bhejenge.</p>
         <a href="/login" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;background:#E53935;color:#fff;padding:13px;border-radius:10px;font-size:0.9rem;font-weight:700;text-decoration:none">
           <i class="fa-solid fa-paper-plane"></i> Login & Post Requirement
         </a>

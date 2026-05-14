@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -67,6 +67,7 @@
   }
   @media(max-width:480px){
     #ntcBar{display:none}
+    .header{top:0!important}
     .seo-keywords-section{padding:40px 0!important}
     .seo-header h2{font-size:1.5rem!important}
   }
@@ -151,7 +152,7 @@
 <body>
 <script src="/splash.js" defer></script>
 
-  <div id="siteHeader">
+<div id="siteHeader">
 <!-- NTC REG BAR -->
 <div id="ntcBar" style="background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;overflow:hidden;white-space:nowrap;width:100%;max-width:100%;">
   <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
@@ -443,6 +444,222 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
     </div>
     <div class="cards-grid" id="trendingGrid"></div>
   </div>
+</section>
+
+<!-- ===== HOUSING/MAGICBRICKS STYLE AD BANNER ===== -->
+<section id="adBannerSection" style="background:#fff;padding:0;margin:0;overflow:hidden;">
+  <style>
+    .ad-banner-wrap{position:relative;width:100%;overflow:hidden;background:linear-gradient(135deg,#0D1B2A 0%,#1a3a5c 50%,#0D1B2A 100%);}
+    .ad-slides{display:flex;transition:transform 0.7s cubic-bezier(0.77,0,0.175,1);will-change:transform;}
+    .ad-slide{min-width:100%;position:relative;display:flex;align-items:center;justify-content:space-between;padding:22px 40px;box-sizing:border-box;gap:20px;}
+    .ad-slide-1{background:linear-gradient(120deg,#0D1B2A 0%,#1a3a5c 60%,#E53935 100%);}
+    .ad-slide-2{background:linear-gradient(120deg,#1a1a2e 0%,#16213e 60%,#FFC107 100%);}
+    .ad-slide-3{background:linear-gradient(120deg,#0f2027 0%,#203a43 50%,#2c5364 100%);}
+    .ad-left{flex:1;min-width:0;}
+    .ad-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.12);color:#FFC107;font-size:0.65rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:10px;border:1px solid rgba(255,193,7,0.3);}
+    .ad-title{font-size:clamp(1rem,2.5vw,1.5rem);font-weight:900;color:#fff;line-height:1.2;margin-bottom:8px;}
+    .ad-title span{color:#FFC107;}
+    .ad-sub{font-size:0.8rem;color:rgba(255,255,255,0.7);margin-bottom:14px;line-height:1.5;}
+    .ad-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+    .ad-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.1);color:#fff;font-size:0.68rem;font-weight:700;padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);}
+    .ad-badge.green{background:rgba(52,211,153,0.15);color:#34d399;border-color:rgba(52,211,153,0.3);}
+    .ad-badge.yellow{background:rgba(255,193,7,0.15);color:#FFC107;border-color:rgba(255,193,7,0.3);}
+    .ad-badge.red{background:rgba(229,57,53,0.2);color:#ff8a80;border-color:rgba(229,57,53,0.3);}
+    .ad-cta-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+    .ad-btn-primary{display:inline-flex;align-items:center;gap:7px;background:#E53935;color:#fff;padding:10px 22px;border-radius:8px;font-size:0.82rem;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-family:Poppins,sans-serif;transition:all 0.2s;white-space:nowrap;}
+    .ad-btn-primary:hover{background:#c62828;transform:translateY(-2px);}
+    .ad-btn-secondary{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,0.1);color:#fff;padding:10px 18px;border-radius:8px;font-size:0.82rem;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.25);cursor:pointer;font-family:Poppins,sans-serif;transition:all 0.2s;white-space:nowrap;}
+    .ad-btn-secondary:hover{background:rgba(255,255,255,0.18);}
+    .ad-right{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
+    .ad-price-card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:14px;padding:14px 20px;text-align:center;backdrop-filter:blur(10px);min-width:160px;}
+    .ad-price-label{font-size:0.62rem;color:rgba(255,255,255,0.5);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+    .ad-price-val{font-size:1.4rem;font-weight:900;color:#FFC107;line-height:1;}
+    .ad-price-unit{font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:2px;}
+    .ad-stats-row{display:flex;gap:16px;}
+    .ad-stat{text-align:center;}
+    .ad-stat-num{font-size:1rem;font-weight:900;color:#fff;}
+    .ad-stat-lbl{font-size:0.6rem;color:rgba(255,255,255,0.45);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+    /* Dots */
+    .ad-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:5;}
+    .ad-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.3);cursor:pointer;transition:all 0.3s;}
+    .ad-dot.active{background:#FFC107;width:20px;border-radius:3px;}
+    /* Progress bar */
+    .ad-progress{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#E53935,#FFC107);width:0%;transition:width 0.1s linear;z-index:5;}
+    /* Floating label */
+    .ad-platform-label{position:absolute;top:12px;right:16px;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:4px 12px;font-size:0.62rem;color:rgba(255,255,255,0.5);font-weight:600;letter-spacing:0.5px;}
+    /* Pulse animation for CTA */
+    @keyframes adPulse{0%,100%{box-shadow:0 0 0 0 rgba(229,57,53,0.4);}50%{box-shadow:0 0 0 8px rgba(229,57,53,0);} }
+    .ad-btn-primary{animation:adPulse 2.5s ease-in-out infinite;}
+    @media(max-width:768px){
+      .ad-slide{flex-direction:column;padding:18px 20px 32px;gap:14px;}
+      .ad-right{align-items:flex-start;flex-direction:row;flex-wrap:wrap;}
+      .ad-price-card{min-width:120px;padding:10px 14px;}
+      .ad-title{font-size:1.1rem;}
+    }
+    @media(max-width:480px){
+      .ad-right{display:none;}
+      .ad-slide{padding:16px 16px 30px;}
+    }
+  </style>
+
+  <div class="ad-banner-wrap" id="adBannerWrap">
+    <div class="ad-slides" id="adSlides">
+
+      <!-- Slide 1: New Launch -->
+      <div class="ad-slide ad-slide-1">
+        <div class="ad-platform-label"><i class="fa-solid fa-star" style="color:#FFC107;font-size:0.6rem;"></i> Featured Listing</div>
+        <div class="ad-left">
+          <div class="ad-tag"><i class="fa-solid fa-rocket"></i> New Launch Alert</div>
+          <div class="ad-title">Premium 3 BHK Flats in <span>Prahlad Nagar</span></div>
+          <div class="ad-sub">RERA Registered &bull; Ready to Move &bull; Free Site Visit Available</div>
+          <div class="ad-badges">
+            <span class="ad-badge green"><i class="fa-solid fa-circle-check"></i> RERA Verified</span>
+            <span class="ad-badge yellow"><i class="fa-solid fa-key"></i> Ready to Move</span>
+            <span class="ad-badge red"><i class="fa-solid fa-fire"></i> Limited Units</span>
+          </div>
+          <div class="ad-cta-row">
+            <a href="/new-launch" class="ad-btn-primary"><i class="fa-solid fa-eye"></i> View Properties</a>
+            <a href="https://wa.me/919825031247?text=Hi, I am interested in New Launch properties" target="_blank" class="ad-btn-secondary"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+          </div>
+        </div>
+        <div class="ad-right">
+          <div class="ad-price-card">
+            <div class="ad-price-label">Starting From</div>
+            <div class="ad-price-val">&#8377;65L</div>
+            <div class="ad-price-unit">Onwards</div>
+          </div>
+          <div class="ad-stats-row">
+            <div class="ad-stat"><div class="ad-stat-num">50+</div><div class="ad-stat-lbl">Units</div></div>
+            <div class="ad-stat"><div class="ad-stat-num">3</div><div class="ad-stat-lbl">Projects</div></div>
+            <div class="ad-stat"><div class="ad-stat-num">Free</div><div class="ad-stat-lbl">Site Visit</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Commercial -->
+      <div class="ad-slide ad-slide-2">
+        <div class="ad-platform-label"><i class="fa-solid fa-building" style="color:#FFC107;font-size:0.6rem;"></i> Commercial Spotlight</div>
+        <div class="ad-left">
+          <div class="ad-tag" style="color:#FFC107;"><i class="fa-solid fa-briefcase"></i> Office Space Available</div>
+          <div class="ad-title">Premium Office in <span>Titanium City Centre</span></div>
+          <div class="ad-sub">Fully Furnished &bull; SG Highway &bull; Immediate Possession</div>
+          <div class="ad-badges">
+            <span class="ad-badge green"><i class="fa-solid fa-wifi"></i> High Speed Internet</span>
+            <span class="ad-badge yellow"><i class="fa-solid fa-car"></i> Parking Included</span>
+            <span class="ad-badge" style="background:rgba(96,165,250,0.15);color:#60a5fa;border-color:rgba(96,165,250,0.3);"><i class="fa-solid fa-snowflake"></i> AC Office</span>
+          </div>
+          <div class="ad-cta-row">
+            <a href="/properties?status=for-rent&type=office" class="ad-btn-primary" style="background:#FFC107;color:#0D1B2A;"><i class="fa-solid fa-building"></i> View Offices</a>
+            <a href="tel:+919825031247" class="ad-btn-secondary"><i class="fa-solid fa-phone"></i> Call Now</a>
+          </div>
+        </div>
+        <div class="ad-right">
+          <div class="ad-price-card">
+            <div class="ad-price-label">Rent Starting</div>
+            <div class="ad-price-val" style="color:#FFC107;">&#8377;45K</div>
+            <div class="ad-price-unit">Per Month</div>
+          </div>
+          <div class="ad-stats-row">
+            <div class="ad-stat"><div class="ad-stat-num">200+</div><div class="ad-stat-lbl">Sq.Ft</div></div>
+            <div class="ad-stat"><div class="ad-stat-num">A+</div><div class="ad-stat-lbl">Grade</div></div>
+            <div class="ad-stat"><div class="ad-stat-num">24/7</div><div class="ad-stat-lbl">Security</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Resale Deal -->
+      <div class="ad-slide ad-slide-3">
+        <div class="ad-platform-label"><i class="fa-solid fa-tag" style="color:#34d399;font-size:0.6rem;"></i> Best Deal</div>
+        <div class="ad-left">
+          <div class="ad-tag" style="color:#34d399;"><i class="fa-solid fa-percent"></i> Resale Opportunity</div>
+          <div class="ad-title">2 BHK Resale Flats <span>Under &#8377;60L</span></div>
+          <div class="ad-sub">Bopal &bull; Shela &bull; Thaltej &bull; Satellite &bull; Verified Sellers Only</div>
+          <div class="ad-badges">
+            <span class="ad-badge" style="background:rgba(52,211,153,0.15);color:#34d399;border-color:rgba(52,211,153,0.3);"><i class="fa-solid fa-shield-halved"></i> 100% Verified</span>
+            <span class="ad-badge yellow"><i class="fa-solid fa-handshake"></i> Zero Brokerage</span>
+            <span class="ad-badge red"><i class="fa-solid fa-clock"></i> Quick Deal</span>
+          </div>
+          <div class="ad-cta-row">
+            <a href="/resale" class="ad-btn-primary" style="background:#34d399;color:#0D1B2A;"><i class="fa-solid fa-rotate"></i> View Resale</a>
+            <a href="/contact" class="ad-btn-secondary"><i class="fa-solid fa-user-tie"></i> Talk to Expert</a>
+          </div>
+        </div>
+        <div class="ad-right">
+          <div class="ad-price-card">
+            <div class="ad-price-label">Best Price</div>
+            <div class="ad-price-val" style="color:#34d399;">&#8377;45L</div>
+            <div class="ad-price-unit">Onwards</div>
+          </div>
+          <div class="ad-stats-row">
+            <div class="ad-stat"><div class="ad-stat-num">30+</div><div class="ad-stat-lbl">Listings</div></div>
+            <div class="ad-stat"><div class="ad-stat-num">5+</div><div class="ad-stat-lbl">Areas</div></div>
+            <div class="ad-stat"><div class="ad-stat-num">Fast</div><div class="ad-stat-lbl">Closing</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /ad-slides -->
+
+    <!-- Dots -->
+    <div class="ad-dots">
+      <span class="ad-dot active" data-i="0"></span>
+      <span class="ad-dot" data-i="1"></span>
+      <span class="ad-dot" data-i="2"></span>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="ad-progress" id="adProgress"></div>
+  </div>
+
+  <script>
+  (function(){
+    var cur=0, total=3, prog=0, timer, progTimer;
+    var slides=document.getElementById('adSlides');
+    var dots=document.querySelectorAll('.ad-dot');
+    var bar=document.getElementById('adProgress');
+    var DURATION=5000;
+
+    function goTo(n){
+      cur=(n+total)%total;
+      slides.style.transform='translateX(-'+cur*100+'%)';
+      dots.forEach(function(d,i){d.classList.toggle('active',i===cur);});
+      resetProgress();
+    }
+
+    function resetProgress(){
+      clearInterval(progTimer);
+      prog=0; bar.style.width='0%';
+      bar.style.transition='none';
+      setTimeout(function(){
+        bar.style.transition='width 0.1s linear';
+        progTimer=setInterval(function(){
+          prog+=100/(DURATION/100);
+          bar.style.width=Math.min(prog,100)+'%';
+          if(prog>=100){clearInterval(progTimer);}
+        },100);
+      },50);
+    }
+
+    function autoPlay(){timer=setInterval(function(){goTo(cur+1);},DURATION);}
+    function reset(){clearInterval(timer);autoPlay();}
+
+    dots.forEach(function(d){
+      d.addEventListener('click',function(){goTo(+this.dataset.i);reset();});
+    });
+
+    // Touch swipe
+    var startX=0;
+    var wrap=document.getElementById('adBannerWrap');
+    wrap.addEventListener('touchstart',function(e){startX=e.touches[0].clientX;},{passive:true});
+    wrap.addEventListener('touchend',function(e){
+      var diff=startX-e.changedTouches[0].clientX;
+      if(Math.abs(diff)>40){goTo(diff>0?cur+1:cur-1);reset();}
+    },{passive:true});
+
+    resetProgress();
+    autoPlay();
+  })();
+  </script>
 </section>
 
 <!-- ===== LATEST POSTS ===== -->
@@ -1419,36 +1636,7 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
   </div>
 </div>
 
-<!-- ===== GIFT BUTTON ===== -->
-<div class="gift-btn" id="giftBtn">
-  <div class="gift-icon">&#127873;</div>
-  <span class="gift-label">Free Visit</span>
-</div>
 
-<!-- ===== GIFT POPUP ===== -->
-<div class="gift-popup" id="giftPopup">
-  <button class="gift-popup-close" id="giftPopupClose"><i class="fa-solid fa-xmark"></i></button>
-  <div class="gift-popup-inner">
-    <div class="gift-strip">
-      <span class="gift-strip-emoji">&#127873;</span>
-      <h4>Exclusive Offer For You!</h4>
-      <p>Limited time property deal</p>
-    </div>
-    <div class="gift-offers">
-      <div class="go-item"><i class="fa-solid fa-circle-check"></i> Free Site Visit &#8211; No Charges</div>
-      <div class="go-item"><i class="fa-solid fa-circle-check"></i> Free Home Loan Guidance</div>
-      <div class="go-item"><i class="fa-solid fa-circle-check"></i> Zero Brokerage on Select Projects</div>
-      <div class="go-item"><i class="fa-solid fa-circle-check"></i> Free Legal Documentation Help</div>
-    </div>
-    <div class="gift-timer">
-      <i class="fa-solid fa-clock"></i> Offer ends in: <strong id="giftCountdown">23:59:47</strong>
-    </div>
-    <a href="https://wa.me/919825031247?text=Hi%2C%20I%20want%20to%20book%20a%20Free%20Site%20Visit" target="_blank" class="gift-wa-btn">
-      <i class="fa-brands fa-whatsapp"></i> Book Free Site Visit
-    </a>
-    <span class="gift-note">* Valid for new customers only. T&amp;C apply.</span>
-  </div>
-</div>
 
 <!-- ===== LIVE CHAT BUTTON ===== -->
 <div class="live-chat-btn" id="liveChatBtn" title="Live Chat">
@@ -1499,6 +1687,237 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
 <!-- ===== BACK TO TOP ===== -->
 <button class="back-top" id="backTop" title="Back to Top"><i class="fa-solid fa-chevron-up"></i></button>
 
+<!-- ===== RIGHT SIDE FIXED AD STRIP (Housing.com style) ===== -->
+<style>
+/* ===== RIGHT SIDE AD - LANDSCAPE CARD ===== */
+/* Desktop: right side fixed vertical tab + landscape panel */
+.rs-tab{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:9990;background:#E53935;color:#fff;writing-mode:vertical-rl;text-orientation:mixed;padding:18px 9px;cursor:pointer;border-radius:10px 0 0 10px;font-family:Poppins,sans-serif;font-size:0.68rem;font-weight:800;letter-spacing:1.5px;display:flex;align-items:center;gap:7px;user-select:none;box-shadow:-4px 0 16px rgba(229,57,53,0.5);transition:background 0.2s,right 0.4s cubic-bezier(0.175,0.885,0.32,1.275);animation:rsTabPulse 2.5s ease-in-out infinite;}
+.rs-tab.shifted{right:320px;}
+.rs-tab:hover{background:#c62828;}
+@keyframes rsTabPulse{0%,100%{box-shadow:-4px 0 16px rgba(229,57,53,0.5);}50%{box-shadow:-4px 0 28px rgba(229,57,53,0.85);}}
+
+/* Panel - landscape horizontal layout */
+.rs-ad-panel{position:fixed;right:-340px;top:50%;transform:translateY(-50%);z-index:9989;width:320px;background:#fff;border-radius:14px 0 0 14px;box-shadow:-6px 0 28px rgba(0,0,0,0.18);overflow:hidden;transition:right 0.3s cubic-bezier(0.175,0.885,0.32,1.275);pointer-events:none;}
+.rs-ad-panel.open{right:0;pointer-events:all;}
+
+/* Landscape slide: image left, content right */
+.rs-slide{display:none;}
+.rs-slide-inner{display:flex;height:160px;}
+.rs-slide-img{width:110px;flex-shrink:0;position:relative;background:url('/images/banner.png') center/cover no-repeat;}
+.rs-slide-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,27,42,0.6),rgba(229,57,53,0.4));}
+.rs-slide-img-label{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:6px 7px;}
+.rs-slide-img-label span{display:block;color:#FFC107;font-size:0.52rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
+.rs-slide-img-label strong{display:block;color:#fff;font-size:0.72rem;font-weight:900;line-height:1.2;}
+.rs-slide-content{flex:1;padding:10px 11px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;}
+.rs-panel-badge{display:inline-flex;align-items:center;gap:4px;background:#fff0f0;color:#E53935;border:1px solid rgba(229,57,53,0.2);font-size:0.55rem;font-weight:800;padding:2px 7px;border-radius:20px;margin-bottom:5px;letter-spacing:0.5px;text-transform:uppercase;width:fit-content;}
+.rs-panel-title{font-size:0.75rem;font-weight:800;color:#0D1B2A;line-height:1.25;margin-bottom:2px;}
+.rs-panel-sub{font-size:0.62rem;color:#999;line-height:1.4;margin-bottom:5px;}
+.rs-panel-price{display:flex;align-items:baseline;gap:3px;margin-bottom:6px;}
+.rs-panel-price strong{font-size:0.95rem;font-weight:900;color:#E53935;}
+.rs-panel-price span{font-size:0.6rem;color:#bbb;}
+.rs-panel-btns{display:flex;gap:5px;}
+.rs-btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:4px;background:#E53935;color:#fff;border:none;padding:6px 8px;border-radius:6px;font-size:0.62rem;font-weight:800;cursor:pointer;font-family:Poppins,sans-serif;text-decoration:none;transition:all 0.2s;flex:1;}
+.rs-btn-primary:hover{background:#c62828;}
+.rs-btn-wa{display:inline-flex;align-items:center;justify-content:center;gap:4px;background:#25D366;color:#fff;border:none;padding:6px 8px;border-radius:6px;font-size:0.62rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;text-decoration:none;transition:all 0.2s;flex:1;}
+.rs-btn-wa:hover{background:#1ebe5d;}
+.rs-close{position:absolute;top:6px;right:6px;z-index:10;width:20px;height:20px;border-radius:50%;border:none;background:rgba(0,0,0,0.25);color:#fff;font-size:0.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.rs-close:hover{background:#c62828;transform:rotate(90deg);}
+.rs-dots{display:flex;gap:4px;justify-content:center;padding:6px 0 8px;background:#fafafa;border-top:1px solid #f0f0f0;}
+.rs-dot{width:5px;height:5px;border-radius:50%;background:#e0e0e0;cursor:pointer;transition:all 0.3s;}
+.rs-dot.active{background:#E53935;width:12px;border-radius:3px;}
+
+/* Mobile: bottom fixed landscape card */
+@media(max-width:768px){
+  .rs-tab{display:none!important;}
+  .rs-ad-panel{
+    position:fixed!important;
+    right:auto!important;
+    left:0!important;
+    bottom:-220px!important;
+    top:auto!important;
+    transform:none!important;
+    width:100vw!important;
+    max-width:100vw!important;
+    border-radius:16px 16px 0 0!important;
+    box-shadow:0 -6px 24px rgba(0,0,0,0.2)!important;
+    transition:bottom 0.4s cubic-bezier(0.175,0.885,0.32,1.275)!important;
+    z-index:9989!important;
+  }
+  .rs-ad-panel.open{
+    bottom:0!important;
+    pointer-events:all!important;
+  }
+  .rs-slide-inner{
+    display:flex!important;
+    height:140px!important;
+  }
+  .rs-slide-img{
+    width:130px!important;
+    flex-shrink:0!important;
+  }
+  .rs-slide-content{
+    padding:10px 12px!important;
+  }
+  .rs-panel-title{font-size:0.78rem!important;}
+  .rs-panel-sub{font-size:0.65rem!important;margin-bottom:4px!important;}
+  .rs-panel-price strong{font-size:1rem!important;}
+  .rs-btn-primary,.rs-btn-wa{padding:7px 10px!important;font-size:0.65rem!important;}
+  .rs-dots{padding:7px 0 9px!important;}
+  .rs-mob-trigger{
+    position:fixed;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:9990;
+    background:#E53935;
+    color:#fff;
+    padding:8px 28px;
+    border-radius:12px 12px 0 0;
+    font-family:Poppins,sans-serif;
+    font-size:0.7rem;
+    font-weight:800;
+    letter-spacing:0.8px;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    cursor:pointer;
+    box-shadow:0 -3px 14px rgba(229,57,53,0.45);
+    animation:rsTabPulse 2.5s ease-in-out infinite;
+    white-space:nowrap;
+  }
+  .rs-mob-trigger.hidden{display:none!important;}
+}
+@media(min-width:769px){
+  .rs-mob-trigger{display:none!important;}
+}
+</style>
+
+<div class="rs-tab" id="rsTab" onclick="openRsAd()">
+  <i class="fa-solid fa-tag" style="writing-mode:horizontal-tb;font-size:0.9rem;"></i>
+  <span>Hot Deal</span>
+</div>
+
+<!-- Mobile trigger -->
+<div class="rs-mob-trigger" id="rsMobTrigger" onclick="openRsAd()">
+  <i class="fa-solid fa-fire" style="font-size:0.85rem;"></i> Hot Property Deal!
+</div>
+
+<div class="rs-ad-panel" id="rsAdPanel">
+  <button class="rs-close" onclick="closeRsAd()"><i class="fa-solid fa-xmark"></i></button>
+  <div id="rsSlides">
+
+    <!-- Slide 1 -->
+    <div class="rs-slide" style="display:block">
+      <div class="rs-slide-inner">
+        <div class="rs-slide-img">
+          <div class="rs-slide-img-label">
+            <span><i class="fa-solid fa-rocket" style="margin-right:3px;"></i> New Launch</span>
+            <strong>3 BHK<br/>Prahlad Nagar</strong>
+          </div>
+        </div>
+        <div class="rs-slide-content">
+          <div>
+            <div class="rs-panel-badge"><i class="fa-solid fa-certificate"></i> RERA Verified</div>
+            <div class="rs-panel-title">Ready to Move Flats</div>
+            <div class="rs-panel-sub">Satellite &bull; SG Highway &bull; Free Visit</div>
+            <div class="rs-panel-price"><strong>&#8377;65L</strong><span>onwards</span></div>
+          </div>
+          <div class="rs-panel-btns">
+            <a href="/new-launch" class="rs-btn-primary"><i class="fa-solid fa-eye"></i> View</a>
+            <a href="https://wa.me/919825031247?text=Hi, interested in New Launch 3BHK" target="_blank" class="rs-btn-wa"><i class="fa-brands fa-whatsapp"></i> Chat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="rs-slide" style="display:none">
+      <div class="rs-slide-inner">
+        <div class="rs-slide-img" style="background-image:url('/images/banner2.png')">
+          <div class="rs-slide-img-label">
+            <span><i class="fa-solid fa-briefcase" style="margin-right:3px;"></i> Commercial</span>
+            <strong>Office Space<br/>TCC Ahmedabad</strong>
+          </div>
+        </div>
+        <div class="rs-slide-content">
+          <div>
+            <div class="rs-panel-badge" style="background:#fff8e1;color:#b8860b;border-color:rgba(255,193,7,0.3);"><i class="fa-solid fa-building"></i> Premium</div>
+            <div class="rs-panel-title">Furnished Office</div>
+            <div class="rs-panel-sub">SG Highway &bull; AC &bull; Parking</div>
+            <div class="rs-panel-price"><strong style="color:#b8860b;">&#8377;45K</strong><span>/mo</span></div>
+          </div>
+          <div class="rs-panel-btns">
+            <a href="/properties?status=for-rent&type=office" class="rs-btn-primary" style="background:#b8860b;"><i class="fa-solid fa-building"></i> View</a>
+            <a href="tel:+919825031247" class="rs-btn-wa" style="background:#0D1B2A;"><i class="fa-solid fa-phone"></i> Call</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="rs-slide" style="display:none">
+      <div class="rs-slide-inner">
+        <div class="rs-slide-img" style="background-image:url('/images/banner3.png')">
+          <div class="rs-slide-img-label">
+            <span><i class="fa-solid fa-percent" style="margin-right:3px;"></i> Best Deal</span>
+            <strong>2 BHK Resale<br/>Under &#8377;60L</strong>
+          </div>
+        </div>
+        <div class="rs-slide-content">
+          <div>
+            <div class="rs-panel-badge" style="background:#ecfdf5;color:#059669;border-color:rgba(16,185,129,0.3);"><i class="fa-solid fa-handshake"></i> Zero Brokerage</div>
+            <div class="rs-panel-title">Verified Resale Flats</div>
+            <div class="rs-panel-sub">Bopal &bull; Shela &bull; Thaltej</div>
+            <div class="rs-panel-price"><strong style="color:#059669;">&#8377;45L</strong><span>onwards</span></div>
+          </div>
+          <div class="rs-panel-btns">
+            <a href="/resale" class="rs-btn-primary" style="background:#059669;"><i class="fa-solid fa-rotate"></i> View</a>
+            <a href="https://wa.me/919825031247?text=Hi, interested in Resale 2BHK" target="_blank" class="rs-btn-wa"><i class="fa-brands fa-whatsapp"></i> Chat</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="rs-dots">
+    <span class="rs-dot active" data-rs="0"></span>
+    <span class="rs-dot" data-rs="1"></span>
+    <span class="rs-dot" data-rs="2"></span>
+  </div>
+</div>
+
+<script>
+(function(){
+  var cur=0,total=3,timer;
+  var slides=document.querySelectorAll('.rs-slide');
+  var dots=document.querySelectorAll('.rs-dot');
+  function rsGoTo(n){slides[cur].style.display='none';dots[cur].classList.remove('active');cur=(n+total)%total;slides[cur].style.display='block';dots[cur].classList.add('active');}
+  dots.forEach(function(d){d.addEventListener('click',function(){rsGoTo(+this.dataset.rs);clearInterval(timer);timer=setInterval(function(){rsGoTo(cur+1);},5000);});});
+  timer=setInterval(function(){rsGoTo(cur+1);},3000);
+  window.openRsAd=function(){
+    document.getElementById('rsAdPanel').classList.add('open');
+    document.getElementById('rsTab').classList.add('shifted');
+    var mob=document.getElementById('rsMobTrigger');
+    if(mob)mob.classList.add('hidden');
+  };
+  window.closeRsAd=function(){
+    document.getElementById('rsAdPanel').classList.remove('open');
+    document.getElementById('rsTab').classList.remove('shifted');
+    var mob=document.getElementById('rsMobTrigger');
+    if(mob)mob.classList.remove('hidden');
+  };
+  // Auto open after 3sec, close after 6sec, repeat every 20sec
+  function autoOpenClose(){
+    openRsAd();
+    setTimeout(function(){closeRsAd();},6000);
+  }
+  setTimeout(function(){
+    autoOpenClose();
+    setInterval(autoOpenClose,20000);
+  },3000);
+})();
+</script>
+
 <!-- ===== FLOATING VISITING CARD WIDGET (LEFT SIDE) ===== -->
 <style>
 .fc-tab{position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:9992;background:#E53935;color:#fff;writing-mode:vertical-rl;text-orientation:mixed;padding:18px 10px;cursor:pointer;border-radius:0 10px 10px 0;font-family:Poppins,sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:1.2px;display:flex;align-items:center;gap:8px;user-select:none;box-shadow:4px 0 18px rgba(229,57,53,0.5);transition:background 0.2s;animation:fcTabPulse 2.5s ease-in-out infinite;}
@@ -1507,6 +1926,11 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
 .fc-popup{position:fixed;left:-230px;top:50%;transform:translateY(-50%);z-index:9991;width:200px;background:transparent;overflow:visible;transition:left 0.5s cubic-bezier(0.175,0.885,0.32,1.275);pointer-events:none;perspective:900px;}
 .fc-popup.open{left:0;pointer-events:all;}
 .fc-card-inner{width:200px;background:#fff;border-radius:0 14px 14px 0;box-shadow:6px 0 32px rgba(0,0,0,0.22);overflow:hidden;transform:rotateY(-90deg);transform-origin:left center;transition:transform 0.6s cubic-bezier(0.175,0.885,0.32,1.275) 0.35s;}
+.fc-bg-header{position:relative;height:80px;background:url('/images/banner.png') center/cover no-repeat;overflow:hidden;}
+.fc-bg-header::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,27,42,0.72),rgba(229,57,53,0.55));}
+.fc-bg-header-content{position:relative;z-index:2;padding:10px 10px 6px;display:flex;flex-direction:column;justify-content:flex-end;height:100%;box-sizing:border-box;}
+.fc-bg-header-content span{color:#FFC107;font-size:0.6rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;display:block;}
+.fc-bg-header-content strong{color:#fff;font-size:0.82rem;font-weight:800;line-height:1.2;display:block;}
 .fc-popup.open .fc-card-inner{transform:rotateY(0deg);}
 .fc-banner{max-height:0;overflow:hidden;transition:max-height 0.5s ease 1s;border-top:2px solid #E53935;}
 .fc-popup.open .fc-banner{max-height:100px;}
@@ -1529,6 +1953,13 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
 <div class="fc-popup" id="fcPopup">
   <div class="fc-card-inner">
     <button class="fc-close" onclick="closeFc()"><i class="fa-solid fa-xmark"></i></button>
+    <!-- Building BG Header -->
+    <div class="fc-bg-header">
+      <div class="fc-bg-header-content">
+        <span><i class="fa-solid fa-building" style="margin-right:4px;"></i> City Real Space</span>
+        <strong>Premium Properties<br/>in Ahmedabad</strong>
+      </div>
+    </div>
     <!-- Visiting Card - click to zoom -->
     <div style="padding:10px 8px 6px;cursor:zoom-in;" onclick="fcZoom('images/cityrealspacevisitin card.png')">
       <img src="/images/cityrealspacevisitin card.png" alt="Visiting Card" style="width:100%;height:auto;border-radius:7px;box-shadow:0 2px 10px rgba(0,0,0,0.13);transition:transform 0.2s;" width="184" height="104" loading="lazy" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'"/>
