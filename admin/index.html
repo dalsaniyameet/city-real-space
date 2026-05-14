@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta charset="UTF-8">
-  <title>Admin Panel â€“ City Real Space</title>
+  <title>Admin Panel – City Real Space</title>
   <link rel="icon" type="image/jpeg" href="../images/logo.jpeg"/>
   <link rel="apple-touch-icon" href="../images/logo.jpeg"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -315,7 +315,7 @@
     <div class="page" id="page-requirements">
       <div class="page-head">
         <h2>User Requirements</h2>
-        <p>Properties users couldn't find â€” they posted their requirement.</p>
+        <p>Properties users couldn't find — they posted their requirement.</p>
       </div>
       <div class="table-wrap">
         <div class="table-scroll">
@@ -368,7 +368,7 @@
         <img src="../images/logo.jpeg" alt="CRS" style="height:40px;width:40px;object-fit:contain;border-radius:10px;border:2px solid rgba(229,57,53,0.3);box-shadow:0 2px 12px rgba(229,57,53,0.25);flex-shrink:0;"/>
         <div>
           <span class="hs-logo-text" id="propModalTitle">Post Property</span>
-          <span class="hs-logo-sub">City Real Space â€” Admin Panel</span>
+          <span class="hs-logo-sub">City Real Space — Admin Panel</span>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
@@ -504,7 +504,7 @@
                     style="width:100%;"/>
                   <div id="projectDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:20;background:#fff;border:1.5px solid #FF4D4D;border-radius:10px;margin-top:4px;max-height:200px;overflow-y:auto;box-shadow:0 8px 24px rgba(255,77,77,0.15);"></div>
                 </div>
-                <div style="font-size:0.72rem;color:#aaa;margin-top:4px;">Type manually if not in list â€” your entry will be saved</div>
+                <div style="font-size:0.72rem;color:#aaa;margin-top:4px;">Type manually if not in list — your entry will be saved</div>
               </div>
             </div>
 
@@ -514,7 +514,7 @@
                 <label>Property Type *</label>
                 <select id="pType" onchange="onAdminTypeChange()">
                   <option value="">Select Type</option>
-                  <optgroup label="ðŸ  Residential">
+                  <optgroup label="🏠 Residential">
                     <option value="apartment">Apartment / Flat</option>
                     <option value="villa">Villa</option>
                     <option value="bungalow">Bungalow / Independent House</option>
@@ -532,7 +532,7 @@
                   </optgroup>
                 </select>
               </div>
-              <!-- Seats/Cabins â€” shown for office/shop -->
+              <!-- Seats/Cabins — shown for office/shop -->
               <div class="hs-field" id="adminSeatsRow" style="display:none">
                 <label><i class="fa-solid fa-chair"></i> Seats / Cabins</label>
                 <div class="hs-chips">
@@ -574,7 +574,7 @@
                 </div>
               </div>
 
-              <!-- Bedrooms Bathrooms Balconies â€” auto-filled by BHK -->
+              <!-- Bedrooms Bathrooms Balconies — auto-filled by BHK -->
               <div class="hs-row cols-3">
                 <div class="hs-field">
                   <label><i class="fa-solid fa-bed"></i> Bedrooms</label>
@@ -609,7 +609,7 @@
                 </div>
               </div>
 
-              <!-- Area â€” auto-filled by BHK -->
+              <!-- Area — auto-filled by BHK -->
               <div class="hs-row cols-2">
                 <div class="hs-field">
                   <label><i class="fa-solid fa-ruler-combined"></i> Carpet Area (sq.ft)</label>
@@ -798,7 +798,7 @@
                 </div>
               </div>
 
-              <!-- Available From + Suitable For — only for RENT -->
+              <!-- Available From + Suitable For � only for RENT -->
               <div class="hs-row cols-2" id="rSuitableForRow">
                 <div class="hs-field">
                   <label>&#128197; Available From</label>
@@ -839,7 +839,7 @@
               </div>
             </div>
 
-            <!-- COMMERCIAL LIFT SECTION — shown for ALL commercial types -->
+            <!-- COMMERCIAL LIFT SECTION � shown for ALL commercial types -->
             <div id="commercialLiftSection" style="display:none;margin-bottom:14px;">
               <div style="font-size:0.85rem;font-weight:700;color:#1d4ed8;margin:14px 0 10px;padding:8px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid #3b82f6;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-elevator"></i> Lift & Floor Details</div>
               <div class="hs-row cols-3">
@@ -890,7 +890,7 @@
                 <div class="hs-field"><label>Carpet Area (sq.ft)</label><input type="number" id="oCarpet" placeholder="Auto: SBA x 0.70" oninput="this.dataset.manual=1;calcPricePerSqft()"/></div>
               </div>
 
-              <!-- Cabin / Seats — hidden when Unfurnished -->
+              <!-- Cabin / Seats � hidden when Unfurnished -->
               <div id="oCabinSeatingSection">
               <div style="font-size:0.78rem;font-weight:700;color:#1d4ed8;margin:10px 0 8px;">&#128188; Cabin &amp; Seating</div>
               <div class="hs-row cols-1">
@@ -944,9 +944,9 @@
                 var suggested, hintText;
                 if (seats === 0)        { suggested = '';  hintText = ''; }
                 else if (seats <= 5)    { suggested = '0'; hintText = '(Not Required)'; }
-                else if (seats <= 10)   { suggested = '1'; hintText = '(0–1 Recommended)'; }
+                else if (seats <= 10)   { suggested = '1'; hintText = '(0�1 Recommended)'; }
                 else if (seats <= 20)   { suggested = '1'; hintText = '(1 Recommended)'; }
-                else if (seats <= 40)   { suggested = '2'; hintText = '(1–2 Suggested)'; }
+                else if (seats <= 40)   { suggested = '2'; hintText = '(1�2 Suggested)'; }
                 else                    { suggested = '4'; hintText = '(2+ Suggested)'; }
                 if (suggested !== '' && !confEl.dataset.manual) confEl.value = suggested;
                 if (hint) hint.textContent = hintText;
@@ -1026,7 +1026,7 @@
                     <label style="font-size:0.78rem;font-weight:600;color:#555;display:block;margin-bottom:8px;">Parking Distribution</label>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
                       <div style="background:#fff;border:1.5px solid #e8e8e8;border-radius:8px;padding:10px 12px;">
-                        <div style="font-size:0.75rem;font-weight:700;color:#555;margin-bottom:6px;">🅿️ Ground Floor</div>
+                        <div style="font-size:0.75rem;font-weight:700;color:#555;margin-bottom:6px;">??? Ground Floor</div>
                         <div style="display:flex;align-items:center;gap:8px;">
                           <button type="button" onclick="adjParkingDist('oDistGround',-1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;font-weight:700;color:#555;">-</button>
                           <span id="oDistGroundDisplay" style="min-width:20px;text-align:center;font-size:1rem;font-weight:800;color:#333;">0</span>
@@ -1035,7 +1035,7 @@
                         </div>
                       </div>
                       <div style="background:#fff;border:1.5px solid #e8e8e8;border-radius:8px;padding:10px 12px;">
-                        <div style="font-size:0.75rem;font-weight:700;color:#555;margin-bottom:6px;">🅱️ Basement -1</div>
+                        <div style="font-size:0.75rem;font-weight:700;color:#555;margin-bottom:6px;">??? Basement -1</div>
                         <div style="display:flex;align-items:center;gap:8px;">
                           <button type="button" onclick="adjParkingDist('oDistB1',-1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;font-weight:700;color:#555;">-</button>
                           <span id="oDistB1Display" style="min-width:20px;text-align:center;font-size:1rem;font-weight:800;color:#333;">0</span>
@@ -1044,7 +1044,7 @@
                         </div>
                       </div>
                       <div style="background:#fff;border:1.5px solid #e8e8e8;border-radius:8px;padding:10px 12px;">
-                        <div style="font-size:0.75rem;font-weight:700;color:#555;margin-bottom:6px;">🅱️ Basement -2</div>
+                        <div style="font-size:0.75rem;font-weight:700;color:#555;margin-bottom:6px;">??? Basement -2</div>
                         <div style="display:flex;align-items:center;gap:8px;">
                           <button type="button" onclick="adjParkingDist('oDistB2',-1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;font-weight:700;color:#555;">-</button>
                           <span id="oDistB2Display" style="min-width:20px;text-align:center;font-size:1rem;font-weight:800;color:#333;">0</span>
@@ -1053,7 +1053,7 @@
                         </div>
                       </div>
                       <div style="background:#fff;border:1.5px solid #e8e8e8;border-radius:8px;padding:10px 12px;">
-                        <div style="font-size:0.75rem;font-weight:700;color:#555;margin-bottom:6px;">🅱️ Basement -3</div>
+                        <div style="font-size:0.75rem;font-weight:700;color:#555;margin-bottom:6px;">??? Basement -3</div>
                         <div style="display:flex;align-items:center;gap:8px;">
                           <button type="button" onclick="adjParkingDist('oDistB3',-1)" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;font-weight:700;color:#555;">-</button>
                           <span id="oDistB3Display" style="min-width:20px;text-align:center;font-size:1rem;font-weight:800;color:#333;">0</span>
@@ -1102,7 +1102,7 @@
                   const v = document.getElementById('oParkingValidation');
                   v.style.display = 'block';
                   v.style.background = '#ffebee'; v.style.color = '#c62828'; v.style.border = '1px solid #ffcdd2';
-                  v.textContent = '⚠️ Total slots = ' + total + '. Cannot exceed!';
+                  v.textContent = '?? Total slots = ' + total + '. Cannot exceed!';
                   setTimeout(() => v.style.display = 'none', 2000);
                   return;
                 }
@@ -1127,11 +1127,11 @@
                   if (used === total) {
                     val.style.display = 'block';
                     val.style.background = '#e8f5e9'; val.style.color = '#2e7d32'; val.style.border = '1px solid #a5d6a7';
-                    val.textContent = '✅ Distribution matches total (' + total + ')';
+                    val.textContent = '? Distribution matches total (' + total + ')';
                   } else if (used < total) {
                     val.style.display = 'block';
                     val.style.background = '#fff8e1'; val.style.color = '#e65100'; val.style.border = '1px solid #ffe082';
-                    val.textContent = '⚠️ ' + used + ' of ' + total + ' slots distributed';
+                    val.textContent = '?? ' + used + ' of ' + total + ' slots distributed';
                   }
                 }
                 // Build text
@@ -1148,7 +1148,7 @@
               }
               </script>
 
-              <!-- Fire & Legal — SELL only -->
+              <!-- Fire & Legal � SELL only -->
               <div id="officeSellFields" style="display:none">
                 <div style="font-size:0.78rem;font-weight:700;color:#dc2626;margin:10px 0 8px;">&#128293; Fire &amp; Legal</div>
                 <div class="hs-row cols-3">
@@ -1180,7 +1180,7 @@
             <div class="hs-upload-area" onclick="document.getElementById('pImageFile').click()">
               <i class="fa-solid fa-cloud-arrow-up"></i>
               <p><strong>Click to upload</strong> or drag & drop photos here</p>
-              <p style="font-size:0.75rem;margin-top:4px">JPG, PNG accepted â€¢ Max 10 photos</p>
+              <p style="font-size:0.75rem;margin-top:4px">JPG, PNG accepted • Max 10 photos</p>
             </div>
             <input type="file" id="pImageFile" accept="image/*" multiple style="display:none" onchange="handleAdminImages(this)"/>
             <div id="pImagePreview" class="hs-photo-preview"></div>
@@ -1189,7 +1189,7 @@
             <!-- Image display tip -->
             <div style="margin-top:14px;background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:12px 16px;font-size:0.78rem;color:#7a5800;display:flex;align-items:flex-start;gap:8px">
               <i class="fa-solid fa-lightbulb" style="color:#f59e0b;margin-top:2px;flex-shrink:0"></i>
-              <span><strong>Tip:</strong> Upload landscape/horizontal images (e.g. 1200Ã—800px) for best display. Portrait images will show with white background. First image will be the cover photo.</span>
+              <span><strong>Tip:</strong> Upload landscape/horizontal images (e.g. 1200×800px) for best display. Portrait images will show with white background. First image will be the cover photo.</span>
             </div>
 
             <div class="hs-step-nav">
@@ -1210,7 +1210,7 @@
               </div>
               <div class="hs-field">
                 <label>Price Label <span style="font-size:0.68rem;color:#aaa;font-weight:400">(auto-fills)</span></label>
-                <input type="text" id="pPriceLabel" placeholder="e.g. â‚¹25K/mo or â‚¹1.2 Cr"/>
+                <input type="text" id="pPriceLabel" placeholder="e.g. ₹25K/mo or ₹1.2 Cr"/>
               </div>
             </div>
 
@@ -1415,7 +1415,7 @@
                 <input type="text" id="pVideoUrl" placeholder="YouTube link (optional)"/>
               </div>
               <div class="hs-field">
-                <label>Price per Sqft (â‚¹)</label>
+                <label>Price per Sqft (₹)</label>
                 <input type="number" id="pPricePerSqft" placeholder="e.g. 4500"/>
               </div>
             </div>
@@ -1558,7 +1558,7 @@
             <div style="font-size:0.82rem;font-weight:700;color:#0D1B2A;margin-bottom:12px;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-sliders" style="color:#E53935;"></i> Post Settings</div>
             <div class="form-grp" style="margin-bottom:10px;">
               <label>Page Title <span style="color:#aaa;font-weight:400">(60 chars max)</span></label>
-              <input type="text" id="bMetaTitle" placeholder="e.g. 3BHK Flats in Bopal Ahmedabad â€“ Best Price 2025" maxlength="60"/>
+              <input type="text" id="bMetaTitle" placeholder="e.g. 3BHK Flats in Bopal Ahmedabad – Best Price 2025" maxlength="60"/>
               <div style="font-size:0.7rem;color:#aaa;margin-top:3px;"><span id="bMetaTitleCount">0</span>/60</div>
             </div>
             <div class="form-grp">

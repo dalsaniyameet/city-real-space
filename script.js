@@ -1,4 +1,4 @@
-Ôªø// ===== DISABLE VIEW SOURCE ONLY =====
+// ===== DISABLE VIEW SOURCE ONLY =====
 document.addEventListener('keydown', e => {
   // Ctrl+U (view-source), Ctrl+S (save), Ctrl+Shift+I/J/C (devtools), F12
   if (
@@ -31,7 +31,7 @@ const API = (function() {
   return 'https://www.cityrealspace.com/api';
 })();
 
-console.log('üåê Main Site - API Endpoint:', API);
+console.log('?? Main Site - API Endpoint:', API);
 
 async function checkAuthState() {
   const raw   = localStorage.getItem('user');
@@ -49,7 +49,7 @@ async function checkAuthState() {
     try {
       const res = await fetch(`${API}/auth/me`, { headers: { Authorization: 'Bearer ' + token } });
       if (!res.ok) { handleLogout(); return; }
-    } catch { /* network error ‚Äî keep logged in */ }
+    } catch { /* network error ó keep logged in */ }
     loginBtn.style.display = 'none';
     userMenu.style.display = 'block';
     userNameDisplay.textContent = user.firstName || user.email.split('@')[0];
@@ -645,7 +645,7 @@ document.querySelectorAll('.stab').forEach(btn => {
   });
 });
 
-// City select ‚Üí locality populate
+// City select ? locality populate
 const cityEl = document.getElementById('searchCity');
 const localityEl = document.getElementById('searchLocality');
 if (cityEl && localityEl) {
@@ -722,9 +722,9 @@ if (mainSearchBtn) {
             <i class="fa-solid fa-clock" style="color:#E53935;font-size:0.85rem"></i>
             <select id="offerTime" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#555;background:transparent;cursor:pointer">
               <option value="">Preferred Call Time (Optional)</option>
-              <option>Morning (9AM ‚Äì 12PM)</option>
-              <option>Afternoon (12PM ‚Äì 3PM)</option>
-              <option>Evening (3PM ‚Äì 7PM)</option>
+              <option>Morning (9AM ñ 12PM)</option>
+              <option>Afternoon (12PM ñ 3PM)</option>
+              <option>Evening (3PM ñ 7PM)</option>
               <option>Anytime</option>
             </select>
           </div>
@@ -737,7 +737,7 @@ if (mainSearchBtn) {
             <i class="fa-solid fa-phone"></i> Request Call
           </button>
         </div>
-        <p style="text-align:center;font-size:0.72rem;color:#aaa;margin-top:10px">üîí Your details are safe. No spam calls.</p>
+        <p style="text-align:center;font-size:0.72rem;color:#aaa;margin-top:10px">?? Your details are safe. No spam calls.</p>
       </div>
     </div>`;
   document.body.appendChild(overlay);
@@ -877,7 +877,7 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// ===== REGISTER AUTO POPUP ‚Äî DISABLED =====
+// ===== REGISTER AUTO POPUP ó DISABLED =====
 let isRegistered = !!localStorage.getItem('token');
 
 // ===== AUTH MODAL =====
@@ -990,7 +990,7 @@ document.getElementById('registerForm').addEventListener('submit', async e => {
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Validating email...';
   btn.disabled = true;
 
-  // MX record check ‚Äî real email domain verify
+  // MX record check ó real email domain verify
   try {
     const mx = await fetch(`${API}/auth/check-email?email=${encodeURIComponent(email)}`);
     const mxData = await mx.json();
@@ -1228,7 +1228,7 @@ document.getElementById('inqSuccessClose').addEventListener('click', () => inqOv
 
 }
 
-// ===== NAV DROPDOWN ‚Äî Desktop click + Mobile click =====
+// ===== NAV DROPDOWN ó Desktop click + Mobile click =====
 document.querySelectorAll('.nav-drop-btn').forEach(btn => {
   btn.addEventListener('click', e => {
     e.preventDefault();
@@ -1268,79 +1268,79 @@ if (liveChatBtn && liveChatWidget) {
   liveChatClose.addEventListener('click', () => liveChatWidget.classList.remove('open'));
 }
 
-// AI Q&A knowledge base ‚Äî City Real Space
+// AI Q&A knowledge base ó City Real Space
 const lcwQA = [
   {
     q: ['buy', 'purchase', 'kharidna', 'kharidu', 'kharidni', 'lena', 'leni', 'property chahiye', 'flat chahiye', 'ghar chahiye'],
-    a: 'üè† Bilkul! Hamare paas 12,500+ verified properties hain ‚Äî Ahmedabad, Gandhinagar, Surat mein. Aap kaunsa property type dhundh rahe hain?\n\n‚Ä¢ Apartment / Flat\n‚Ä¢ Villa / Bungalow\n‚Ä¢ Plot / Land\n‚Ä¢ Commercial'
+    a: '?? Bilkul! Hamare paas 12,500+ verified properties hain ó Ahmedabad, Gandhinagar, Surat mein. Aap kaunsa property type dhundh rahe hain?\n\nï Apartment / Flat\nï Villa / Bungalow\nï Plot / Land\nï Commercial'
   },
   {
     q: ['sell', 'bechna', 'bechu', 'list', 'bechni', 'property sell', 'meri property'],
-    a: 'üí∞ Hum aapki property best market price pe sell karenge! Free valuation + zero brokerage on select projects.\n\nAbhi WhatsApp karein: +91 93775 31247'
+    a: '?? Hum aapki property best market price pe sell karenge! Free valuation + zero brokerage on select projects.\n\nAbhi WhatsApp karein: +91 93775 31247'
   },
   {
     q: ['rent', 'lease', 'kiraya', 'rental', 'kiraye pe', 'rent pe'],
-    a: 'üè° Hamare paas ‚Çπ15,000/month se shuru rental properties hain. Kaun sa area aur BHK chahiye aapko?'
+    a: '?? Hamare paas ?15,000/month se shuru rental properties hain. Kaun sa area aur BHK chahiye aapko?'
   },
   {
     q: ['2bhk', '2 bhk', 'two bhk', 'do bhk'],
-    a: 'üõèÔ∏è 2 BHK flats available hain:\n‚Ä¢ Bopal: ‚Çπ55L ‚Äì ‚Çπ75L\n‚Ä¢ Satellite: ‚Çπ70L ‚Äì ‚Çπ95L\n‚Ä¢ Memnagar: ‚Çπ60L ‚Äì ‚Çπ80L\n\nKaunsa area prefer karenge?'
+    a: '??? 2 BHK flats available hain:\nï Bopal: ?55L ñ ?75L\nï Satellite: ?70L ñ ?95L\nï Memnagar: ?60L ñ ?80L\n\nKaunsa area prefer karenge?'
   },
   {
     q: ['3bhk', '3 bhk', 'three bhk', 'teen bhk'],
-    a: 'üõèÔ∏è 3 BHK options:\n‚Ä¢ Prahlad Nagar: ‚Çπ90L ‚Äì ‚Çπ1.5Cr\n‚Ä¢ Thaltej: ‚Çπ85L ‚Äì ‚Çπ1.2Cr\n‚Ä¢ Bopal: ‚Çπ75L ‚Äì ‚Çπ1Cr\n\nBudget kya hai aapka?'
+    a: '??? 3 BHK options:\nï Prahlad Nagar: ?90L ñ ?1.5Cr\nï Thaltej: ?85L ñ ?1.2Cr\nï Bopal: ?75L ñ ?1Cr\n\nBudget kya hai aapka?'
   },
   {
     q: ['4bhk', '4 bhk', 'four bhk', 'char bhk'],
-    a: 'üè† 4 BHK premium properties:\n‚Ä¢ Prahlad Nagar: ‚Çπ1.5Cr ‚Äì ‚Çπ2.5Cr\n‚Ä¢ Bodakdev: ‚Çπ1.8Cr ‚Äì ‚Çπ3Cr\n‚Ä¢ Vastrapur: ‚Çπ1.6Cr ‚Äì ‚Çπ2.8Cr\n\nSite visit book karein ‚Äî bilkul free!'
+    a: '?? 4 BHK premium properties:\nï Prahlad Nagar: ?1.5Cr ñ ?2.5Cr\nï Bodakdev: ?1.8Cr ñ ?3Cr\nï Vastrapur: ?1.6Cr ñ ?2.8Cr\n\nSite visit book karein ó bilkul free!'
   },
   {
     q: ['price', 'cost', 'budget', 'kitna', 'rate', 'kitne ka', 'daam', 'paisa'],
-    a: 'üíé Hamare properties ka range:\n‚Ä¢ Budget: ‚Çπ30L ‚Äì ‚Çπ60L\n‚Ä¢ Mid Range: ‚Çπ60L ‚Äì ‚Çπ1.5Cr\n‚Ä¢ Premium: ‚Çπ1.5Cr ‚Äì ‚Çπ5Cr+\n\nAapka budget kya hai? Best options suggest karunga!'
+    a: '?? Hamare properties ka range:\nï Budget: ?30L ñ ?60L\nï Mid Range: ?60L ñ ?1.5Cr\nï Premium: ?1.5Cr ñ ?5Cr+\n\nAapka budget kya hai? Best options suggest karunga!'
   },
   {
     q: ['bopal', 'satellite', 'prahlad nagar', 'thaltej', 'giftcity', 'gift city', 'memnagar', 'shela', 'vastrapur', 'bodakdev', 'navrangpura', 'chandkheda'],
-    a: '??ÔøΩ Hum sab prime areas cover karte hain ‚Äî Bopal, Satellite, Prahlad Nagar, Thaltej, GIFT City, Memnagar, Shela aur bahut zyada!\n\nKaunse area mein property chahiye?'
+    a: '??? Hum sab prime areas cover karte hain ó Bopal, Satellite, Prahlad Nagar, Thaltej, GIFT City, Memnagar, Shela aur bahut zyada!\n\nKaunse area mein property chahiye?'
   },
   {
     q: ['loan', 'home loan', 'finance', 'emi', 'bank', 'interest'],
-    a: 'üè¶ Free Home Loan guidance dete hain hum! 15+ banks ke saath kaam karte hain ‚Äî SBI, HDFC, ICICI, Axis.\n\nBest interest rate ke liye abhi call karein: +91 98250 31247'
+    a: '?? Free Home Loan guidance dete hain hum! 15+ banks ke saath kaam karte hain ó SBI, HDFC, ICICI, Axis.\n\nBest interest rate ke liye abhi call karein: +91 98250 31247'
   },
   {
     q: ['visit', 'site visit', 'dekhna', 'show', 'dikhao', 'visit book', 'free visit'],
-    a: 'üöó FREE Site Visit ‚Äî koi charge nahi!\n\nBas apna preferred date & time share karein, hum sab arrange kar denge. WhatsApp karein: +91 93775 31247'
+    a: '?? FREE Site Visit ó koi charge nahi!\n\nBas apna preferred date & time share karein, hum sab arrange kar denge. WhatsApp karein: +91 93775 31247'
   },
   {
     q: ['contact', 'call', 'phone', 'number', 'agent', 'baat', 'expert'],
-    a: '??ÔøΩ Hamare experts se baat karein:\n‚Ä¢ +91 98250 31247\n‚Ä¢ +91 84600 14000\n‚Ä¢ info@cityrealspace.com\n\nMon‚ÄìSat: 9AM ‚Äì 7PM | Sun: 10AM ‚Äì 4PM'
+    a: '??? Hamare experts se baat karein:\nï +91 98250 31247\nï +91 84600 14000\nï info@cityrealspace.com\n\nMonñSat: 9AM ñ 7PM | Sun: 10AM ñ 4PM'
   },
   {
     q: ['new launch', 'new project', 'upcoming', 'naya', 'launch'],
-    a: 'üöÄ New Launch projects available hain:\n‚Ä¢ GIFT City ‚Äî pre-launch prices\n‚Ä¢ Bopal ‚Äî 2 & 3 BHK\n‚Ä¢ Shela ‚Äî premium villas\n\nEarly bird discount ke liye abhi contact karein!'
+    a: '?? New Launch projects available hain:\nï GIFT City ó pre-launch prices\nï Bopal ó 2 & 3 BHK\nï Shela ó premium villas\n\nEarly bird discount ke liye abhi contact karein!'
   },
   {
     q: ['commercial', 'office', 'shop', 'warehouse', 'dukaan', 'godown'],
-    a: 'üè¢ Commercial properties:\n‚Ä¢ Office spaces: 500 ‚Äì 10,000 sqft\n‚Ä¢ Shops / Showrooms: CG Road, SG Highway\n‚Ä¢ Warehouses: Sanand, Changodar\n\nKya requirement hai aapki?'
+    a: '?? Commercial properties:\nï Office spaces: 500 ñ 10,000 sqft\nï Shops / Showrooms: CG Road, SG Highway\nï Warehouses: Sanand, Changodar\n\nKya requirement hai aapki?'
   },
   {
     q: ['brokerage', 'commission', 'charge', 'fees', 'zero brokerage'],
-    a: '‚úÖ Select projects pe Zero Brokerage! Aur sab properties pe transparent pricing ‚Äî koi hidden charges nahi.'
+    a: '? Select projects pe Zero Brokerage! Aur sab properties pe transparent pricing ó koi hidden charges nahi.'
   },
   {
     q: ['legal', 'document', 'registration', 'agreement', 'papers'],
-    a: '??ÔøΩ Free Legal Documentation help dete hain hum ‚Äî sale agreement, registration, title verification sab.\n\nHamara legal team aapki poori help karega!'
+    a: '??? Free Legal Documentation help dete hain hum ó sale agreement, registration, title verification sab.\n\nHamara legal team aapki poori help karega!'
   },
   {
     q: ['hello', 'hi', 'hey', 'helo', 'namaste', 'namaskar', 'kem cho', 'kaise ho'],
-    a: 'üëã Hello! City Real Space mein aapka swagat hai!\n\nMain aapki property search mein help kar sakta hoon. Aap kya dhundh rahe hain?'
+    a: '?? Hello! City Real Space mein aapka swagat hai!\n\nMain aapki property search mein help kar sakta hoon. Aap kya dhundh rahe hain?'
   },
   {
     q: ['thanks', 'thank you', 'shukriya', 'dhanyawad', 'ok', 'okay', 'theek hai'],
-    a: 'üòä Aapka shukriya! Koi bhi sawaal ho toh zaroor poochein. Hamare experts 30 minutes mein aapse contact karenge!'
+    a: '?? Aapka shukriya! Koi bhi sawaal ho toh zaroor poochein. Hamare experts 30 minutes mein aapse contact karenge!'
   },
 ];
 
-const lcwFinalMsg = 'üòä Thank you for chatting with us! Our property expert will contact you within 30 minutes. You can also call us directly at ??ÔøΩ +91 98250 31247. Have a great day! ??';
+const lcwFinalMsg = '?? Thank you for chatting with us! Our property expert will contact you within 30 minutes. You can also call us directly at ??? +91 98250 31247. Have a great day! ??';
 
 let lcwMsgCount = 0;
 
@@ -1350,7 +1350,7 @@ function lcwGetReply(text) {
     if (item.q.some(k => lower.includes(k))) return item.a;
   }
   // Default smart fallback
-  return 'üëç Samajh gaya! Hamare property expert aapko 30 minutes mein call karenge.\n\nYa abhi call karein: ??ÔøΩ +91 98250 31247';
+  return '?? Samajh gaya! Hamare property expert aapko 30 minutes mein call karenge.\n\nYa abhi call karein: ??? +91 98250 31247';
 }
 
 function lcwAddMsg(text, type) {

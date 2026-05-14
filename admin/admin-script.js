@@ -2,7 +2,7 @@ const API = (function() {
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
     return 'http://localhost:5000/api';
   }
-  return 'https://city-real-space.vercel.app/api';
+  return 'https://www.cityrealspace.com/api';
 })();
 
 // ===== AUTH GUARD =====

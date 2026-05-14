@@ -1,9 +1,9 @@
-ï»¿const express  = require('express');
+const express  = require('express');
 const router   = express.Router();
 const Property = require('../models/Property');
 const { protect, adminOnly } = require('../middleware/auth');
 
-// GET /api/properties/sitemap â€” dynamic property sitemap for Google
+// GET /api/properties/sitemap — dynamic property sitemap for Google
 router.get('/sitemap', async (req, res) => {
   try {
     const properties = await Property.find({ isApproved: true }).select('slug _id type status location createdAt updatedAt').sort({ createdAt: -1 }).limit(2000);
@@ -26,7 +26,7 @@ router.get('/sitemap', async (req, res) => {
   }
 });
 
-// GET /api/properties/count â€” total properties count
+// GET /api/properties/count — total properties count
 router.get('/count', async (req, res) => {
   try {
     const count = await Property.countDocuments();
@@ -36,7 +36,7 @@ router.get('/count', async (req, res) => {
   }
 });
 
-// GET /api/properties/localities â€” city ke basis pe real areas from DB
+// GET /api/properties/localities — city ke basis pe real areas from DB
 router.get('/localities', async (req, res) => {
   try {
     const { city } = req.query;
@@ -82,7 +82,7 @@ router.get('/localities', async (req, res) => {
   }
 });
 
-// GET /api/properties â€” with filters
+// GET /api/properties — with filters
 router.get('/', async (req, res) => {
   try {
     const { category, type, status, city, area, minPrice, maxPrice, minSqft, maxSqft, beds, furnishing, possession, search, featured, page = 1, limit = 12 } = req.query;
@@ -131,7 +131,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST /api/properties/generate-slugs â€” admin: generate slugs for all existing properties
+// POST /api/properties/generate-slugs — admin: generate slugs for all existing properties
 router.post('/generate-slugs', protect, adminOnly, async (req, res) => {
   try {
     const properties = await Property.find({ slug: { $in: ['', null, undefined] } });
@@ -147,7 +147,7 @@ router.post('/generate-slugs', protect, adminOnly, async (req, res) => {
   }
 });
 
-// GET /api/properties/trending â€” top 6 featured
+// GET /api/properties/trending — top 6 featured
 router.get('/trending', async (req, res) => {
   try {
     const properties = await Property.find({ isFeatured: true, isApproved: true }).sort({ views: -1 }).limit(10);
@@ -177,7 +177,7 @@ router.get('/commercial', async (req, res) => {
   }
 });
 
-// GET /api/properties/user-post â€” logged in user ki apni listings
+// GET /api/properties/user-post — logged in user ki apni listings
 router.get('/user-post', protect, async (req, res) => {
   try {
     const properties = await Property.find({ postedBy: req.user._id }).sort({ createdAt: -1 });
@@ -187,7 +187,7 @@ router.get('/user-post', protect, async (req, res) => {
   }
 });
 
-// POST /api/properties/user-post â€” logged in user post (pending approval)
+// POST /api/properties/user-post — logged in user post (pending approval)
 router.post('/user-post', protect, async (req, res) => {
   try {
     const property = await Property.create({
@@ -203,7 +203,7 @@ router.post('/user-post', protect, async (req, res) => {
   }
 });
 
-// GET /api/properties/:id â€” by MongoDB ID or slug
+// GET /api/properties/:id — by MongoDB ID or slug
 router.get('/:id', async (req, res) => {
   try {
     const param = req.params.id;
@@ -238,7 +238,7 @@ function genPriceLabel(price, status) {
   return isRent ? label + '/mo' : label;
 }
 
-// POST /api/properties â€” admin only
+// POST /api/properties — admin only
 router.post('/', protect, adminOnly, async (req, res) => {
   try {
     const body = { ...req.body, postedBy: req.user._id };
@@ -252,7 +252,7 @@ router.post('/', protect, adminOnly, async (req, res) => {
   }
 });
 
-// PUT /api/properties/:id â€” admin only
+// PUT /api/properties/:id — admin only
 router.put('/:id', protect, adminOnly, async (req, res) => {
   try {
     const body = { ...req.body };
@@ -269,7 +269,7 @@ router.put('/:id', protect, adminOnly, async (req, res) => {
   }
 });
 
-// DELETE /api/properties/:id â€” admin ya property owner
+// DELETE /api/properties/:id — admin ya property owner
 router.delete('/:id', protect, async (req, res) => {
   try {
     const property = await Property.findById(req.params.id);
@@ -284,7 +284,7 @@ router.delete('/:id', protect, async (req, res) => {
   }
 });
 
-// PUT /api/properties/:id/owner â€” owner apni property edit kar sakta hai
+// PUT /api/properties/:id/owner — owner apni property edit kar sakta hai
 router.put('/:id/owner', protect, async (req, res) => {
   try {
     const property = await Property.findById(req.params.id);
@@ -303,7 +303,7 @@ router.put('/:id/owner', protect, async (req, res) => {
   }
 });
 
-// POST /api/properties/:id/contact â€” increment recentContacts (last 4 days window)
+// POST /api/properties/:id/contact — increment recentContacts (last 4 days window)
 router.post('/:id/contact', async (req, res) => {
   try {
     const property = await Property.findById(req.params.id);
@@ -322,7 +322,7 @@ router.post('/:id/contact', async (req, res) => {
   }
 });
 
-// POST /api/properties/:id/save â€” save to favorites
+// POST /api/properties/:id/save — save to favorites
 router.post('/:id/save', protect, async (req, res) => {
   try {
     const User = require('../models/User');
