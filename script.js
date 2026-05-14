@@ -1,13 +1,46 @@
-// ===== DISABLE VIEW SOURCE ONLY =====
+// ===== CODE PROTECTION =====
+// Right click band
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// Keyboard shortcuts band
 document.addEventListener('keydown', e => {
-  // Ctrl+U (view-source), Ctrl+S (save), Ctrl+Shift+I/J/C (devtools), F12
   if (
     (e.ctrlKey && (e.key === 'u' || e.key === 'U')) ||
     (e.ctrlKey && (e.key === 's' || e.key === 'S')) ||
-    (e.ctrlKey && e.shiftKey && ['i','I','j','J','c','C'].includes(e.key)) ||
-    e.key === 'F12'
+    (e.ctrlKey && (e.key === 'a' || e.key === 'A')) ||
+    (e.ctrlKey && e.shiftKey && ['i','I','j','J','c','C','k','K','m','M'].includes(e.key)) ||
+    e.key === 'F12' || e.key === 'F5'
   ) e.preventDefault();
 });
+
+// DevTools open detection â€” blur karo page
+(function() {
+  var devOpen = false;
+  var threshold = 160;
+  setInterval(function() {
+    var w = window.outerWidth - window.innerWidth;
+    var h = window.outerHeight - window.innerHeight;
+    if (w > threshold || h > threshold) {
+      if (!devOpen) {
+        devOpen = true;
+        document.body.style.filter = 'blur(8px)';
+        document.body.style.pointerEvents = 'none';
+        document.body.style.userSelect = 'none';
+      }
+    } else {
+      if (devOpen) {
+        devOpen = false;
+        document.body.style.filter = '';
+        document.body.style.pointerEvents = '';
+        document.body.style.userSelect = '';
+      }
+    }
+  }, 500);
+})();
+
+// Text select band
+document.addEventListener('selectstart', e => e.preventDefault());
+document.addEventListener('dragstart', e => e.preventDefault());
 
 // ===== AUTH STATE ===== v2
 // ===== PRICE FORMAT FUNCTION (global) =====
@@ -49,7 +82,7 @@ async function checkAuthState() {
     try {
       const res = await fetch(`${API}/auth/me`, { headers: { Authorization: 'Bearer ' + token } });
       if (!res.ok) { handleLogout(); return; }
-    } catch { /* network error — keep logged in */ }
+    } catch { /* network error ï¿½ keep logged in */ }
     loginBtn.style.display = 'none';
     userMenu.style.display = 'block';
     userNameDisplay.textContent = user.firstName || user.email.split('@')[0];
@@ -722,9 +755,9 @@ if (mainSearchBtn) {
             <i class="fa-solid fa-clock" style="color:#E53935;font-size:0.85rem"></i>
             <select id="offerTime" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#555;background:transparent;cursor:pointer">
               <option value="">Preferred Call Time (Optional)</option>
-              <option>Morning (9AM – 12PM)</option>
-              <option>Afternoon (12PM – 3PM)</option>
-              <option>Evening (3PM – 7PM)</option>
+              <option>Morning (9AM ï¿½ 12PM)</option>
+              <option>Afternoon (12PM ï¿½ 3PM)</option>
+              <option>Evening (3PM ï¿½ 7PM)</option>
               <option>Anytime</option>
             </select>
           </div>
@@ -877,7 +910,7 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// ===== REGISTER AUTO POPUP — DISABLED =====
+// ===== REGISTER AUTO POPUP ï¿½ DISABLED =====
 let isRegistered = !!localStorage.getItem('token');
 
 // ===== AUTH MODAL =====
@@ -990,7 +1023,7 @@ document.getElementById('registerForm').addEventListener('submit', async e => {
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Validating email...';
   btn.disabled = true;
 
-  // MX record check — real email domain verify
+  // MX record check ï¿½ real email domain verify
   try {
     const mx = await fetch(`${API}/auth/check-email?email=${encodeURIComponent(email)}`);
     const mxData = await mx.json();
@@ -1228,7 +1261,7 @@ document.getElementById('inqSuccessClose').addEventListener('click', () => inqOv
 
 }
 
-// ===== NAV DROPDOWN — Desktop click + Mobile click =====
+// ===== NAV DROPDOWN ï¿½ Desktop click + Mobile click =====
 document.querySelectorAll('.nav-drop-btn').forEach(btn => {
   btn.addEventListener('click', e => {
     e.preventDefault();
@@ -1268,11 +1301,11 @@ if (liveChatBtn && liveChatWidget) {
   liveChatClose.addEventListener('click', () => liveChatWidget.classList.remove('open'));
 }
 
-// AI Q&A knowledge base — City Real Space
+// AI Q&A knowledge base ï¿½ City Real Space
 const lcwQA = [
   {
     q: ['buy', 'purchase', 'kharidna', 'kharidu', 'kharidni', 'lena', 'leni', 'property chahiye', 'flat chahiye', 'ghar chahiye'],
-    a: '?? Bilkul! Hamare paas 12,500+ verified properties hain — Ahmedabad, Gandhinagar, Surat mein. Aap kaunsa property type dhundh rahe hain?\n\n• Apartment / Flat\n• Villa / Bungalow\n• Plot / Land\n• Commercial'
+    a: '?? Bilkul! Hamare paas 12,500+ verified properties hain ï¿½ Ahmedabad, Gandhinagar, Surat mein. Aap kaunsa property type dhundh rahe hain?\n\nï¿½ Apartment / Flat\nï¿½ Villa / Bungalow\nï¿½ Plot / Land\nï¿½ Commercial'
   },
   {
     q: ['sell', 'bechna', 'bechu', 'list', 'bechni', 'property sell', 'meri property'],
@@ -1284,51 +1317,51 @@ const lcwQA = [
   },
   {
     q: ['2bhk', '2 bhk', 'two bhk', 'do bhk'],
-    a: '??? 2 BHK flats available hain:\n• Bopal: ?55L – ?75L\n• Satellite: ?70L – ?95L\n• Memnagar: ?60L – ?80L\n\nKaunsa area prefer karenge?'
+    a: '??? 2 BHK flats available hain:\nï¿½ Bopal: ?55L ï¿½ ?75L\nï¿½ Satellite: ?70L ï¿½ ?95L\nï¿½ Memnagar: ?60L ï¿½ ?80L\n\nKaunsa area prefer karenge?'
   },
   {
     q: ['3bhk', '3 bhk', 'three bhk', 'teen bhk'],
-    a: '??? 3 BHK options:\n• Prahlad Nagar: ?90L – ?1.5Cr\n• Thaltej: ?85L – ?1.2Cr\n• Bopal: ?75L – ?1Cr\n\nBudget kya hai aapka?'
+    a: '??? 3 BHK options:\nï¿½ Prahlad Nagar: ?90L ï¿½ ?1.5Cr\nï¿½ Thaltej: ?85L ï¿½ ?1.2Cr\nï¿½ Bopal: ?75L ï¿½ ?1Cr\n\nBudget kya hai aapka?'
   },
   {
     q: ['4bhk', '4 bhk', 'four bhk', 'char bhk'],
-    a: '?? 4 BHK premium properties:\n• Prahlad Nagar: ?1.5Cr – ?2.5Cr\n• Bodakdev: ?1.8Cr – ?3Cr\n• Vastrapur: ?1.6Cr – ?2.8Cr\n\nSite visit book karein — bilkul free!'
+    a: '?? 4 BHK premium properties:\nï¿½ Prahlad Nagar: ?1.5Cr ï¿½ ?2.5Cr\nï¿½ Bodakdev: ?1.8Cr ï¿½ ?3Cr\nï¿½ Vastrapur: ?1.6Cr ï¿½ ?2.8Cr\n\nSite visit book karein ï¿½ bilkul free!'
   },
   {
     q: ['price', 'cost', 'budget', 'kitna', 'rate', 'kitne ka', 'daam', 'paisa'],
-    a: '?? Hamare properties ka range:\n• Budget: ?30L – ?60L\n• Mid Range: ?60L – ?1.5Cr\n• Premium: ?1.5Cr – ?5Cr+\n\nAapka budget kya hai? Best options suggest karunga!'
+    a: '?? Hamare properties ka range:\nï¿½ Budget: ?30L ï¿½ ?60L\nï¿½ Mid Range: ?60L ï¿½ ?1.5Cr\nï¿½ Premium: ?1.5Cr ï¿½ ?5Cr+\n\nAapka budget kya hai? Best options suggest karunga!'
   },
   {
     q: ['bopal', 'satellite', 'prahlad nagar', 'thaltej', 'giftcity', 'gift city', 'memnagar', 'shela', 'vastrapur', 'bodakdev', 'navrangpura', 'chandkheda'],
-    a: '??? Hum sab prime areas cover karte hain — Bopal, Satellite, Prahlad Nagar, Thaltej, GIFT City, Memnagar, Shela aur bahut zyada!\n\nKaunse area mein property chahiye?'
+    a: '??? Hum sab prime areas cover karte hain ï¿½ Bopal, Satellite, Prahlad Nagar, Thaltej, GIFT City, Memnagar, Shela aur bahut zyada!\n\nKaunse area mein property chahiye?'
   },
   {
     q: ['loan', 'home loan', 'finance', 'emi', 'bank', 'interest'],
-    a: '?? Free Home Loan guidance dete hain hum! 15+ banks ke saath kaam karte hain — SBI, HDFC, ICICI, Axis.\n\nBest interest rate ke liye abhi call karein: +91 98250 31247'
+    a: '?? Free Home Loan guidance dete hain hum! 15+ banks ke saath kaam karte hain ï¿½ SBI, HDFC, ICICI, Axis.\n\nBest interest rate ke liye abhi call karein: +91 98250 31247'
   },
   {
     q: ['visit', 'site visit', 'dekhna', 'show', 'dikhao', 'visit book', 'free visit'],
-    a: '?? FREE Site Visit — koi charge nahi!\n\nBas apna preferred date & time share karein, hum sab arrange kar denge. WhatsApp karein: +91 93775 31247'
+    a: '?? FREE Site Visit ï¿½ koi charge nahi!\n\nBas apna preferred date & time share karein, hum sab arrange kar denge. WhatsApp karein: +91 93775 31247'
   },
   {
     q: ['contact', 'call', 'phone', 'number', 'agent', 'baat', 'expert'],
-    a: '??? Hamare experts se baat karein:\n• +91 98250 31247\n• +91 84600 14000\n• info@cityrealspace.com\n\nMon–Sat: 9AM – 7PM | Sun: 10AM – 4PM'
+    a: '??? Hamare experts se baat karein:\nï¿½ +91 98250 31247\nï¿½ +91 84600 14000\nï¿½ info@cityrealspace.com\n\nMonï¿½Sat: 9AM ï¿½ 7PM | Sun: 10AM ï¿½ 4PM'
   },
   {
     q: ['new launch', 'new project', 'upcoming', 'naya', 'launch'],
-    a: '?? New Launch projects available hain:\n• GIFT City — pre-launch prices\n• Bopal — 2 & 3 BHK\n• Shela — premium villas\n\nEarly bird discount ke liye abhi contact karein!'
+    a: '?? New Launch projects available hain:\nï¿½ GIFT City ï¿½ pre-launch prices\nï¿½ Bopal ï¿½ 2 & 3 BHK\nï¿½ Shela ï¿½ premium villas\n\nEarly bird discount ke liye abhi contact karein!'
   },
   {
     q: ['commercial', 'office', 'shop', 'warehouse', 'dukaan', 'godown'],
-    a: '?? Commercial properties:\n• Office spaces: 500 – 10,000 sqft\n• Shops / Showrooms: CG Road, SG Highway\n• Warehouses: Sanand, Changodar\n\nKya requirement hai aapki?'
+    a: '?? Commercial properties:\nï¿½ Office spaces: 500 ï¿½ 10,000 sqft\nï¿½ Shops / Showrooms: CG Road, SG Highway\nï¿½ Warehouses: Sanand, Changodar\n\nKya requirement hai aapki?'
   },
   {
     q: ['brokerage', 'commission', 'charge', 'fees', 'zero brokerage'],
-    a: '? Select projects pe Zero Brokerage! Aur sab properties pe transparent pricing — koi hidden charges nahi.'
+    a: '? Select projects pe Zero Brokerage! Aur sab properties pe transparent pricing ï¿½ koi hidden charges nahi.'
   },
   {
     q: ['legal', 'document', 'registration', 'agreement', 'papers'],
-    a: '??? Free Legal Documentation help dete hain hum — sale agreement, registration, title verification sab.\n\nHamara legal team aapki poori help karega!'
+    a: '??? Free Legal Documentation help dete hain hum ï¿½ sale agreement, registration, title verification sab.\n\nHamara legal team aapki poori help karega!'
   },
   {
     q: ['hello', 'hi', 'hey', 'helo', 'namaste', 'namaskar', 'kem cho', 'kaise ho'],
