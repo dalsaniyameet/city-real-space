@@ -38,9 +38,7 @@ document.addEventListener('keydown', e => {
   }, 500);
 })();
 
-// Text select band
-document.addEventListener('selectstart', e => e.preventDefault());
-document.addEventListener('dragstart', e => e.preventDefault());
+
 
 // ===== AUTH STATE ===== v2
 // ===== PRICE FORMAT FUNCTION (global) =====
