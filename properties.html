@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -46,7 +46,7 @@
     .prop-page-head h1 { font-size: 1.6rem; font-weight: 800; color: #0D1B2A; }
     .prop-page-head p { color: #888; font-size: 0.85rem; margin-top: 4px; }
 
-    /* Status tabs bar â€” outside filter panel, sticky */
+    /* Status tabs bar — outside filter panel, sticky */
     #statusTabsBar {
       position: sticky; top: 90px; z-index: 900;
       background: #fff; padding: 10px 0 8px;
@@ -358,12 +358,12 @@
       <label id="budgetLabel">Budget</label>
       <select id="fBudget">
         <option value="">Any Budget</option>
-        <option value="0-3000000">Under â‚¹30L</option>
-        <option value="3000000-6000000">â‚¹30L Ã¢â‚¬â€œ â‚¹60L</option>
-        <option value="6000000-10000000">â‚¹60L Ã¢â‚¬â€œ â‚¹1Cr</option>
-        <option value="10000000-20000000">â‚¹1Cr Ã¢â‚¬â€œ â‚¹2Cr</option>
-        <option value="20000000-50000000">â‚¹2Cr Ã¢â‚¬â€œ â‚¹5Cr</option>
-        <option value="50000000-999999999">Above â‚¹5Cr</option>
+        <option value="0-3000000">Under ₹30L</option>
+        <option value="3000000-6000000">₹30L â€“ ₹60L</option>
+        <option value="6000000-10000000">₹60L â€“ ₹1Cr</option>
+        <option value="10000000-20000000">₹1Cr â€“ ₹2Cr</option>
+        <option value="20000000-50000000">₹2Cr â€“ ₹5Cr</option>
+        <option value="50000000-999999999">Above ₹5Cr</option>
       </select>
     </div>
 
@@ -386,9 +386,9 @@
       <select id="fSqft">
         <option value="">Any Size</option>
         <option value="0-500">Under 500 sqft</option>
-        <option value="500-1000">500 Ã¢â‚¬â€œ 1000 sqft</option>
-        <option value="1000-2000">1000 Ã¢â‚¬â€œ 2000 sqft</option>
-        <option value="2000-5000">2000 Ã¢â‚¬â€œ 5000 sqft</option>
+        <option value="500-1000">500 â€“ 1000 sqft</option>
+        <option value="1000-2000">1000 â€“ 2000 sqft</option>
+        <option value="2000-5000">2000 â€“ 5000 sqft</option>
         <option value="5000-999999">Above 5000 sqft</option>
       </select>
     </div>
@@ -543,7 +543,7 @@ const localitySubAreas = {
 
 let currentPage = 1;
 
-// City Ã¢â€ â€™ Locality
+// City â†’ Locality
 document.getElementById('fCity').addEventListener('change', function() {
   const locs = cityLocalities[this.value] || [];
   const el = document.getElementById('fLocality');
@@ -551,7 +551,7 @@ document.getElementById('fCity').addEventListener('change', function() {
   document.getElementById('fSubLocality').innerHTML = '<option value="">All Sub-Areas</option>';
 });
 
-// Locality Ã¢â€ â€™ Sub Area
+// Locality â†’ Sub Area
 document.getElementById('fLocality').addEventListener('change', function() {
   const subs = localitySubAreas[this.value] || [];
   const el = document.getElementById('fSubLocality');
@@ -609,21 +609,21 @@ if (!initBudget && initMaxPriceOnly) {
 }
 const BUDGET_SALE = [
   ['', 'Any Budget'],
-  ['0-3000000', 'Under â‚¹30L'],
-  ['3000000-6000000', 'â‚¹30L Ã¢â‚¬â€œ â‚¹60L'],
-  ['6000000-10000000', 'â‚¹60L Ã¢â‚¬â€œ â‚¹1Cr'],
-  ['10000000-20000000', 'â‚¹1Cr Ã¢â‚¬â€œ â‚¹2Cr'],
-  ['20000000-50000000', 'â‚¹2Cr Ã¢â‚¬â€œ â‚¹5Cr'],
-  ['50000000-999999999', 'Above â‚¹5Cr']
+  ['0-3000000', 'Under ₹30L'],
+  ['3000000-6000000', '₹30L â€“ ₹60L'],
+  ['6000000-10000000', '₹60L â€“ ₹1Cr'],
+  ['10000000-20000000', '₹1Cr â€“ ₹2Cr'],
+  ['20000000-50000000', '₹2Cr â€“ ₹5Cr'],
+  ['50000000-999999999', 'Above ₹5Cr']
 ];
 const BUDGET_RENT = [
   ['', 'Any Budget'],
-  ['0-10000', 'Under â‚¹10K/mo'],
-  ['10000-20000', 'â‚¹10K Ã¢â‚¬â€œ â‚¹20K/mo'],
-  ['20000-35000', 'â‚¹20K Ã¢â‚¬â€œ â‚¹35K/mo'],
-  ['35000-60000', 'â‚¹35K Ã¢â‚¬â€œ â‚¹60K/mo'],
-  ['60000-100000', 'â‚¹60K Ã¢â‚¬â€œ â‚¹1L/mo'],
-  ['100000-999999999', 'Above â‚¹1L/mo']
+  ['0-10000', 'Under ₹10K/mo'],
+  ['10000-20000', '₹10K â€“ ₹20K/mo'],
+  ['20000-35000', '₹20K â€“ ₹35K/mo'],
+  ['35000-60000', '₹35K â€“ ₹60K/mo'],
+  ['60000-100000', '₹60K â€“ ₹1L/mo'],
+  ['100000-999999999', 'Above ₹1L/mo']
 ];
 
 function updateBudgetOptions(status) {
@@ -721,7 +721,7 @@ function createCard(p) {
     ? '<div class="cs"><i class="fa-solid fa-vector-square"></i>' + (p.specs?.sqft || 0) + ' sqft</div><div class="cs"><i class="fa-solid fa-building"></i>' + p.type + '</div>'
     : '<div class="cs"><i class="fa-solid fa-bed"></i>' + (p.specs?.beds || 0) + ' Beds</div><div class="cs"><i class="fa-solid fa-bath"></i>' + (p.specs?.baths || 0) + ' Baths</div><div class="cs"><i class="fa-solid fa-vector-square"></i>' + (p.specs?.sqft || 0) + ' sqft</div>';
 
-  // Build images array Ã¢â‚¬â€ fallback to 3 placeholder images if only 1
+  // Build images array â€” fallback to 3 placeholder images if only 1
   const fallbacks = [
     'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&q=80',
     'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80',
@@ -886,7 +886,7 @@ function saveRecentlyViewed(p, propUrl) {
     }
   } catch(e) {}
 }
-// No static fallback Ã¢â‚¬â€ only real DB data
+// No static fallback â€” only real DB data
 
 // Pagination
 function renderPagination(totalPages, current) {
@@ -1027,7 +1027,7 @@ function showEmptyState(grid) {
   grid.innerHTML = '<div class="empty-res">' +
     '<i class="fa-solid fa-building"></i>' +
     '<p>No' + typeText + ' properties found' + searchInfo + '.</p>' +
-    '<p style="font-size:0.82rem;color:#bbb;margin-top:8px">Can\'t find what you need? Post your requirement Ã¢â‚¬â€ we\'ll find it for you!</p>' +
+    '<p style="font-size:0.82rem;color:#bbb;margin-top:8px">Can\'t find what you need? Post your requirement â€” we\'ll find it for you!</p>' +
     '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">' +
     '<button onclick="window.openReqModal && window.openReqModal()" class="btn-req-pulse" style="background:#E53935;color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:inline-flex;align-items:center;gap:8px"><i class="fa-solid fa-bell"></i> Post Your Requirement</button>' +
     '<button onclick="document.getElementById(\'clearBtn\').click()" style="background:#f5f5f5;color:#555;border:1.5px solid #e8e8e8;padding:12px 24px;border-radius:10px;font-size:0.88rem;font-weight:600;cursor:pointer;font-family:Poppins,sans-serif;display:inline-flex;align-items:center;gap:8px"><i class="fa-solid fa-xmark"></i> Clear Filters</button>' +
@@ -1095,12 +1095,12 @@ function showEmptyState(grid) {
             <i class="fa-solid fa-indian-rupee-sign" style="color:#E53935;font-size:0.85rem"></i>
             <select id="reqBudget" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:rgba(255,255,255,0.8);background:transparent;cursor:pointer">
               <option value="" style="background:#0D1B2A">Budget Range (Optional)</option>
-              <option style="background:#0D1B2A">Under â‚¹30 Lakh</option>
-              <option style="background:#0D1B2A">â‚¹30L Ã¢â‚¬â€œ â‚¹60L</option>
-              <option style="background:#0D1B2A">â‚¹60L Ã¢â‚¬â€œ â‚¹1 Cr</option>
-              <option style="background:#0D1B2A">â‚¹1Cr Ã¢â‚¬â€œ â‚¹2Cr</option>
-              <option style="background:#0D1B2A">â‚¹2Cr Ã¢â‚¬â€œ â‚¹5Cr</option>
-              <option style="background:#0D1B2A">Above â‚¹5Cr</option>
+              <option style="background:#0D1B2A">Under ₹30 Lakh</option>
+              <option style="background:#0D1B2A">₹30L â€“ ₹60L</option>
+              <option style="background:#0D1B2A">₹60L â€“ ₹1 Cr</option>
+              <option style="background:#0D1B2A">₹1Cr â€“ ₹2Cr</option>
+              <option style="background:#0D1B2A">₹2Cr â€“ ₹5Cr</option>
+              <option style="background:#0D1B2A">Above ₹5Cr</option>
             </select>
           </div>
           <div style="display:flex;align-items:center;gap:10px;border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:11px 14px;background:rgba(255,255,255,0.06)">
@@ -1272,9 +1272,9 @@ function showEmptyState(grid) {
             <i class="fa-solid fa-clock" style="color:#E53935;font-size:0.85rem"></i>
             <select id="offerTime" style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.88rem;color:#555;background:transparent;cursor:pointer">
               <option value="">Preferred Call Time (Optional)</option>
-              <option>Morning (9AM Ã¢â‚¬â€œ 12PM)</option>
-              <option>Afternoon (12PM Ã¢â‚¬â€œ 3PM)</option>
-              <option>Evening (3PM Ã¢â‚¬â€œ 7PM)</option>
+              <option>Morning (9AM â€“ 12PM)</option>
+              <option>Afternoon (12PM â€“ 3PM)</option>
+              <option>Evening (3PM â€“ 7PM)</option>
               <option>Anytime</option>
             </select>
           </div>
@@ -1341,7 +1341,7 @@ function showEmptyState(grid) {
 
 // ===== LOGIN REQUIRED HELPERS =====
 
-// Init Ã¢â‚¬â€ after IIFEs so window.openReqModal is ready
+// Init â€” after IIFEs so window.openReqModal is ready
 loadProperties(1);
 
 function requireLoginForOffer(e, title, loc) {
@@ -1382,8 +1382,8 @@ function showLoginToast(msg) {
           <li><a href="/properties?status=for-sale"><i class="fa-solid fa-chevron-right"></i> Buy Property</a></li>
           <li><a href="/properties?status=for-sale&type=apartment"><i class="fa-solid fa-chevron-right"></i> Resale</a></li>
           <li><a href="/properties?status=for-sale&type=plot"><i class="fa-solid fa-chevron-right"></i> Land</a></li>
-          <li><a href="/post-property"><i class="fa-solid fa-chevron-right"></i> Sell Ã¢â‚¬â€œ List Property</a></li>
-          <li><a href="/post-property"><i class="fa-solid fa-chevron-right"></i> Sell Ã¢â‚¬â€œ List Project</a></li>
+          <li><a href="/post-property"><i class="fa-solid fa-chevron-right"></i> Sell â€“ List Property</a></li>
+          <li><a href="/post-property"><i class="fa-solid fa-chevron-right"></i> Sell â€“ List Project</a></li>
           <li><a href="/properties?status=new-launch"><i class="fa-solid fa-chevron-right"></i> New Launch</a></li>
           <li><a href="/properties?status=for-rent"><i class="fa-solid fa-chevron-right"></i> Prelease</a></li>
           <li><a href="/contact"><i class="fa-solid fa-chevron-right"></i> Property Valuation</a></li>
@@ -1403,21 +1403,21 @@ function showLoginToast(msg) {
       <div class="footer-col">
         <h4>Contact Us</h4>
         <div class="contact-info">
-          <div class="ci"><i class="fa-solid fa-location-dot"></i><span>D-102, Prahlad Nagar Trade Centre, Satellite, Ahmedabad-380015</span></div>
+          <div class="ci"><i class="fa-solid fa-location-dot"></i><span><a href="https://maps.google.com/?q=D-102,+Prahlad+Nagar+Trade+Centre,+Radio+Mirchi+Road,+Nr.+Time+of+India+Press,+Satellite,+Ahmedabad-380015 target=_blank rel=noopener style=color:inherit;text-decoration:underline;>D-102, Prahlad Nagar Trade Centre (PNTC), Radio Mirchi Road, Nr. Time of India Press, Satellite, Ahmedabad-380015</a></span></div>
           <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 98250 31247</span></div>
           <div class="ci"><i class="fa-solid fa-envelope"></i><span>info@cityrealspace.com</span></div>
         </div>
         <div class="working-hours">
           <h5><i class="fa-regular fa-clock"></i> Working Hours</h5>
-          <p>Mon Ã¢â‚¬â€œ Sat: 9:00 AM Ã¢â‚¬â€œ 7:00 PM</p>
-          <p>Sunday: 10:00 AM Ã¢â‚¬â€œ 4:00 PM</p>
+          <p>Mon â€“ Sat: 9:00 AM â€“ 7:00 PM</p>
+          <p>Sunday: 10:00 AM â€“ 4:00 PM</p>
         </div>
       </div>
     </div>
   </div>
   <div class="footer-bottom">
     <div class="container">
-      <p>Â© 2026 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p>
+      <p>© 2026 City Real Space. All Rights Reserved. Designed with <i class="fa-solid fa-heart" style="color:#E53935"></i> in Ahmedabad.</p>
     </div>
   </div>
 </footer>
@@ -1507,7 +1507,7 @@ function findPropData(id) {
       updateDrawer();
     })
     .catch(() => {});
-  return null; // async fetch Ã¢â‚¬â€ updateDrawer called in then()
+  return null; // async fetch â€” updateDrawer called in then()
 }
 
 function updateDrawer() {
@@ -1580,7 +1580,7 @@ function buildCompareTable() {
   const maxSqft  = Math.max(...sqfts);
   const maxBeds  = Math.max(...beds);
 
-  // Header row Ã¢â‚¬â€ property cards
+  // Header row â€” property cards
   let thead = '<thead><tr><th>Feature</th>';
   props.forEach(p => {
     thead += '<th><img src="' + p.img + '" class="cmp-prop-img" alt="Property in Ahmedabad"/>' +
@@ -1593,14 +1593,14 @@ function buildCompareTable() {
   const rows = [
     { label: 'Price', fn: p => '<span class="cmp-price">' + formatPrice(p.price, p.status) + '</span>', win: (p,i) => prices[i] === minPrice },
     { label: 'Status', fn: p => '<span class="cmp-badge ' + badgeClass(p.status) + '">' + (statusMap[p.status]||p.status) + '</span>' },
-    { label: 'Type', fn: p => p.type ? p.type.charAt(0).toUpperCase()+p.type.slice(1) : 'Ã¢â‚¬â€' },
-    { label: 'Bedrooms', fn: p => p.specs?.beds ? p.specs.beds + ' BHK' : 'Ã¢â‚¬â€', win: (p,i) => beds[i] === maxBeds && maxBeds > 0 },
-    { label: 'Bathrooms', fn: p => p.specs?.baths ? p.specs.baths : 'Ã¢â‚¬â€' },
-    { label: 'Area (sqft)', fn: p => p.specs?.sqft ? p.specs.sqft.toLocaleString('en-IN') + ' sqft' : 'Ã¢â‚¬â€', win: (p,i) => sqfts[i] === maxSqft && maxSqft > 0 },
-    { label: 'Floor', fn: p => p.extraDetails?.floor || 'Ã¢â‚¬â€' },
-    { label: 'Furnished', fn: p => p.extraDetails?.furnished || 'Ã¢â‚¬â€' },
-    { label: 'Possession', fn: p => p.extraDetails?.possession || 'Ã¢â‚¬â€' },
-    { label: 'Amenities', fn: p => p.amenities?.length ? p.amenities.slice(0,4).join(', ') + (p.amenities.length > 4 ? ' +' + (p.amenities.length-4) + ' more' : '') : 'Ã¢â‚¬â€' },
+    { label: 'Type', fn: p => p.type ? p.type.charAt(0).toUpperCase()+p.type.slice(1) : 'â€”' },
+    { label: 'Bedrooms', fn: p => p.specs?.beds ? p.specs.beds + ' BHK' : 'â€”', win: (p,i) => beds[i] === maxBeds && maxBeds > 0 },
+    { label: 'Bathrooms', fn: p => p.specs?.baths ? p.specs.baths : 'â€”' },
+    { label: 'Area (sqft)', fn: p => p.specs?.sqft ? p.specs.sqft.toLocaleString('en-IN') + ' sqft' : 'â€”', win: (p,i) => sqfts[i] === maxSqft && maxSqft > 0 },
+    { label: 'Floor', fn: p => p.extraDetails?.floor || 'â€”' },
+    { label: 'Furnished', fn: p => p.extraDetails?.furnished || 'â€”' },
+    { label: 'Possession', fn: p => p.extraDetails?.possession || 'â€”' },
+    { label: 'Amenities', fn: p => p.amenities?.length ? p.amenities.slice(0,4).join(', ') + (p.amenities.length > 4 ? ' +' + (p.amenities.length-4) + ' more' : '') : 'â€”' },
   ];
 
   let tbody = '<tbody>';
@@ -1636,5 +1636,6 @@ function showCmpToast(msg) {
 </script>
 <script src="/cursor.js"></script></body>
 </html>
+
 
 
