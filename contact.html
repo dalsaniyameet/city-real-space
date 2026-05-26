@@ -402,6 +402,14 @@
       const data = await res.json();
       if (!data.success) throw new Error(data.message);
     } catch(err) { console.error(err); }
+    // CRM webhook
+    try {
+      await fetch('https://crs-crm.vercel.app/api/webhooks/website', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone, email, requirements: message, source: 'contact-form' })
+      });
+    } catch(e) {}
     btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Message';
     btn.disabled = false;
     document.getElementById('contactFormWrap').style.display = 'none';

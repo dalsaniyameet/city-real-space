@@ -1088,6 +1088,7 @@ function renderProperty(p) {
     const phone = document.getElementById('pdPhone').value.trim();
     if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
     fetch(`${API}/properties/${p._id}/contact`, { method: 'POST' }).catch(() => {});
+    fetch('https://crs-crm.vercel.app/api/webhooks/website', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name, phone, requirements: 'WhatsApp Enquiry: ' + propTitle + ' (' + propLoc + ')', source: 'property-whatsapp' }) }).catch(()=>{});
     const msg = encodeURIComponent(`Hi, I am ${name} (+91 ${phone}). I am interested in: ${propTitle} (${propLoc}). Please share more details.`);
     window.open(`https://wa.me/919825031247?text=${msg}`, '_blank');
   };
@@ -1097,6 +1098,7 @@ function renderProperty(p) {
     const phone = document.getElementById('pdPhone').value.trim();
     if (!name || !phone) { alert('Please enter your name and phone number.'); return; }
     fetch(`${API}/properties/${p._id}/contact`, { method: 'POST' }).catch(() => {});
+    fetch('https://crs-crm.vercel.app/api/webhooks/website', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name, phone, requirements: 'Callback Request: ' + propTitle + ' (' + (p.location?.city||'') + ')', source: 'property-callback' }) }).catch(()=>{});
     try {
       await fetch(`${API}/inquiry`, { method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ name, phone, propertyName: propTitle, lookingFor: 'Get Offer', city: p.location?.city, message: `Callback request for: ${propTitle}` })
@@ -1312,6 +1314,7 @@ function bookVisit() {
   const loc   = document.getElementById('pdLoc')?.textContent || '';
   if (!name || !phone) { alert('Please enter your name and phone number first.'); return; }
   const slot = selectedSlot || 'Any convenient time';
+  fetch('https://crs-crm.vercel.app/api/webhooks/website', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name, phone, requirements: 'Site Visit: ' + title + ' (' + loc + ') - Slot: ' + slot, source: 'property-site-visit' }) }).catch(()=>{});
   const msg  = encodeURIComponent(`Hi! I want to book a FREE Site Visit.\n\nProperty: ${title}\nLocation: ${loc}\nPreferred Time: ${slot}\n\nMy Name: ${name}\nMy Phone: +91 ${phone}`);
   window.open('https://wa.me/919825031247?text=' + msg, '_blank');
 }

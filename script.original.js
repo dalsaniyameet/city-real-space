@@ -757,6 +757,7 @@ if (mainSearchBtn) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, phone, propertyName: title, propertyType: title, lookingFor: 'Get Offer', city: loc, message: 'Get Offer request for: ' + title + ' (' + loc + ')' })
       });
+      fetch('https://crs-crm.vercel.app/api/webhooks/website', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name, phone, requirements: 'Get Offer: ' + title + ' (' + loc + ')', source: 'offer-modal' }) }).catch(()=>{});
     } catch(e) {}
     overlay.style.opacity = '0';
     overlay.style.pointerEvents = 'none';
@@ -1197,6 +1198,7 @@ document.getElementById('inqForm').addEventListener('submit', async e => {
     const data = await res.json();
     const refId = data.inquiry?.refId || ('CRS-' + Math.floor(100000 + Math.random() * 900000));
     document.getElementById('inqRefId').textContent = refId;
+    fetch('https://crs-crm.vercel.app/api/webhooks/website', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name: body.name, phone: body.phone, email: body.email, requirements: (body.lookingFor || '') + (body.message ? ': ' + body.message : ''), budget: body.budget, source: 'inquiry-form' }) }).catch(()=>{});
   } catch {
     document.getElementById('inqRefId').textContent = 'CRS-' + Math.floor(100000 + Math.random() * 900000);
   }
@@ -1270,7 +1272,7 @@ const lcwQA = [
   },
   {
     q: ['bopal', 'satellite', 'prahlad nagar', 'thaltej', 'giftcity', 'gift city', 'memnagar', 'shela', 'vastrapur', 'bodakdev', 'navrangpura', 'chandkheda'],
-    a: '??� Hum sab prime areas cover karte hain — Bopal, Satellite, Prahlad Nagar, Thaltej, GIFT City, Memnagar, Shela aur bahut zyada!\n\nKaunse area mein property chahiye?'
+    a: '??� Hum sab prime areas cover karte hain — Bopal, Satellite, Prahlad Nagar, Thaltej, GIFT City, Memnagar, Shela aur bahut zyada!\n\nKaunse area mein property chahiye?'
   },
   {
     q: ['loan', 'home loan', 'finance', 'emi', 'bank', 'interest'],
@@ -1282,7 +1284,7 @@ const lcwQA = [
   },
   {
     q: ['contact', 'call', 'phone', 'number', 'agent', 'baat', 'expert'],
-    a: '??� Hamare experts se baat karein:\n• +91 98250 31247\n• +91 84600 14000\n• info@cityrealspace.com\n\nMon–Sat: 9AM – 7PM | Sun: 10AM – 4PM'
+    a: '??� Hamare experts se baat karein:\n• +91 98250 31247\n• +91 84600 14000\n• info@cityrealspace.com\n\nMon–Sat: 9AM – 7PM | Sun: 10AM – 4PM'
   },
   {
     q: ['new launch', 'new project', 'upcoming', 'naya', 'launch'],
@@ -1298,7 +1300,7 @@ const lcwQA = [
   },
   {
     q: ['legal', 'document', 'registration', 'agreement', 'papers'],
-    a: '??� Free Legal Documentation help dete hain hum — sale agreement, registration, title verification sab.\n\nHamara legal team aapki poori help karega!'
+    a: '??� Free Legal Documentation help dete hain hum — sale agreement, registration, title verification sab.\n\nHamara legal team aapki poori help karega!'
   },
   {
     q: ['hello', 'hi', 'hey', 'helo', 'namaste', 'namaskar', 'kem cho', 'kaise ho'],
@@ -1310,7 +1312,7 @@ const lcwQA = [
   },
 ];
 
-const lcwFinalMsg = '?? Thank you for chatting with us! Our property expert will contact you within 30 minutes. You can also call us directly at ??� +91 98250 31247. Have a great day! ??';
+const lcwFinalMsg = '?? Thank you for chatting with us! Our property expert will contact you within 30 minutes. You can also call us directly at ??� +91 98250 31247. Have a great day! ??';
 
 let lcwMsgCount = 0;
 
@@ -1320,7 +1322,7 @@ function lcwGetReply(text) {
     if (item.q.some(k => lower.includes(k))) return item.a;
   }
   // Default smart fallback
-  return '?? Samajh gaya! Hamare property expert aapko 30 minutes mein call karenge.\n\nYa abhi call karein: ??� +91 98250 31247';
+  return '?? Samajh gaya! Hamare property expert aapko 30 minutes mein call karenge.\n\nYa abhi call karein: ??� +91 98250 31247';
 }
 
 function lcwAddMsg(text, type) {
