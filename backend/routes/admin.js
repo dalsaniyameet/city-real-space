@@ -5,6 +5,7 @@ const Property = require('../models/Property');
 const Blog     = require('../models/Blog');
 const Inquiry  = require('../models/Inquiry');
 const User     = require('../models/User');
+const Project  = require('../models/Project');
 const twilio   = require('twilio');
 
 router.use(protect, adminOnly);
@@ -354,6 +355,63 @@ router.delete('/users/:id', async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.json({ success: true, message: 'User deleted' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// Promote user to admin
+router.put('/users/:id/make-admin', async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, { role: 'admin' }, { new: true }).select('-password');
+    res.json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// Remove admin role
+router.put('/users/:id/remove-admin', async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, { role: 'buyer' }, { new: true }).select('-password');
+    res.json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// ===== PROJECTS =====
+router.get('/projects', async (req, res) => {
+  try {
+    const projects = await Project.find().sort({ createdAt: -1 });
+    res.json({ success: true, projects });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+router.post('/projects', async (req, res) => {
+  try {
+    const project = await Project.create(req.body);
+    res.status(201).json({ success: true, project });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+router.put('/projects/:id', async (req, res) => {
+  try {
+    const project = await Project.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json({ success: true, project });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+router.delete('/projects/:id', async (req, res) => {
+  try {
+    await Project.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

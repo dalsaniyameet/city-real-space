@@ -252,6 +252,39 @@ app.use('/api/blogs',      require('./routes/blogs'));
 app.use('/api/upload',     require('./routes/upload'));
 app.use('/api/nearby',     require('./routes/nearby'));
 
+// Public projects endpoint (no auth needed)
+app.get('/api/projects', async (req, res) => {
+  try {
+    const Project = require('./models/Project');
+    const projects = await Project.find({ isActive: true }).sort({ createdAt: -1 });
+    res.json({ success: true, projects });
+  } catch (err) {
+    res.status(500).json({ success: false, projects: [] });
+  }
+});
+
+// Single project by slug or id
+app.get('/api/projects/:slugOrId', async (req, res) => {
+  try {
+    const Project = require('./models/Project');
+    const { slugOrId } = req.params;
+    const mongoose = require('mongoose');
+    const isId = mongoose.Types.ObjectId.isValid(slugOrId);
+    const project = isId
+      ? await Project.findById(slugOrId)
+      : await Project.findOne({ slug: slugOrId, isActive: true });
+    if (!project) return res.status(404).json({ success: false, message: 'Not found' });
+    res.json({ success: true, project });
+  } catch (err) {
+    res.status(500).json({ success: false });
+  }
+});
+
+// Project detail page route
+app.get('/project/:slug', (req, res) => {
+  res.sendFile(path.join(FRONTEND, 'project-detail.html'));
+});
+
 // Blog detail SEO URL — /blog/:slug
 app.get('/blog/:slug', (req, res) => {
   res.sendFile(path.join(FRONTEND, 'blog-detail.html'));

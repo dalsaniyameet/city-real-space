@@ -39,6 +39,7 @@
     <a href="#" class="sb-link" data-page="users"><i class="fa-solid fa-users"></i> Users</a>
     <a href="#" class="sb-link" data-page="requirements"><i class="fa-solid fa-bell"></i> Requirements <span class="sb-badge" id="reqBadge">0</span></a>
     <a href="#" class="sb-link" data-page="drafts"><i class="fa-regular fa-floppy-disk"></i> Saved Drafts <span class="sb-badge" id="draftBadge" style="background:#f59e0b">0</span></a>
+    <a href="#" class="sb-link" data-page="projects" onclick="setTimeout(loadProjects,300)"><i class="fa-solid fa-city"></i> Featured Projects</a>
   </nav>
   <div class="sb-bottom">
     <a href="../index.html" target="_blank" class="sb-link"><i class="fa-solid fa-globe"></i> View Website</a>
@@ -338,6 +339,25 @@
         <table class="admin-table" id="userTable">
           <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>City</th><th>Joined</th><th>Actions</th></tr></thead>
           <tbody id="userTbody"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PROJECTS ===== -->
+    <div class="page" id="page-projects">
+      <div class="page-head">
+        <div>
+          <h2>Featured Projects</h2>
+          <p>Yahan se projects add karo â€” index.html par automatically show honge.</p>
+        </div>
+        <button class="btn-add" onclick="openProjectModal()"><i class="fa-solid fa-plus"></i> Add Project</button>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+        <table class="admin-table">
+          <thead><tr><th>Image</th><th>Project Name</th><th>Developer</th><th>Location</th><th>Category</th><th>Price</th><th>Active</th><th>Actions</th></tr></thead>
+          <tbody id="projectTbody"></tbody>
         </table>
         </div>
       </div>
@@ -798,7 +818,7 @@
                 </div>
               </div>
 
-              <!-- Available From + Suitable For — only for RENT -->
+              <!-- Available From + Suitable For ï¿½ only for RENT -->
               <div class="hs-row cols-2" id="rSuitableForRow">
                 <div class="hs-field">
                   <label>&#128197; Available From</label>
@@ -839,7 +859,7 @@
               </div>
             </div>
 
-            <!-- COMMERCIAL LIFT SECTION — shown for ALL commercial types -->
+            <!-- COMMERCIAL LIFT SECTION ï¿½ shown for ALL commercial types -->
             <div id="commercialLiftSection" style="display:none;margin-bottom:14px;">
               <div style="font-size:0.85rem;font-weight:700;color:#1d4ed8;margin:14px 0 10px;padding:8px 12px;background:#eff6ff;border-radius:8px;border-left:3px solid #3b82f6;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-elevator"></i> Lift & Floor Details</div>
               <div class="hs-row cols-3">
@@ -890,7 +910,7 @@
                 <div class="hs-field"><label>Carpet Area (sq.ft)</label><input type="number" id="oCarpet" placeholder="Auto: SBA x 0.70" oninput="this.dataset.manual=1;calcPricePerSqft()"/></div>
               </div>
 
-              <!-- Cabin / Seats — hidden when Unfurnished -->
+              <!-- Cabin / Seats ï¿½ hidden when Unfurnished -->
               <div id="oCabinSeatingSection">
               <div style="font-size:0.78rem;font-weight:700;color:#1d4ed8;margin:10px 0 8px;">&#128188; Cabin &amp; Seating</div>
               <div class="hs-row cols-1">
@@ -944,9 +964,9 @@
                 var suggested, hintText;
                 if (seats === 0)        { suggested = '';  hintText = ''; }
                 else if (seats <= 5)    { suggested = '0'; hintText = '(Not Required)'; }
-                else if (seats <= 10)   { suggested = '1'; hintText = '(0–1 Recommended)'; }
+                else if (seats <= 10)   { suggested = '1'; hintText = '(0ï¿½1 Recommended)'; }
                 else if (seats <= 20)   { suggested = '1'; hintText = '(1 Recommended)'; }
-                else if (seats <= 40)   { suggested = '2'; hintText = '(1–2 Suggested)'; }
+                else if (seats <= 40)   { suggested = '2'; hintText = '(1ï¿½2 Suggested)'; }
                 else                    { suggested = '4'; hintText = '(2+ Suggested)'; }
                 if (suggested !== '' && !confEl.dataset.manual) confEl.value = suggested;
                 if (hint) hint.textContent = hintText;
@@ -1148,7 +1168,7 @@
               }
               </script>
 
-              <!-- Fire & Legal — SELL only -->
+              <!-- Fire & Legal ï¿½ SELL only -->
               <div id="officeSellFields" style="display:none">
                 <div style="font-size:0.78rem;font-weight:700;color:#dc2626;margin:10px 0 8px;">&#128293; Fire &amp; Legal</div>
                 <div class="hs-row cols-3">
@@ -1630,8 +1650,374 @@
 <!-- TOAST -->
 <div class="admin-toast" id="adminToast"></div>
 
+<!-- ===== PROJECT MODAL ===== -->
+<div class="modal-overlay" id="projectModal">
+  <div class="modal-box" style="max-width:800px;width:96vw;max-height:92vh;overflow:hidden;padding:0;display:flex;flex-direction:column;">
+    <div class="modal-head" style="flex-shrink:0;">
+      <h3 id="projectModalTitle">Add Featured Project</h3>
+      <button class="modal-close" onclick="closeModal('projectModal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="projectForm" style="padding:20px;display:flex;flex-direction:column;gap:0;overflow-y:auto;flex:1;">
+      <input type="hidden" id="pjId"/>
+
+      <!-- SECTION: Basic Info -->
+      <div style="font-size:0.78rem;font-weight:800;color:#E53935;text-transform:uppercase;letter-spacing:1px;padding:8px 0 10px;border-bottom:1px solid #f0f0f0;margin-bottom:14px;"><i class="fa-solid fa-building" style="margin-right:6px;"></i> Basic Info</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div class="form-grp">
+          <label>Project Name *</label>
+          <input type="text" id="pjName" placeholder="e.g. Iscon Vogue" required oninput="pjAutoSlug()"/>
+        </div>
+        <div class="form-grp">
+          <label>Slug (URL) *</label>
+          <input type="text" id="pjSlug" placeholder="e.g. iscon-vogue" required style="font-family:monospace;font-size:0.82rem;"/>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div class="form-grp">
+          <label>Developer / Company</label>
+          <input type="text" id="pjDeveloper" placeholder="e.g. JP Iscon Private Limited"/>
+        </div>
+        <div class="form-grp">
+          <label>Category</label>
+          <select id="pjCategory">
+            <option value="residential">Residential</option>
+            <option value="commercial">Commercial</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div class="form-grp">
+          <label>Location *</label>
+          <input type="text" id="pjLocation" placeholder="e.g. Iscon Ambli Road, Ahmedabad" required/>
+        </div>
+        <div class="form-grp">
+          <label>RERA Number</label>
+          <input type="text" id="pjRera" placeholder="e.g. PR/GJ/AHMEDABAD/.../050523"/>
+        </div>
+      </div>
+
+      <!-- SECTION: Pricing & Stats -->
+      <div style="font-size:0.78rem;font-weight:800;color:#E53935;text-transform:uppercase;letter-spacing:1px;padding:8px 0 10px;border-bottom:1px solid #f0f0f0;margin-bottom:14px;margin-top:4px;"><i class="fa-solid fa-rupee-sign" style="margin-right:6px;"></i> Pricing & Stats</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div class="form-grp">
+          <label>Price</label>
+          <input type="text" id="pjPrice" placeholder="e.g. On Request or â‚¹2.5 Cr"/>
+        </div>
+        <div class="form-grp">
+          <label>Price Unit</label>
+          <input type="text" id="pjPriceUnit" placeholder="e.g. onwards"/>
+        </div>
+        <div class="form-grp">
+          <label>Possession Date</label>
+          <input type="text" id="pjPossession" placeholder="e.g. Dec, 2026"/>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div class="form-grp">
+          <label>Total Units</label>
+          <input type="text" id="pjTotalUnits" placeholder="e.g. 76"/>
+        </div>
+        <div class="form-grp">
+          <label>Project Area</label>
+          <input type="text" id="pjArea" placeholder="e.g. 45000 Sq Ft"/>
+        </div>
+        <div class="form-grp">
+          <label>Contact Phone</label>
+          <input type="text" id="pjPhone" placeholder="9825031247" value="9825031247"/>
+        </div>
+      </div>
+
+      <!-- SECTION: Configurations -->
+      <div style="font-size:0.78rem;font-weight:800;color:#E53935;text-transform:uppercase;letter-spacing:1px;padding:8px 0 10px;border-bottom:1px solid #f0f0f0;margin-bottom:14px;margin-top:4px;"><i class="fa-solid fa-th-large" style="margin-right:6px;"></i> Configurations <span style="font-size:0.65rem;color:#aaa;font-weight:500;text-transform:none;">(one per line)</span></div>
+      <div class="form-grp" style="margin-bottom:12px;">
+        <textarea id="pjConfigs" rows="3" placeholder="4 BHK&#10;5 BHK&#10;6045 sqft&#10;6065 sqft" style="font-family:monospace;font-size:0.82rem;"></textarea>
+      </div>
+
+      <!-- SECTION: Highlights -->
+      <div style="font-size:0.78rem;font-weight:800;color:#E53935;text-transform:uppercase;letter-spacing:1px;padding:8px 0 10px;border-bottom:1px solid #f0f0f0;margin-bottom:14px;margin-top:4px;"><i class="fa-solid fa-star" style="margin-right:6px;"></i> Highlights <span style="font-size:0.65rem;color:#aaa;font-weight:500;text-transform:none;">(one per line)</span></div>
+      <div class="form-grp" style="margin-bottom:12px;">
+        <textarea id="pjHighlights" rows="4" placeholder="Poshest Location of Ahmedabad&#10;100% Privacy&#10;Star Studded Clubhouse&#10;Vaastu Compliant Homes"></textarea>
+      </div>
+
+      <!-- SECTION: Amenities -->
+      <div style="font-size:0.78rem;font-weight:800;color:#E53935;text-transform:uppercase;letter-spacing:1px;padding:8px 0 10px;border-bottom:1px solid #f0f0f0;margin-bottom:14px;margin-top:4px;"><i class="fa-solid fa-spa" style="margin-right:6px;"></i> Amenities <span style="font-size:0.65rem;color:#aaa;font-weight:500;text-transform:none;">(one per line)</span></div>
+      <div class="form-grp" style="margin-bottom:12px;">
+        <textarea id="pjAmenities" rows="5" placeholder="Gymnasium&#10;Swimming Pool&#10;24/7 Security&#10;EV Charging&#10;Landscaping & Tree Planting"></textarea>
+      </div>
+
+      <!-- SECTION: Description + Media -->
+      <div style="font-size:0.78rem;font-weight:800;color:#E53935;text-transform:uppercase;letter-spacing:1px;padding:8px 0 10px;border-bottom:1px solid #f0f0f0;margin-bottom:14px;margin-top:4px;"><i class="fa-solid fa-align-left" style="margin-right:6px;"></i> Description & Media</div>
+      <div class="form-grp" style="margin-bottom:12px;">
+        <label>Description</label>
+        <textarea id="pjDescription" rows="4" placeholder="About this project..."></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div class="form-grp">
+          <label>Cover Image <span style="color:#aaa;font-weight:400;font-size:0.72rem;">(file ya URL)</span></label>
+          <!-- Upload Box -->
+          <div id="pjImgUploadBox" onclick="document.getElementById('pjImageFile').click()" style="position:relative;height:110px;border:2px dashed #e0e0e0;border-radius:10px;background:#fafafa;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transition:border-color 0.2s;margin-bottom:8px;overflow:hidden;" onmouseover="this.style.borderColor='#E53935'" onmouseout="this.style.borderColor='#e0e0e0'">
+            <img id="pjImgPreview" src="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;border-radius:8px;"/>
+            <div id="pjImgIcon" style="text-align:center;">
+              <i class="fa-solid fa-cloud-arrow-up" style="color:#ccc;font-size:1.8rem;display:block;margin-bottom:4px;"></i>
+              <span style="font-size:0.72rem;color:#aaa;font-weight:600;">Click to upload image</span>
+            </div>
+            <div id="pjImgUploadSpinner" style="display:none;position:absolute;inset:0;background:rgba(255,255,255,0.85);display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+              <i class="fa-solid fa-spinner fa-spin" style="color:#E53935;font-size:1.5rem;"></i>
+              <span style="font-size:0.72rem;color:#E53935;font-weight:700;">Uploading...</span>
+            </div>
+          </div>
+          <input type="file" id="pjImageFile" accept="image/*" style="display:none" onchange="handleProjectCoverImage(this)"/>
+          <input type="text" id="pjImage" placeholder="ya URL paste karo..." oninput="pjImageUrlPreview(this.value)" style="font-size:0.78rem;"/>
+        </div>
+        <div class="form-grp">
+          <label>Video URL (YouTube)</label>
+          <input type="text" id="pjVideoUrl" placeholder="https://youtube.com/watch?v=..."/>
+        </div>
+      </div>
+      <div class="form-grp" style="margin-bottom:12px;">
+        <label>Extra Images <span style="color:#aaa;font-weight:400;font-size:0.72rem;">(multiple files ya comma separated URLs)</span></label>
+        <div id="pjExtraImgBox" onclick="document.getElementById('pjExtraImgFiles').click()" style="border:2px dashed #e0e0e0;border-radius:10px;background:#fafafa;cursor:pointer;padding:10px 14px;text-align:center;margin-bottom:8px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='#E53935'" onmouseout="this.style.borderColor='#e0e0e0'">
+          <i class="fa-solid fa-images" style="color:#ccc;font-size:1.2rem;display:block;margin-bottom:3px;"></i>
+          <span style="font-size:0.72rem;color:#aaa;font-weight:600;">Click to add multiple images</span>
+        </div>
+        <input type="file" id="pjExtraImgFiles" accept="image/*" multiple style="display:none" onchange="handleProjectExtraImages(this)"/>
+        <div id="pjExtraImgPreview" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;"></div>
+        <input type="text" id="pjImages" placeholder="ya URLs comma se separate karo: https://img1.jpg, https://img2.jpg" style="font-size:0.78rem;"/>
+      </div>
+
+      <!-- SECTION: Tags & Settings -->
+      <div style="font-size:0.78rem;font-weight:800;color:#E53935;text-transform:uppercase;letter-spacing:1px;padding:8px 0 10px;border-bottom:1px solid #f0f0f0;margin-bottom:14px;margin-top:4px;"><i class="fa-solid fa-tags" style="margin-right:6px;"></i> Tags & Settings</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div class="form-grp">
+          <label>Tags (comma separated)</label>
+          <input type="text" id="pjTags" placeholder="4 BHK, Luxury, New Launch, Vastu"/>
+        </div>
+        <div class="form-grp">
+          <label>WhatsApp Message</label>
+          <input type="text" id="pjWhatsappMsg" placeholder="Hi, I am interested in..."/>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+        <label style="display:flex;align-items:center;gap:8px;font-size:0.85rem;color:#555;cursor:pointer;">
+          <input type="checkbox" id="pjActive" checked style="accent-color:#10b981;width:16px;height:16px;"/> Show on homepage
+        </label>
+      </div>
+
+      <div class="modal-actions" style="flex-shrink:0;">
+        <button type="button" class="btn-cancel" onclick="closeModal('projectModal')">Cancel</button>
+        <button type="submit" class="btn-save" id="pjSaveBtn"><i class="fa-solid fa-floppy-disk"></i> Save Project</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script src="/admin/script.js"></script>
 <script>
+// ===== PROJECT IMAGE UPLOAD =====
+async function uploadPjCover(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var spinner = document.getElementById('pjImgUploadSpinner');
+  if (spinner) { spinner.style.display = 'flex'; }
+  try {
+    var url = await uploadToCloudinary(file);
+    document.getElementById('pjImage').value = url;
+    var prev = document.getElementById('pjImgPreview');
+    if (prev) { prev.src = url; prev.style.display = 'block'; }
+    var icon = document.getElementById('pjImgIcon');
+    if (icon) icon.style.display = 'none';
+  } catch(e) { toast('Image upload failed', 'error'); }
+  if (spinner) spinner.style.display = 'none';
+}
+
+async function uploadPjExtras(input) {
+  var files = Array.from(input.files);
+  if (!files.length) return;
+  var preview = document.getElementById('pjExtraImgPreview');
+  var existing = document.getElementById('pjImages').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
+  for (var i = 0; i < files.length; i++) {
+    try {
+      var url = await uploadToCloudinary(files[i]);
+      existing.push(url);
+      var img = document.createElement('div');
+      img.style.cssText = 'position:relative;width:60px;height:42px;border-radius:6px;overflow:hidden;flex-shrink:0;';
+      img.innerHTML = '<img src="' + url + '" style="width:100%;height:100%;object-fit:cover;"/><button type="button" onclick="this.parentElement.remove();rebuildPjImagesInput()" style="position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;border:none;background:rgba(0,0,0,0.6);color:#fff;font-size:0.55rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">âœ•</button>';
+      if (preview) preview.appendChild(img);
+    } catch(e) {}
+  }
+  document.getElementById('pjImages').value = existing.join(', ');
+}
+
+function rebuildPjImagesInput() {
+  var preview = document.getElementById('pjExtraImgPreview');
+  var imgs = preview ? Array.from(preview.querySelectorAll('img')).map(function(i){return i.src;}) : [];
+  document.getElementById('pjImages').value = imgs.join(', ');
+}
+
+// ===== SLUG AUTO-GENERATE =====
+function pjAutoSlug() {
+  var name = document.getElementById('pjName').value;
+  var slug = name.toLowerCase().replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
+  document.getElementById('pjSlug').value = slug;
+}
+
+// ===== LOAD PROJECTS TABLE =====
+async function loadProjects() {
+  var tbody = document.getElementById('projectTbody');
+  tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:30px"><i class="fa-solid fa-spinner fa-spin" style="color:#E53935;font-size:1.5rem"></i></td></tr>';
+  var data = await api('GET', '/projects');
+  if (!data.success || !data.projects || !data.projects.length) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="fa-solid fa-city"></i><p>No projects yet. Add your first project!</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.projects.map(function(p) {
+    return '<tr>' +
+      '<td>' + (p.image ? '<img src="' + p.image + '" style="width:60px;height:40px;object-fit:cover;border-radius:6px;"/>' : '<div style="width:60px;height:40px;background:#f0f0f0;border-radius:6px;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-city" style="color:#ccc"></i></div>') + '</td>' +
+      '<td><strong>' + p.name + '</strong><br><span style="font-size:0.72rem;color:#aaa;font-family:monospace">' + (p.slug||'no-slug') + '</span></td>' +
+      '<td>' + (p.developer||'-') + '</td>' +
+      '<td>' + (p.location||'-') + '</td>' +
+      '<td><span style="font-size:0.72rem;padding:3px 8px;border-radius:20px;background:' + (p.category==='commercial'?'#dbeafe':'#d1fae5') + ';color:' + (p.category==='commercial'?'#1d4ed8':'#065f46') + ';font-weight:700">' + (p.category||'-') + '</span></td>' +
+      '<td>' + (p.price||'On Request') + '</td>' +
+      '<td><span style="font-size:0.72rem;padding:3px 8px;border-radius:20px;background:' + (p.isActive?'#d1fae5':'#fee2e2') + ';color:' + (p.isActive?'#065f46':'#991b1b') + ';font-weight:700">' + (p.isActive?'Active':'Hidden') + '</span></td>' +
+      '<td><div class="act-btns">' +
+        '<button class="act-btn edit" title="Edit" onclick="editProject(' + JSON.stringify(p).replace(/"/g,"'") + ')"><i class="fa-solid fa-pen"></i></button>' +
+        '<button class="act-btn del" title="Delete" onclick="deleteProject(\''+p._id+'\')" ><i class="fa-solid fa-trash"></i></button>' +
+      '</div></td>' +
+    '</tr>';
+  }).join('');
+}
+
+// ===== OPEN PROJECT MODAL =====
+function openProjectModal() {
+  document.getElementById('projectModalTitle').textContent = 'Add Featured Project';
+  document.getElementById('projectForm').reset();
+  document.getElementById('pjId').value = '';
+  document.getElementById('pjPhone').value = '9825031247';
+  document.getElementById('pjActive').checked = true;
+  var prev=document.getElementById('pjImgPreview');if(prev){prev.src='';prev.style.display='none';}
+  var icon=document.getElementById('pjImgIcon');if(icon)icon.style.display='';
+  var ep=document.getElementById('pjExtraImgPreview');if(ep)ep.innerHTML='';
+  var prev = document.getElementById('pjImgPreview'); if(prev){prev.src='';prev.style.display='none';}
+  var icon = document.getElementById('pjImgIcon'); if(icon)icon.style.display='';
+  var ep = document.getElementById('pjExtraImgPreview'); if(ep)ep.innerHTML='';
+  openModal('projectModal');
+}
+
+// ===== EDIT PROJECT =====
+function editProject(p) {
+  document.getElementById('projectModalTitle').textContent = 'Edit Project';
+  document.getElementById('pjId').value = p._id || '';
+  document.getElementById('pjName').value = p.name || '';
+  document.getElementById('pjSlug').value = p.slug || '';
+  document.getElementById('pjDeveloper').value = p.developer || '';
+  document.getElementById('pjCategory').value = p.category || 'residential';
+  document.getElementById('pjLocation').value = p.location || '';
+  document.getElementById('pjRera').value = p.rera || '';
+  document.getElementById('pjPrice').value = p.price || '';
+  document.getElementById('pjPriceUnit').value = p.priceUnit || '';
+  document.getElementById('pjPossession').value = p.possession || '';
+  document.getElementById('pjTotalUnits').value = p.totalUnits || '';
+  document.getElementById('pjArea').value = p.area || '';
+  document.getElementById('pjPhone').value = p.phone || '9825031247';
+  document.getElementById('pjConfigs').value = (p.configs||[]).join('\n');
+  document.getElementById('pjHighlights').value = (p.highlights||[]).join('\n');
+  document.getElementById('pjAmenities').value = (p.amenities||[]).join('\n');
+  document.getElementById('pjDescription').value = p.description || '';
+  document.getElementById('pjImage').value = p.image || '';
+  // Cover preview
+  var prev = document.getElementById('pjImgPreview');
+  var icon = document.getElementById('pjImgIcon');
+  if (p.image) { if(prev){prev.src=p.image;prev.style.display='block';} if(icon)icon.style.display='none'; }
+  else { if(prev)prev.style.display='none'; if(icon)icon.style.display=''; }
+  // Extra images preview
+  var ep = document.getElementById('pjExtraImgPreview');
+  if (ep) { ep.innerHTML = ''; (p.images||[]).forEach(function(url){ var d=document.createElement('div'); d.style.cssText='position:relative;width:60px;height:42px;border-radius:6px;overflow:hidden;flex-shrink:0;'; d.innerHTML='<img src="'+url+'" style="width:100%;height:100%;object-fit:cover;"/><button type="button" onclick="this.parentElement.remove();rebuildPjImagesInput()" style="position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;border:none;background:rgba(0,0,0,0.6);color:#fff;font-size:0.55rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">âœ•</button>'; ep.appendChild(d); }); }
+  document.getElementById('pjVideoUrl').value = p.videoUrl || '';
+  document.getElementById('pjImages').value = (p.images||[]).join(', ');
+  document.getElementById('pjTags').value = (p.tags||[]).join(', ');
+  document.getElementById('pjWhatsappMsg').value = p.whatsappMsg || '';
+  document.getElementById('pjActive').checked = p.isActive !== false;
+  openModal('projectModal');
+}
+
+// ===== DELETE PROJECT =====
+async function deleteProject(id) {
+  if (!confirm('Delete this project?')) return;
+  var r = await api('DELETE', '/projects/' + id);
+  if (r.success) { toast('Project deleted!'); loadProjects(); }
+  else toast(r.message || 'Error', 'error');
+}
+
+// ===== SAVE PROJECT FORM =====
+document.getElementById('projectForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  var btn = document.getElementById('pjSaveBtn');
+  btn.textContent = 'Saving...';
+  btn.disabled = true;
+
+  var id = document.getElementById('pjId').value;
+
+  // Parse textarea lines to arrays
+  function toArr(id) {
+    return document.getElementById(id).value.split('\n').map(function(s){return s.trim();}).filter(Boolean);
+  }
+  // Parse comma list to array
+  function toCommaArr(id) {
+    return document.getElementById(id).value.split(',').map(function(s){return s.trim();}).filter(Boolean);
+  }
+
+  var body = {
+    name:        document.getElementById('pjName').value.trim(),
+    slug:        document.getElementById('pjSlug').value.trim().toLowerCase().replace(/\s+/g,'-'),
+    developer:   document.getElementById('pjDeveloper').value.trim(),
+    category:    document.getElementById('pjCategory').value,
+    location:    document.getElementById('pjLocation').value.trim(),
+    rera:        document.getElementById('pjRera').value.trim(),
+    price:       document.getElementById('pjPrice').value.trim(),
+    priceUnit:   document.getElementById('pjPriceUnit').value.trim(),
+    possession:  document.getElementById('pjPossession').value.trim(),
+    totalUnits:  document.getElementById('pjTotalUnits').value.trim(),
+    area:        document.getElementById('pjArea').value.trim(),
+    phone:       document.getElementById('pjPhone').value.trim(),
+    configs:     toArr('pjConfigs'),
+    highlights:  toArr('pjHighlights'),
+    amenities:   toArr('pjAmenities'),
+    description: document.getElementById('pjDescription').value.trim(),
+    image:       document.getElementById('pjImage').value.trim(),
+    videoUrl:    document.getElementById('pjVideoUrl').value.trim(),
+    images:      toCommaArr('pjImages'),
+    tags:        toCommaArr('pjTags'),
+    whatsappMsg: document.getElementById('pjWhatsappMsg').value.trim(),
+    isActive:    document.getElementById('pjActive').checked
+  };
+
+  var r = id ? await api('PUT', '/projects/' + id, body) : await api('POST', '/projects', body);
+  btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Project';
+  btn.disabled = false;
+
+  if (r.success) {
+    toast(id ? 'Project updated!' : 'Project added!');
+    closeModal('projectModal');
+    loadProjects();
+  } else {
+    toast(r.message || 'Error saving project', 'error');
+  }
+});
+
+// ===== LOAD PROJECTS ON PAGE VISIT =====
+// Patch goPage to load projects
+document.addEventListener('DOMContentLoaded', function() {
+  if (document.getElementById('page-projects') && document.getElementById('page-projects').classList.contains('active')) {
+    loadProjects();
+  }
+  // Sidebar projects link
+  var projLink = document.querySelector('.sb-link[data-page="projects"]');
+  if (projLink) {
+    projLink.addEventListener('click', function() {
+      setTimeout(loadProjects, 300);
+    });
+  }
+});
 </script>
 </body>
 </html>

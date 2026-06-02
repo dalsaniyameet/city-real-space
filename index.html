@@ -48,6 +48,8 @@
   @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
   #heroCursor{display:inline-block;width:3px;height:0.85em;background:#FFC107;margin-left:3px;vertical-align:middle;animation:blink 0.7s step-end infinite;border-radius:2px;}
   .hero-grad-text{background:linear-gradient(135deg,#FFC107,#ff6b35,#E53935);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite;display:inline;}
+  .card-price span{font-family:Poppins,sans-serif!important;}
+  .card-price span::before{content:none!important;}
   .hero-sub-title{color:rgba(255,255,255,0.85);font-size:0.85em;font-weight:600;display:block;}
   .hero-badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;}
   .hbadge{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:50px;font-size:0.78rem;font-weight:700;letter-spacing:0.3px;animation:badgePop 0.5s cubic-bezier(0.175,0.885,0.32,1.275) both;}
@@ -151,13 +153,48 @@
 </head>
 <body>
 <script src="/splash.js" defer></script>
+<script>
+(function(){
+  const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000/api' : '/api';
+  fetch(API + '/properties/count')
+    .then(r => r.json())
+    .then(data => {
+      const count = data.count || 0;
+      const display = count > 0 ? count + '+' : '100+';
+      ['dynamicPropCount','ctaPropCount','authPropCount'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = display;
+      });
+    })
+    .catch(() => {
+      ['dynamicPropCount','ctaPropCount','authPropCount'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '100+';
+      });
+    });
+
+  // Fix rupee symbol: replace '?' with '₹' in all price elements
+  function fixRupeeSymbols() {
+    document.querySelectorAll('.card-price span, .ad-price-val, .rs-panel-price strong').forEach(el => {
+      if (el.textContent.includes('?')) {
+        el.textContent = el.textContent.replace(/\?/g, '\u20b9');
+      }
+    });
+  }
+  // Run on DOM changes (cards load dynamically)
+  const observer = new MutationObserver(fixRupeeSymbols);
+  observer.observe(document.body, { childList: true, subtree: true });
+  document.addEventListener('DOMContentLoaded', fixRupeeSymbols);
+})();
+</script>
 
 <div id="siteHeader">
-<!-- NTC REG BAR -->
+<!-- RERA REG BAR -->
 <div id="ntcBar" style="background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);letter-spacing:0.3px;overflow:hidden;white-space:nowrap;width:100%;max-width:100%;">
-  <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
-  <span class="ntc-mid">&nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;</span>
-  <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
+  <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-shield-halved" style="margin-right:5px;"></i>RERA REGD. NUMBER: AG/GJ/AHMEDABAD/AHMEDABAD CITY / AA04965/010429R1</span>
+  <span class="ntc-mid">&nbsp;|&nbsp;</span>
+  <span style="color:rgba(255,255,255,0.7);">A Member of Ahmedabad Estate Broker Association</span>
 </div>
 <header class="header" id="header">
   <div class="container header-inner">
@@ -446,8 +483,7 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
   </div>
 </section>
 
-<!-- ===== HOUSING/MAGICBRICKS STYLE AD BANNER ===== -->
-<section id="adBannerSection" style="background:#fff;padding:0;margin:0;overflow:hidden;">
+<!-- ===== HOUSING/MAGICBRICKS STYLE AD BANNER ===== --> style="background:#fff;padding:0;margin:0;overflow:hidden;">
   <style>
     .ad-banner-wrap{position:relative;width:100%;overflow:hidden;background:linear-gradient(135deg,#0D1B2A 0%,#1a3a5c 50%,#0D1B2A 100%);}
     .ad-slides{display:flex;transition:transform 0.7s cubic-bezier(0.77,0,0.175,1);will-change:transform;}
@@ -661,6 +697,181 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
   })();
   </script>
 </section>
+
+<!-- ===== FEATURED PROJECTS ===== -->
+<section class="section" id="featuredProjects" style="background:#f8f9fa;border-top:1px solid #f0f0f0;">
+<style>
+  .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .proj-card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);border:1px solid #f0f0f0;transition:all 0.3s;position:relative;}
+  .proj-card:hover{transform:translateY(-8px);box-shadow:0 16px 48px rgba(229,57,53,0.15);border-color:rgba(229,57,53,0.25);}
+  .proj-img-wrap{position:relative;height:210px;overflow:hidden;}
+  .proj-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s;}
+  .proj-card:hover .proj-img-wrap img{transform:scale(1.06);}
+  .proj-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#0D1B2A,#1a3a5c);color:rgba(255,255,255,0.35);gap:10px;}
+  .proj-placeholder i{font-size:2.5rem;}
+  .proj-placeholder span{font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+  .proj-badge{position:absolute;top:14px;left:14px;display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:0.68rem;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;z-index:2;}
+  .proj-badge.comm{background:rgba(255,193,7,0.92);color:#0D1B2A;}
+  .proj-badge.resi{background:rgba(229,57,53,0.92);color:#fff;}
+  .proj-rera-bar{position:absolute;bottom:0;left:0;right:0;background:rgba(13,27,42,0.78);backdrop-filter:blur(6px);padding:6px 12px;display:flex;align-items:center;gap:6px;z-index:2;}
+  .proj-rera-bar span{color:#FFC107;font-size:0.6rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .proj-body{padding:18px 20px 20px;}
+  .proj-dev{font-size:0.63rem;font-weight:700;color:#E53935;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+  .proj-name{font-size:1.05rem;font-weight:800;color:#0D1B2A;margin-bottom:6px;line-height:1.3;}
+  .proj-loc{display:flex;align-items:flex-start;gap:5px;color:#888;font-size:0.78rem;margin-bottom:12px;line-height:1.4;}
+  .proj-loc i{color:#E53935;font-size:0.72rem;margin-top:2px;flex-shrink:0;}
+  .proj-feats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
+  .proj-feat{display:flex;align-items:center;gap:4px;font-size:0.7rem;color:#666;}
+  .proj-feat i{color:#E53935;font-size:0.65rem;}
+  .proj-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+  .proj-tag{background:#f5f5f5;color:#555;font-size:0.63rem;font-weight:600;padding:3px 9px;border-radius:20px;}
+  .proj-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid #f5f5f5;gap:10px;}
+  .proj-price-lbl{font-size:0.58rem;color:#aaa;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+  .proj-price-val{font-size:1.05rem;font-weight:900;color:#E53935;line-height:1.1;}
+  .proj-price-unit{font-size:0.62rem;color:#aaa;}
+  .proj-btns{display:flex;gap:7px;flex-shrink:0;}
+  .proj-btn-c{display:inline-flex;align-items:center;gap:5px;background:#E53935;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;text-decoration:none;white-space:nowrap;}
+  .proj-btn-c:hover{background:#c62828;}
+  .proj-btn-w{display:inline-flex;align-items:center;justify-content:center;background:#25D366;color:#fff;border:none;padding:8px 11px;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;text-decoration:none;}
+  .proj-btn-w:hover{background:#1ebe5d;}
+  .proj-add-card{border:2px dashed #e0e0e0 !important;background:#fafafa !important;}
+  .proj-add-body{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:220px;text-align:center;padding:24px 20px;}
+  @media(max-width:900px){.proj-grid{grid-template-columns:1fr 1fr;gap:16px;}}
+  @media(max-width:560px){.proj-grid{grid-template-columns:1fr;}.proj-img-wrap{height:180px;}}
+</style>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <p class="sec-tag">Featured Projects</p>
+        <h2>Premium <span class="yellow">Projects</span></h2>
+        <p class="sec-sub">Handpicked commercial &amp; residential projects with best investment value.</p>
+      </div>
+      <a href="/new-launch" class="btn-outline">All Projects <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="proj-grid" id="projGrid">
+      <!-- DB se dynamic projects load honge -->
+      <!-- TRP Mall Card -->
+      <div class="proj-card" style="cursor:pointer;" onclick="window.open('tel:+919825031247','_self')">
+
+        <!-- Image / Placeholder -->
+        <div class="proj-img-wrap" style="position:relative;height:220px;overflow:hidden;background:linear-gradient(135deg,#0D1B2A 0%,#1a3a5c 60%,#E53935 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+          <!-- Animated background pattern -->
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.02) 0px,rgba(255,255,255,0.02) 1px,transparent 1px,transparent 20px);pointer-events:none;"></div>
+          <!-- Mall icon -->
+          <div style="width:70px;height:70px;background:rgba(255,193,7,0.15);border:2px solid rgba(255,193,7,0.4);border-radius:18px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);">
+            <i class="fa-solid fa-store" style="font-size:2rem;color:#FFC107;"></i>
+          </div>
+          <div style="text-align:center;">
+            <div style="color:#FFC107;font-size:0.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;">The Retail Park</div>
+            <div style="color:rgba(255,255,255,0.5);font-size:0.6rem;font-weight:600;margin-top:2px;">Photos Coming Soon</div>
+          </div>
+          <!-- Commercial Badge -->
+          <div class="proj-badge comm" style="position:absolute;top:14px;left:14px;"><i class="fa-solid fa-briefcase"></i> Commercial</div>
+          <!-- Hot label -->
+          <div style="position:absolute;top:14px;right:14px;background:#E53935;color:#fff;font-size:0.6rem;font-weight:800;padding:3px 9px;border-radius:20px;letter-spacing:0.5px;text-transform:uppercase;"><i class="fa-solid fa-fire" style="margin-right:3px;"></i>Hot</div>
+          <!-- RERA bar -->
+          <div class="proj-rera-bar">
+            <i class="fa-solid fa-shield-halved" style="color:#FFC107;font-size:0.7rem;flex-shrink:0;"></i>
+            <span>RERA: AG/GJ/AHMEDABAD/AHMEDABAD CITY / AA04965/010429R1</span>
+          </div>
+        </div>
+
+        <!-- Body -->
+        <div class="proj-body">
+          <!-- Developer -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <div class="proj-dev">City Real Space &bull; Rajyash City</div>
+            <div style="background:#fff8e1;color:#b8860b;font-size:0.6rem;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid rgba(255,193,7,0.3);white-space:nowrap;"><i class="fa-solid fa-star" style="font-size:0.55rem;margin-right:2px;"></i>Featured</div>
+          </div>
+
+          <!-- Name -->
+          <div class="proj-name">TRP Mall &mdash; The Retail Park</div>
+
+          <!-- Location -->
+          <div class="proj-loc"><i class="fa-solid fa-location-dot"></i> Bopal &ndash; Ghuma BRTS Road, Central Bopal, Ahmedabad &ndash; 380058</div>
+
+          <!-- Amenities -->
+          <div class="proj-feats">
+            <div class="proj-feat"><i class="fa-solid fa-store"></i> Retail Shops</div>
+            <div class="proj-feat"><i class="fa-solid fa-utensils"></i> Food Court</div>
+            <div class="proj-feat"><i class="fa-solid fa-car"></i> Parking</div>
+            <div class="proj-feat"><i class="fa-solid fa-snowflake"></i> AC Mall</div>
+          </div>
+
+          <!-- Tags -->
+          <div class="proj-tags">
+            <span class="proj-tag">Shopping</span>
+            <span class="proj-tag">Dining</span>
+            <span class="proj-tag">Entertainment</span>
+            <span class="proj-tag">BRTS Connectivity</span>
+          </div>
+
+          <!-- Footer -->
+          <div class="proj-footer">
+            <div>
+              <div class="proj-price-lbl">Price</div>
+              <div class="proj-price-val">On Request</div>
+              <div class="proj-price-unit">Contact for best deal</div>
+            </div>
+            <div class="proj-btns">
+              <a href="tel:+919825031247" class="proj-btn-c" onclick="event.stopPropagation()"><i class="fa-solid fa-phone"></i> Call</a>
+              <a href="https://wa.me/919825031247?text=Hi%2C+I+am+interested+in+TRP+Mall+-+The+Retail+Park%2C+Central+Bopal%2C+Ahmedabad.+Please+share+details." target="_blank" class="proj-btn-w" onclick="event.stopPropagation()"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var API = window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1'
+    ? 'http://localhost:5000/api' : '/api';
+  fetch(API + '/projects')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (!data.success || !data.projects || !data.projects.length) return;
+      var grid = document.getElementById('projGrid');
+      var dynamicHTML = data.projects.map(function(p){
+        var catBadge = p.category === 'commercial'
+          ? '<div class="proj-badge comm"><i class="fa-solid fa-briefcase"></i> Commercial</div>'
+          : '<div class="proj-badge resi"><i class="fa-solid fa-house"></i> Residential</div>';
+        var imgSection = p.image
+          ? '<img src="' + p.image + '" alt="' + p.name + '" style="width:100%;height:100%;object-fit:cover;"/>'
+          : '<div class="proj-placeholder"><i class="fa-solid fa-city"></i><span>Photo Coming Soon</span></div>';
+        var reraBar = p.rera
+          ? '<div class="proj-rera-bar"><i class="fa-solid fa-shield-halved" style="color:#FFC107;font-size:0.7rem;flex-shrink:0;"></i><span>' + p.rera + '</span></div>'
+          : '';
+        var tagsHTML = (p.tags||[]).map(function(t){ return '<span class="proj-tag">' + t + '</span>'; }).join('');
+        var waMsg = p.whatsappMsg || ('Hi, I am interested in ' + p.name + '. Please share details.');
+        var projUrl = p.slug ? '/project/' + p.slug : '';
+        return '<div class="proj-card"' + (projUrl ? ' style="cursor:pointer" onclick="window.open(\'' + projUrl + '\',\'_self\')"' : '') + '>' +
+          '<div class="proj-img-wrap">' + imgSection + catBadge + reraBar + '</div>' +
+          '<div class="proj-body">' +
+            '<div class="proj-dev">' + (p.developer || 'City Real Space') + '</div>' +
+            '<div class="proj-name">' + p.name + (projUrl ? ' <span style="font-size:0.68rem;color:#E53935;font-weight:700;margin-left:4px;"><i class="fa-solid fa-arrow-right"></i></span>' : '') + '</div>' +
+            '<div class="proj-loc"><i class="fa-solid fa-location-dot"></i> ' + (p.location || '') + '</div>' +
+            (tagsHTML ? '<div class="proj-tags">' + tagsHTML + '</div>' : '') +
+            '<div class="proj-footer">' +
+              '<div><div class="proj-price-lbl">Price</div><div class="proj-price-val">' + (p.price || 'On Request') + '</div></div>' +
+              '<div class="proj-btns">' +
+                '<a href="tel:+91' + (p.phone||'9825031247') + '" class="proj-btn-c" onclick="event.stopPropagation()"><i class="fa-solid fa-phone"></i> Call</a>' +
+                '<a href="https://wa.me/91' + (p.phone||'9825031247') + '?text=' + encodeURIComponent(waMsg) + '" target="_blank" class="proj-btn-w" onclick="event.stopPropagation()"><i class="fa-brands fa-whatsapp"></i></a>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+      // Pehle existing cards rakh ke dynamic cards append karo
+      grid.insertAdjacentHTML('afterbegin', dynamicHTML);
+    })
+    .catch(function(){});
+})();
+</script>
 
 <!-- ===== LATEST POSTS ===== -->
 <section class="section bg-light">

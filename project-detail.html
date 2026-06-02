@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Project Details | City Real Space</title>
+  <meta name="description" content="Explore new launch projects in Ahmedabad. RERA registered, verified developers. Free site visit."/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="https://www.cityrealspace.com/project" id="canonicalTag"/>
+  <meta property="og:title" content="Project Details | City Real Space"/>
+  <meta property="og:description" content="Explore new launch projects in Ahmedabad."/>
+  <meta property="og:image" content="https://www.cityrealspace.com/images/logo.jpeg"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://www.cityrealspace.com/project"/>
+  <meta property="og:site_name" content="City Real Space"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <link rel="icon" type="image/jpeg" href="/images/logo.jpeg"/>
+  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="/responsive.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W7LZWL8PLN"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-W7LZWL8PLN');</script>
+  <style>
+    /* ===== WRAP ===== */
+    .pj-wrap { max-width:1200px; margin:0 auto 60px; padding:0 20px; box-sizing:border-box; }
+
+    /* ===== HERO GALLERY ===== */
+    .pj-hero { position:relative; margin-top:90px; }
+    .pj-hero-main { position:relative; height:480px; overflow:hidden; background:#0D1B2A; }
+    .pj-hero-main img { width:100%; height:100%; object-fit:cover; display:block; }
+    .pj-hero-overlay { position:absolute; inset:0; background:linear-gradient(180deg,rgba(13,27,42,0.2) 0%,transparent 40%,rgba(13,27,42,0.85) 100%); pointer-events:none; }
+    .pj-hero-badge { position:absolute; top:20px; left:20px; display:flex; gap:8px; flex-wrap:wrap; z-index:5; }
+    .pj-hbadge { padding:5px 14px; border-radius:50px; font-size:0.72rem; font-weight:800; letter-spacing:0.5px; text-transform:uppercase; }
+    .pj-hbadge.res  { background:linear-gradient(135deg,#E53935,#c62828); color:#fff; }
+    .pj-hbadge.com  { background:linear-gradient(135deg,#1565c0,#0d47a1); color:#fff; }
+    .pj-hbadge.rera { background:rgba(255,193,7,0.15); color:#FFC107; border:1px solid rgba(255,193,7,0.4); }
+    .pj-hero-price  { position:absolute; bottom:20px; left:20px; z-index:5; }
+    .pj-hero-price span { font-size:0.7rem; color:rgba(255,255,255,0.55); font-weight:600; letter-spacing:1px; text-transform:uppercase; display:block; margin-bottom:3px; }
+    .pj-hero-price strong { font-size:2rem; font-weight:800; color:#fff; text-shadow:0 2px 10px rgba(0,0,0,0.5); }
+    .pj-hero-price em { font-size:0.78rem; color:rgba(255,255,255,0.55); font-style:normal; margin-left:6px; }
+    .pj-hero-views { position:absolute; bottom:20px; right:20px; z-index:5; display:flex; align-items:center; gap:6px; background:rgba(0,0,0,0.4); backdrop-filter:blur(8px); color:#fff; font-size:0.75rem; font-weight:600; padding:6px 12px; border-radius:20px; }
+    .pj-arr { position:absolute; top:50%; transform:translateY(-50%); z-index:5; width:40px; height:40px; border-radius:50%; border:none; background:rgba(255,255,255,0.18); backdrop-filter:blur(8px); color:#fff; font-size:0.9rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.2s; }
+    .pj-arr:hover { background:rgba(255,255,255,0.35); }
+    .pj-arr-prev { left:16px; }
+    .pj-arr-next { right:16px; }
+    .pj-img-counter { position:absolute; top:20px; right:20px; z-index:5; background:rgba(0,0,0,0.5); color:#fff; font-size:0.72rem; font-weight:700; padding:4px 12px; border-radius:20px; }
+    .pj-thumbs { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+    .pj-thumb { width:90px; height:62px; border-radius:8px; overflow:hidden; cursor:pointer; border:2px solid transparent; flex-shrink:0; transition:border-color 0.2s; }
+    .pj-thumb.active { border-color:#E53935; }
+    .pj-thumb img { width:100%; height:100%; object-fit:cover; }
+
+    /* ===== STICKY TABS ===== */
+    .pj-tabs-bar { position:sticky; top:0; z-index:900; background:#fff; border-bottom:2px solid #f0f0f0; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+    .pj-tabs-inner { max-width:1200px; margin:0 auto; padding:0 20px; display:flex; overflow-x:auto; scrollbar-width:none; }
+    .pj-tabs-inner::-webkit-scrollbar { display:none; }
+    .pj-tab-link { padding:14px 18px; font-size:0.82rem; font-weight:600; color:#666; border-bottom:3px solid transparent; cursor:pointer; white-space:nowrap; background:none; border-top:none; border-left:none; border-right:none; font-family:Poppins,sans-serif; text-decoration:none; display:block; }
+    .pj-tab-link.active { color:#E53935; border-bottom-color:#E53935; }
+
+    /* ===== MAIN GRID ===== */
+    .pj-grid { display:grid; grid-template-columns:1fr 360px; gap:28px; align-items:start; margin-top:24px; }
+    .pj-sidebar { position:sticky; top:60px; }
+
+    /* ===== INFO CARD ===== */
+    .pj-card { background:#fff; border-radius:16px; padding:24px; box-shadow:0 4px 24px rgba(0,0,0,0.07); border:1px solid #e8e8e8; margin-bottom:20px; }
+    .pj-name { font-size:1.7rem; font-weight:800; color:#0D1B2A; line-height:1.3; margin-bottom:8px; }
+    .pj-dev-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; font-size:0.85rem; color:#555; }
+    .pj-dev-row i { color:#E53935; }
+    .pj-loc-row { display:flex; align-items:center; gap:6px; font-size:0.84rem; color:#888; margin-bottom:18px; }
+    .pj-loc-row i { color:#E53935; }
+    .pj-meta-row { display:flex; flex-wrap:wrap; gap:12px; padding:16px 0; border-top:1px solid #f0f0f0; border-bottom:1px solid #f0f0f0; margin-bottom:20px; }
+    .pj-meta-item { display:flex; flex-direction:column; gap:3px; flex:1; min-width:80px; }
+    .pj-meta-item span { font-size:0.7rem; color:#aaa; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+    .pj-meta-item strong { font-size:0.88rem; font-weight:700; color:#0D1B2A; }
+
+    /* ===== QUICK STATS ===== */
+    .pj-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid #e8e8e8; border-radius:12px; overflow:hidden; margin-bottom:20px; }
+    .pj-stat { padding:16px 12px; text-align:center; border-right:1px solid #e8e8e8; background:#fafafa; }
+    .pj-stat:last-child { border-right:none; }
+    .pj-stat i { font-size:1.2rem; color:#E53935; display:block; margin-bottom:6px; }
+    .pj-stat strong { font-size:0.95rem; font-weight:800; color:#0D1B2A; display:block; }
+    .pj-stat span { font-size:0.68rem; color:#aaa; font-weight:600; text-transform:uppercase; }
+
+    /* ===== SECTION HEADINGS ===== */
+    .pj-sec-title { font-size:1rem; font-weight:800; color:#0D1B2A; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+    .pj-sec-title i { color:#E53935; }
+
+    /* ===== DESCRIPTION ===== */
+    .pj-desc { font-size:0.875rem; color:#555; line-height:1.8; }
+    .pj-desc.collapsed { display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; }
+    .pj-read-more { background:none; border:none; color:#E53935; font-size:0.82rem; font-weight:700; cursor:pointer; padding:8px 0 0; font-family:Poppins,sans-serif; display:flex; align-items:center; gap:5px; }
+
+    /* ===== CONFIGS ===== */
+    .pj-configs { display:flex; flex-wrap:wrap; gap:10px; }
+    .pj-config { background:#f8f9fa; border:1.5px solid #e8e8e8; border-radius:10px; padding:12px 18px; font-size:0.82rem; font-weight:700; color:#0D1B2A; text-align:center; min-width:80px; cursor:default; transition:border-color 0.2s,background 0.2s; }
+    .pj-config:hover { border-color:#E53935; background:#fff5f5; color:#E53935; }
+
+    /* ===== HIGHLIGHTS ===== */
+    .pj-highlights { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .pj-hl { display:flex; align-items:flex-start; gap:10px; background:#f8fafc; border-radius:10px; padding:12px 14px; border:1px solid #e2e8f0; }
+    .pj-hl i { color:#25D366; font-size:0.85rem; margin-top:2px; flex-shrink:0; }
+    .pj-hl span { font-size:0.82rem; color:#333; font-weight:600; line-height:1.4; }
+
+    /* ===== AMENITIES ===== */
+    .pj-amenities { display:flex; flex-wrap:wrap; gap:10px; }
+    .pj-amenity { background:#f8f9fa; border:1px solid #e8e8e8; border-radius:8px; padding:8px 14px; font-size:0.8rem; font-weight:600; color:#333; display:flex; align-items:center; gap:8px; }
+    .pj-amenity i { color:#E53935; font-size:0.9rem; }
+
+    /* ===== PRICE TABLE ===== */
+    .pj-price-table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+    .pj-price-table th { background:linear-gradient(135deg,#0D1B2A,#1a3a5c); color:#FFC107; padding:12px 14px; text-align:left; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+    .pj-price-table td { padding:12px 14px; border-bottom:1px solid #f0f0f0; color:#333; font-weight:500; }
+    .pj-price-table tr:last-child td { border-bottom:none; }
+    .pj-price-table tr:hover td { background:#fff5f5; }
+    .pj-price-table td:last-child { font-weight:700; color:#E53935; }
+
+    /* ===== VIDEO ===== */
+    .pj-video-wrap { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:12px; }
+    .pj-video-wrap iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; }
+
+    /* ===== SIDEBAR CONTACT ===== */
+    .pj-contact-box { background:#fff; border-radius:16px; padding:22px; box-shadow:0 4px 24px rgba(0,0,0,0.08); border:1px solid #e8e8e8; margin-bottom:16px; }
+    .pj-input { display:flex; align-items:center; gap:10px; border:1.5px solid #e8e8e8; border-radius:10px; padding:10px 14px; margin-bottom:10px; }
+    .pj-input i { color:#E53935; font-size:0.85rem; flex-shrink:0; }
+    .pj-input input { flex:1; border:none; outline:none; font-size:0.85rem; font-family:Poppins,sans-serif; color:#333; background:transparent; min-width:0; }
+    .btn-pj-wa   { background:#25D366; color:#fff; border:none; padding:12px; border-radius:10px; font-size:0.88rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; font-family:Poppins,sans-serif; width:100%; margin-bottom:8px; }
+    .btn-pj-call { background:#E53935; color:#fff; border:none; padding:12px; border-radius:10px; font-size:0.88rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; font-family:Poppins,sans-serif; width:100%; }
+
+    /* ===== RERA BOX ===== */
+    .pj-rera-box { background:linear-gradient(135deg,#fff8e1,#fffde7); border:1.5px solid #ffe082; border-radius:12px; padding:14px 16px; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+    .pj-rera-box i { color:#f57f17; font-size:1.3rem; flex-shrink:0; }
+    .pj-rera-box div strong { font-size:0.82rem; font-weight:800; color:#e65100; display:block; }
+    .pj-rera-box div span { font-size:0.78rem; color:#f57f17; font-weight:600; }
+
+    /* ===== VISIT SLOTS ===== */
+    .pj-slots { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0; }
+    .pj-slot { border:1.5px solid #e8e8e8; border-radius:8px; padding:8px 10px; font-size:0.78rem; font-weight:600; color:#555; cursor:pointer; text-align:center; background:#fafafa; }
+    .pj-slot.selected { border-color:#E53935; background:#fff5f5; color:#E53935; }
+    .btn-pj-visit { width:100%; background:#25D366; color:#fff; border:none; padding:12px; border-radius:10px; font-size:0.88rem; font-weight:700; cursor:pointer; font-family:Poppins,sans-serif; display:flex; align-items:center; justify-content:center; gap:8px; }
+
+    /* ===== LOADING ===== */
+    .pj-loading { text-align:center; padding:120px 20px; font-family:Poppins,sans-serif; }
+    .pj-loading i { font-size:2.5rem; color:#E53935; display:block; margin-bottom:16px; }
+    .pj-loading p { color:#888; font-size:0.9rem; }
+
+    /* ===== PROGRESS BAR ===== */
+    .pj-progress-wrap { margin-top:6px; }
+    .pj-progress-label { display:flex; justify-content:space-between; font-size:0.72rem; color:#888; font-weight:600; margin-bottom:5px; }
+    .pj-progress-track { height:7px; background:#f0f0f0; border-radius:50px; overflow:hidden; }
+    .pj-progress-fill { height:100%; background:linear-gradient(90deg,#E53935,#FFC107); border-radius:50px; transition:width 1.2s cubic-bezier(.22,.68,0,1.2); }
+
+    /* ===== TRUST BADGES ===== */
+    .pj-trust { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .pj-trust-item { background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px 10px; text-align:center; }
+    .pj-trust-item i { font-size:1.2rem; color:#E53935; display:block; margin-bottom:6px; }
+    .pj-trust-item span { font-size:0.68rem; font-weight:700; color:#555; line-height:1.3; display:block; }
+
+    /* ===== MOBILE ===== */
+    @media(max-width:960px){
+      .pj-hero-main { height:240px !important; }
+      .pj-grid { grid-template-columns:1fr !important; gap:16px; }
+      .pj-sidebar { position:static !important; }
+      .pj-name { font-size:1.2rem !important; }
+      .pj-stats { grid-template-columns:repeat(2,1fr) !important; }
+      .pj-stat:nth-child(2) { border-right:none; }
+      .pj-stat:nth-child(3) { border-top:1px solid #e8e8e8; }
+      .pj-highlights { grid-template-columns:1fr !important; }
+      .pj-trust { grid-template-columns:repeat(3,1fr); }
+      .pj-wrap { padding:0 12px; }
+      .pj-hero { margin-top:75px; }
+      .pj-tabs-bar { top:0 !important; }
+      .pj-tab-link { padding:10px 12px !important; font-size:0.72rem !important; }
+    }
+    @media(max-width:480px){
+      .pj-meta-row { gap:8px; }
+      .pj-trust { grid-template-columns:1fr 1fr !important; }
+      .pj-configs { gap:8px; }
+      .pj-config { min-width:70px; padding:10px 12px; }
+    }
+  </style>
+</head>
+<body>
+<script src="/splash.js"></script>
+
+<!-- NTC BAR -->
+<div id="ntcBar" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#0D1B2A;border-bottom:1px solid rgba(255,193,7,0.3);padding:6px 0;text-align:center;font-family:Poppins,sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.7);">
+  <span style="color:#FFC107;font-weight:700;"><i class="fa-solid fa-certificate" style="margin-right:5px;"></i>NTC Reg No: 12376</span>
+  &nbsp;|&nbsp; Gujarat's Most Trusted Real Estate Platform &nbsp;|&nbsp;
+  <span style="color:#FFC107;font-weight:700;">RERA Registered</span>
+</div>
+<div style="height:33px;"></div>
+
+<!-- HEADER -->
+<header class="header" id="header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><img src="/images/logo.jpeg" alt="City Real Space" style="height:48px;width:auto;object-fit:contain;"/></a>
+    <nav class="nav" id="nav">
+      <a href="/">Home</a>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Buy <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="/properties">All</a>
+          <a href="/rent">Rent</a>
+          <a href="/resale">Resale</a>
+          <a href="/land">Land</a>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <a href="#" class="nav-drop-btn">Sell <i class="fa-solid fa-chevron-down"></i></a>
+        <div class="nav-drop-menu">
+          <a href="/post-property">List Property</a>
+          <a href="/post-property">List Project</a>
+        </div>
+      </div>
+      <a href="/new-launch">New Launch</a>
+      <a href="/prelease">Prelease</a>
+      <a href="/about">About</a>
+      <a href="/blog">Blog</a>
+      <a href="/contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a href="/login" class="btn-login" id="loginBtn"><i class="fa-solid fa-user"></i> Login</a>
+      <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+</header>
+
+<!-- LOADING STATE -->
+<div id="pjLoading" class="pj-loading">
+  <i class="fa-solid fa-spinner fa-spin"></i>
+  <p>Loading project details...</p>
+</div>
+
+<!-- MAIN CONTENT (initially hidden) -->
+<div id="pjContent" style="display:none;">
+  <!-- HERO GALLERY -->
+  <div class="pj-hero">
+    <div class="pj-hero-main" id="pjHeroWrap">
+      <img id="pjMainImg" src="" alt="Project Image"/>
+      <div class="pj-hero-overlay"></div>
+      <div class="pj-hero-badge" id="pjHeroBadge"></div>
+      <div class="pj-hero-price" id="pjHeroPrice"></div>
+      <div class="pj-hero-views" id="pjImgCounter"><i class="fa-solid fa-image"></i> <span>1 / 1</span></div>
+    </div>
+    <div class="pj-wrap" style="margin-top:0;margin-bottom:0;"><div class="pj-thumbs" id="pjThumbs"></div></div>
+  </div>
+
+  <!-- STICKY TABS BAR -->
+  <div class="pj-tabs-bar">
+    <div class="pj-tabs-inner">
+      <a class="pj-tab-link active" href="#sec-overview"   onclick="pjScrollTo('sec-overview',this)">Overview</a>
+      <a class="pj-tab-link"        href="#sec-configs"    onclick="pjScrollTo('sec-configs',this)">Configurations</a>
+      <a class="pj-tab-link"        href="#sec-amenities"  onclick="pjScrollTo('sec-amenities',this)">Amenities</a>
+      <a class="pj-tab-link"        href="#sec-highlights" onclick="pjScrollTo('sec-highlights',this)">Highlights</a>
+      <a class="pj-tab-link"        href="#sec-emi"        onclick="pjScrollTo('sec-emi',this)">EMI Calculator</a>
+      <a class="pj-tab-link"        href="#sec-video"      onclick="pjScrollTo('sec-video',this)">Video</a>
+      <a class="pj-tab-link"        href="#sec-contact"    onclick="pjScrollTo('sec-contact',this)">Contact</a>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="pj-wrap">
+    <div class="pj-grid" id="pjGrid">
+
+      <!-- LEFT COLUMN -->
+      <div>
+        <div id="sec-overview"></div>
+
+        <!-- Info Card -->
+        <div class="pj-card">
+          <h1 class="pj-name" id="pjName">Loading...</h1>
+          <div class="pj-dev-row"><i class="fa-solid fa-building"></i> <span id="pjDeveloper"></span></div>
+          <div class="pj-loc-row"><i class="fa-solid fa-location-dot"></i> <span id="pjLocation"></span></div>
+
+          <!-- Quick Stats -->
+          <div class="pj-stats">
+            <div class="pj-stat"><i class="fa-solid fa-rupee-sign"></i><strong id="statPrice">—</strong><span>Starting Price</span></div>
+            <div class="pj-stat"><i class="fa-solid fa-key"></i><strong id="statPossession">—</strong><span>Possession</span></div>
+            <div class="pj-stat"><i class="fa-solid fa-building"></i><strong id="statUnits">—</strong><span>Total Units</span></div>
+            <div class="pj-stat"><i class="fa-solid fa-ruler-combined"></i><strong id="statArea">—</strong><span>Area</span></div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div id="pjProgressBox" style="display:none;margin-bottom:20px;">
+            <div class="pj-sec-title" style="font-size:0.88rem;margin-bottom:10px;"><i class="fa-solid fa-hard-hat"></i> Construction Progress</div>
+            <div class="pj-progress-wrap">
+              <div class="pj-progress-label"><span id="progLabel">Under Construction</span><span id="progPct">0%</span></div>
+              <div class="pj-progress-track"><div class="pj-progress-fill" id="progFill" style="width:0%"></div></div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="pj-sec-title"><i class="fa-solid fa-align-left"></i> About This Project</div>
+          <div class="pj-desc collapsed" id="pjDesc">No description available.</div>
+          <button class="pj-read-more" id="pjReadMore" onclick="toggleDesc()">Read More <i class="fa-solid fa-chevron-down" id="pjReadIcon"></i></button>
+        </div>
+
+        <!-- Configurations -->
+        <div id="sec-configs"></div>
+        <div class="pj-card" id="pjConfigsBox" style="display:none;">
+          <div class="pj-sec-title"><i class="fa-solid fa-th-large"></i> Available Configurations</div>
+          <div class="pj-configs" id="pjConfigs"></div>
+        </div>
+
+        <!-- Highlights -->
+        <div id="sec-highlights"></div>
+        <div class="pj-card" id="pjHighlightsBox" style="display:none;">
+          <div class="pj-sec-title"><i class="fa-solid fa-star"></i> Project Highlights</div>
+          <div class="pj-highlights" id="pjHighlights"></div>
+        </div>
+
+        <!-- Amenities -->
+        <div id="sec-amenities"></div>
+        <div class="pj-card" id="pjAmenitiesBox" style="display:none;">
+          <div class="pj-sec-title"><i class="fa-solid fa-spa"></i> Amenities</div>
+          <div class="pj-amenities" id="pjAmenities"></div>
+        </div>
+
+        <!-- Video -->
+        <div id="sec-video"></div>
+        <div class="pj-card" id="pjVideoBox" style="display:none;">
+          <div class="pj-sec-title"><i class="fa-solid fa-circle-play"></i> Video Tour</div>
+          <div class="pj-video-wrap" id="pjVideoWrap"></div>
+        </div>
+
+        <!-- Tags -->
+        <div class="pj-card" id="pjTagsBox" style="display:none;">
+          <div class="pj-sec-title"><i class="fa-solid fa-tags"></i> Features & Tags</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;" id="pjTags"></div>
+        </div>
+
+        <!-- EMI Calculator -->
+        <div class="pj-card" id="sec-emi">
+          <div class="pj-sec-title"><i class="fa-solid fa-calculator"></i> Home Loan EMI Calculator</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+            <div>
+              <label style="font-size:0.72rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px;">Loan Amount</label>
+              <div style="display:flex;align-items:center;gap:8px;background:#f8f9fa;border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 14px;">
+                <span style="font-size:0.85rem;font-weight:800;color:#E53935;">&#8377;</span>
+                <input type="number" id="emiLoan" value="5000000" min="100000" max="100000000" step="100000"
+                  style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.9rem;font-weight:700;color:#0D1B2A;background:transparent;"
+                  oninput="calcEMI()"/>
+              </div>
+              <input type="range" id="emiLoanRange" min="100000" max="100000000" step="100000" value="5000000"
+                style="width:100%;margin-top:8px;accent-color:#E53935;" oninput="document.getElementById('emiLoan').value=this.value;calcEMI()"/>
+            </div>
+            <div>
+              <label style="font-size:0.72rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px;">Interest Rate (%)</label>
+              <div style="display:flex;align-items:center;gap:8px;background:#f8f9fa;border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 14px;">
+                <input type="number" id="emiRate" value="8.5" min="5" max="20" step="0.1"
+                  style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.9rem;font-weight:700;color:#0D1B2A;background:transparent;"
+                  oninput="calcEMI()"/>
+                <span style="font-size:0.85rem;font-weight:700;color:#888;">%</span>
+              </div>
+              <input type="range" id="emiRateRange" min="5" max="20" step="0.1" value="8.5"
+                style="width:100%;margin-top:8px;accent-color:#E53935;" oninput="document.getElementById('emiRate').value=this.value;calcEMI()"/>
+            </div>
+          </div>
+          <div style="margin-bottom:16px;">
+            <label style="font-size:0.72rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px;">Loan Tenure (Years)</label>
+            <div style="display:flex;align-items:center;gap:8px;background:#f8f9fa;border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 14px;">
+              <input type="number" id="emiTenure" value="20" min="1" max="30" step="1"
+                style="flex:1;border:none;outline:none;font-family:Poppins,sans-serif;font-size:0.9rem;font-weight:700;color:#0D1B2A;background:transparent;"
+                oninput="calcEMI()"/>
+              <span style="font-size:0.85rem;font-weight:700;color:#888;">Yr</span>
+            </div>
+            <input type="range" id="emiTenureRange" min="1" max="30" step="1" value="20"
+              style="width:100%;margin-top:8px;accent-color:#E53935;" oninput="document.getElementById('emiTenure').value=this.value;calcEMI()"/>
+          </div>
+          <!-- Result Box -->
+          <div style="background:linear-gradient(135deg,#0D1B2A,#1a3a5c);border-radius:14px;padding:20px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center;">
+              <div>
+                <div style="font-size:0.65rem;color:rgba(255,255,255,0.5);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Monthly EMI</div>
+                <div id="emiResult" style="font-size:1.3rem;font-weight:900;color:#FFC107;line-height:1;">&#8377;0</div>
+              </div>
+              <div style="border-left:1px solid rgba(255,255,255,0.1);border-right:1px solid rgba(255,255,255,0.1);">
+                <div style="font-size:0.65rem;color:rgba(255,255,255,0.5);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Total Interest</div>
+                <div id="emiInterest" style="font-size:1rem;font-weight:800;color:#ff8a80;line-height:1;">&#8377;0</div>
+              </div>
+              <div>
+                <div style="font-size:0.65rem;color:rgba(255,255,255,0.5);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Total Payable</div>
+                <div id="emiTotal" style="font-size:1rem;font-weight:800;color:#69f0ae;line-height:1;">&#8377;0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Location Info -->
+        <div class="pj-card" id="pjLocationBox" style="display:none;">
+          <div class="pj-sec-title"><i class="fa-solid fa-map-location-dot"></i> Location Highlights</div>
+          <div id="pjLocationPoints" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;"></div>
+        </div>
+
+        <!-- About Developer -->
+        <div class="pj-card" id="pjDevBox" style="display:none;">
+          <div class="pj-sec-title"><i class="fa-solid fa-user-tie"></i> About the Developer</div>
+          <div id="pjDevContent"></div>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="pj-card">
+          <div class="pj-sec-title"><i class="fa-solid fa-shield-halved"></i> Why City Real Space?</div>
+          <div class="pj-trust">
+            <div class="pj-trust-item"><i class="fa-solid fa-certificate"></i><span>RERA Registered</span></div>
+            <div class="pj-trust-item"><i class="fa-solid fa-circle-check"></i><span>Verified Developer</span></div>
+            <div class="pj-trust-item"><i class="fa-solid fa-calendar-check"></i><span>Free Site Visit</span></div>
+            <div class="pj-trust-item"><i class="fa-solid fa-headset"></i><span>Expert Advice</span></div>
+            <div class="pj-trust-item"><i class="fa-solid fa-file-contract"></i><span>Legal Assistance</span></div>
+            <div class="pj-trust-item"><i class="fa-solid fa-hand-holding-heart"></i><span>No Brokerage</span></div>
+          </div>
+        </div>
+      </div><!-- /left -->
+
+      <!-- RIGHT SIDEBAR -->
+      <div class="pj-sidebar">
+        <div id="sec-contact"></div>
+
+        <!-- RERA Badge -->
+        <div class="pj-rera-box" id="pjReraBox" style="display:none;">
+          <i class="fa-solid fa-certificate"></i>
+          <div><strong>RERA Registered Project</strong><span id="pjReraNo">—</span></div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="pj-contact-box">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #f0f0f0;">
+            <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#E53935,#c62828);color:#fff;font-size:0.9rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">CRS</div>
+            <div>
+              <strong style="font-size:0.9rem;font-weight:700;color:#0D1B2A;display:block;">City Real Space</strong>
+              <span style="font-size:0.75rem;color:#888;">Project Sales Expert</span>
+            </div>
+          </div>
+          <div class="pj-input"><i class="fa-solid fa-user"></i><input type="text" id="pjCName" placeholder="Your Name *"/></div>
+          <div class="pj-input"><i class="fa-solid fa-phone"></i><input type="tel" id="pjCPhone" placeholder="Mobile Number *" maxlength="10"/></div>
+          <div class="pj-input" style="margin-bottom:14px;"><i class="fa-solid fa-home"></i><input type="text" id="pjCConfig" placeholder="Interested in (2 BHK, 3 BHK...)"/></div>
+          <button class="btn-pj-wa" id="pjWaBtn"><i class="fa-brands fa-whatsapp"></i> WhatsApp Enquiry</button>
+          <button class="btn-pj-call" id="pjCallBtn"><i class="fa-solid fa-phone"></i> Request Callback</button>
+          <p style="text-align:center;font-size:0.7rem;color:#aaa;margin-top:10px;">🔒 Your details are safe. No spam calls.</p>
+        </div>
+
+        <!-- Book Site Visit -->
+        <div class="pj-card">
+          <div class="pj-sec-title" style="color:#25D366;"><i class="fa-solid fa-calendar-check" style="color:#25D366;"></i> Book Free Site Visit</div>
+          <p style="font-size:0.78rem;color:#888;margin-bottom:10px;">Select a time slot — confirmed within 30 mins</p>
+          <div class="pj-slots">
+            <div class="pj-slot" onclick="pjSelectSlot(this)">Today Morning<br/><span style="font-size:0.68rem;color:#aaa;">9AM–12PM</span></div>
+            <div class="pj-slot" onclick="pjSelectSlot(this)">Today Evening<br/><span style="font-size:0.68rem;color:#aaa;">4PM–7PM</span></div>
+            <div class="pj-slot" onclick="pjSelectSlot(this)">Tomorrow Morning<br/><span style="font-size:0.68rem;color:#aaa;">9AM–12PM</span></div>
+            <div class="pj-slot" onclick="pjSelectSlot(this)">Weekend Visit<br/><span style="font-size:0.68rem;color:#aaa;">Sat/Sun</span></div>
+          </div>
+          <button class="btn-pj-visit" onclick="pjBookVisit()"><i class="fa-brands fa-whatsapp"></i> Confirm Free Visit</button>
+        </div>
+
+        <!-- Share -->
+        <div class="pj-card">
+          <div class="pj-sec-title" style="font-size:0.88rem;margin-bottom:12px;"><i class="fa-solid fa-share-nodes"></i> Share This Project</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <button onclick="pjShareWa()" style="background:#25D366;color:#fff;border:none;padding:10px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+            <button onclick="pjCopyLink()" id="pjCopyBtn" style="background:#f5f5f5;color:#555;border:1.5px solid #e8e8e8;padding:10px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fa-solid fa-link"></i> Copy Link</button>
+          </div>
+        </div>
+
+      </div><!-- /sidebar -->
+    </div><!-- /pj-grid -->
+  </div><!-- /pj-wrap -->
+</div><!-- /#pjContent -->
+
+<!-- MOBILE BOTTOM BAR -->
+<div id="pjMobileBar" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9990;background:#fff;border-top:1px solid #e8e8e8;padding:10px 14px;box-shadow:0 -4px 20px rgba(0,0,0,0.12);">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+    <button onclick="document.getElementById('pjWaBtn').click()" style="background:#25D366;color:#fff;border:none;padding:13px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+    <button onclick="document.getElementById('pjCallBtn').click()" style="background:#E53935;color:#fff;border:none;padding:13px;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="fa-solid fa-phone"></i> Call Back</button>
+  </div>
+</div>
+<style>
+  @media(max-width:960px){#pjMobileBar{display:block !important;}body{padding-bottom:80px;}.whatsapp-float{bottom:90px !important;}.back-top{bottom:146px !important;}}
+</style>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <a href="/" class="footer-logo" style="display:flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
+          <img src="/images/logo.jpeg" alt="City Real Space" style="height:52px;width:52px;object-fit:contain;border-radius:10px;background:#fff;padding:4px;"/>
+          <span style="font-size:1.1rem;font-weight:800;color:#fff;">City <span style="color:#FFC107;">Real</span> Space</span>
+        </a>
+        <p class="footer-about">Ahmedabad's most trusted real estate platform.</p>
+        <div class="social-links">
+          <a href="https://www.facebook.com/cityrealspace" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://wa.me/919825031247" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="https://www.linkedin.com/company/cityrealspace" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Our Services</h4>
+        <ul>
+          <li><a href="/buy"><i class="fa-solid fa-chevron-right"></i> Buy Property</a></li>
+          <li><a href="/new-launch"><i class="fa-solid fa-chevron-right"></i> New Launch</a></li>
+          <li><a href="/prelease"><i class="fa-solid fa-chevron-right"></i> Prelease</a></li>
+          <li><a href="/post-property"><i class="fa-solid fa-chevron-right"></i> Sell Property</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="/about"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
+          <li><a href="/blog"><i class="fa-solid fa-chevron-right"></i> Blog</a></li>
+          <li><a href="/contact"><i class="fa-solid fa-chevron-right"></i> Contact Us</a></li>
+          <li><a href="/faq"><i class="fa-solid fa-chevron-right"></i> FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <div class="contact-info">
+          <div class="ci"><i class="fa-solid fa-phone"></i><span>+91 98250 31247</span></div>
+          <div class="ci"><i class="fa-solid fa-envelope"></i><span>info@cityrealspace.com</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom"><div class="container"><p>&copy; 2026 City Real Space. All Rights Reserved.</p></div></div>
+</footer>
+
+<a href="https://wa.me/919825031247" class="whatsapp-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+<button class="back-top" id="backTop"><i class="fa-solid fa-chevron-up"></i></button>
+
+<script src="/bg-animation.js" defer></script>
+<script>
+const API = (window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1') ? 'http://localhost:5000/api' : '/api';
+
+// ===== GET SLUG FROM URL =====
+function getSlug() {
+  const path = window.location.pathname; // /project/slug
+  const parts = path.split('/').filter(Boolean);
+  if (parts[0] === 'project' && parts[1]) return parts[1];
+  return new URLSearchParams(window.location.search).get('slug') || new URLSearchParams(window.location.search).get('id');
+}
+
+// ===== PRICE FORMAT =====
+function fmtPrice(p) {
+  if (!p || p === 'On Request') return 'On Request';
+  const n = parseFloat(p);
+  if (isNaN(n)) return p;
+  if (n >= 10000000) return '&#8377;' + (n/10000000).toFixed(2).replace(/\.?0+$/,'') + ' Cr';
+  if (n >= 100000)   return '&#8377;' + (n/100000).toFixed(2).replace(/\.?0+$/,'') + ' L';
+  return '&#8377;' + n.toLocaleString('en-IN');
+}
+
+// ===== IMAGE GALLERY =====
+let _imgs = [], _imgIdx = 0;
+function switchImg(src, el) {
+  document.getElementById('pjMainImg').src = src;
+  document.querySelectorAll('.pj-thumb').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  _imgIdx = [...document.querySelectorAll('.pj-thumb')].indexOf(el);
+  updateCounter();
+}
+function pjImgMove(dir) {
+  if (!_imgs.length) return;
+  _imgIdx = (_imgIdx + dir + _imgs.length) % _imgs.length;
+  document.getElementById('pjMainImg').src = _imgs[_imgIdx];
+  document.querySelectorAll('.pj-thumb').forEach((t,i) => t.classList.toggle('active', i===_imgIdx));
+  updateCounter();
+}
+function updateCounter() {
+  const el = document.getElementById('pjImgCounter');
+  if (el) el.innerHTML = '<i class="fa-solid fa-image"></i> ' + (_imgIdx+1) + ' / ' + _imgs.length;
+}
+// Touch swipe on hero
+(function(){
+  let tx=0;
+  document.addEventListener('DOMContentLoaded', function(){
+    const el = document.getElementById('pjHeroWrap');
+    if (!el) return;
+    el.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+    el.addEventListener('touchend', e => {
+      const diff = tx - e.changedTouches[0].clientX;
+      if (Math.abs(diff) < 40) return;
+      pjImgMove(diff > 0 ? 1 : -1);
+    }, {passive:true});
+  });
+})();
+
+// ===== DESCRIPTION TOGGLE =====
+let _descExpanded = false;
+function toggleDesc() {
+  _descExpanded = !_descExpanded;
+  const el = document.getElementById('pjDesc');
+  const btn = document.getElementById('pjReadMore');
+  const icon = document.getElementById('pjReadIcon');
+  if (_descExpanded) {
+    el.classList.remove('collapsed');
+    btn.innerHTML = 'Read Less <i class="fa-solid fa-chevron-up" id="pjReadIcon"></i>';
+  } else {
+    el.classList.add('collapsed');
+    btn.innerHTML = 'Read More <i class="fa-solid fa-chevron-down" id="pjReadIcon"></i>';
+  }
+}
+
+// ===== TABS SCROLL =====
+function pjScrollTo(id, el) {
+  event.preventDefault();
+  const target = document.getElementById(id);
+  if (!target) return;
+  const top = target.getBoundingClientRect().top + window.scrollY - 60;
+  window.scrollTo({ top, behavior:'smooth' });
+  document.querySelectorAll('.pj-tab-link').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+}
+
+// Update active tab on scroll
+const _tabSecs = ['sec-overview','sec-configs','sec-amenities','sec-highlights','sec-video','sec-contact'];
+window.addEventListener('scroll', () => {
+  document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+  document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
+  let current = _tabSecs[0];
+  for (const id of _tabSecs) {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 80) current = id;
+  }
+  document.querySelectorAll('.pj-tab-link').forEach(t => {
+    t.classList.toggle('active', t.getAttribute('href') === '#' + current);
+  });
+}, { passive:true });
+
+// ===== SITE VISIT =====
+let _selectedSlot = '';
+function pjSelectSlot(el) {
+  document.querySelectorAll('.pj-slot').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  _selectedSlot = el.innerText.replace('\n',' - ');
+}
+function pjBookVisit() {
+  const name  = document.getElementById('pjCName').value.trim();
+  const phone = document.getElementById('pjCPhone').value.trim();
+  const pname = document.getElementById('pjName').textContent || 'Project';
+  const loc   = document.getElementById('pjLocation').textContent || '';
+  if (!name || !phone) { alert('Please enter your name and phone number first.'); return; }
+  const slot = _selectedSlot || 'Any convenient time';
+  fetch('https://crs-crm.vercel.app/api/webhooks/website', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ name, phone, requirements:'Site Visit: '+pname+' ('+loc+') - Slot: '+slot, source:'project-site-visit' })
+  }).catch(()=>{});
+  const msg = encodeURIComponent('Hi! I want to book a FREE Site Visit.\n\nProject: '+pname+'\nLocation: '+loc+'\nPreferred Time: '+slot+'\n\nMy Name: '+name+'\nMy Phone: +91 '+phone);
+  window.open('https://wa.me/919825031247?text='+msg, '_blank');
+}
+
+// ===== SHARE =====
+function pjShareWa() {
+  const pname = document.getElementById('pjName').textContent || 'Project';
+  const loc   = document.getElementById('pjLocation').textContent || '';
+  const price = document.getElementById('statPrice').textContent || '';
+  const msg = encodeURIComponent('🏢 *'+pname+'*\n\n📍 '+loc+'\n💰 Starting: '+price+'\n\n🔗 '+window.location.href+'\n\n📞 +91 98250 31247\n🌐 www.cityrealspace.com\n_City Real Space — Gujarat\'s Most Trusted Platform_');
+  window.open('https://wa.me/?text='+msg, '_blank');
+}
+function pjCopyLink() {
+  navigator.clipboard.writeText(window.location.href);
+  const btn = document.getElementById('pjCopyBtn');
+  btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+  btn.style.background = '#e8f5e9'; btn.style.color = '#2e7d32';
+  setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-link"></i> Copy Link'; btn.style.background=''; btn.style.color=''; }, 2000);
+}
+
+// ===== AMENITY ICONS =====
+const amenIcons = {
+  'Swimming Pool':'fa-person-swimming','Gymnasium':'fa-dumbbell','Lift':'fa-elevator',
+  'Power Backup':'fa-bolt','24/7 Security':'fa-shield-halved','CCTV':'fa-video',
+  'Covered Parking':'fa-square-parking','Parking':'fa-square-parking',
+  'Garden / Park':'fa-tree','Clubhouse':'fa-building','Jogging Track':'fa-person-running',
+  'Kids Play Area':'fa-child','Intercom':'fa-phone-volume','High Speed Internet':'fa-wifi',
+  'Sports Court':'fa-table-tennis-paddle-ball','Pet Friendly':'fa-paw',
+  'Water Supply 24/7':'fa-droplet','Gas Pipeline':'fa-fire-flame-simple',
+  'Housekeeping':'fa-broom','Private Garden':'fa-seedling','Private Pool':'fa-water',
+  'Central AC':'fa-snowflake','Reception Area':'fa-concierge-bell',
+  'Conference Room':'fa-users','Cafeteria':'fa-utensils',
+  'Rainwater Harvesting':'fa-cloud-rain','Gated Community':'fa-lock',
+  'Fire Safety':'fa-fire-extinguisher','ATM':'fa-landmark','Shopping Centre':'fa-store',
+  'Vaastu Compliant':'fa-om','Grade A Building':'fa-building-columns',
+  'Maintenance Staff':'fa-screwdriver-wrench','Visitor Parking':'fa-square-parking',
+  'EV Charging':'fa-charging-station','Amphitheatre':'fa-masks-theater',
+  'Cricket Net':'fa-cricket-bat-ball','Badminton Court':'fa-table-tennis-paddle-ball',
+  'Yoga Deck':'fa-om','Spa':'fa-spa','Sauna':'fa-hot-tub-person',
+  'Library':'fa-book','Co-working Space':'fa-laptop','Mini Theatre':'fa-film'
+};
+
+// ===== EMI CALCULATOR =====
+function fmtINR(n) {
+  if (n >= 10000000) return '&#8377;' + (n/10000000).toFixed(2).replace(/\.?0+$/,'') + ' Cr';
+  if (n >= 100000)   return '&#8377;' + (n/100000).toFixed(2).replace(/\.?0+$/,'') + ' L';
+  return '&#8377;' + Math.round(n).toLocaleString('en-IN');
+}
+function calcEMI() {
+  const P = parseFloat(document.getElementById('emiLoan').value) || 5000000;
+  const r = (parseFloat(document.getElementById('emiRate').value) || 8.5) / 12 / 100;
+  const n = (parseFloat(document.getElementById('emiTenure').value) || 20) * 12;
+  document.getElementById('emiLoanRange').value = P;
+  document.getElementById('emiRateRange').value = parseFloat(document.getElementById('emiRate').value) || 8.5;
+  document.getElementById('emiTenureRange').value = parseFloat(document.getElementById('emiTenure').value) || 20;
+  if (r === 0) return;
+  const emi = P * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+  const totalAmt = emi * n;
+  const totalInt = totalAmt - P;
+  document.getElementById('emiResult').innerHTML   = fmtINR(emi);
+  document.getElementById('emiInterest').innerHTML = fmtINR(totalInt);
+  document.getElementById('emiTotal').innerHTML    = fmtINR(totalAmt);
+}
+document.addEventListener('DOMContentLoaded', calcEMI);
+
+// ===== MAIN RENDER =====
+function renderProject(p) {
+  // SEO
+  const seoTitle = p.name + ' by ' + (p.developer||'City Real Space') + ' in ' + (p.location||'Ahmedabad') + ' | City Real Space';
+  document.title = seoTitle;
+  document.querySelector('meta[name="description"]').setAttribute('content',
+    (p.description||p.name+' - New launch project in '+(p.location||'Ahmedabad')+'. RERA registered. Free site visit.').substring(0,200));
+  document.querySelector('meta[property="og:title"]').setAttribute('content', seoTitle);
+  document.querySelector('link[rel="canonical"]').setAttribute('href', 'https://www.cityrealspace.com/project/'+(p.slug||''));
+  if (p.images && p.images[0]) {
+    const ogImg = p.images[0].startsWith('http') ? p.images[0] : 'https://www.cityrealspace.com'+p.images[0];
+    document.querySelector('meta[property="og:image"]').setAttribute('content', ogImg);
+  }
+
+  // Schema
+  const schema = document.createElement('script');
+  schema.type = 'application/ld+json';
+  schema.textContent = JSON.stringify({
+    '@context':'https://schema.org','@type':'RealEstateListing',
+    'name': p.name, 'description': p.description||p.name,
+    'url':'https://www.cityrealspace.com/project/'+(p.slug||''),
+    'image': p.images||[], 'offers':{'@type':'Offer','price':p.price||'On Request','priceCurrency':'INR'},
+    'address':{'@type':'PostalAddress','streetAddress':p.location||'','addressLocality':'Ahmedabad','addressRegion':'Gujarat','addressCountry':'IN'}
+  });
+  document.head.appendChild(schema);
+
+  // Images
+  _imgs = (p.images && p.images.length) ? p.images : (p.image ? [p.image] : ['https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80']);
+  _imgIdx = 0;
+  document.getElementById('pjMainImg').src = _imgs[0];
+  updateCounter();
+
+  // Thumbs + arrows
+  const heroWrap = document.getElementById('pjHeroWrap');
+  if (_imgs.length > 1) {
+    heroWrap.insertAdjacentHTML('beforeend',
+      '<button class="pj-arr pj-arr-prev" onclick="pjImgMove(-1)"><i class="fa-solid fa-chevron-left"></i></button>'+
+      '<button class="pj-arr pj-arr-next" onclick="pjImgMove(1)"><i class="fa-solid fa-chevron-right"></i></button>'
+    );
+    document.getElementById('pjThumbs').innerHTML = _imgs.map((src,i) =>
+      '<div class="pj-thumb'+(i===0?' active':'')+'" onclick="switchImg(\''+src+'\',this)"><img src="'+src+'" alt=""/></div>'
+    ).join('');
+  }
+
+  // Hero badge + price
+  const catClass = p.category === 'commercial' ? 'com' : 'res';
+  const catLabel = p.category === 'commercial' ? 'Commercial' : 'Residential';
+  let heroBadgeHtml = '<span class="pj-hbadge '+catClass+'">'+catLabel+'</span>';
+  if (p.rera) heroBadgeHtml += '<span class="pj-hbadge rera"><i class="fa-solid fa-certificate" style="margin-right:4px;"></i>RERA</span>';
+  document.getElementById('pjHeroBadge').innerHTML = heroBadgeHtml;
+
+  const priceDisplay = p.price && p.price !== 'On Request' ? fmtPrice(p.price) : 'On Request';
+  document.getElementById('pjHeroPrice').innerHTML =
+    '<span>Starting Price</span><strong>'+priceDisplay+'</strong>'+(p.priceUnit ? '<em>'+p.priceUnit+'</em>' : '');
+
+  // Info card
+  document.getElementById('pjName').textContent = p.name;
+  document.getElementById('pjDeveloper').textContent = p.developer || 'City Real Space';
+  document.getElementById('pjLocation').textContent = p.location || 'Ahmedabad';
+
+  // Stats
+  document.getElementById('statPrice').innerHTML = priceDisplay;
+  document.getElementById('statPossession').textContent = p.possession || '—';
+  document.getElementById('statUnits').textContent = p.totalUnits || '—';
+  document.getElementById('statArea').textContent = p.area || '—';
+
+  // Progress bar — possession date se estimate karo
+  if (p.possession) {
+    const box = document.getElementById('pjProgressBox');
+    box.style.display = 'block';
+    const now = new Date();
+    const possDate = new Date(p.possession);
+    const startDate = new Date(p.createdAt || now);
+    const total = possDate - startDate;
+    const done  = now - startDate;
+    let pct = total > 0 ? Math.min(Math.max(Math.round((done/total)*100), 5), 95) : 50;
+    document.getElementById('progLabel').textContent = pct >= 90 ? 'Ready to Move' : pct >= 60 ? 'Advanced Stage' : 'Under Construction';
+    document.getElementById('progPct').textContent = pct + '%';
+    setTimeout(() => { document.getElementById('progFill').style.width = pct + '%'; }, 300);
+  }
+
+  // Description
+  if (p.description) {
+    document.getElementById('pjDesc').textContent = p.description;
+    // Show read more only if text is long
+    if (p.description.length < 200) document.getElementById('pjReadMore').style.display = 'none';
+  } else {
+    document.getElementById('pjReadMore').style.display = 'none';
+  }
+
+  // Configurations
+  if (p.configs && p.configs.length) {
+    document.getElementById('pjConfigsBox').style.display = 'block';
+    document.getElementById('pjConfigs').innerHTML = p.configs.map(c =>
+      '<div class="pj-config">'+c+'</div>'
+    ).join('');
+  }
+
+  // Highlights
+  if (p.highlights && p.highlights.length) {
+    document.getElementById('pjHighlightsBox').style.display = 'block';
+    document.getElementById('pjHighlights').innerHTML = p.highlights.map(h =>
+      '<div class="pj-hl"><i class="fa-solid fa-circle-check"></i><span>'+h+'</span></div>'
+    ).join('');
+  }
+
+  // Amenities
+  if (p.amenities && p.amenities.length) {
+    document.getElementById('pjAmenitiesBox').style.display = 'block';
+    document.getElementById('pjAmenities').innerHTML = p.amenities.map(a => {
+      const icon = amenIcons[a] || 'fa-circle-check';
+      return '<span class="pj-amenity"><i class="fa-solid '+icon+'"></i>'+a+'</span>';
+    }).join('');
+  }
+
+  // Tags
+  if (p.tags && p.tags.length) {
+    document.getElementById('pjTagsBox').style.display = 'block';
+    document.getElementById('pjTags').innerHTML = p.tags.map(t =>
+      '<span style="background:#f0f4ff;color:#1565c0;font-size:0.75rem;font-weight:700;padding:5px 12px;border-radius:20px;border:1px solid #dce8ff;">'+t+'</span>'
+    ).join('');
+  }
+
+  // RERA
+  if (p.rera) {
+    document.getElementById('pjReraBox').style.display = 'flex';
+    document.getElementById('pjReraNo').textContent = 'RERA No: ' + p.rera;
+  }
+
+  // Video
+  if (p.videoUrl) {
+    const videoId = p.videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/)?.[1];
+    if (videoId) {
+      document.getElementById('pjVideoBox').style.display = 'block';
+      document.getElementById('pjVideoWrap').innerHTML =
+        '<iframe src="https://www.youtube.com/embed/'+videoId+'" allowfullscreen></iframe>';
+    }
+  }
+
+  // Contact buttons
+  const phone = p.phone || '9825031247';
+  document.getElementById('pjWaBtn').onclick = function() {
+    const name  = document.getElementById('pjCName').value.trim();
+    const cphone = document.getElementById('pjCPhone').value.trim();
+    const cfg   = document.getElementById('pjCConfig').value.trim();
+    if (!name || !cphone) { alert('Please enter your name and phone number.'); return; }
+    fetch('https://crs-crm.vercel.app/api/webhooks/website', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name, phone:cphone, requirements:'Project Enquiry: '+p.name+(cfg?' - '+cfg:''), source:'project-whatsapp' })
+    }).catch(()=>{});
+    const msg = encodeURIComponent('Hi, I am '+name+' (+91 '+cphone+'). I am interested in: '+p.name+(cfg?' - '+cfg:'')+' ('+p.location+'). Please share more details.');
+    window.open('https://wa.me/91'+phone+'?text='+msg, '_blank');
+  };
+  document.getElementById('pjCallBtn').onclick = async function() {
+    const name  = document.getElementById('pjCName').value.trim();
+    const cphone = document.getElementById('pjCPhone').value.trim();
+    if (!name || !cphone) { alert('Please enter your name and phone number.'); return; }
+    fetch('https://crs-crm.vercel.app/api/webhooks/website', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name, phone:cphone, requirements:'Callback: '+p.name+' ('+p.location+')', source:'project-callback' })
+    }).catch(()=>{});
+    try {
+      await fetch(API+'/inquiry', { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ name, phone:cphone, propertyName:p.name, lookingFor:'Project Enquiry', city:p.location, message:'Callback request for project: '+p.name })
+      });
+    } catch(e) {}
+    this.innerHTML = '<i class="fa-solid fa-check"></i> Request Sent!';
+    this.style.background = '#2e7d32';
+    setTimeout(() => { this.innerHTML = '<i class="fa-solid fa-phone"></i> Request Callback'; this.style.background=''; }, 3000);
+  };
+
+  // Location Highlights
+  if (p.locationPoints && p.locationPoints.length) {
+    document.getElementById('pjLocationBox').style.display = 'block';
+    document.getElementById('pjLocationPoints').innerHTML = p.locationPoints.map(pt =>
+      '<div style="display:flex;align-items:flex-start;gap:10px;background:#f8fafc;border-radius:10px;padding:10px 12px;border:1px solid #e2e8f0;">'+
+      '<i class="fa-solid fa-location-dot" style="color:#E53935;font-size:0.85rem;margin-top:2px;flex-shrink:0;"></i>'+
+      '<span style="font-size:0.8rem;color:#333;font-weight:600;line-height:1.4;">'+pt+'</span></div>'
+    ).join('');
+  }
+
+  // About Developer
+  if (p.developer || p.developerAbout) {
+    document.getElementById('pjDevBox').style.display = 'block';
+    document.getElementById('pjDevContent').innerHTML =
+      '<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0;">'+
+      '<div style="width:48px;height:48px;background:linear-gradient(135deg,#E53935,#c62828);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;font-weight:800;flex-shrink:0;">'+
+      (p.developer||'C')[0].toUpperCase()+'</div>'+
+      '<div><strong style="font-size:0.95rem;font-weight:800;color:#0D1B2A;display:block;">'+( p.developer||'City Real Space')+'</strong>'+
+      '<span style="font-size:0.75rem;color:#888;">Project Developer</span></div></div>'+
+      (p.developerAbout ? '<p style="font-size:0.83rem;color:#555;line-height:1.8;margin:0;">'+p.developerAbout+'</p>' :
+        '<p style="font-size:0.83rem;color:#555;line-height:1.8;margin:0;">Verified & trusted developer partnered with City Real Space. All projects are RERA registered and legally verified.</p>');
+  }
+
+  // Show content
+  document.getElementById('pjLoading').style.display = 'none';
+  document.getElementById('pjContent').style.display = 'block';
+
+  // Grid layout
+  applyGrid();
+}
+
+function applyGrid() {
+  const g = document.getElementById('pjGrid');
+  const s = document.querySelector('.pj-sidebar');
+  if (!g) return;
+  if (window.innerWidth <= 960) {
+    g.style.gridTemplateColumns = '1fr';
+    if (s) { s.style.position = 'static'; s.style.top = 'auto'; }
+  } else {
+    g.style.gridTemplateColumns = '1fr 360px';
+    if (s) { s.style.position = 'sticky'; s.style.top = '60px'; }
+  }
+}
+window.addEventListener('resize', applyGrid);
+
+// ===== LOAD PROJECT =====
+async function loadProject() {
+  const slug = getSlug();
+  if (!slug) { showError(); return; }
+  try {
+    const res = await fetch(API+'/projects/'+slug);
+    const data = await res.json();
+    if (data.success && data.project) { renderProject(data.project); return; }
+    showError();
+  } catch(e) { showError(); }
+}
+
+function showError() {
+  document.getElementById('pjLoading').innerHTML =
+    '<div style="text-align:center;padding:60px 20px;font-family:Poppins,sans-serif">'+
+    '<div style="font-size:4rem;margin-bottom:16px">🏢</div>'+
+    '<h2 style="color:#0D1B2A;font-size:1.4rem;font-weight:800;margin-bottom:8px">Project Not Found</h2>'+
+    '<p style="color:#888;font-size:0.9rem;margin-bottom:24px">This project is no longer available or may have been removed.</p>'+
+    '<a href="/new-launch" style="display:inline-flex;align-items:center;gap:8px;background:#E53935;color:#fff;padding:12px 24px;border-radius:10px;font-size:0.9rem;font-weight:700;text-decoration:none;">'+
+    '<i class="fa-solid fa-arrow-left"></i> Browse All Projects</a></div>';
+}
+
+// ===== MISC =====
+document.getElementById('backTop').addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('hamburger').innerHTML = '<i class="fa-solid fa-bars"></i>';
+});
+document.querySelectorAll('.nav-drop-btn').forEach(btn => {
+  btn.addEventListener('click', e => { e.preventDefault(); btn.closest('.nav-dropdown').classList.toggle('open'); });
+});
+
+// Pre-fill user if logged in
+try {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  if (user) {
+    document.getElementById('loginBtn').style.display = 'none';
+    if (user.firstName) document.getElementById('pjCName').value = (user.firstName+' '+(user.lastName||'')).trim();
+    if (user.phone) document.getElementById('pjCPhone').value = user.phone.replace('+91','').trim();
+  }
+} catch(e) {}
+
+loadProject();
+</script>
+<script src="/cursor.js"></script>
+</body>
+</html>
