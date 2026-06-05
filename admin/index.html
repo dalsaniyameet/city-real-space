@@ -1795,6 +1795,11 @@
         <input type="text" id="pjImages" placeholder="Multiple images - comma se alag karo (e.g. https://img1.jpg, https://img2.jpg)" style="font-size:0.78rem;"/>
       </div>
 
+      <!-- SECTION: Reviews -->
+      <div style="font-size:0.78rem;font-weight:800;color:#E53935;text-transform:uppercase;letter-spacing:1px;padding:8px 0 10px;border-bottom:1px solid #f0f0f0;margin-bottom:14px;margin-top:4px;"><i class="fa-solid fa-star" style="margin-right:6px;"></i> Reviews <span style="font-size:0.65rem;color:#aaa;font-weight:500;text-transform:none;">(real customer reviews)</span></div>
+      <div id="pjReviewRows" style="display:flex;flex-direction:column;gap:10px;margin-bottom:8px;"></div>
+      <button type="button" onclick="addReviewRow()" style="background:#fff8e1;border:1.5px dashed #FFC107;color:#b8860b;padding:8px 16px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:6px;width:100%;justify-content:center;margin-bottom:14px;"><i class="fa-solid fa-plus"></i> Add Review</button>
+
       <!-- SECTION: Tags & Settings -->
       <div style="font-size:0.78rem;font-weight:800;color:#E53935;text-transform:uppercase;letter-spacing:1px;padding:8px 0 10px;border-bottom:1px solid #f0f0f0;margin-bottom:14px;margin-top:4px;"><i class="fa-solid fa-tags" style="margin-right:6px;"></i> Tags & Settings</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
@@ -1855,6 +1860,47 @@ async function handleProjectExtraImages(input){
     }catch(e){}
   }
   document.getElementById('pjImages').value=existing.join(', ');
+}
+
+// ===== REVIEW ROWS =====
+function addReviewRow(data){
+  data=data||{};
+  var wrap=document.getElementById('pjReviewRows');
+  var row=document.createElement('div');
+  row.style.cssText='background:#f8f9fa;border-radius:10px;padding:12px;border:1px solid #f0f0f0;position:relative;';
+  var stars='';
+  for(var i=1;i<=5;i++){
+    stars+='<label style="cursor:pointer;font-size:1.1rem;color:'+(data.rating>=i?'#FFC107':'#ddd')+'" onclick="setReviewStar(this,'+i+')">&#9733;</label>';
+  }
+  row.innerHTML=
+    '<div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:8px;align-items:center;">'+
+      '<input type="text" placeholder="Customer Name *" value="'+(data.name||'')+'" class="rv-name" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:8px 10px;font-size:0.8rem;font-family:Poppins,sans-serif;outline:none;"/>'+
+      '<input type="text" placeholder="Date (e.g. May 2025)" value="'+(data.date||'')+'" class="rv-date" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:8px 10px;font-size:0.8rem;font-family:Poppins,sans-serif;outline:none;"/>'+
+      '<button type="button" onclick="this.closest(\'div\').parentElement.remove()" style="width:30px;height:30px;border-radius:8px;border:none;background:#ffebee;color:#E53935;cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-trash"></i></button>'+
+    '</div>'+
+    '<div style="margin-bottom:8px;"><span style="font-size:0.72rem;color:#888;font-weight:600;margin-right:8px;">Rating:</span>'+stars+'<input type="hidden" class="rv-rating" value="'+(data.rating||5)+'"/></div>'+
+    '<textarea placeholder="Review comment *" class="rv-comment" rows="2" style="width:100%;border:1.5px solid #e8e8e8;border-radius:8px;padding:8px 10px;font-size:0.8rem;font-family:Poppins,sans-serif;outline:none;resize:none;margin-bottom:8px;">'+(data.comment||'')+'</textarea>'+
+    '<input type="text" placeholder="Tags comma se (e.g. Great Location, Good Amenities)" value="'+(data.tags||[]).join(', ')+'" class="rv-tags" style="width:100%;border:1.5px solid #e8e8e8;border-radius:8px;padding:8px 10px;font-size:0.8rem;font-family:Poppins,sans-serif;outline:none;"/>';
+  wrap.appendChild(row);
+}
+
+function setReviewStar(lbl,rating){
+  var row=lbl.closest('div');
+  row.querySelector('.rv-rating').value=rating;
+  var labels=row.querySelectorAll('label');
+  labels.forEach(function(l,i){l.style.color=i<rating?'#FFC107':'#ddd';});
+}
+
+function getReviews(){
+  return Array.from(document.querySelectorAll('#pjReviewRows > div')).map(function(row){
+    return {
+      name:    row.querySelector('.rv-name').value.trim(),
+      rating:  parseInt(row.querySelector('.rv-rating').value)||5,
+      comment: row.querySelector('.rv-comment').value.trim(),
+      date:    row.querySelector('.rv-date').value.trim(),
+      tags:    row.querySelector('.rv-tags').value.split(',').map(function(t){return t.trim();}).filter(Boolean)
+    };
+  }).filter(function(r){return r.name&&r.comment;});
 }
 
 // ===== FLOOR PLAN ROWS =====
@@ -1980,6 +2026,7 @@ function openProjectModal() {
   var ep=document.getElementById('pjExtraImgPreview');if(ep)ep.innerHTML='';
   document.getElementById('pjFloorPlanRows').innerHTML = '';
   document.getElementById('pjNearbyRows').innerHTML = '';
+  document.getElementById('pjReviewRows').innerHTML = '';
   openModal('projectModal');
 }
 
@@ -2010,6 +2057,9 @@ function editProject(p) {
   // Nearby Places
   document.getElementById('pjNearbyRows').innerHTML = '';
   (p.nearbyPlaces||[]).forEach(function(nb){ addNearbyRow(nb); });
+  // Reviews
+  document.getElementById('pjReviewRows').innerHTML = '';
+  (p.reviews||[]).forEach(function(rv){ addReviewRow(rv); });
   // Cover preview
   var prev = document.getElementById('pjImgPreview');
   var icon = document.getElementById('pjImgIcon');
@@ -2076,7 +2126,8 @@ document.getElementById('projectForm').addEventListener('submit', async function
     whatsappMsg: document.getElementById('pjWhatsappMsg').value.trim(),
     isActive:    document.getElementById('pjActive').checked,
     floorPlans:  getFloorPlans(),
-    nearbyPlaces: getNearbyPlaces()
+    nearbyPlaces: getNearbyPlaces(),
+    reviews:      getReviews()
   };
 
   var r = id ? await api('PUT', '/projects/' + id, body) : await api('POST', '/projects', body);

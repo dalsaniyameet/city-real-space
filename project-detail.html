@@ -40,11 +40,24 @@
     /* GALLERY */
     .gallery-wrap{border-radius:16px;overflow:hidden;background:#0D1B2A;}
     .gallery-main{position:relative;height:400px;overflow:hidden;cursor:pointer;}
-    .gallery-main img{width:100%;height:100%;object-fit:cover;display:none;}
+    .gallery-main img{width:100%;height:100%;object-fit:cover;display:none;animation:imgFadeIn 0.5s ease;}
+    @keyframes imgFadeIn{from{opacity:0;transform:scale(1.03);}to{opacity:1;transform:scale(1);}}
     .gallery-main img.active{display:block;}
-    .gallery-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#0D1B2A,#1a3a5c);color:rgba(255,255,255,0.25);gap:12px;}
-    .gallery-placeholder i{font-size:4rem;}
-    .gallery-placeholder span{font-size:0.9rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+    .gallery-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#0D1B2A 0%,#1a3a5c 60%,#0D1B2A 100%);color:rgba(255,255,255,0.25);gap:16px;position:relative;overflow:hidden;}
+    .gallery-placeholder::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(229,57,53,0.18),transparent 60%),radial-gradient(ellipse at 70% 30%,rgba(255,193,7,0.12),transparent 50%);pointer-events:none;}
+    .gp-logo-wrap{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;}
+    .gp-logo{width:88px;height:88px;border-radius:20px;overflow:hidden;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;animation:logoPulse 2.5s ease-in-out infinite;}
+    .gp-logo img{width:100%;height:100%;object-fit:contain;border-radius:18px;}
+    .gp-logo i{font-size:2.8rem;color:rgba(255,255,255,0.35);}
+    @keyframes logoPulse{0%,100%{box-shadow:0 0 0 0 rgba(229,57,53,0.5),0 8px 32px rgba(0,0,0,0.4);}50%{box-shadow:0 0 0 16px rgba(229,57,53,0),0 8px 32px rgba(0,0,0,0.4);}}
+    .gp-ring{position:absolute;inset:-14px;border-radius:30px;border:1.5px dashed rgba(255,193,7,0.35);animation:gpRing 5s linear infinite;}
+    .gp-ring2{position:absolute;inset:-26px;border-radius:40px;border:1px dashed rgba(229,57,53,0.25);animation:gpRing 9s linear infinite reverse;}
+    @keyframes gpRing{to{transform:rotate(360deg);}}
+    .gp-name{font-size:1rem;font-weight:800;color:rgba(255,255,255,0.75);text-align:center;z-index:2;max-width:240px;line-height:1.3;}
+    .gp-sub{font-size:0.68rem;color:rgba(255,255,255,0.35);z-index:2;letter-spacing:2px;text-transform:uppercase;}
+    .gp-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1;}
+    .gp-dot{position:absolute;border-radius:50%;animation:gpFloat linear infinite;}
+    @keyframes gpFloat{0%{transform:translateY(110%);opacity:0;}15%{opacity:0.7;}85%{opacity:0.3;}100%{transform:translateY(-110%);opacity:0;}}
     .gallery-arr{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.9);border:none;cursor:pointer;font-size:0.9rem;color:#333;display:flex;align-items:center;justify-content:center;z-index:10;box-shadow:0 4px 14px rgba(0,0,0,0.2);transition:all 0.2s;}
     .gallery-arr:hover{background:#fff;transform:translateY(-50%) scale(1.1);}
     .gallery-prev{left:12px;} .gallery-next{right:12px;}
@@ -329,8 +342,17 @@
         <div class="gallery-wrap">
           <div class="gallery-main" id="gallMain" onclick="openLightbox(_gallCur)">
             <div class="gallery-placeholder" id="gallPlaceholder">
-              <i class="fa-solid fa-city"></i>
-              <span>Images Loading...</span>
+              <div class="gp-particles" id="gpParticles"></div>
+              <div class="gp-logo-wrap" id="gpLogoWrap">
+                <div class="gp-ring"></div>
+                <div class="gp-ring2"></div>
+                <div class="gp-logo" id="gpLogo">
+                  <img src="/images/logo.jpeg" alt="City Real Space" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+                  <i class="fa-solid fa-city" style="display:none"></i>
+                </div>
+              </div>
+              <div class="gp-name" id="gpName">Loading Project...</div>
+              <div class="gp-sub">Photos Coming Soon</div>
             </div>
           </div>
           <button class="gallery-arr gallery-prev" id="gallPrev"><i class="fa-solid fa-chevron-left"></i></button>
@@ -484,44 +506,20 @@
 <!-- REVIEWS -->
 <div class="container" id="reviews">
   <div class="sec">
-    <div class="sec-title"><i class="fa-solid fa-star"></i> Ratings & Reviews</div>
+    <div class="sec-title"><i class="fa-solid fa-star"></i> Ratings &amp; Reviews</div>
     <div class="sec-divider"></div>
-    <div class="rating-overview">
+    <div class="rating-overview" id="ratingOverview">
       <div class="rating-big">
-        <div class="rating-big-num">4.3</div>
-        <div class="rating-big-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star-half-stroke"></i></div>
-        <div class="rating-big-lbl">28 Reviews</div>
+        <div class="rating-big-num" id="avgRating">—</div>
+        <div class="rating-big-stars" id="avgStars"></div>
+        <div class="rating-big-lbl" id="totalReviews">No Reviews Yet</div>
       </div>
-      <div class="rating-bars">
-        <div class="rating-bar-row"><span class="rating-bar-lbl">5 ★</span><div class="rating-bar-bg"><div class="rating-bar-fill" style="width:65%;"></div></div><span class="rating-bar-cnt">18</span></div>
-        <div class="rating-bar-row"><span class="rating-bar-lbl">4 ★</span><div class="rating-bar-bg"><div class="rating-bar-fill" style="width:20%;"></div></div><span class="rating-bar-cnt">6</span></div>
-        <div class="rating-bar-row"><span class="rating-bar-lbl">3 ★</span><div class="rating-bar-bg"><div class="rating-bar-fill" style="width:11%;"></div></div><span class="rating-bar-cnt">3</span></div>
-        <div class="rating-bar-row"><span class="rating-bar-lbl">2 ★</span><div class="rating-bar-bg"><div class="rating-bar-fill" style="width:4%;"></div></div><span class="rating-bar-cnt">1</span></div>
-        <div class="rating-bar-row"><span class="rating-bar-lbl">1 ★</span><div class="rating-bar-bg"><div class="rating-bar-fill" style="width:0%;"></div></div><span class="rating-bar-cnt">0</span></div>
-      </div>
+      <div class="rating-bars" id="ratingBars"></div>
     </div>
-    <div class="review-cards">
-      <div class="review-card">
-        <div class="review-top">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div class="reviewer-avatar">R</div>
-            <div><div class="reviewer-name">Rajesh Patel</div><div class="reviewer-date">May 2025</div></div>
-          </div>
-          <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-        </div>
-        <div class="review-txt">Excellent project with great location. Builder is very cooperative and the amenities are top-notch. Highly recommend to anyone looking for quality living in Ahmedabad.</div>
-        <div class="review-tags"><span class="review-tag">Great Location</span><span class="review-tag">Good Amenities</span><span class="review-tag">Trustworthy Builder</span></div>
-      </div>
-      <div class="review-card">
-        <div class="review-top">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <div class="reviewer-avatar" style="background:linear-gradient(135deg,#1565c0,#0D47A1);">M</div>
-            <div><div class="reviewer-name">Meera Shah</div><div class="reviewer-date">April 2025</div></div>
-          </div>
-          <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
-        </div>
-        <div class="review-txt">Good value for money. The construction quality is very good. Minor delay in possession but overall happy with the project and City Real Space team support.</div>
-        <div class="review-tags"><span class="review-tag">Good Value</span><span class="review-tag">Quality Construction</span></div>
+    <div class="review-cards" id="reviewCards">
+      <div style="text-align:center;padding:32px;color:#aaa;font-size:0.85rem;">
+        <i class="fa-regular fa-star" style="font-size:2rem;display:block;margin-bottom:10px;"></i>
+        No reviews yet for this project.
       </div>
     </div>
   </div>
@@ -701,6 +699,8 @@ function renderProject(p){
   renderPricing(p);
   renderTrend();
   renderNearby(p.nearbyPlaces);
+  renderReviews(p.reviews);
+  renderPlaceholder(p);
   document.getElementById('devName').textContent=p.developer||'City Real Space';
 }
 
@@ -791,6 +791,73 @@ function renderAmenities(arr){
     var k=a.toLowerCase().split(' ')[0];
     var ic=AMN_ICONS[k]||'fa-circle-check';
     return `<div class="amenity-chip"><i class="fa-solid ${ic}"></i>${a}</div>`;
+  }).join('');
+}
+
+// RENDER PLACEHOLDER — project name + logo animation
+function renderPlaceholder(p){
+  var nm=document.getElementById('gpName');
+  if(nm) nm.textContent=p.name||'Project';
+  // Floating particles
+  var pp=document.getElementById('gpParticles');
+  if(!pp) return;
+  var colors=['rgba(229,57,53,0.6)','rgba(255,193,7,0.5)','rgba(255,255,255,0.3)','rgba(99,102,241,0.4)'];
+  for(var i=0;i<12;i++){
+    var d=document.createElement('div');
+    var sz=Math.random()*5+2;
+    d.className='gp-dot';
+    d.style.cssText='width:'+sz+'px;height:'+sz+'px;background:'+colors[i%colors.length]+';left:'+(Math.random()*100)+'%;animation-duration:'+(Math.random()*8+5)+'s;animation-delay:'+(Math.random()*6)+'s;';
+    pp.appendChild(d);
+  }
+}
+
+// RENDER REVIEWS — real data from admin
+var AVATAR_COLORS=['linear-gradient(135deg,#E53935,#b71c1c)','linear-gradient(135deg,#1565c0,#0D47A1)','linear-gradient(135deg,#2e7d32,#1b5e20)','linear-gradient(135deg,#6a1b9a,#4a148c)','linear-gradient(135deg,#e65100,#bf360c)','linear-gradient(135deg,#00695c,#004d40)'];
+function starHTML(n){
+  var s='';
+  for(var i=1;i<=5;i++) s+='<i class="fa-'+(i<=n?'solid':'regular')+' fa-star"></i>';
+  return s;
+}
+function renderReviews(arr){
+  if(!arr||!arr.length) return;
+  var total=arr.length;
+  var sum=arr.reduce(function(a,r){return a+(r.rating||5);},0);
+  var avg=sum/total;
+  var rounded=Math.round(avg*10)/10;
+  // Counts per star
+  var counts=[0,0,0,0,0];
+  arr.forEach(function(r){var s=Math.min(5,Math.max(1,r.rating||5));counts[5-s]++;});
+  var max=Math.max(...counts);
+  // Avg display
+  document.getElementById('avgRating').textContent=rounded.toFixed(1);
+  document.getElementById('avgStars').innerHTML=starHTML(Math.round(avg));
+  document.getElementById('totalReviews').textContent=total+' Review'+(total!==1?'s':'');
+  // Bars
+  document.getElementById('ratingBars').innerHTML=[5,4,3,2,1].map(function(s,i){
+    var cnt=counts[i];
+    var pct=max>0?Math.round(cnt/max*100):0;
+    return '<div class="rating-bar-row">'+
+      '<span class="rating-bar-lbl">'+s+' ★</span>'+
+      '<div class="rating-bar-bg"><div class="rating-bar-fill" style="width:'+pct+'%;"></div></div>'+
+      '<span class="rating-bar-cnt">'+cnt+'</span>'+
+    '</div>';
+  }).join('');
+  // Cards
+  document.getElementById('reviewCards').innerHTML=arr.map(function(r,i){
+    var init=(r.name||'?')[0].toUpperCase();
+    var col=AVATAR_COLORS[i%AVATAR_COLORS.length];
+    var tagsHTML=(r.tags||[]).map(function(t){return '<span class="review-tag">'+t+'</span>';}).join('');
+    return '<div class="review-card">'+
+      '<div class="review-top">'+
+        '<div style="display:flex;align-items:center;gap:10px;">'+
+          '<div class="reviewer-avatar" style="background:'+col+';">'+init+'</div>'+
+          '<div><div class="reviewer-name">'+r.name+'</div><div class="reviewer-date">'+(r.date||'')+'</div></div>'+
+        '</div>'+
+        '<div class="review-stars">'+starHTML(r.rating||5)+'</div>'+
+      '</div>'+
+      '<div class="review-txt">'+(r.comment||'')+'</div>'+
+      (tagsHTML?'<div class="review-tags">'+tagsHTML+'</div>':'')+
+    '</div>';
   }).join('');
 }
 

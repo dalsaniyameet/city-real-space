@@ -314,6 +314,83 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
     <div class="hero-slide">
       <img src="/images/banner3.png" alt="RERA Registered Real Estate - City Real Space" class="hero-img"/>
     </div>
+
+    <!-- Slide 4: Shree Keshav Coming Soon -->
+    <div class="hero-slide">
+      <div style="position:relative;width:100%;background:linear-gradient(135deg,#0D1B2A 0%,#0a1800 45%,#162800 100%);overflow:hidden;">
+        <!-- Faint bg image -->
+        <img src="/images/banner.png" alt="" class="hero-img" style="opacity:0.08;filter:grayscale(1);"/>
+        <!-- Dark overlay -->
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,27,42,0.92),rgba(10,24,0,0.88));"></div>
+
+        <style>
+          @keyframes skHeroPulse{0%,100%{opacity:0.6;transform:scale(1);}50%{opacity:1;transform:scale(1.03);}}
+          @keyframes skHeroGlow{0%,100%{filter:drop-shadow(0 0 12px rgba(255,193,7,0.55));}50%{filter:drop-shadow(0 0 32px rgba(255,193,7,1)) drop-shadow(0 0 60px rgba(255,193,7,0.4));}}
+          @keyframes skHeroRing{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+          @keyframes skHeroBlink{0%,100%{opacity:1;}50%{opacity:0;}}
+          @keyframes skHeroBadge{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,193,7,0.5);}50%{transform:scale(1.04);box-shadow:0 0 0 8px rgba(255,193,7,0);}}
+          @keyframes skHeroFadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+          .sk-hero-logo{animation:skHeroGlow 2.5s ease-in-out infinite;}
+          .sk-hero-badge-anim{animation:skHeroBadge 2s ease-in-out infinite;}
+        </style>
+
+        <!-- Content overlay -->
+        <div style="position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:60px 60px 40px;gap:40px;">
+
+          <!-- Left: Text -->
+          <div style="flex:1;">
+            <!-- Presented By -->
+            <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);padding:4px 12px 4px 5px;border-radius:50px;margin-bottom:12px;">
+              <img src="/images/logo.jpeg" alt="CRS" style="width:24px;height:24px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(255,193,7,0.5);"/>
+              <span style="font-size:0.62rem;color:rgba(255,255,255,0.55);font-family:Poppins,sans-serif;font-weight:600;">Presented by <strong style="color:#FFC107;">City Real Space</strong></span>
+            </div>
+            <!-- Coming Soon badge -->
+            <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,193,7,0.14);border:1.5px solid rgba(255,193,7,0.5);padding:6px 16px;border-radius:50px;margin-bottom:18px;" class="sk-hero-badge-anim">
+              <span style="width:8px;height:8px;border-radius:50%;background:#FFC107;box-shadow:0 0 8px #FFC107;animation:skHeroBlink 1s ease-in-out infinite;"></span>
+              <span style="color:#FFC107;font-size:0.72rem;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;font-family:Poppins,sans-serif;">Coming Soon &mdash; Commercial Project</span>
+            </div>
+
+            <!-- Title -->
+            <h2 style="font-size:clamp(2rem,4.5vw,3.2rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:12px;font-family:Poppins,sans-serif;text-shadow:0 4px 20px rgba(0,0,0,0.6);animation:skHeroFadeUp 0.8s ease 0.2s both;">
+              Shree <span style="color:#FFC107;">Keshav</span>
+            </h2>
+
+            <!-- Subtitle -->
+            <p style="color:rgba(255,255,255,0.75);font-size:0.95rem;font-family:Poppins,sans-serif;margin-bottom:18px;line-height:1.6;animation:skHeroFadeUp 0.8s ease 0.4s both;">
+              Proposed Commercial at <strong style="color:#FFC107;">100 Ft Anand Nagar Road</strong><br/>
+              Near Shyamal Cross Road, Ahmedabad
+            </p>
+
+            <!-- Badges row -->
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;animation:skHeroFadeUp 0.8s ease 0.5s both;">
+              <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,193,7,0.12);border:1px solid rgba(255,193,7,0.4);color:#FFC107;font-size:0.72rem;font-weight:700;padding:5px 12px;border-radius:50px;font-family:Poppins,sans-serif;"><i class="fa-solid fa-road"></i> 100 Ft Road</span>
+              <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.35);color:#34d399;font-size:0.72rem;font-weight:700;padding:5px 12px;border-radius:50px;font-family:Poppins,sans-serif;"><i class="fa-solid fa-shield-halved"></i> RERA Registered</span>
+              <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);font-size:0.72rem;font-weight:700;padding:5px 12px;border-radius:50px;font-family:Poppins,sans-serif;"><i class="fa-solid fa-briefcase"></i> Commercial</span>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div style="display:flex;gap:12px;flex-wrap:wrap;animation:skHeroFadeUp 0.8s ease 0.6s both;">
+              <a href="https://wa.me/919825031247?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Shree%20Keshav%20Commercial%20Project%20at%20100%20Ft%20Anand%20Nagar%20Road%2C%20Near%20Shyamal%20Cross%20Road%2C%20Ahmedabad" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#FFC107,#ff8f00);color:#0D1B2A;padding:13px 28px;border-radius:10px;font-weight:900;font-size:0.88rem;text-decoration:none;font-family:Poppins,sans-serif;box-shadow:0 6px 20px rgba(255,193,7,0.4);"><i class="fa-brands fa-whatsapp" style="font-size:1rem;"></i> Get Details on WhatsApp</a>
+              <a href="tel:+919825031247" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);color:#fff;padding:13px 24px;border-radius:10px;font-weight:700;font-size:0.88rem;text-decoration:none;border:1.5px solid rgba(255,255,255,0.25);font-family:Poppins,sans-serif;"><i class="fa-solid fa-phone"></i> Call Now</a>
+            </div>
+          </div>
+
+          <!-- Right: Logo with rings -->
+          <div style="flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;width:220px;height:220px;">
+            <!-- Ring 1 -->
+            <div style="position:absolute;width:200px;height:200px;border-radius:50%;border:1.5px solid rgba(255,193,7,0.2);animation:skHeroRing 6s linear infinite;"></div>
+            <!-- Ring 2 -->
+            <div style="position:absolute;width:165px;height:165px;border-radius:50%;border:1.5px solid rgba(255,193,7,0.3);animation:skHeroRing 4s linear infinite reverse;"></div>
+            <!-- Ring 3 -->
+            <div style="position:absolute;width:130px;height:130px;border-radius:50%;border:2px solid rgba(255,193,7,0.45);animation:skHeroRing 3s linear infinite;"></div>
+            <!-- Logo -->
+            <img src="/images/shreekeshv-removebg-preview.png" alt="Shree Keshav" class="sk-hero-logo" style="width:110px;height:110px;object-fit:contain;position:relative;z-index:2;"/>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <div class="hero-overlay"></div>
@@ -328,6 +405,7 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
     <span class="hero-dot active" data-idx="0"></span>
     <span class="hero-dot" data-idx="1"></span>
     <span class="hero-dot" data-idx="2"></span>
+    <span class="hero-dot" data-idx="3"></span>
   </div>
 </section>
 
@@ -483,7 +561,7 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
   </div>
 </section>
 
-<!-- ===== HOUSING/MAGICBRICKS STYLE AD BANNER ===== --> style="background:#fff;padding:0;margin:0;overflow:hidden;">
+<!-- ===== HOUSING/MAGICBRICKS STYLE AD BANNER ===== -->
   <style>
     .ad-banner-wrap{position:relative;width:100%;overflow:hidden;background:linear-gradient(135deg,#0D1B2A 0%,#1a3a5c 50%,#0D1B2A 100%);}
     .ad-slides{display:flex;transition:transform 0.7s cubic-bezier(0.77,0,0.175,1);will-change:transform;}
@@ -634,6 +712,75 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
         </div>
       </div>
 
+      <!-- Slide 4: Shree Keshav Coming Soon - ANIMATED -->
+      <div class="ad-slide" style="background:linear-gradient(135deg,#0D1B2A 0%,#0a1f0a 40%,#1a2e0a 100%);position:relative;overflow:hidden;padding:22px 40px;">
+        <div class="ad-platform-label"><i class="fa-solid fa-star" style="color:#FFC107;font-size:0.6rem;"></i> Exclusive Project</div>
+
+        <!-- Animated rings background -->
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px;pointer-events:none;z-index:0;">
+          <div style="position:absolute;inset:0;border-radius:50%;border:1px solid rgba(255,193,7,0.06);animation:skRing1 3s linear infinite;"></div>
+          <div style="position:absolute;inset:20px;border-radius:50%;border:1px solid rgba(255,193,7,0.09);animation:skRing1 4s linear infinite reverse;"></div>
+          <div style="position:absolute;inset:40px;border-radius:50%;border:1px solid rgba(255,193,7,0.12);animation:skRing1 5s linear infinite;"></div>
+        </div>
+
+        <style>
+          @keyframes skRing1{from{transform:rotate(0deg) scale(1);}50%{transform:rotate(180deg) scale(1.05);}to{transform:rotate(360deg) scale(1);}}
+          @keyframes skPulse{0%,100%{opacity:0.7;transform:scale(1);}50%{opacity:1;transform:scale(1.04);}}
+          @keyframes skGlow{0%,100%{filter:drop-shadow(0 0 8px rgba(255,193,7,0.5));}50%{filter:drop-shadow(0 0 20px rgba(255,193,7,0.9)) drop-shadow(0 0 40px rgba(255,193,7,0.4));}}
+          @keyframes skBlink{0%,100%{opacity:1;}50%{opacity:0;}}
+          @keyframes skSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+          .sk-badge-pulse{animation:skPulse 2s ease-in-out infinite;}
+          .sk-logo-glow{animation:skGlow 2.5s ease-in-out infinite;}
+          .sk-cursor{display:inline-block;width:2px;height:1em;background:#FFC107;vertical-align:middle;margin-left:2px;animation:skBlink 0.7s step-end infinite;}
+        </style>
+
+        <div class="ad-left" style="position:relative;z-index:1;">
+          <!-- Coming Soon badge -->
+          <div style="display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,rgba(255,193,7,0.18),rgba(255,193,7,0.08));border:1px solid rgba(255,193,7,0.45);padding:5px 14px;border-radius:20px;margin-bottom:12px;" class="sk-badge-pulse">
+            <span style="width:7px;height:7px;border-radius:50%;background:#FFC107;box-shadow:0 0 6px #FFC107;animation:skBlink 1s ease-in-out infinite;"></span>
+            <span style="color:#FFC107;font-size:0.63rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;">Coming Soon &mdash; Proposed Commercial</span>
+          </div>
+
+          <!-- Title -->
+          <div style="font-size:clamp(1.3rem,2.8vw,1.9rem);font-weight:900;color:#fff;line-height:1.15;margin-bottom:8px;">
+            Shree <span style="color:#FFC107;">Keshav</span><span class="sk-cursor"></span>
+          </div>
+
+          <!-- Location -->
+          <div style="display:flex;align-items:flex-start;gap:6px;color:rgba(255,255,255,0.7);font-size:0.8rem;margin-bottom:14px;line-height:1.5;">
+            <i class="fa-solid fa-location-dot" style="color:#FFC107;font-size:0.75rem;margin-top:2px;flex-shrink:0;"></i>
+            <span>100 Ft Anand Nagar Road, Near Shyamal Cross Road, Ahmedabad</span>
+          </div>
+
+          <!-- Badges -->
+          <div class="ad-badges" style="margin-bottom:16px;">
+            <span class="ad-badge" style="background:rgba(255,193,7,0.12);color:#FFC107;border-color:rgba(255,193,7,0.35);"><i class="fa-solid fa-road"></i> 100 Ft Road</span>
+            <span class="ad-badge" style="background:rgba(52,211,153,0.12);color:#34d399;border-color:rgba(52,211,153,0.3);"><i class="fa-solid fa-shield-halved"></i> RERA Registered</span>
+            <span class="ad-badge" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.75);border-color:rgba(255,255,255,0.18);"><i class="fa-solid fa-briefcase"></i> Commercial</span>
+          </div>
+
+          <!-- CTA -->
+          <div class="ad-cta-row">
+            <a href="https://wa.me/919825031247?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Shree%20Keshav%20Commercial%20Project%20at%20100%20Ft%20Anand%20Nagar%20Road%2C%20Near%20Shyamal%20Cross%20Road%2C%20Ahmedabad" target="_blank" class="ad-btn-primary" style="background:linear-gradient(135deg,#FFC107,#ff8f00);color:#0D1B2A;font-weight:900;"><i class="fa-brands fa-whatsapp"></i> Get Details</a>
+            <a href="tel:+919825031247" class="ad-btn-secondary"><i class="fa-solid fa-phone"></i> Call Now</a>
+          </div>
+        </div>
+
+        <!-- Right: Logo with glow -->
+        <div class="ad-right" style="position:relative;z-index:1;align-items:center;">
+          <div style="position:relative;display:flex;align-items:center;justify-content:center;">
+            <!-- Glow rings -->
+            <div style="position:absolute;width:140px;height:140px;border-radius:50%;border:1.5px solid rgba(255,193,7,0.2);animation:skRing1 4s linear infinite;"></div>
+            <div style="position:absolute;width:110px;height:110px;border-radius:50%;border:1.5px solid rgba(255,193,7,0.3);animation:skRing1 3s linear infinite reverse;"></div>
+            <img src="/images/shreekeshv-removebg-preview.png" alt="Shree Keshav" class="sk-logo-glow" style="width:90px;height:90px;object-fit:contain;position:relative;z-index:2;"/>
+          </div>
+          <div style="text-align:center;margin-top:12px;">
+            <div style="font-size:0.6rem;color:rgba(255,255,255,0.45);font-weight:700;text-transform:uppercase;letter-spacing:1px;">Status</div>
+            <div style="font-size:0.88rem;font-weight:900;color:#FFC107;letter-spacing:0.5px;">Coming Soon</div>
+          </div>
+        </div>
+      </div>
+
     </div><!-- /ad-slides -->
 
     <!-- Dots -->
@@ -641,6 +788,7 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
       <span class="ad-dot active" data-i="0"></span>
       <span class="ad-dot" data-i="1"></span>
       <span class="ad-dot" data-i="2"></span>
+      <span class="ad-dot" data-i="3"></span>
     </div>
 
     <!-- Progress bar -->
@@ -649,7 +797,7 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
 
   <script>
   (function(){
-    var cur=0, total=3, prog=0, timer, progTimer;
+    var cur=0, total=4, prog=0, timer, progTimer;
     var slides=document.getElementById('adSlides');
     var dots=document.querySelectorAll('.ad-dot');
     var bar=document.getElementById('adProgress');
@@ -945,8 +1093,8 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
   <div style="position:absolute;top:-60px;right:-60px;width:260px;height:260px;border-radius:50%;background:rgba(229,57,53,0.03);pointer-events:none;"></div>
   <div style="position:absolute;bottom:-40px;left:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,193,7,0.04);pointer-events:none;"></div>
   <style>
-    .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:1200px;margin:0 auto;}
-    .team-card{background:#fff;border:1.5px solid #f0f0f0;border-radius:20px;padding:36px 24px 28px;text-align:center;transition:all 0.35s;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);}
+    .team-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;max-width:1300px;margin:0 auto;}
+<!--     .team-card{background:#fff;border:1.5px solid #f0f0f0;border-radius:20px;padding:36px 24px 28px;text-align:center;transition:all 0.35s;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);} -->
     .team-card:hover{transform:translateY(-10px);}
     .team-card-nikhil:hover{box-shadow:0 20px 50px rgba(229,57,53,0.15);border-color:rgba(229,57,53,0.3);}
     .team-card-founder{border:1.5px solid rgba(255,193,7,0.4);background:linear-gradient(135deg,#fffdf0,#fff);}
@@ -962,6 +1110,7 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
     .team-ring-green{border-color:rgba(16,185,129,0.4);}
     .team-topbar{position:absolute;top:0;left:0;right:0;height:4px;}
     .team-tag{font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:20px;}
+    @media(max-width:1100px){.team-grid{grid-template-columns:repeat(3,1fr);gap:20px;}}
     @media(max-width:900px){.team-grid{grid-template-columns:1fr 1fr;gap:20px;}}
     @media(max-width:600px){.team-grid{grid-template-columns:1fr;gap:16px;max-width:400px;}.team-card{padding:28px 20px 22px;}}
   </style>
@@ -1043,6 +1192,22 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
         <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;">
           <span class="team-tag" style="background:#fff0f0;color:#E53935;border:1px solid rgba(229,57,53,0.2);">Residential</span>
           <span class="team-tag" style="background:#fff8e1;color:#b8860b;border:1px solid rgba(255,193,7,0.3);">Commercial</span>
+        </div>
+      </div>
+
+      <!-- Jyotsana Chaudhary -->
+      <div class="team-card" style="border:1.5px solid rgba(236,72,153,0.25);" onmouseover="this.style.transform='translateY(-10px)';this.style.boxShadow='0 20px 50px rgba(236,72,153,0.18)';this.style.borderColor='rgba(236,72,153,0.45)'" onmouseout="this.style.transform='';this.style.boxShadow='';this.style.borderColor='rgba(236,72,153,0.25)'">
+        <div class="team-topbar" style="background:linear-gradient(90deg,#ec4899,#db2777);"></div>
+        <div class="team-avatar" style="background:linear-gradient(135deg,#ec4899,#db2777);box-shadow:0 8px 24px rgba(236,72,153,0.35);">
+          <span style="animation:letterPulse 2s ease-in-out infinite;">J</span>
+          <div class="team-ring" style="border-color:rgba(236,72,153,0.4);"></div>
+        </div>
+        <h4 style="font-size:1.05rem;font-weight:800;color:#0D1B2A;margin-bottom:6px;">Jyotsana Chaudhary</h4>
+        <p style="color:#db2777;font-size:0.72rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">Telecaller</p>
+        <p style="color:#666;font-size:0.82rem;line-height:1.7;margin-bottom:14px;">Connecting clients with their dream properties through professional communication &amp; dedicated customer support.</p>
+        <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;">
+          <span class="team-tag" style="background:#fdf2f8;color:#db2777;border:1px solid rgba(236,72,153,0.25);">Telecalling</span>
+          <span class="team-tag" style="background:#fdf2f8;color:#db2777;border:1px solid rgba(236,72,153,0.25);">Client Support</span>
         </div>
       </div>
 
@@ -1792,7 +1957,113 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
 
 
 
-<!-- ===== LIVE CHAT BUTTON ===== -->
+<!-- ===== SHREE KESHAV HIGHLIGHT POPUP ===== -->
+<style>
+@keyframes skPopIn{0%{opacity:0;transform:translateY(30px) scale(0.92);}100%{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes skPopOut{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(20px) scale(0.95);}}
+@keyframes skGoldPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,193,7,0.5);}50%{box-shadow:0 0 0 10px rgba(255,193,7,0);}}
+@keyframes skDotBlink{0%,100%{opacity:1;}50%{opacity:0;}}
+@keyframes skLogoFloat{0%,100%{filter:drop-shadow(0 0 10px rgba(255,193,7,0.6));transform:scale(1);}50%{filter:drop-shadow(0 0 24px rgba(255,193,7,1));transform:scale(1.06);}}
+@keyframes skBar{0%{width:100%;}100%{width:0%;}}
+#skPopup{
+  position:fixed;bottom:28px;right:28px;z-index:99998;
+  width:320px;background:linear-gradient(135deg,#0D1B2A 0%,#0a1800 100%);
+  border-radius:18px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 1.5px rgba(255,193,7,0.35);
+  display:none;font-family:Poppins,sans-serif;
+  animation:skPopIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+}
+#skPopup.hide{animation:skPopOut 0.4s ease forwards;}
+.sk-pop-topbar{height:3px;background:linear-gradient(90deg,#FFC107,#ff8f00,#FFC107);background-size:200%;animation:shimmer 2s linear infinite;}
+.sk-pop-timer{height:3px;background:linear-gradient(90deg,#FFC107,#ff8f00);width:100%;animation:skBar 5s linear forwards;transform-origin:left;}
+.sk-pop-inner{padding:16px 16px 14px;display:flex;align-items:center;gap:14px;}
+.sk-pop-logo-wrap{position:relative;width:70px;height:70px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.sk-pop-ring1{position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(255,193,7,0.3);animation:skHeroRing 4s linear infinite;}
+.sk-pop-ring2{position:absolute;inset:8px;border-radius:50%;border:1.5px solid rgba(255,193,7,0.5);animation:skHeroRing 2.5s linear infinite reverse;}
+.sk-pop-logo{width:46px;height:46px;object-fit:contain;position:relative;z-index:2;animation:skLogoFloat 2.5s ease-in-out infinite;}
+.sk-pop-content{flex:1;min-width:0;}
+.sk-pop-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,193,7,0.15);border:1px solid rgba(255,193,7,0.4);color:#FFC107;font-size:0.58rem;font-weight:800;padding:2px 9px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.sk-pop-dot{width:6px;height:6px;border-radius:50%;background:#FFC107;box-shadow:0 0 5px #FFC107;animation:skDotBlink 1s ease-in-out infinite;}
+.sk-pop-title{font-size:0.95rem;font-weight:900;color:#fff;line-height:1.2;margin-bottom:3px;}
+.sk-pop-title span{color:#FFC107;}
+.sk-pop-loc{font-size:0.62rem;color:rgba(255,255,255,0.6);line-height:1.4;margin-bottom:8px;}
+.sk-pop-loc i{color:#FFC107;font-size:0.58rem;margin-right:3px;}
+.sk-pop-btns{display:flex;gap:6px;}
+.sk-pop-wa{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg,#FFC107,#ff8f00);color:#0D1B2A;padding:7px 10px;border-radius:8px;font-size:0.65rem;font-weight:900;text-decoration:none;transition:all 0.2s;animation:skGoldPulse 2s ease-in-out infinite;}
+.sk-pop-wa:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(255,193,7,0.5);}
+.sk-pop-call{display:inline-flex;align-items:center;justify-content:center;gap:5px;background:rgba(255,255,255,0.08);color:#fff;padding:7px 10px;border-radius:8px;font-size:0.65rem;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.2);transition:all 0.2s;}
+.sk-pop-close{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;border:none;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-size:0.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.sk-pop-close:hover{background:rgba(229,57,53,0.7);color:#fff;transform:rotate(90deg);}
+@media(max-width:480px){
+  #skPopup{bottom:0;right:0;left:0;width:100%;border-radius:18px 18px 0 0;}
+}
+</style>
+
+<div id="skPopup">
+  <button class="sk-pop-close" onclick="closeSkPopup()"><i class="fa-solid fa-xmark"></i></button>
+  <div class="sk-pop-topbar"></div>
+  <!-- Presented By bar -->
+  <div style="display:flex;align-items:center;gap:8px;padding:7px 14px 0;">
+    <img src="/images/logo.jpeg" alt="City Real Space" style="width:22px;height:22px;border-radius:5px;object-fit:cover;border:1px solid rgba(255,193,7,0.3);"/>
+    <span style="font-size:0.58rem;color:rgba(255,255,255,0.45);font-family:Poppins,sans-serif;font-weight:600;letter-spacing:0.5px;">Presented by <span style="color:rgba(255,193,7,0.8);font-weight:700;">City Real Space</span></span>
+    <span style="margin-left:auto;font-size:0.55rem;background:rgba(229,57,53,0.2);color:#ff8a80;border:1px solid rgba(229,57,53,0.3);padding:1px 7px;border-radius:10px;font-weight:700;">EXCLUSIVE</span>
+  </div>
+  <div class="sk-pop-inner">
+    <div class="sk-pop-logo-wrap">
+      <div class="sk-pop-ring1"></div>
+      <div class="sk-pop-ring2"></div>
+      <img src="/images/shreekeshv-removebg-preview.png" alt="Shree Keshav" class="sk-pop-logo"/>
+    </div>
+    <div class="sk-pop-content">
+      <div class="sk-pop-badge"><span class="sk-pop-dot"></span> Coming Soon</div>
+      <div class="sk-pop-title">Shree <span>Keshav</span></div>
+      <div class="sk-pop-loc"><i class="fa-solid fa-location-dot"></i>100 Ft Anand Nagar Rd, Near Shyamal Cross Road, Ahmedabad</div>
+      <div class="sk-pop-btns">
+        <a href="https://wa.me/919825031247?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Shree%20Keshav%20Commercial%20Project" target="_blank" class="sk-pop-wa"><i class="fa-brands fa-whatsapp"></i> Get Details</a>
+        <a href="tel:+919825031247" class="sk-pop-call"><i class="fa-solid fa-phone"></i> Call</a>
+      </div>
+    </div>
+  </div>
+  <div class="sk-pop-timer" id="skPopTimer"></div>
+</div>
+
+<script>
+(function(){
+  var shown = false;
+  var closeTimer;
+
+  function showSkPopup(){
+    if(shown) return;
+    shown = true;
+    var el = document.getElementById('skPopup');
+    var timer = document.getElementById('skPopTimer');
+    el.style.display = 'block';
+    el.classList.remove('hide');
+    // Restart timer bar
+    timer.style.animation = 'none';
+    timer.offsetHeight; // reflow
+    timer.style.animation = 'skBar 5s linear forwards';
+    // Auto close after 5s
+    closeTimer = setTimeout(function(){ closeSkPopup(); }, 5000);
+  }
+
+  window.closeSkPopup = function(){
+    clearTimeout(closeTimer);
+    var el = document.getElementById('skPopup');
+    el.classList.add('hide');
+    setTimeout(function(){ el.style.display='none'; shown=false; }, 400);
+  };
+
+  // Show after 3s on page load
+  setTimeout(showSkPopup, 3000);
+
+  // Re-show every 30s (agar user page pe baith gaya)
+  setInterval(function(){
+    shown = false;
+    showSkPopup();
+  }, 30000);
+})();
+</script>
 <div class="live-chat-btn" id="liveChatBtn" title="Live Chat">
   <i class="fa-solid fa-comment-dots"></i>
   <span class="live-chat-label">Live Chat</span>
@@ -1841,213 +2112,401 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
 <!-- ===== BACK TO TOP ===== -->
 <button class="back-top" id="backTop" title="Back to Top"><i class="fa-solid fa-chevron-up"></i></button>
 
-<!-- ===== RIGHT SIDE FIXED AD STRIP (Housing.com style) ===== -->
+<!-- ===== RIGHT SIDE PREMIUM AD PANEL (MagicBricks / Housing.com Style) ===== -->
 <style>
-/* ===== RIGHT SIDE AD - LANDSCAPE CARD ===== */
-/* Desktop: right side fixed vertical tab + landscape panel */
-.rs-tab{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:9990;background:#E53935;color:#fff;writing-mode:vertical-rl;text-orientation:mixed;padding:18px 9px;cursor:pointer;border-radius:10px 0 0 10px;font-family:Poppins,sans-serif;font-size:0.68rem;font-weight:800;letter-spacing:1.5px;display:flex;align-items:center;gap:7px;user-select:none;box-shadow:-4px 0 16px rgba(229,57,53,0.5);transition:background 0.2s,right 0.4s cubic-bezier(0.175,0.885,0.32,1.275);animation:rsTabPulse 2.5s ease-in-out infinite;}
-.rs-tab.shifted{right:320px;}
-.rs-tab:hover{background:#c62828;}
-@keyframes rsTabPulse{0%,100%{box-shadow:-4px 0 16px rgba(229,57,53,0.5);}50%{box-shadow:-4px 0 28px rgba(229,57,53,0.85);}}
+/* Tab trigger */
+.rs-tab{position:fixed;right:0;top:calc(123px + 80px);z-index:9990;background:linear-gradient(180deg,#E53935,#b71c1c);color:#fff;writing-mode:vertical-rl;padding:20px 10px;cursor:pointer;border-radius:12px 0 0 12px;font-family:Poppins,sans-serif;font-size:0.68rem;font-weight:800;letter-spacing:1.5px;display:flex;align-items:center;gap:8px;user-select:none;box-shadow:-4px 0 20px rgba(229,57,53,0.55);transition:right 0.4s cubic-bezier(0.175,0.885,0.32,1.275);animation:rsTabPulse 2.5s ease-in-out infinite;}
+.rs-tab.shifted{right:340px;}
+.rs-tab:hover{background:linear-gradient(180deg,#c62828,#8b0000);}
+@keyframes rsTabPulse{0%,100%{box-shadow:-4px 0 20px rgba(229,57,53,0.55);}50%{box-shadow:-4px 0 36px rgba(229,57,53,0.9);}}
 
-/* Panel - landscape horizontal layout */
-.rs-ad-panel{position:fixed;right:-340px;top:50%;transform:translateY(-50%);z-index:9989;width:320px;background:#fff;border-radius:14px 0 0 14px;box-shadow:-6px 0 28px rgba(0,0,0,0.18);overflow:hidden;transition:right 0.3s cubic-bezier(0.175,0.885,0.32,1.275);pointer-events:none;}
+/* Main panel */
+.rs-ad-panel{
+  position:fixed;
+  right:-360px;
+  top:123px;
+  bottom:16px;
+  z-index:9989;
+  width:340px;
+  background:#fff;
+  border-radius:16px 0 0 16px;
+  box-shadow:-8px 0 40px rgba(0,0,0,0.22);
+  overflow:hidden;
+  transition:right 0.45s cubic-bezier(0.175,0.885,0.32,1.275);
+  pointer-events:none;
+  font-family:Poppins,sans-serif;
+  display:flex;
+  flex-direction:column;
+}
 .rs-ad-panel.open{right:0;pointer-events:all;}
 
-/* Landscape slide: image left, content right */
-.rs-slide{display:none;}
-.rs-slide-inner{display:flex;height:160px;}
-.rs-slide-img{width:110px;flex-shrink:0;position:relative;background:url('/images/banner.png') center/cover no-repeat;}
-.rs-slide-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,27,42,0.6),rgba(229,57,53,0.4));}
-.rs-slide-img-label{position:absolute;bottom:0;left:0;right:0;z-index:2;padding:6px 7px;}
-.rs-slide-img-label span{display:block;color:#FFC107;font-size:0.52rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;}
-.rs-slide-img-label strong{display:block;color:#fff;font-size:0.72rem;font-weight:900;line-height:1.2;}
-.rs-slide-content{flex:1;padding:10px 11px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;}
-.rs-panel-badge{display:inline-flex;align-items:center;gap:4px;background:#fff0f0;color:#E53935;border:1px solid rgba(229,57,53,0.2);font-size:0.55rem;font-weight:800;padding:2px 7px;border-radius:20px;margin-bottom:5px;letter-spacing:0.5px;text-transform:uppercase;width:fit-content;}
-.rs-panel-title{font-size:0.75rem;font-weight:800;color:#0D1B2A;line-height:1.25;margin-bottom:2px;}
-.rs-panel-sub{font-size:0.62rem;color:#999;line-height:1.4;margin-bottom:5px;}
-.rs-panel-price{display:flex;align-items:baseline;gap:3px;margin-bottom:6px;}
-.rs-panel-price strong{font-size:0.95rem;font-weight:900;color:#E53935;}
-.rs-panel-price span{font-size:0.6rem;color:#bbb;}
-.rs-panel-btns{display:flex;gap:5px;}
-.rs-btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:4px;background:#E53935;color:#fff;border:none;padding:6px 8px;border-radius:6px;font-size:0.62rem;font-weight:800;cursor:pointer;font-family:Poppins,sans-serif;text-decoration:none;transition:all 0.2s;flex:1;}
-.rs-btn-primary:hover{background:#c62828;}
-.rs-btn-wa{display:inline-flex;align-items:center;justify-content:center;gap:4px;background:#25D366;color:#fff;border:none;padding:6px 8px;border-radius:6px;font-size:0.62rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;text-decoration:none;transition:all 0.2s;flex:1;}
-.rs-btn-wa:hover{background:#1ebe5d;}
-.rs-close{position:absolute;top:6px;right:6px;z-index:10;width:20px;height:20px;border-radius:50%;border:none;background:rgba(0,0,0,0.25);color:#fff;font-size:0.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
-.rs-close:hover{background:#c62828;transform:rotate(90deg);}
-.rs-dots{display:flex;gap:4px;justify-content:center;padding:6px 0 8px;background:#fafafa;border-top:1px solid #f0f0f0;}
-.rs-dot{width:5px;height:5px;border-radius:50%;background:#e0e0e0;cursor:pointer;transition:all 0.3s;}
-.rs-dot.active{background:#E53935;width:12px;border-radius:3px;}
+/* Panel header branding bar */
+.rs-header{
+  background:linear-gradient(135deg,#0D1B2A 0%,#1a3a5c 100%);
+  padding:10px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.rs-header-brand{display:flex;align-items:center;gap:8px;}
+.rs-header-logo{width:28px;height:28px;border-radius:7px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
+.rs-header-logo img{width:100%;height:100%;object-fit:cover;}
+.rs-header-name{color:#fff;font-size:0.72rem;font-weight:800;line-height:1.1;}
+.rs-header-name span{color:#FFC107;}
+.rs-header-meta{font-size:0.55rem;color:rgba(255,255,255,0.45);font-weight:500;}
+.rs-header-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,193,7,0.15);border:1px solid rgba(255,193,7,0.35);color:#FFC107;font-size:0.56rem;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:0.5px;}
+.rs-close{width:24px;height:24px;border-radius:50%;border:none;background:rgba(255,255,255,0.12);color:#fff;font-size:0.65rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;}
+.rs-close:hover{background:#E53935;transform:rotate(90deg);}
 
-/* Mobile: bottom fixed landscape card */
+/* Slide container */
+.rs-slides-wrap{position:relative;overflow:hidden;flex:1;min-height:0;}
+.rs-slides-track{display:flex;transition:transform 0.55s cubic-bezier(0.77,0,0.175,1);height:100%;}
+.rs-slide{min-width:340px;display:flex;flex-direction:column;}
+
+/* Slide image hero */
+.rs-slide-hero{
+  position:relative;height:148px;overflow:hidden;
+  background:#0D1B2A center/cover no-repeat;
+}
+.rs-slide-hero::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(13,27,42,0.88) 0%,rgba(13,27,42,0.2) 60%,transparent 100%);
+}
+.rs-hero-tag{
+  position:absolute;top:10px;left:10px;z-index:3;
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:20px;
+  font-size:0.58rem;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;
+  backdrop-filter:blur(8px);
+}
+.rs-hero-price{
+  position:absolute;bottom:10px;left:12px;z-index:3;
+}
+.rs-hero-price strong{display:block;color:#fff;font-size:1.3rem;font-weight:900;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,0.5);}
+.rs-hero-price span{color:rgba(255,255,255,0.65);font-size:0.62rem;font-weight:600;}
+.rs-hero-stats{
+  position:absolute;bottom:10px;right:12px;z-index:3;
+  display:flex;flex-direction:column;gap:3px;align-items:flex-end;
+}
+.rs-hero-stat{background:rgba(255,255,255,0.12);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.18);border-radius:6px;padding:2px 7px;color:#fff;font-size:0.55rem;font-weight:700;white-space:nowrap;}
+
+/* Slide body */
+.rs-slide-body{padding:12px 14px 10px;}
+.rs-slide-title{font-size:0.88rem;font-weight:800;color:#0D1B2A;line-height:1.25;margin-bottom:4px;}
+.rs-slide-loc{display:flex;align-items:center;gap:5px;color:#888;font-size:0.68rem;margin-bottom:8px;}
+.rs-slide-loc i{color:#E53935;font-size:0.62rem;}
+.rs-slide-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.rs-chip{display:inline-flex;align-items:center;gap:4px;background:#f5f5f5;color:#555;font-size:0.58rem;font-weight:700;padding:3px 8px;border-radius:20px;border:1px solid #eee;}
+.rs-chip.green{background:#ecfdf5;color:#059669;border-color:rgba(16,185,129,0.2);}
+.rs-chip.red{background:#fff0f0;color:#E53935;border-color:rgba(229,57,53,0.2);}
+.rs-chip.gold{background:#fffbeb;color:#b8860b;border-color:rgba(255,193,7,0.25);}
+.rs-chip.blue{background:#eff6ff;color:#1d4ed8;border-color:rgba(29,78,216,0.2);}
+.rs-slide-btns{display:flex;gap:7px;}
+.rs-btn-view{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,#E53935,#c62828);color:#fff;border:none;padding:9px 12px;border-radius:9px;font-size:0.7rem;font-weight:800;cursor:pointer;font-family:Poppins,sans-serif;text-decoration:none;transition:all 0.2s;}
+.rs-btn-view:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(229,57,53,0.4);}
+.rs-btn-call{display:inline-flex;align-items:center;justify-content:center;gap:5px;background:#0D1B2A;color:#fff;border:none;padding:9px 12px;border-radius:9px;font-size:0.7rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;text-decoration:none;transition:all 0.2s;}
+.rs-btn-call:hover{background:#1a3a5c;transform:translateY(-2px);}
+.rs-btn-wa2{display:inline-flex;align-items:center;justify-content:center;background:#25D366;color:#fff;border:none;padding:9px 11px;border-radius:9px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;text-decoration:none;transition:all 0.2s;}
+.rs-btn-wa2:hover{background:#1ebe5d;transform:translateY(-2px);}
+
+/* Progress + dots footer */
+.rs-footer{background:#f8f9fa;border-top:1px solid #f0f0f0;padding:8px 14px;display:flex;align-items:center;justify-content:space-between;}
+.rs-dots{display:flex;gap:5px;}
+.rs-dot{width:5px;height:5px;border-radius:50%;background:#ddd;cursor:pointer;transition:all 0.3s;}
+.rs-dot.active{background:#E53935;width:16px;border-radius:3px;}
+.rs-progress-bar{height:3px;background:linear-gradient(90deg,#E53935,#FFC107);width:0%;transition:width 0.1s linear;position:absolute;bottom:0;left:0;right:0;}
+.rs-nav{display:flex;gap:4px;}
+.rs-nav-btn{width:22px;height:22px;border-radius:6px;border:1.5px solid #e0e0e0;background:#fff;color:#555;font-size:0.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.rs-nav-btn:hover{border-color:#E53935;color:#E53935;background:#fff0f0;}
+
+/* Mobile */
 @media(max-width:768px){
   .rs-tab{display:none!important;}
   .rs-ad-panel{
-    position:fixed!important;
-    right:auto!important;
-    left:0!important;
-    bottom:-220px!important;
-    top:auto!important;
-    transform:none!important;
-    width:100vw!important;
-    max-width:100vw!important;
-    border-radius:16px 16px 0 0!important;
-    box-shadow:0 -6px 24px rgba(0,0,0,0.2)!important;
-    transition:bottom 0.4s cubic-bezier(0.175,0.885,0.32,1.275)!important;
-    z-index:9989!important;
+    position:fixed!important;right:auto!important;left:0!important;
+    bottom:-280px!important;top:auto!important;transform:none!important;
+    width:100vw!important;max-width:100vw!important;
+    border-radius:18px 18px 0 0!important;
+    box-shadow:0 -8px 32px rgba(0,0,0,0.2)!important;
+    transition:bottom 0.45s cubic-bezier(0.175,0.885,0.32,1.275)!important;
   }
-  .rs-ad-panel.open{
-    bottom:0!important;
-    pointer-events:all!important;
-  }
-  .rs-slide-inner{
-    display:flex!important;
-    height:140px!important;
-  }
-  .rs-slide-img{
-    width:130px!important;
-    flex-shrink:0!important;
-  }
-  .rs-slide-content{
-    padding:10px 12px!important;
-  }
-  .rs-panel-title{font-size:0.78rem!important;}
-  .rs-panel-sub{font-size:0.65rem!important;margin-bottom:4px!important;}
-  .rs-panel-price strong{font-size:1rem!important;}
-  .rs-btn-primary,.rs-btn-wa{padding:7px 10px!important;font-size:0.65rem!important;}
-  .rs-dots{padding:7px 0 9px!important;}
+  .rs-ad-panel.open{bottom:0!important;pointer-events:all!important;}
+  .rs-slides-wrap{overflow:hidden!important;}
+  .rs-slide{min-width:100vw!important;max-width:100vw!important;width:100vw!important;box-sizing:border-box!important;}
+  .rs-slide-hero{height:120px!important;}
+  .rs-slide-body{padding:10px 12px 8px!important;}
+  .rs-slide-title{font-size:0.82rem!important;}
+  .rs-slide-chips{gap:4px!important;margin-bottom:8px!important;}
+  .rs-chip{font-size:0.55rem!important;padding:2px 6px!important;}
   .rs-mob-trigger{
-    position:fixed;
-    bottom:0;
-    left:50%;
-    transform:translateX(-50%);
-    z-index:9990;
-    background:#E53935;
-    color:#fff;
-    padding:8px 28px;
-    border-radius:12px 12px 0 0;
-    font-family:Poppins,sans-serif;
-    font-size:0.7rem;
-    font-weight:800;
-    letter-spacing:0.8px;
-    display:flex;
-    align-items:center;
-    gap:7px;
-    cursor:pointer;
-    box-shadow:0 -3px 14px rgba(229,57,53,0.45);
-    animation:rsTabPulse 2.5s ease-in-out infinite;
-    white-space:nowrap;
+    position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+    z-index:9990;background:linear-gradient(135deg,#E53935,#c62828);
+    color:#fff;padding:9px 32px;border-radius:14px 14px 0 0;
+    font-family:Poppins,sans-serif;font-size:0.72rem;font-weight:800;
+    letter-spacing:0.8px;display:flex;align-items:center;gap:8px;
+    cursor:pointer;box-shadow:0 -4px 16px rgba(229,57,53,0.5);
+    animation:rsTabPulse 2.5s ease-in-out infinite;white-space:nowrap;
   }
   .rs-mob-trigger.hidden{display:none!important;}
 }
-@media(min-width:769px){
-  .rs-mob-trigger{display:none!important;}
-}
+@media(min-width:769px){.rs-mob-trigger{display:none!important;}}
 </style>
 
+<!-- Desktop Tab -->
 <div class="rs-tab" id="rsTab" onclick="openRsAd()">
-  <i class="fa-solid fa-tag" style="writing-mode:horizontal-tb;font-size:0.9rem;"></i>
-  <span>Hot Deal</span>
+  <i class="fa-solid fa-fire" style="writing-mode:horizontal-tb;font-size:1rem;"></i>
+  <span>Hot Deals</span>
 </div>
 
-<!-- Mobile trigger -->
+<!-- Mobile bottom trigger -->
 <div class="rs-mob-trigger" id="rsMobTrigger" onclick="openRsAd()">
-  <i class="fa-solid fa-fire" style="font-size:0.85rem;"></i> Hot Property Deal!
+  <i class="fa-solid fa-fire"></i> Hot Property Deals!
 </div>
 
 <div class="rs-ad-panel" id="rsAdPanel">
-  <button class="rs-close" onclick="closeRsAd()"><i class="fa-solid fa-xmark"></i></button>
-  <div id="rsSlides">
 
-    <!-- Slide 1 -->
-    <div class="rs-slide" style="display:block">
-      <div class="rs-slide-inner">
-        <div class="rs-slide-img">
-          <div class="rs-slide-img-label">
-            <span><i class="fa-solid fa-rocket" style="margin-right:3px;"></i> New Launch</span>
-            <strong>3 BHK<br/>Prahlad Nagar</strong>
-          </div>
-        </div>
-        <div class="rs-slide-content">
-          <div>
-            <div class="rs-panel-badge"><i class="fa-solid fa-certificate"></i> RERA Verified</div>
-            <div class="rs-panel-title">Ready to Move Flats</div>
-            <div class="rs-panel-sub">Satellite &bull; SG Highway &bull; Free Visit</div>
-            <div class="rs-panel-price"><strong>&#8377;65L</strong><span>onwards</span></div>
-          </div>
-          <div class="rs-panel-btns">
-            <a href="/new-launch" class="rs-btn-primary"><i class="fa-solid fa-eye"></i> View</a>
-            <a href="https://wa.me/919825031247?text=Hi, interested in New Launch 3BHK" target="_blank" class="rs-btn-wa"><i class="fa-brands fa-whatsapp"></i> Chat</a>
-          </div>
-        </div>
+  <!-- Header -->
+  <div class="rs-header">
+    <div class="rs-header-brand">
+      <div class="rs-header-logo"><img src="/images/logo.jpeg" alt="CRS" width="28" height="28"/></div>
+      <div>
+        <div class="rs-header-name">City <span>Real</span> Space</div>
+        <div class="rs-header-meta">Ahmedabad's #1 Real Estate</div>
       </div>
     </div>
-
-    <!-- Slide 2 -->
-    <div class="rs-slide" style="display:none">
-      <div class="rs-slide-inner">
-        <div class="rs-slide-img" style="background-image:url('/images/banner2.png')">
-          <div class="rs-slide-img-label">
-            <span><i class="fa-solid fa-briefcase" style="margin-right:3px;"></i> Commercial</span>
-            <strong>Office Space<br/>TCC Ahmedabad</strong>
-          </div>
-        </div>
-        <div class="rs-slide-content">
-          <div>
-            <div class="rs-panel-badge" style="background:#fff8e1;color:#b8860b;border-color:rgba(255,193,7,0.3);"><i class="fa-solid fa-building"></i> Premium</div>
-            <div class="rs-panel-title">Furnished Office</div>
-            <div class="rs-panel-sub">SG Highway &bull; AC &bull; Parking</div>
-            <div class="rs-panel-price"><strong style="color:#b8860b;">&#8377;45K</strong><span>/mo</span></div>
-          </div>
-          <div class="rs-panel-btns">
-            <a href="/properties?status=for-rent&type=office" class="rs-btn-primary" style="background:#b8860b;"><i class="fa-solid fa-building"></i> View</a>
-            <a href="tel:+919825031247" class="rs-btn-wa" style="background:#0D1B2A;"><i class="fa-solid fa-phone"></i> Call</a>
-          </div>
-        </div>
-      </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="rs-header-badge"><i class="fa-solid fa-bolt" style="font-size:0.55rem;"></i> Live Deals</div>
+      <button class="rs-close" onclick="closeRsAd()"><i class="fa-solid fa-xmark"></i></button>
     </div>
-
-    <!-- Slide 3 -->
-    <div class="rs-slide" style="display:none">
-      <div class="rs-slide-inner">
-        <div class="rs-slide-img" style="background-image:url('/images/banner3.png')">
-          <div class="rs-slide-img-label">
-            <span><i class="fa-solid fa-percent" style="margin-right:3px;"></i> Best Deal</span>
-            <strong>2 BHK Resale<br/>Under &#8377;60L</strong>
-          </div>
-        </div>
-        <div class="rs-slide-content">
-          <div>
-            <div class="rs-panel-badge" style="background:#ecfdf5;color:#059669;border-color:rgba(16,185,129,0.3);"><i class="fa-solid fa-handshake"></i> Zero Brokerage</div>
-            <div class="rs-panel-title">Verified Resale Flats</div>
-            <div class="rs-panel-sub">Bopal &bull; Shela &bull; Thaltej</div>
-            <div class="rs-panel-price"><strong style="color:#059669;">&#8377;45L</strong><span>onwards</span></div>
-          </div>
-          <div class="rs-panel-btns">
-            <a href="/resale" class="rs-btn-primary" style="background:#059669;"><i class="fa-solid fa-rotate"></i> View</a>
-            <a href="https://wa.me/919825031247?text=Hi, interested in Resale 2BHK" target="_blank" class="rs-btn-wa"><i class="fa-brands fa-whatsapp"></i> Chat</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
   </div>
-  <div class="rs-dots">
-    <span class="rs-dot active" data-rs="0"></span>
-    <span class="rs-dot" data-rs="1"></span>
-    <span class="rs-dot" data-rs="2"></span>
+
+  <!-- Slides -->
+  <div class="rs-slides-wrap" style="position:relative;">
+    <div class="rs-slides-track" id="rsSlidesTrack">
+
+      <!-- Slide 1: New Launch -->
+      <div class="rs-slide">
+        <div class="rs-slide-hero" style="background-image:url('/images/banner.png');">
+          <div class="rs-hero-tag" style="background:rgba(229,57,53,0.85);color:#fff;">
+            <i class="fa-solid fa-rocket"></i> New Launch
+          </div>
+          <div class="rs-hero-price">
+            <strong>&#8377;65L+</strong>
+            <span>Starting Price</span>
+          </div>
+          <div class="rs-hero-stats">
+            <div class="rs-hero-stat"><i class="fa-solid fa-circle-check" style="color:#4ade80;margin-right:3px;"></i>RERA Verified</div>
+            <div class="rs-hero-stat"><i class="fa-solid fa-key" style="color:#FFC107;margin-right:3px;"></i>Ready to Move</div>
+          </div>
+        </div>
+        <div class="rs-slide-body">
+          <div class="rs-slide-title">Premium 3 BHK Flats</div>
+          <div class="rs-slide-loc"><i class="fa-solid fa-location-dot"></i> Prahlad Nagar &bull; Satellite &bull; SG Highway</div>
+          <div class="rs-slide-chips">
+            <span class="rs-chip green"><i class="fa-solid fa-shield-halved"></i> 100% Verified</span>
+            <span class="rs-chip red"><i class="fa-solid fa-fire"></i> Limited Units</span>
+            <span class="rs-chip gold"><i class="fa-solid fa-car"></i> Free Parking</span>
+          </div>
+          <div class="rs-slide-btns">
+            <a href="/new-launch" class="rs-btn-view"><i class="fa-solid fa-eye"></i> View Properties</a>
+            <a href="https://wa.me/919825031247?text=Hi, interested in New Launch 3BHK in Prahlad Nagar" target="_blank" class="rs-btn-wa2"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: Office Space -->
+      <div class="rs-slide">
+        <div class="rs-slide-hero" style="background-image:url('/images/banner2.png');">
+          <div class="rs-hero-tag" style="background:rgba(255,193,7,0.92);color:#0D1B2A;">
+            <i class="fa-solid fa-briefcase"></i> Commercial
+          </div>
+          <div class="rs-hero-price">
+            <strong>&#8377;45K<span style="font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.7);">/mo</span></strong>
+            <span>Rent Starting</span>
+          </div>
+          <div class="rs-hero-stats">
+            <div class="rs-hero-stat"><i class="fa-solid fa-wifi" style="color:#60a5fa;margin-right:3px;"></i>High Speed Net</div>
+            <div class="rs-hero-stat"><i class="fa-solid fa-snowflake" style="color:#93c5fd;margin-right:3px;"></i>AC Furnished</div>
+          </div>
+        </div>
+        <div class="rs-slide-body">
+          <div class="rs-slide-title">Premium Office Space</div>
+          <div class="rs-slide-loc"><i class="fa-solid fa-location-dot"></i> Titanium City Centre &bull; SG Highway</div>
+          <div class="rs-slide-chips">
+            <span class="rs-chip gold"><i class="fa-solid fa-building"></i> A+ Grade</span>
+            <span class="rs-chip blue"><i class="fa-solid fa-car"></i> Parking</span>
+            <span class="rs-chip green"><i class="fa-solid fa-clock"></i> 24/7 Security</span>
+          </div>
+          <div class="rs-slide-btns">
+            <a href="/properties?status=for-rent&type=office" class="rs-btn-view" style="background:linear-gradient(135deg,#b8860b,#f59e0b);"><i class="fa-solid fa-building"></i> View Offices</a>
+            <a href="tel:+919825031247" class="rs-btn-call"><i class="fa-solid fa-phone"></i> Call</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Resale -->
+      <div class="rs-slide">
+        <div class="rs-slide-hero" style="background-image:url('/images/banner3.png');">
+          <div class="rs-hero-tag" style="background:rgba(16,185,129,0.88);color:#fff;">
+            <i class="fa-solid fa-percent"></i> Best Deal
+          </div>
+          <div class="rs-hero-price">
+            <strong>&#8377;45L+</strong>
+            <span>Best Resale Price</span>
+          </div>
+          <div class="rs-hero-stats">
+            <div class="rs-hero-stat"><i class="fa-solid fa-handshake" style="color:#4ade80;margin-right:3px;"></i>Zero Brokerage</div>
+            <div class="rs-hero-stat"><i class="fa-solid fa-bolt" style="color:#FFC107;margin-right:3px;"></i>Quick Closing</div>
+          </div>
+        </div>
+        <div class="rs-slide-body">
+          <div class="rs-slide-title">2 BHK Resale Under &#8377;60L</div>
+          <div class="rs-slide-loc"><i class="fa-solid fa-location-dot"></i> Bopal &bull; Shela &bull; Thaltej &bull; Satellite</div>
+          <div class="rs-slide-chips">
+            <span class="rs-chip green"><i class="fa-solid fa-shield-halved"></i> Verified Sellers</span>
+            <span class="rs-chip red"><i class="fa-solid fa-clock"></i> Urgent Sale</span>
+            <span class="rs-chip gold"><i class="fa-solid fa-tag"></i> Best Price</span>
+          </div>
+          <div class="rs-slide-btns">
+            <a href="/resale" class="rs-btn-view" style="background:linear-gradient(135deg,#059669,#10b981);"><i class="fa-solid fa-rotate"></i> View Resale</a>
+            <a href="https://wa.me/919825031247?text=Hi, interested in Resale 2BHK under 60L" target="_blank" class="rs-btn-wa2"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Prelease -->
+      <div class="rs-slide">
+        <div class="rs-slide-hero" style="background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);">
+          <div class="rs-hero-tag" style="background:rgba(99,102,241,0.9);color:#fff;">
+            <i class="fa-solid fa-file-contract"></i> Prelease
+          </div>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;flex-direction:column;gap:6px;">
+            <i class="fa-solid fa-city" style="font-size:2.5rem;color:rgba(255,255,255,0.12);"></i>
+          </div>
+          <div class="rs-hero-price">
+            <strong>&#8377;80K+</strong>
+            <span>Monthly Rent</span>
+          </div>
+          <div class="rs-hero-stats">
+            <div class="rs-hero-stat"><i class="fa-solid fa-file-signature" style="color:#a78bfa;margin-right:3px;"></i>Long-term Lease</div>
+            <div class="rs-hero-stat"><i class="fa-solid fa-chart-line" style="color:#FFC107;margin-right:3px;"></i>High ROI</div>
+          </div>
+        </div>
+        <div class="rs-slide-body">
+          <div class="rs-slide-title">Pre-Leased Commercial Properties</div>
+          <div class="rs-slide-loc"><i class="fa-solid fa-location-dot"></i> PNTC &bull; Titanium &bull; SG Highway</div>
+          <div class="rs-slide-chips">
+            <span class="rs-chip blue"><i class="fa-solid fa-landmark"></i> Bank Leased</span>
+            <span class="rs-chip gold"><i class="fa-solid fa-percent"></i> 7-9% Yield</span>
+            <span class="rs-chip green"><i class="fa-solid fa-circle-check"></i> Zero Vacancy</span>
+          </div>
+          <div class="rs-slide-btns">
+            <a href="/prelease" class="rs-btn-view" style="background:linear-gradient(135deg,#4f46e5,#7c3aed);"><i class="fa-solid fa-file-contract"></i> View Prelease</a>
+            <a href="https://wa.me/919825031247?text=Hi, interested in Pre-leased properties" target="_blank" class="rs-btn-wa2"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: Shree Keshav - Coming Soon -->
+      <div class="rs-slide">
+        <div class="rs-slide-hero" style="background:linear-gradient(135deg,#0D1B2A 0%,#1a2a0a 60%,#0a1500 100%);">
+          <div class="rs-hero-tag" style="background:rgba(255,193,7,0.92);color:#0D1B2A;">
+            <i class="fa-solid fa-star"></i> Coming Soon
+          </div>
+          <!-- Logo centered -->
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;">
+            <img src="/images/shreekeshv-removebg-preview.png" alt="Shree Keshav" style="width:110px;height:110px;object-fit:contain;filter:drop-shadow(0 0 16px rgba(255,193,7,0.6)) drop-shadow(0 0 32px rgba(255,193,7,0.3));"/>
+          </div>
+          <div class="rs-hero-price">
+            <strong style="color:#FFC107;">Coming Soon</strong>
+            <span>Commercial Project</span>
+          </div>
+          <div class="rs-hero-stats">
+            <div class="rs-hero-stat"><i class="fa-solid fa-road" style="color:#FFC107;margin-right:3px;"></i>100 Ft Road</div>
+            <div class="rs-hero-stat"><i class="fa-solid fa-star" style="color:#FFC107;margin-right:3px;"></i>Pre-Register</div>
+          </div>
+        </div>
+        <div class="rs-slide-body">
+          <div class="rs-slide-title">Shree Keshav Commercial</div>
+          <div class="rs-slide-loc"><i class="fa-solid fa-location-dot"></i> 100 Ft Anand Nagar Rd &bull; Near Shyamal Cross Road</div>
+          <div class="rs-slide-chips">
+            <span class="rs-chip gold"><i class="fa-solid fa-building"></i> Commercial</span>
+            <span class="rs-chip" style="background:#f0fdf4;color:#059669;border-color:rgba(5,150,105,0.2);"><i class="fa-solid fa-shield-halved"></i> RERA</span>
+            <span class="rs-chip" style="background:#fffbeb;color:#b8860b;border-color:rgba(255,193,7,0.3);"><i class="fa-solid fa-hourglass-half"></i> Soon</span>
+          </div>
+          <div class="rs-slide-btns">
+            <a href="https://wa.me/919825031247?text=Hi%2C%20I%20want%20to%20pre-register%20for%20Shree%20Keshav%20Commercial%20Project%20at%20100%20Ft%20Anand%20Nagar%20Road%2C%20Ahmedabad" target="_blank" class="rs-btn-view" style="background:linear-gradient(135deg,#FFC107,#ff8f00);color:#0D1B2A;"><i class="fa-brands fa-whatsapp"></i> Pre-Register</a>
+            <a href="tel:+919825031247" class="rs-btn-call"><i class="fa-solid fa-phone"></i> Call</a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /track -->
+    <div class="rs-progress-bar" id="rsProgressBar"></div>
   </div>
+
+  <!-- Footer -->
+  <div class="rs-footer">
+    <div class="rs-dots" id="rsDots">
+      <span class="rs-dot active" data-rs="0"></span>
+      <span class="rs-dot" data-rs="1"></span>
+      <span class="rs-dot" data-rs="2"></span>
+      <span class="rs-dot" data-rs="3"></span>
+      <span class="rs-dot" data-rs="4"></span>
+    </div>
+    <div class="rs-nav">
+      <button class="rs-nav-btn" id="rsPrevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+      <button class="rs-nav-btn" id="rsNextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+  </div>
+
 </div>
 
 <script>
 (function(){
-  var cur=0,total=3,timer;
-  var slides=document.querySelectorAll('.rs-slide');
+  var cur=0, total=5, prog=0, timer, progTimer;
+  var track=document.getElementById('rsSlidesTrack');
   var dots=document.querySelectorAll('.rs-dot');
-  function rsGoTo(n){slides[cur].style.display='none';dots[cur].classList.remove('active');cur=(n+total)%total;slides[cur].style.display='block';dots[cur].classList.add('active');}
-  dots.forEach(function(d){d.addEventListener('click',function(){rsGoTo(+this.dataset.rs);clearInterval(timer);timer=setInterval(function(){rsGoTo(cur+1);},5000);});});
-  timer=setInterval(function(){rsGoTo(cur+1);},3000);
+  var bar=document.getElementById('rsProgressBar');
+  var DURATION=2500;
+
+  function getSlideW(){
+    return window.innerWidth<=768 ? window.innerWidth : 340;
+  }
+
+  function rsGoTo(n){
+    dots[cur].classList.remove('active');
+    cur=(n+total)%total;
+    track.style.transform='translateX(-'+cur*getSlideW()+'px)';
+    dots[cur].classList.add('active');
+    startProgress();
+  }
+
+  function startProgress(){
+    clearInterval(progTimer);prog=0;bar.style.transition='none';bar.style.width='0%';
+    setTimeout(function(){
+      bar.style.transition='width 0.1s linear';
+      progTimer=setInterval(function(){
+        prog+=100/(DURATION/100);bar.style.width=Math.min(prog,100)+'%';
+        if(prog>=100)clearInterval(progTimer);
+      },100);
+    },30);
+  }
+
+  function autoPlay(){timer=setInterval(function(){rsGoTo(cur+1);},DURATION);}
+  function resetAuto(){clearInterval(timer);autoPlay();}
+
+  dots.forEach(function(d){d.addEventListener('click',function(){rsGoTo(+this.dataset.rs);resetAuto();});});
+  document.getElementById('rsPrevBtn').addEventListener('click',function(){rsGoTo(cur-1);resetAuto();});
+  document.getElementById('rsNextBtn').addEventListener('click',function(){rsGoTo(cur+1);resetAuto();});
+
+  /* Touch swipe */
+  var sx=0;
+  var panel=document.getElementById('rsAdPanel');
+  panel.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+  panel.addEventListener('touchend',function(e){
+    var diff=sx-e.changedTouches[0].clientX;
+    if(Math.abs(diff)>40){rsGoTo(diff>0?cur+1:cur-1);resetAuto();}
+  },{passive:true});
+
   window.openRsAd=function(){
     document.getElementById('rsAdPanel').classList.add('open');
     document.getElementById('rsTab').classList.add('shifted');
@@ -2060,15 +2519,32 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
     var mob=document.getElementById('rsMobTrigger');
     if(mob)mob.classList.remove('hidden');
   };
-  // Auto open after 3sec, close after 6sec, repeat every 20sec
+
+  /* Mobile track width fix */
+  function fixMobileWidth(){
+    var w=getSlideW();
+    document.querySelectorAll('.rs-slide').forEach(function(s){
+      s.style.minWidth=w+'px';
+      s.style.maxWidth=w+'px';
+      s.style.width=w+'px';
+    });
+    track.style.transform='translateX(-'+cur*w+'px)';
+  }
+  window.addEventListener('resize',fixMobileWidth);
+  fixMobileWidth();
+
+  startProgress();
+  autoPlay();
+
+  /* Auto open: 4s baad open, 7s baad close, phir every 25s */
   function autoOpenClose(){
     openRsAd();
-    setTimeout(function(){closeRsAd();},6000);
+    setTimeout(function(){closeRsAd();},7000);
   }
   setTimeout(function(){
     autoOpenClose();
-    setInterval(autoOpenClose,20000);
-  },3000);
+    setInterval(autoOpenClose,25000);
+  },4000);
 })();
 </script>
 
