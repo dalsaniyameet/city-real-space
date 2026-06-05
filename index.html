@@ -749,80 +749,7 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
       <a href="/new-launch" class="btn-outline">All Projects <i class="fa-solid fa-arrow-right"></i></a>
     </div>
     <div class="proj-grid" id="projGrid">
-      <!-- DB se dynamic projects load honge -->
-      <!-- TRP Mall Card -->
-      <div class="proj-card" style="cursor:pointer;" onclick="window.open('tel:+919825031247','_self')">
-
-        <!-- Image / Placeholder -->
-        <div class="proj-img-wrap" style="position:relative;height:220px;overflow:hidden;background:linear-gradient(135deg,#0D1B2A 0%,#1a3a5c 60%,#E53935 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
-          <!-- Animated background pattern -->
-          <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.02) 0px,rgba(255,255,255,0.02) 1px,transparent 1px,transparent 20px);pointer-events:none;"></div>
-          <!-- Mall icon -->
-          <div style="width:70px;height:70px;background:rgba(255,193,7,0.15);border:2px solid rgba(255,193,7,0.4);border-radius:18px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);">
-            <i class="fa-solid fa-store" style="font-size:2rem;color:#FFC107;"></i>
-          </div>
-          <div style="text-align:center;">
-            <div style="color:#FFC107;font-size:0.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;">The Retail Park</div>
-            <div style="color:rgba(255,255,255,0.5);font-size:0.6rem;font-weight:600;margin-top:2px;">Photos Coming Soon</div>
-          </div>
-          <!-- Commercial Badge -->
-          <div class="proj-badge comm" style="position:absolute;top:14px;left:14px;"><i class="fa-solid fa-briefcase"></i> Commercial</div>
-          <!-- Hot label -->
-          <div style="position:absolute;top:14px;right:14px;background:#E53935;color:#fff;font-size:0.6rem;font-weight:800;padding:3px 9px;border-radius:20px;letter-spacing:0.5px;text-transform:uppercase;"><i class="fa-solid fa-fire" style="margin-right:3px;"></i>Hot</div>
-          <!-- RERA bar -->
-          <div class="proj-rera-bar">
-            <i class="fa-solid fa-shield-halved" style="color:#FFC107;font-size:0.7rem;flex-shrink:0;"></i>
-            <span>RERA: AG/GJ/AHMEDABAD/AHMEDABAD CITY / AA04965/010429R1</span>
-          </div>
-        </div>
-
-        <!-- Body -->
-        <div class="proj-body">
-          <!-- Developer -->
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-            <div class="proj-dev">City Real Space &bull; Rajyash City</div>
-            <div style="background:#fff8e1;color:#b8860b;font-size:0.6rem;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid rgba(255,193,7,0.3);white-space:nowrap;"><i class="fa-solid fa-star" style="font-size:0.55rem;margin-right:2px;"></i>Featured</div>
-          </div>
-
-          <!-- Name -->
-          <div class="proj-name">TRP Mall &mdash; The Retail Park</div>
-
-          <!-- Location -->
-          <div class="proj-loc"><i class="fa-solid fa-location-dot"></i> Bopal &ndash; Ghuma BRTS Road, Central Bopal, Ahmedabad &ndash; 380058</div>
-
-          <!-- Amenities -->
-          <div class="proj-feats">
-            <div class="proj-feat"><i class="fa-solid fa-store"></i> Retail Shops</div>
-            <div class="proj-feat"><i class="fa-solid fa-utensils"></i> Food Court</div>
-            <div class="proj-feat"><i class="fa-solid fa-car"></i> Parking</div>
-            <div class="proj-feat"><i class="fa-solid fa-snowflake"></i> AC Mall</div>
-          </div>
-
-          <!-- Tags -->
-          <div class="proj-tags">
-            <span class="proj-tag">Shopping</span>
-            <span class="proj-tag">Dining</span>
-            <span class="proj-tag">Entertainment</span>
-            <span class="proj-tag">BRTS Connectivity</span>
-          </div>
-
-          <!-- Footer -->
-          <div class="proj-footer">
-            <div>
-              <div class="proj-price-lbl">Price</div>
-              <div class="proj-price-val">On Request</div>
-              <div class="proj-price-unit">Contact for best deal</div>
-            </div>
-            <div class="proj-btns">
-              <a href="tel:+919825031247" class="proj-btn-c" onclick="event.stopPropagation()"><i class="fa-solid fa-phone"></i> Call</a>
-              <a href="https://wa.me/919825031247?text=Hi%2C+I+am+interested+in+TRP+Mall+-+The+Retail+Park%2C+Central+Bopal%2C+Ahmedabad.+Please+share+details." target="_blank" class="proj-btn-w" onclick="event.stopPropagation()"><i class="fa-brands fa-whatsapp"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
+      <!-- Projects load dynamically from DB -->
     </div>
   </div>
 </section>
@@ -866,8 +793,8 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
           '</div>' +
         '</div>';
       }).join('');
-      // Pehle existing cards rakh ke dynamic cards append karo
-      grid.insertAdjacentHTML('afterbegin', dynamicHTML);
+      // DB se aaye dynamic cards set karo
+      grid.innerHTML = dynamicHTML;
     })
     .catch(function(){});
 })();

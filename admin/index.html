@@ -1665,17 +1665,17 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
         <div class="form-grp">
           <label>Project Name *</label>
-          <input type="text" id="pjName" placeholder="e.g. Iscon Vogue" required oninput="pjAutoSlug()"/>
+          <input type="text" id="pjName" placeholder="Project ka naam (e.g. TRP Mall, Iscon Vogue, Adani Augusta)" required oninput="pjAutoSlug()"/>
         </div>
         <div class="form-grp">
           <label>Slug (URL) *</label>
-          <input type="text" id="pjSlug" placeholder="e.g. iscon-vogue" required style="font-family:monospace;font-size:0.82rem;"/>
+          <input type="text" id="pjSlug" placeholder="URL slug - auto banta hai (e.g. trp-mall-the-retail-park)" required style="font-family:monospace;font-size:0.82rem;"/>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
         <div class="form-grp">
           <label>Developer / Company</label>
-          <input type="text" id="pjDeveloper" placeholder="e.g. JP Iscon Private Limited"/>
+          <input type="text" id="pjDeveloper" placeholder="Developer / Builder ka naam (e.g. City Real Space, Adani Realty)"/>
         </div>
         <div class="form-grp">
           <label>Category</label>
@@ -1688,11 +1688,11 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
         <div class="form-grp">
           <label>Location *</label>
-          <input type="text" id="pjLocation" placeholder="e.g. Iscon Ambli Road, Ahmedabad" required/>
+          <input type="text" id="pjLocation" placeholder="Full address (e.g. Bopal-Ghuma BRTS Road, Central Bopal, Ahmedabad)" required/>
         </div>
         <div class="form-grp">
           <label>RERA Number</label>
-          <input type="text" id="pjRera" placeholder="e.g. PR/GJ/AHMEDABAD/.../050523"/>
+          <input type="text" id="pjRera" placeholder="RERA number (e.g. AG/GJ/AHMEDABAD/AHMEDABAD CITY/AA04965/010429R1)"/>
         </div>
       </div>
 
@@ -1701,25 +1701,25 @@
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;">
         <div class="form-grp">
           <label>Price</label>
-          <input type="text" id="pjPrice" placeholder="e.g. On Request or ₹2.5 Cr"/>
+          <input type="text" id="pjPrice" placeholder="Price (e.g. On Request ya ₹1.2 Cr - ₹2.5 Cr)"/>
         </div>
         <div class="form-grp">
           <label>Price Unit</label>
-          <input type="text" id="pjPriceUnit" placeholder="e.g. onwards"/>
+          <input type="text" id="pjPriceUnit" placeholder="Price unit (e.g. Onwards / Contact for best deal)"/>
         </div>
         <div class="form-grp">
           <label>Possession Date</label>
-          <input type="text" id="pjPossession" placeholder="e.g. Dec, 2026"/>
+          <input type="text" id="pjPossession" placeholder="Possession (e.g. Ready to Move / Dec, 2026 / Under Construction)"/>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;">
         <div class="form-grp">
           <label>Total Units</label>
-          <input type="text" id="pjTotalUnits" placeholder="e.g. 76"/>
+          <input type="text" id="pjTotalUnits" placeholder="Total units (e.g. 120 Units / 76 Flats / 40 Shops)"/>
         </div>
         <div class="form-grp">
           <label>Project Area</label>
-          <input type="text" id="pjArea" placeholder="e.g. 45000 Sq Ft"/>
+          <input type="text" id="pjArea" placeholder="Project area (e.g. 200-1000 Sq Ft / 1250 Sq Ft / 2.5 Acre)"/>
         </div>
         <div class="form-grp">
           <label>Contact Phone</label>
@@ -1730,13 +1730,23 @@
       <!-- SECTION: Configurations -->
       <div style="font-size:0.78rem;font-weight:800;color:#E53935;text-transform:uppercase;letter-spacing:1px;padding:8px 0 10px;border-bottom:1px solid #f0f0f0;margin-bottom:14px;margin-top:4px;"><i class="fa-solid fa-th-large" style="margin-right:6px;"></i> Configurations <span style="font-size:0.65rem;color:#aaa;font-weight:500;text-transform:none;">(one per line)</span></div>
       <div class="form-grp" style="margin-bottom:12px;">
-        <textarea id="pjConfigs" rows="3" placeholder="4 BHK&#10;5 BHK&#10;6045 sqft&#10;6065 sqft" style="font-family:monospace;font-size:0.82rem;"></textarea>
+        <textarea id="pjConfigs" rows="3" placeholder="Har line mein ek config:&#10;Retail Shop&#10;Food Court&#10;3 BHK&#10;4 BHK&#10;Showroom" style="font-family:monospace;font-size:0.82rem;"></textarea>
       </div>
+
+      <!-- SECTION: Floor Plans (BHK-wise Pricing) -->
+      <div style="font-size:0.78rem;font-weight:800;color:#E53935;text-transform:uppercase;letter-spacing:1px;padding:8px 0 10px;border-bottom:1px solid #f0f0f0;margin-bottom:14px;margin-top:4px;"><i class="fa-solid fa-indian-rupee-sign" style="margin-right:6px;"></i> Floor Plans & Pricing <span style="font-size:0.65rem;color:#aaa;font-weight:500;text-transform:none;">(BHK-wise)</span></div>
+      <div id="pjFloorPlanRows" style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;"></div>
+      <button type="button" onclick="addFloorPlanRow()" style="background:#fff0f0;border:1.5px dashed #E53935;color:#E53935;padding:8px 16px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:6px;width:100%;justify-content:center;margin-bottom:14px;"><i class="fa-solid fa-plus"></i> Add Floor Plan Row</button>
+
+      <!-- SECTION: Nearby Places -->
+      <div style="font-size:0.78rem;font-weight:800;color:#E53935;text-transform:uppercase;letter-spacing:1px;padding:8px 0 10px;border-bottom:1px solid #f0f0f0;margin-bottom:14px;margin-top:4px;"><i class="fa-solid fa-location-dot" style="margin-right:6px;"></i> Nearby Places <span style="font-size:0.65rem;color:#aaa;font-weight:500;text-transform:none;">(Location connectivity)</span></div>
+      <div id="pjNearbyRows" style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;"></div>
+      <button type="button" onclick="addNearbyRow()" style="background:#e3f2fd;border:1.5px dashed #1565c0;color:#1565c0;padding:8px 16px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:Poppins,sans-serif;display:flex;align-items:center;gap:6px;width:100%;justify-content:center;margin-bottom:14px;"><i class="fa-solid fa-plus"></i> Add Nearby Place</button>
 
       <!-- SECTION: Highlights -->
       <div style="font-size:0.78rem;font-weight:800;color:#E53935;text-transform:uppercase;letter-spacing:1px;padding:8px 0 10px;border-bottom:1px solid #f0f0f0;margin-bottom:14px;margin-top:4px;"><i class="fa-solid fa-star" style="margin-right:6px;"></i> Highlights <span style="font-size:0.65rem;color:#aaa;font-weight:500;text-transform:none;">(one per line)</span></div>
       <div class="form-grp" style="margin-bottom:12px;">
-        <textarea id="pjHighlights" rows="4" placeholder="Poshest Location of Ahmedabad&#10;100% Privacy&#10;Star Studded Clubhouse&#10;Vaastu Compliant Homes"></textarea>
+        <textarea id="pjHighlights" rows="4" placeholder="Har line mein ek highlight:&#10;Prime Location&#10;AC Mall Infrastructure&#10;High Footfall Area&#10;BRTS Connectivity&#10;100% Power Backup"></textarea>
       </div>
 
       <!-- SECTION: Amenities -->
@@ -1749,7 +1759,7 @@
       <div style="font-size:0.78rem;font-weight:800;color:#E53935;text-transform:uppercase;letter-spacing:1px;padding:8px 0 10px;border-bottom:1px solid #f0f0f0;margin-bottom:14px;margin-top:4px;"><i class="fa-solid fa-align-left" style="margin-right:6px;"></i> Description & Media</div>
       <div class="form-grp" style="margin-bottom:12px;">
         <label>Description</label>
-        <textarea id="pjDescription" rows="4" placeholder="About this project..."></textarea>
+        <textarea id="pjDescription" rows="4" placeholder="Project ka description - location, USP, amenities, investment value sab mention karo..."></textarea>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
         <div class="form-grp">
@@ -1767,11 +1777,11 @@
             </div>
           </div>
           <input type="file" id="pjImageFile" accept="image/*" style="display:none" onchange="handleProjectCoverImage(this)"/>
-          <input type="text" id="pjImage" placeholder="ya URL paste karo..." oninput="pjImageUrlPreview(this.value)" style="font-size:0.78rem;"/>
+          <input type="text" id="pjImage" placeholder="Cover image URL paste karo (ya upar se upload karo)" oninput="pjImageUrlPreview(this.value)" style="font-size:0.78rem;"/>
         </div>
         <div class="form-grp">
           <label>Video URL (YouTube)</label>
-          <input type="text" id="pjVideoUrl" placeholder="https://youtube.com/watch?v=..."/>
+          <input type="text" id="pjVideoUrl" placeholder="YouTube video URL (e.g. https://youtube.com/watch?v=abc123)"/>
         </div>
       </div>
       <div class="form-grp" style="margin-bottom:12px;">
@@ -1782,7 +1792,7 @@
         </div>
         <input type="file" id="pjExtraImgFiles" accept="image/*" multiple style="display:none" onchange="handleProjectExtraImages(this)"/>
         <div id="pjExtraImgPreview" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;"></div>
-        <input type="text" id="pjImages" placeholder="ya URLs comma se separate karo: https://img1.jpg, https://img2.jpg" style="font-size:0.78rem;"/>
+        <input type="text" id="pjImages" placeholder="Multiple images - comma se alag karo (e.g. https://img1.jpg, https://img2.jpg)" style="font-size:0.78rem;"/>
       </div>
 
       <!-- SECTION: Tags & Settings -->
@@ -1790,11 +1800,11 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
         <div class="form-grp">
           <label>Tags (comma separated)</label>
-          <input type="text" id="pjTags" placeholder="4 BHK, Luxury, New Launch, Vastu"/>
+          <input type="text" id="pjTags" placeholder="Tags comma se (e.g. Commercial, Mall, Bopal, Retail Shop, New Launch)"/>
         </div>
         <div class="form-grp">
           <label>WhatsApp Message</label>
-          <input type="text" id="pjWhatsappMsg" placeholder="Hi, I am interested in..."/>
+          <input type="text" id="pjWhatsappMsg" placeholder="WhatsApp message (e.g. Hi, I am interested in this project. Please share details.)"/>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
@@ -1813,52 +1823,123 @@
 
 <script src="/admin/script.js"></script>
 <script>
-// ===== PROJECT IMAGE UPLOAD =====
-async function uploadPjCover(input) {
-  var file = input.files[0];
-  if (!file) return;
-  var spinner = document.getElementById('pjImgUploadSpinner');
-  if (spinner) { spinner.style.display = 'flex'; }
-  try {
-    var url = await uploadToCloudinary(file);
-    document.getElementById('pjImage').value = url;
-    var prev = document.getElementById('pjImgPreview');
-    if (prev) { prev.src = url; prev.style.display = 'block'; }
-    var icon = document.getElementById('pjImgIcon');
-    if (icon) icon.style.display = 'none';
-  } catch(e) { toast('Image upload failed', 'error'); }
-  if (spinner) spinner.style.display = 'none';
+async function handleProjectCoverImage(input){
+  var file=input.files[0];
+  if(!file)return;
+  var spinner=document.getElementById('pjImgUploadSpinner');
+  if(spinner)spinner.style.display='flex';
+  try{
+    var url=await uploadToCloudinary(file);
+    document.getElementById('pjImage').value=url;
+    var prev=document.getElementById('pjImgPreview');
+    if(prev){prev.src=url;prev.style.display='block';}
+    var icon=document.getElementById('pjImgIcon');
+    if(icon)icon.style.display='none';
+  }catch(e){toast('Image upload failed','error');}
+  if(spinner)spinner.style.display='none';
 }
 
-async function uploadPjExtras(input) {
-  var files = Array.from(input.files);
-  if (!files.length) return;
-  var preview = document.getElementById('pjExtraImgPreview');
-  var existing = document.getElementById('pjImages').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
-  for (var i = 0; i < files.length; i++) {
-    try {
-      var url = await uploadToCloudinary(files[i]);
+async function handleProjectExtraImages(input){
+  var files=Array.from(input.files);
+  if(!files.length)return;
+  var preview=document.getElementById('pjExtraImgPreview');
+  var existing=document.getElementById('pjImages').value.split(',').map(s=>s.trim()).filter(Boolean);
+  for(var i=0;i<files.length;i++){
+    try{
+      var url=await uploadToCloudinary(files[i]);
       existing.push(url);
-      var img = document.createElement('div');
-      img.style.cssText = 'position:relative;width:60px;height:42px;border-radius:6px;overflow:hidden;flex-shrink:0;';
-      img.innerHTML = '<img src="' + url + '" style="width:100%;height:100%;object-fit:cover;"/><button type="button" onclick="this.parentElement.remove();rebuildPjImagesInput()" style="position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;border:none;background:rgba(0,0,0,0.6);color:#fff;font-size:0.55rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>';
-      if (preview) preview.appendChild(img);
-    } catch(e) {}
+      var d=document.createElement('div');
+      d.style.cssText='position:relative;width:60px;height:42px;border-radius:6px;overflow:hidden;flex-shrink:0;';
+      d.innerHTML='<img src="'+url+'" style="width:100%;height:100%;object-fit:cover;"/><button type="button" onclick="this.parentElement.remove();rebuildPjImagesInput()" style="position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;border:none;background:rgba(0,0,0,0.6);color:#fff;font-size:0.55rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>';
+      if(preview)preview.appendChild(d);
+    }catch(e){}
   }
-  document.getElementById('pjImages').value = existing.join(', ');
+  document.getElementById('pjImages').value=existing.join(', ');
 }
 
-function rebuildPjImagesInput() {
-  var preview = document.getElementById('pjExtraImgPreview');
-  var imgs = preview ? Array.from(preview.querySelectorAll('img')).map(function(i){return i.src;}) : [];
-  document.getElementById('pjImages').value = imgs.join(', ');
+// ===== FLOOR PLAN ROWS =====
+function addFloorPlanRow(data) {
+  data = data || {};
+  var wrap = document.getElementById('pjFloorPlanRows');
+  var idx = wrap.children.length;
+  var row = document.createElement('div');
+  row.style.cssText = 'display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:center;background:#f8f9fa;padding:10px 12px;border-radius:10px;border:1px solid #f0f0f0;';
+  row.innerHTML =
+    '<input type="text" placeholder="Config (e.g. 3 BHK)" value="'+(data.config||'')+'" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:8px 10px;font-size:0.8rem;font-family:Poppins,sans-serif;outline:none;" class="fp-config"/>'+
+    '<input type="text" placeholder="Area (e.g. 1250 sq.ft)" value="'+(data.area||'')+'" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:8px 10px;font-size:0.8rem;font-family:Poppins,sans-serif;outline:none;" class="fp-area"/>'+
+    '<input type="text" placeholder="Price (e.g. ₹1.2 Cr)" value="'+(data.price||'')+'" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:8px 10px;font-size:0.8rem;font-family:Poppins,sans-serif;outline:none;" class="fp-price"/>'+
+    '<button type="button" onclick="this.closest(\'div\').remove()" style="width:30px;height:30px;border-radius:8px;border:none;background:#ffebee;color:#E53935;cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-trash"></i></button>';
+  wrap.appendChild(row);
+}
+
+function getFloorPlans() {
+  return Array.from(document.querySelectorAll('#pjFloorPlanRows > div')).map(function(row){
+    return {
+      config: row.querySelector('.fp-config').value.trim(),
+      area:   row.querySelector('.fp-area').value.trim(),
+      price:  row.querySelector('.fp-price').value.trim()
+    };
+  }).filter(function(r){ return r.config; });
+}
+
+// ===== NEARBY ROWS =====
+var NEARBY_TYPES = [
+  {val:'school',lbl:'School'},
+  {val:'hospital',lbl:'Hospital'},
+  {val:'metro',lbl:'Metro/BRTS'},
+  {val:'mall',lbl:'Mall'},
+  {val:'airport',lbl:'Airport'},
+  {val:'highway',lbl:'Highway'},
+  {val:'other',lbl:'Other'}
+];
+
+function addNearbyRow(data) {
+  data = data || {};
+  var wrap = document.getElementById('pjNearbyRows');
+  var row = document.createElement('div');
+  row.style.cssText = 'display:grid;grid-template-columns:1fr 1fr 140px auto;gap:8px;align-items:center;background:#f0f7ff;padding:10px 12px;border-radius:10px;border:1px solid #e3f2fd;';
+  var opts = NEARBY_TYPES.map(function(t){ return '<option value="'+t.val+'"'+(data.type===t.val?' selected':'')+'>'+t.lbl+'</option>'; }).join('');
+  row.innerHTML =
+    '<input type="text" placeholder="Place name" value="'+(data.name||'')+'" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:8px 10px;font-size:0.8rem;font-family:Poppins,sans-serif;outline:none;" class="nb-name"/>'+
+    '<input type="text" placeholder="Distance (e.g. 2 km)" value="'+(data.distance||'')+'" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:8px 10px;font-size:0.8rem;font-family:Poppins,sans-serif;outline:none;" class="nb-dist"/>'+
+    '<select class="nb-type" style="border:1.5px solid #e8e8e8;border-radius:8px;padding:8px 10px;font-size:0.8rem;font-family:Poppins,sans-serif;outline:none;">'+opts+'</select>'+
+    '<button type="button" onclick="this.closest(\'div\').remove()" style="width:30px;height:30px;border-radius:8px;border:none;background:#e3f2fd;color:#1565c0;cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-trash"></i></button>';
+  wrap.appendChild(row);
+}
+
+function getNearbyPlaces() {
+  return Array.from(document.querySelectorAll('#pjNearbyRows > div')).map(function(row){
+    return {
+      name:     row.querySelector('.nb-name').value.trim(),
+      distance: row.querySelector('.nb-dist').value.trim(),
+      type:     row.querySelector('.nb-type').value
+    };
+  }).filter(function(r){ return r.name; });
 }
 
 // ===== SLUG AUTO-GENERATE =====
-function pjAutoSlug() {
-  var name = document.getElementById('pjName').value;
-  var slug = name.toLowerCase().replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
-  document.getElementById('pjSlug').value = slug;
+function pjAutoSlug(){
+  var name=document.getElementById('pjName').value;
+  var slug=name.toLowerCase().replace(/[^a-z0-9\s-]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
+  document.getElementById('pjSlug').value=slug;
+}
+
+function pjImageUrlPreview(url){
+  var prev=document.getElementById('pjImgPreview');
+  var icon=document.getElementById('pjImgIcon');
+  if(url&&url.startsWith('http')){
+    if(prev){prev.src=url;prev.style.display='block';}
+    if(icon)icon.style.display='none';
+  } else {
+    if(prev)prev.style.display='none';
+    if(icon)icon.style.display='';
+  }
+}
+
+function rebuildPjImagesInput(){
+  var preview=document.getElementById('pjExtraImgPreview');
+  var imgs=preview?Array.from(preview.querySelectorAll('img')).map(i=>i.src):[];
+  document.getElementById('pjImages').value=imgs.join(', ');
 }
 
 // ===== LOAD PROJECTS TABLE =====
@@ -1897,9 +1978,8 @@ function openProjectModal() {
   var prev=document.getElementById('pjImgPreview');if(prev){prev.src='';prev.style.display='none';}
   var icon=document.getElementById('pjImgIcon');if(icon)icon.style.display='';
   var ep=document.getElementById('pjExtraImgPreview');if(ep)ep.innerHTML='';
-  var prev = document.getElementById('pjImgPreview'); if(prev){prev.src='';prev.style.display='none';}
-  var icon = document.getElementById('pjImgIcon'); if(icon)icon.style.display='';
-  var ep = document.getElementById('pjExtraImgPreview'); if(ep)ep.innerHTML='';
+  document.getElementById('pjFloorPlanRows').innerHTML = '';
+  document.getElementById('pjNearbyRows').innerHTML = '';
   openModal('projectModal');
 }
 
@@ -1924,6 +2004,12 @@ function editProject(p) {
   document.getElementById('pjAmenities').value = (p.amenities||[]).join('\n');
   document.getElementById('pjDescription').value = p.description || '';
   document.getElementById('pjImage').value = p.image || '';
+  // Floor Plans
+  document.getElementById('pjFloorPlanRows').innerHTML = '';
+  (p.floorPlans||[]).forEach(function(fp){ addFloorPlanRow(fp); });
+  // Nearby Places
+  document.getElementById('pjNearbyRows').innerHTML = '';
+  (p.nearbyPlaces||[]).forEach(function(nb){ addNearbyRow(nb); });
   // Cover preview
   var prev = document.getElementById('pjImgPreview');
   var icon = document.getElementById('pjImgIcon');
@@ -1988,7 +2074,9 @@ document.getElementById('projectForm').addEventListener('submit', async function
     images:      toCommaArr('pjImages'),
     tags:        toCommaArr('pjTags'),
     whatsappMsg: document.getElementById('pjWhatsappMsg').value.trim(),
-    isActive:    document.getElementById('pjActive').checked
+    isActive:    document.getElementById('pjActive').checked,
+    floorPlans:  getFloorPlans(),
+    nearbyPlaces: getNearbyPlaces()
   };
 
   var r = id ? await api('PUT', '/projects/' + id, body) : await api('POST', '/projects', body);

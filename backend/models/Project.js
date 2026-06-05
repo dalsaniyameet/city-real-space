@@ -17,6 +17,16 @@ const projectSchema = new mongoose.Schema({
   highlights:  [String],
   amenities:   [String],
   configs:     [String],
+  floorPlans:  [{
+    config:  { type: String },
+    area:    { type: String },
+    price:   { type: String }
+  }],
+  nearbyPlaces: [{
+    name:     { type: String },
+    distance: { type: String },
+    type:     { type: String, default: 'other' }
+  }],
   area:        { type: String, default: '' },
   possession:  { type: String, default: '' },
   totalUnits:  { type: String, default: '' },

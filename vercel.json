@@ -71,6 +71,7 @@
     { "source": "/robots.txt",                                               "destination": "/api/index.js" },
     { "source": "/google5N74CYScjt-N-OmxhcBkgdSd4ly-4FYBC0S82nxXFBk.html", "destination": "/api/gsc-verify" },
     { "source": "/api/:path*",                           "destination": "/api/index.js" },
+    { "source": "/project/:slug",                       "destination": "/project-detail" },
     { "source": "/blog/:slug",                          "destination": "/blog-detail" },
     { "source": "/property/:city/:area/:slug",           "destination": "/property-detail" },
     { "source": "/property/:slug",                       "destination": "/property-detail" },
