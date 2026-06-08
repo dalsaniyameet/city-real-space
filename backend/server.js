@@ -290,8 +290,80 @@ app.get('/blog/:slug', (req, res) => {
   res.sendFile(path.join(FRONTEND, 'blog-detail.html'));
 });
 
-// Frontend page routes
-const pages = ['blog', 'blog-detail', 'about', 'contact', 'properties', 'buy', 'rent', 'new-launch', 'resale', 'land', 'prelease', 'post-property', 'faq', 'careers', 'privacy', 'terms', 'login', 'register', 'dashboard'];
+// ===== SSR HELPER — Google crawler ke liye property HTML inject karo =====
+function priceLabel(price, status) {
+  if (!price) return 'Price on Request';
+  const p = Math.round(Number(price));
+  let label;
+  if (p >= 10000000)  label = '\u20b9' + parseFloat((p/10000000).toFixed(2)) + ' Cr';
+  else if (p >= 100000) label = '\u20b9' + parseFloat((p/100000).toFixed(2)) + ' L';
+  else if (p >= 1000)   label = '\u20b9' + Math.round(p/1000) + 'K';
+  else                  label = '\u20b9' + p;
+  return status === 'for-rent' ? label + '/mo' : label;
+}
+
+async function ssrPropertyHTML(query) {
+  try {
+    const Property = require('./models/Property');
+    const props = await Property.find({ isApproved: true, ...query })
+      .select('title slug price status type location specs images priceLabel')
+      .sort({ isFeatured: -1, createdAt: -1 })
+      .limit(24)
+      .lean();
+    if (!props.length) return '';
+    const base = 'https://www.cityrealspace.com';
+    const cards = props.map(p => {
+      const city = (p.location?.city || 'ahmedabad').toLowerCase().replace(/\s+/g, '-');
+      const area = (p.location?.area || 'gujarat').toLowerCase().replace(/\s+/g, '-');
+      const url  = p.slug ? `${base}/property/${city}/${area}/${p.slug}` : `${base}/properties`;
+      const img  = p.images?.[0] || '';
+      const price = p.priceLabel || priceLabel(p.price, p.status);
+      const beds  = p.specs?.beds ? `${p.specs.beds} BHK ` : '';
+      const sqft  = p.specs?.sqft ? ` | ${p.specs.sqft} sqft` : '';
+      const loc   = `${p.location?.area || ''}, ${p.location?.city || 'Ahmedabad'}`;
+      return `<div itemscope itemtype="https://schema.org/RealEstateListing" style="border:1px solid #e0e0e0;border-radius:8px;padding:12px;margin-bottom:12px;">
+  ${img ? `<img src="${img}" alt="${p.title}" style="width:100%;height:180px;object-fit:cover;border-radius:6px;" loading="lazy"/>` : ''}
+  <h3 itemprop="name" style="font-size:1rem;margin:8px 0 4px;"><a href="${url}" itemprop="url">${p.title}</a></h3>
+  <p itemprop="description" style="color:#555;font-size:0.85rem;margin:0 0 4px;">${beds}${p.type} for ${p.status === 'for-rent' ? 'Rent' : 'Sale'} in ${loc}${sqft}</p>
+  <p style="color:#E53935;font-weight:700;font-size:1rem;margin:0;" itemprop="price">${price}</p>
+</div>`;
+    }).join('\n');
+    return `<section style="max-width:1200px;margin:0 auto;padding:20px;">
+  <h2 style="font-size:1.2rem;margin-bottom:16px;">Verified Properties</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
+    ${cards}
+  </div>
+</section>`;
+  } catch(e) { return ''; }
+}
+
+// SSR listing pages — inject property HTML inside <noscript> for Google
+async function serveSSRPage(htmlFile, dbQuery, res) {
+  try {
+    let html = fs.readFileSync(path.join(FRONTEND, htmlFile), 'utf8');
+    const ssrHtml = await ssrPropertyHTML(dbQuery);
+    if (ssrHtml) {
+      html = html.replace('</body>', `<noscript>${ssrHtml}</noscript>\n</body>`);
+    }
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 'public, max-age=300');
+    res.send(html);
+  } catch(e) {
+    res.sendFile(path.join(FRONTEND, htmlFile));
+  }
+}
+
+// SSR routes for listing pages
+app.get('/properties', (req, res) => serveSSRPage('properties.html', {}, res));
+app.get('/buy',        (req, res) => serveSSRPage('buy.html',        { status: 'for-sale', category: 'residential' }, res));
+app.get('/rent',       (req, res) => serveSSRPage('rent.html',       { status: 'for-rent' }, res));
+app.get('/new-launch', (req, res) => serveSSRPage('new-launch.html', { status: 'new-launch' }, res));
+app.get('/resale',     (req, res) => serveSSRPage('resale.html',     { status: 'for-sale', category: 'residential' }, res));
+app.get('/land',       (req, res) => serveSSRPage('land.html',       { status: 'for-sale', type: 'plot' }, res));
+app.get('/prelease',   (req, res) => serveSSRPage('prelease.html',   { status: 'for-rent', category: 'commercial' }, res));
+
+// Non-listing static pages
+const pages = ['blog', 'blog-detail', 'about', 'contact', 'post-property', 'faq', 'careers', 'privacy', 'terms', 'login', 'register', 'dashboard'];
 pages.forEach(p => app.get(`/${p}`, (req, res) => res.sendFile(path.join(FRONTEND, `${p}.html`))));
 
 // SEO-friendly property URLs — inject OG meta tags server-side for WhatsApp/Facebook previews
