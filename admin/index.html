@@ -1998,6 +1998,7 @@ async function loadProjects() {
     return;
   }
   tbody.innerHTML = data.projects.map(function(p) {
+    var pid = p._id;
     return '<tr>' +
       '<td>' + (p.image ? '<img src="' + p.image + '" style="width:60px;height:40px;object-fit:cover;border-radius:6px;"/>' : '<div style="width:60px;height:40px;background:#f0f0f0;border-radius:6px;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-city" style="color:#ccc"></i></div>') + '</td>' +
       '<td><strong>' + p.name + '</strong><br><span style="font-size:0.72rem;color:#aaa;font-family:monospace">' + (p.slug||'no-slug') + '</span></td>' +
@@ -2007,8 +2008,8 @@ async function loadProjects() {
       '<td>' + (p.price||'On Request') + '</td>' +
       '<td><span style="font-size:0.72rem;padding:3px 8px;border-radius:20px;background:' + (p.isActive?'#d1fae5':'#fee2e2') + ';color:' + (p.isActive?'#065f46':'#991b1b') + ';font-weight:700">' + (p.isActive?'Active':'Hidden') + '</span></td>' +
       '<td><div class="act-btns">' +
-        '<button class="act-btn edit" title="Edit" onclick="editProject(' + JSON.stringify(p).replace(/"/g,"'") + ')"><i class="fa-solid fa-pen"></i></button>' +
-        '<button class="act-btn del" title="Delete" onclick="deleteProject(\''+p._id+'\')" ><i class="fa-solid fa-trash"></i></button>' +
+        '<button class="act-btn edit" title="Edit" onclick="loadAndEditProject(\''+pid+'\')" ><i class="fa-solid fa-pen"></i></button>' +
+        '<button class="act-btn del" title="Delete" onclick="deleteProject(\''+pid+'\')" ><i class="fa-solid fa-trash"></i></button>' +
       '</div></td>' +
     '</tr>';
   }).join('');
@@ -2142,6 +2143,30 @@ document.getElementById('projectForm').addEventListener('submit', async function
     toast(r.message || 'Error saving project', 'error');
   }
 });
+
+// ===== FETCH & EDIT BY ID =====
+var _pjCache = {};
+async function loadAndEditProject(id) {
+  if (_pjCache[id]) { editProject(_pjCache[id]); return; }
+  var data = await api('GET', '/projects');
+  if (data.success && data.projects) {
+    data.projects.forEach(function(p){ _pjCache[p._id] = p; });
+    if (_pjCache[id]) { editProject(_pjCache[id]); }
+    else toast('Project not found', 'error');
+  } else { toast('Failed to load', 'error'); }
+}
+
+// ===== FETCH & EDIT BY ID =====
+var _pjCache = {};
+async function loadAndEditProject(id) {
+  if (_pjCache[id]) { editProject(_pjCache[id]); return; }
+  var data = await api('GET', '/projects');
+  if (data.success && data.projects) {
+    data.projects.forEach(function(p){ _pjCache[p._id] = p; });
+    if (_pjCache[id]) editProject(_pjCache[id]);
+    else toast('Project not found', 'error');
+  } else toast('Failed to load', 'error');
+}
 
 // ===== LOAD PROJECTS ON PAGE VISIT =====
 // Patch goPage to load projects

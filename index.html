@@ -1110,6 +1110,16 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
     .team-ring-green{border-color:rgba(16,185,129,0.4);}
     .team-topbar{position:absolute;top:0;left:0;right:0;height:4px;}
     .team-tag{font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:20px;}
+    /* ===== PROFILE PHOTO ANIMATION ===== */
+    @keyframes spinBorder{to{transform:rotate(360deg)}}
+    .ta-photo-wrap{position:relative;width:90px;height:90px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+    .ta-photo-wrap::before{content:'';position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(var(--bc1,#E53935) 0deg,var(--bc2,#FFC107) 180deg,transparent 180deg,transparent 360deg);animation:spinBorder 2.5s linear infinite;z-index:0;}
+    .ta-photo{width:88px;height:88px;border-radius:50%;object-fit:cover;object-position:center;display:block;position:relative;z-index:1;border:3px solid #fff;}
+    .ta-red{--bc1:#E53935;--bc2:#FFC107;}
+    .ta-gold{--bc1:#FFC107;--bc2:#ff8f00;}
+    .ta-green{--bc1:#10b981;--bc2:#34d399;}
+    .ta-purple{--bc1:#6366f1;--bc2:#8b5cf6;}
+    .ta-pink{--bc1:#ec4899;--bc2:#f43f5e;}
     @media(max-width:1100px){.team-grid{grid-template-columns:repeat(3,1fr);gap:20px;}}
     @media(max-width:900px){.team-grid{grid-template-columns:1fr 1fr;gap:20px;}}
     @media(max-width:600px){.team-grid{grid-template-columns:1fr;gap:16px;max-width:400px;}.team-card{padding:28px 20px 22px;}}
@@ -1127,8 +1137,10 @@ document.addEventListener('DOMContentLoaded',updateMobileAuth);
       <!-- Nikhil Bhai -->
       <div class="team-card team-card-nikhil">
         <div class="team-topbar" style="background:linear-gradient(90deg,#E53935,#FFC107);"></div>
-        <div class="team-avatar team-avatar-nikhil">
-          <span style="animation:letterPulse 2s ease-in-out infinite;">N</span>
+        <div class="team-avatar team-avatar-nikhil" style="background:transparent;">
+          <div class="ta-photo-wrap ta-red">
+            <img src="/images/nikhilbhai meet our tarm.jpeg" alt="Nikhil Bhai" class="ta-photo"/>
+          </div>
           <div class="team-ring team-ring-red"></div>
         </div>
         <h4 style="font-size:1.05rem;font-weight:800;color:#0D1B2A;margin-bottom:6px;">Nikhil Bhai</h4>

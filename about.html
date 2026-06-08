@@ -234,6 +234,12 @@
     .tm-role{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;}
     .tm-desc{color:rgba(255,255,255,0.5);font-size:0.78rem;line-height:1.6;margin-bottom:14px;}
     .tm-tag{font-size:0.62rem;font-weight:700;padding:3px 9px;border-radius:20px;display:inline-block;margin:2px;}
+    /* ===== PROFILE PHOTO ANIMATION ===== */
+    @keyframes spinBorder{to{transform:rotate(360deg)}}
+    .ta-photo-wrap{position:relative;width:88px;height:88px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+    .ta-photo-wrap::before{content:'';position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(var(--bc1,#E53935) 0deg,var(--bc2,#FFC107) 180deg,transparent 180deg,transparent 360deg);animation:spinBorder 2.5s linear infinite;z-index:0;}
+    .ta-photo{width:86px;height:86px;border-radius:50%;object-fit:cover;object-position:center;display:block;position:relative;z-index:1;border:3px solid #fff;}
+    .ta-red{--bc1:#E53935;--bc2:#FFC107;}
   </style>
   <div class="container">
     <div class="section-head center" style="margin-bottom:48px;">
@@ -262,7 +268,12 @@
       <!-- Nikhil Bhai -->
       <div class="tm-card" onmouseover="this.style.background='rgba(229,57,53,0.1)';this.style.borderColor='rgba(229,57,53,0.4)';this.style.boxShadow='0 20px 50px rgba(229,57,53,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.1)';this.style.boxShadow=''">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#E53935,#FFC107);"></div>
-        <div class="tm-avatar" style="background:linear-gradient(135deg,#E53935,#c62828);--ac:rgba(229,57,53,0.5);">N<div class="tm-ring"></div></div>
+        <div class="tm-avatar" style="--ac:rgba(229,57,53,0.5);background:transparent;">
+          <div class="ta-photo-wrap ta-red" style="width:88px;height:88px;">
+            <img src="/images/nikhilbhai meet our tarm.jpeg" alt="Nikhil Bhai" class="ta-photo"/>
+          </div>
+          <div class="tm-ring"></div>
+        </div>
         <div class="tm-name">Nikhil Bhai</div>
         <div class="tm-role" style="color:#f87171;">Residential &amp; Commercial Manager</div>
         <div class="tm-desc">Expert in both residential &amp; commercial property deals across Ahmedabad.</div>

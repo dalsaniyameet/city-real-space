@@ -257,11 +257,13 @@ const dns = require('dns').promises;
 async function isValidEmailDomain(email) {
   if (!email || !email.includes('@')) return false;
   const domain = email.split('@')[1];
+  if (!domain || !domain.includes('.')) return false;
   try {
     const mx = await dns.resolveMx(domain);
     return mx && mx.length > 0;
   } catch {
-    return false;
+    // DNS lookup failed (network issue, timeout) — assume valid to avoid blocking real users
+    return true;
   }
 }
 
@@ -361,10 +363,6 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password)
       return res.status(400).json({ success: false, message: 'Email and password required' });
-
-    const emailValid = await isValidEmailDomain(email);
-    if (!emailValid)
-      return res.status(400).json({ success: false, message: 'Invalid email address. Please check and try again.' });
 
     const user = await User.findOne({ email });
     if (!user || !(await user.matchPassword(password)))
