@@ -1,29 +1,29 @@
-    User-agent: *
-    Allow: /
+User-agent: *
+Allow: /
 
-    Disallow: /admin/
-    Disallow: /api/
-    Disallow: /dashboard
-    Disallow: /login
-    Disallow: /register
-    Disallow: /401
-    Disallow: /403
-    Disallow: /429
-    Disallow: /500
-    Disallow: /503
-    Disallow: /maintenance
+Disallow: /admin/
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /login
+Disallow: /register
+Disallow: /401
+Disallow: /403
+Disallow: /429
+Disallow: /500
+Disallow: /503
+Disallow: /maintenance
 
-    Disallow: /properties?*budget=
-    Disallow: /properties?*sort=
-    Disallow: /properties?*furnish=
-    Disallow: /properties?*possession=
-    Disallow: /properties?*sqft=
+Disallow: /properties?*budget=
+Disallow: /properties?*sort=
+Disallow: /properties?*furnish=
+Disallow: /properties?*possession=
+Disallow: /properties?*sqft=
 
-    Allow: /properties?area=
-    Allow: /properties?city=
-    Allow: /properties?status=
-    Allow: /properties?type=
-    Allow: /properties?beds=
-    Allow: /properties?maxprice=
+Allow: /properties?area=
+Allow: /properties?city=
+Allow: /properties?status=
+Allow: /properties?type=
+Allow: /properties?beds=
+Allow: /properties?maxprice=
 
-    Sitemap: https://www.cityrealspace.com/sitemap.xml
+Sitemap: https://www.cityrealspace.com/sitemap.xml

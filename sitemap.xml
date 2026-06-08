@@ -2,14 +2,14 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>https://www.cityrealspace.com/sitemap-static.xml</loc>
-    <lastmod>2026-05-12</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://www.cityrealspace.com/api/blogs/sitemap</loc>
-    <lastmod>2026-05-12</lastmod>
+    <lastmod>2026-05-29</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://www.cityrealspace.com/api/properties/sitemap</loc>
-    <lastmod>2026-05-12</lastmod>
+    <lastmod>2026-05-29</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.cityrealspace.com/api/blogs/sitemap</loc>
+    <lastmod>2026-05-29</lastmod>
   </sitemap>
 </sitemapindex>
