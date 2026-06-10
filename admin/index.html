@@ -1103,7 +1103,7 @@
                 buildParkingText();
               }
               function onParkingTotalChange() {
-                const total = parseInt(document.getElementById('oParkingTotal').value) || 0;
+                var total = parseInt(document.getElementById('oParkingTotal').value) || 0;
                 document.getElementById('oParkingDistrib').style.display = total > 0 ? 'block' : 'none';
                 // Reset distribution
                 ['oDistGround','oDistB1','oDistB2','oDistB3'].forEach(id => {
@@ -1113,7 +1113,7 @@
                 buildParkingText();
               }
               function adjParkingDist(id, dir) {
-                const total = parseInt(document.getElementById('oParkingTotal').value) || 0;
+                var total = parseInt(document.getElementById('oParkingTotal').value) || 0;
                 const cur = parseInt(document.getElementById(id).value) || 0;
                 const used = ['oDistGround','oDistB1','oDistB2','oDistB3'].reduce((s,i) => s + (parseInt(document.getElementById(i).value)||0), 0);
                 const newVal = cur + dir;

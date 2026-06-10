@@ -12,18 +12,13 @@ Disallow: /429
 Disallow: /500
 Disallow: /503
 Disallow: /maintenance
+Disallow: /properties?
 
-Disallow: /properties?*budget=
-Disallow: /properties?*sort=
-Disallow: /properties?*furnish=
-Disallow: /properties?*possession=
-Disallow: /properties?*sqft=
-
+Allow: /properties$
 Allow: /properties?area=
 Allow: /properties?city=
 Allow: /properties?status=
 Allow: /properties?type=
 Allow: /properties?beds=
-Allow: /properties?maxprice=
 
 Sitemap: https://www.cityrealspace.com/sitemap.xml
