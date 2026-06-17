@@ -437,6 +437,15 @@
 </div>
 
 <script>
+// Filter URLs pe noindex lagao (duplicate content Google index na kare)
+(function() {
+  if (window.location.search.length > 0) {
+    var m = document.createElement('meta');
+    m.name = 'robots'; m.content = 'noindex, follow';
+    document.head.appendChild(m);
+  }
+})();
+
 const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? 'http://localhost:5000/api' : '/api';
 
